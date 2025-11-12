@@ -1,10 +1,10 @@
 Package: Rsequoia2
-Title:  R package to help forest french manager
+Title:  R package to help french forest manager
 Version: 0.0.0.9000
 Authors@R: 
     person("Paul", "Carteron", , "carteronpaul@gmail.com", role = c("aut", "cre"))
     person("Matthieu", "Chevereau", , "matthieu.chevereau@hotmail.com", role = c("aut", "cre"))
-Description: Help forest french manager by retrieve and create spatial data
+Description: Help french forest manager by retrieving and creating spatial data
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

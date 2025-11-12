@@ -1,2 +1,7 @@
 ^Rsequoia2\.Rproj$
 ^\.Rproj\.user$
+^CODE_OF_CONDUCT\.md$
+^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
