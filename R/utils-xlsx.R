@@ -34,13 +34,20 @@ style_table <- function(wb, sheet, df, numfmt = "0.00"){
     wb_dims(x = df, ...)
   }
 
+  # Manually create range because wb_dims is super slow
+  nrow <- nrow(df) + 1
   num_cols <- which(vapply(df, is.numeric, logical(1)))
-  fmt_dims <- wb_dims_wrapper(cols = num_cols, select = "data")
+  col <- LETTERS[num_cols]
+  fmt_dims <- paste(sprintf("%s2:%s%d", col, col, nrow), collapse = ",")
+
+  col_dims <- wb_dims(x = df[1,], select = "col_names")
+  all_dims <- paste(sprintf("A1:%s%d", LETTERS[ncol(df)], nrow), collapse = ",")
 
   wb <- wb |>
-    wb_add_border(dims = wb_dims_wrapper(select = "col_names"), bottom_color = wb_color("black"), left_border = NULL, right_border = NULL, top_border = NULL) |>
-    wb_add_font(dims = wb_dims_wrapper(select = "col_names"), bold = TRUE) |>
-    wb_add_cell_style(dims = wb_dims_wrapper(), horizontal = "center") |>
+    wb_add_border(dims = col_dims, bottom_color = wb_color("black"),
+                  left_border = NULL, right_border = NULL, top_border = NULL) |>
+    wb_add_font(dims = col_dims, bold = TRUE) |>
+    wb_add_cell_style(dims = all_dims, horizontal = "center") |>
     wb_add_numfmt(sheet = sheet, dims = fmt_dims, numfmt = numfmt) |>
     wb_set_col_widths(cols = seq_along(df), widths = "auto")
 

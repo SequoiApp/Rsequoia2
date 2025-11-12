@@ -4,12 +4,14 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Paul", "Carteron", , "carteronpaul@gmail.com", role = c("aut", "cre"))
     person("Matthieu", "Chevereau", , "matthieu.chevereau@hotmail.com", role = c("aut", "cre"))
-Description: Help french forest manager by retrieving and creating spatial data
+Description: Provides tools to help French forest managers retrieve, 
+    process, and create spatial datasets related to forestry management.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: 
+    archive,
     cli,
     frcadastre,
     happign,
@@ -17,3 +19,4 @@ Imports:
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Depends: R (>= 4.1.0)

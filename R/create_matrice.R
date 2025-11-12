@@ -1,6 +1,6 @@
-#' Create a default "matrice" Excel file
+#' Create a  forest matrice
 #'
-#' Generates a default "“"matrice"”" workbook used to store general forest
+#' Generates a default forest matrice as excel file used to store general forest
 #' information (e.g., `IDENTIFIANT`, `PROPRIETAIRE`) and cadastral attributes
 #' (`CODE_INSEE`, `PREFIXE`, `SECTION`, `NUMERO`, `LIEU_DIT`).
 #'
@@ -16,17 +16,21 @@
 #' \dontrun{
 #' create_matrice("~/matrice.xlsx", overwrite = TRUE)
 #' }
-create_matrice <- function(filename = "~/matrice.xlsx", overwrite = FALSE, verbose = TRUE){
+create_matrice <- function(matrice = NULL, filename = "~/matrice.xlsx", overwrite = FALSE, verbose = TRUE){
 
-  matrice <- data.frame(
-    "IDENTIFIANT" = "NOM DE LA FORET",
-    "PROPRIETAIRE" = "NOM DU PROPRIETAIRE",
-    "CODE_INSEE" = "08170",
-    "PREFIXE" = "123",
-    "SECTION" = "A",
-    "NUMERO" = "1",
-    "LIEU_DIT" = "NOM DU LIEU DIT"
-  )
+  if (is.null(matrice)){
+    matrice <- data.frame(
+      "IDENTIFIANT" = "NOM DE LA FORET",
+      "PROPRIETAIRE" = "NOM DU PROPRIETAIRE",
+      "CODE_INSEE" = "08170",
+      "PREFIXE" = "123",
+      "SECTION" = "A",
+      "NUMERO" = "1",
+      "LIEU_DIT" = "NOM DU LIEU DIT",
+      "TX_BOISEE" = "0,8"
+    )
+
+  }
 
   seq_xlsx(
     tables = list("MATRICE" = matrice),
