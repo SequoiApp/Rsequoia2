@@ -1,0 +1,109 @@
+#' Style a Data Frame Table in an openxlsx2 Workbook
+#'
+#' Applies consistent formatting to a data frame that has been written into a worksheet.
+#' This includes adding a bottom border and bold font to column names, centering all cells,
+#' formatting numeric columns to two decimal places, and auto-adjusting column widths.
+#'
+#' @param wb A [openxlsx2::wb_workbook] object.
+#' @param sheet Character or integer. The target worksheet name or index.
+#' @param df A data frame that has been written to `sheet` and needs styling.
+#' @param numfmt see [openxlsx2::wb_add_numfmt]
+#'
+#' @importFrom openxlsx2 wb_workbook wb_add_data wb_add_worksheet wb_save
+#' wb_dims wb_set_col_widths wb_add_cell_style wb_add_numfmt wb_add_font
+#' wb_add_border wb_color
+#'
+#' @return The modified `wb_workbook` object with styles applied.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' library(openxlsx2)
+#' df <- data.frame(Name = c("A", "B"), Value = c(1.234, 2.345))
+#' wb <- wb_workbook()
+#' wb <- wb |>
+#'   wb_add_worksheet("Data") |>
+#'   wb_add_data("Data", x = df)
+#' wb <- style_table(wb, "Data", df)
+#' wb_save(wb, "styled.xlsx")
+#' }
+#'
+style_table <- function(wb, sheet, df, numfmt = "0.00"){
+
+  wb_dims_wrapper <- function(...) {
+    wb_dims(x = df, ...)
+  }
+
+  num_cols <- which(vapply(df, is.numeric, logical(1)))
+  fmt_dims <- wb_dims_wrapper(cols = num_cols, select = "data")
+
+  wb <- wb |>
+    wb_add_border(dims = wb_dims_wrapper(select = "col_names"), bottom_color = wb_color("black"), left_border = NULL, right_border = NULL, top_border = NULL) |>
+    wb_add_font(dims = wb_dims_wrapper(select = "col_names"), bold = TRUE) |>
+    wb_add_cell_style(dims = wb_dims_wrapper(), horizontal = "center") |>
+    wb_add_numfmt(sheet = sheet, dims = fmt_dims, numfmt = numfmt) |>
+    wb_set_col_widths(cols = seq_along(df), widths = "auto")
+
+  return(wb)
+}
+
+#' Save Multiple Data Frames to an Excel Workbook with Styling
+#'
+#' Creates a new Excel workbook, adds each element of a named list of data frames
+#' as a separate sheet, writes the data, and applies `style_table()` to each sheet.
+#'
+#' @param tables A named list of data frames. List names are used as worksheet names.
+#' @param filename Character. File path where the workbook will be saved.
+#' @param overwite If FALSE, will not overwrite when file already exists
+#'
+#' @return Invisibly returns the path `filename` after saving.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' library(openxlsx2)
+#' df1 <- data.frame(A = 1:3, B = 4:6)
+#' df2 <- data.frame(X = letters[1:3], Y = runif(3))
+#' tables <- list(FirstSheet = df1, SecondSheet = df2)
+#' save_tables_to_xlsx(tables, "my_data.xlsx")
+#' }
+seq_xlsx <- function(tables, filename, overwrite = FALSE, verbose = TRUE) {
+  # Force .xlsx extension
+  filename <- normalizePath(filename, mustWork = FALSE)
+  if (!grepl("\\.xlsx$", filename, ignore.case = TRUE))
+    filename <- paste0(filename, ".xlsx")
+
+  # Check parent directory exists
+  dir <- dirname(filename)
+  if (!dir.exists(dir)) {
+    cli::cli_abort("The directory {.path {dir}} does not exist.")
+  }
+
+  wb <- wb_workbook()
+
+  # Prevent accidental overwrite
+  if (file.exists(filename) && !overwrite) {
+    cli::cli_abort(c(
+      "x"= "File already exists at : {.path {normalizePath(filename)}}",
+      "i" = "Use {.code overwrite = TRUE} to replace it.")
+    )
+  }
+
+  for (sheet in names(tables)) {
+    df <- tables[[sheet]]
+
+    wb <- wb |>
+      wb_add_worksheet(sheet) |>
+      wb_add_data(sheet, x = df, na.strings = "") |>
+      style_table(sheet, df)
+  }
+
+  wb_save(wb, filename, overwrite)
+
+  if (verbose) {
+    cli::cli_alert_success("Excel file created at: {.path {normalizePath(filename)}}")
+  }
+
+  invisible(filename)
+}
+
