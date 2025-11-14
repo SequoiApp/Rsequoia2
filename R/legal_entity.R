@@ -199,8 +199,8 @@ get_legal_entity <- function(
 #' This function allows searching for parcels in a forest matrix based on
 #' owner names or location (lieu-dit).
 #'
-#' @param matrice `data.frame`; The matrix containing parcel information in a
-#' format readable by SEQUOIA.
+#' @param x `data.frame`; The matrix containing parcel legal entity information
+#' in a format readable by SEQUOIA.
 #' @param prop `character`; Owner name(s) used to further filter results. Defaults to `NULL`.
 #' Multiple owners can be specified.
 #' @param lieu_dit `character`; Locality name(s) used to further filter results. Defaults to `NULL`.
@@ -222,12 +222,12 @@ get_legal_entity <- function(
 #'
 #' @examples
 #' \dontrun{
-#' matrice <- get_legal_entity(29158)
-#' search_mat <- search_matrice(matrice, c("penmarch", "guenole"))
+#' legal_entity <- get_legal_entity(29158)
+#' search_mat <- search_legal_entity(legal_entity, c("penmarch", "guenole"))
 #' }
 #'
 #' @export
-search_matrice <- function(matrice, prop = NULL, lieu_dit = NULL) {
+search_legal_entity <- function(x, prop = NULL, lieu_dit = NULL) {
   normalize_txt <- function(x) {
     x <- iconv(x, from = "UTF-8", to = "ASCII//TRANSLIT")
     x <- toupper(x)

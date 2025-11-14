@@ -3,7 +3,7 @@
 export(create_matrice)
 export(download_legal_entity)
 export(get_legal_entity)
-export(search_matrice)
+export(search_legal_entity)
 export(seq_xlsx)
 export(style_table)
 importFrom(archive,archive_extract)
