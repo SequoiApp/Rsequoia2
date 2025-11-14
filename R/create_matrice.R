@@ -16,24 +16,21 @@
 #' \dontrun{
 #' create_matrice("~/matrice.xlsx", overwrite = TRUE)
 #' }
-create_matrice <- function(matrice = NULL, filename = "~/matrice.xlsx", overwrite = FALSE, verbose = TRUE){
+create_matrice <- function(filename = "~/matrice.xlsx", overwrite = FALSE, verbose = TRUE){
 
-  if (is.null(matrice)){
-    matrice <- data.frame(
-      "IDENTIFIANT" = "NOM DE LA FORET",
-      "PROPRIETAIRE" = "NOM DU PROPRIETAIRE",
-      "CODE_INSEE" = "08170",
-      "PREFIXE" = "123",
-      "SECTION" = "A",
-      "NUMERO" = "1",
-      "LIEU_DIT" = "NOM DU LIEU DIT",
-      "TX_BOISEE" = "0,8"
-    )
-
-  }
+  matrice <- data.frame(
+    "IDENTIFIANT" = "NOM DE LA FORET",
+    "PROPRIETAIRE" = "NOM DU PROPRIETAIRE",
+    "CODE_INSEE" = "08170",
+    "PREFIXE" = "123",
+    "SECTION" = "A",
+    "NUMERO" = "1",
+    "LIEU_DIT" = "NOM DU LIEU DIT",
+    "TX_BOISEE" = "0,8"
+  )
 
   seq_xlsx(
-    tables = list("MATRICE" = matrice),
+    x = list("MATRICE" = matrice),
     filename = filename,
     overwrite = overwrite,
     verbose = verbose

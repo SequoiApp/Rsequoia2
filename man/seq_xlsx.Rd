@@ -4,14 +4,17 @@
 \alias{seq_xlsx}
 \title{Save Multiple Data Frames to an Excel Workbook with Styling}
 \usage{
-seq_xlsx(tables, filename, overwrite = FALSE, verbose = TRUE)
+seq_xlsx(x, filename, overwrite = FALSE, verbose = TRUE)
 }
 \arguments{
-\item{tables}{A named list of data frames. List names are used as worksheet names.}
+\item{x}{\code{list} A named list of data frames.
+List names are used as worksheet names.}
 
-\item{filename}{Character. File path where the workbook will be saved.}
+\item{filename}{\code{character} File path where the workbook will be saved.}
 
-\item{overwite}{If FALSE, will not overwrite when file already exists}
+\item{overwrite}{\code{logical} If \code{TRUE}, filename is overwritten.}
+
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
 Invisibly returns the path \code{filename} after saving.

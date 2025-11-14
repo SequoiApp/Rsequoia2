@@ -53,3 +53,9 @@ test_that("seq_xlsx() fails gracefully if directory does not exist", {
     "does not exist"
   )
 })
+
+test_that("seq_xlsx() fails gracefully if x not a list", {
+  expect_error(
+    seq_xlsx(data.frame(), "tables must be a named")
+  )
+})

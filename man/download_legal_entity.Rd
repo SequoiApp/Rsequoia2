@@ -2,7 +2,7 @@
 % Please edit documentation in R/legal_entity.R
 \name{download_legal_entity}
 \alias{download_legal_entity}
-\title{Download and cache cadastral data for legal entities ("Personnes Morales”)}
+\title{Download and cache cadastral data for legal entities ("Personnes Morales")}
 \usage{
 download_legal_entity(dep, cache = NULL, verbose = TRUE)
 }
@@ -18,7 +18,7 @@ directory (see \code{\link[tools:userdir]{tools::R_user_dir()}}).}
 \code{character};
 }
 \description{
-This function downloads the official "Personnes Morales” datasets published
+This function downloads the official "Personnes Morales" datasets published
 by the French Ministry of Economy and Finance. These datasets contain
 cadastral and property information (parcels and buildings) owned by
 legal entities. The data are automatically cached locally to avoid

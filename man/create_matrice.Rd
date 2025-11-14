@@ -4,12 +4,7 @@
 \alias{create_matrice}
 \title{Create a  forest matrice}
 \usage{
-create_matrice(
-  matrice = NULL,
-  filename = "~/matrice.xlsx",
-  overwrite = FALSE,
-  verbose = TRUE
-)
+create_matrice(filename = "~/matrice.xlsx", overwrite = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{filename}{\code{character} Path to the output \code{.xlsx} file. Defaults

@@ -1,6 +1,6 @@
-#' Download and cache cadastral data for legal entities ("Personnes Morales”)
+#' Download and cache cadastral data for legal entities ("Personnes Morales")
 #'
-#' This function downloads the official "Personnes Morales” datasets published
+#' This function downloads the official "Personnes Morales" datasets published
 #' by the French Ministry of Economy and Finance. These datasets contain
 #' cadastral and property information (parcels and buildings) owned by
 #' legal entities. The data are automatically cached locally to avoid
@@ -48,14 +48,18 @@ download_legal_entity <- function(dep, cache = NULL, verbose = TRUE) {
   is_download <- length(list.files(cache, pattern = pattern, recursive = TRUE)) > 0
 
   if (!is_download) {
-    if (verbose) cli::cli_alert_info("Téléchargement des données Personnes Morales...")
+    if (verbose) cli::cli_alert_info("Downloading legal entity datasets...")
     invisible(lapply(urls, \(x) archive::archive_extract(x, dir = cache)))
-    cli::cli_alert_success("Données disponibles dans {.path {normalizePath(cache)}}")
+    cli::cli_alert_success("Data available at: {.path {normalizePath(cache)}}")
   }
 
   return(invisible(cache))
 }
 
+globalVariables(c(
+  "dep", "com", "prefix", "section", "numero", "nature", "is_boisee", "surf_tot",
+  "contenance", "prop_norm", "lieu_dit_norm"
+))
 #' Create a forest matrice for legal entity from insee code
 #'
 #' Generates a forest matrice used to store general forest
@@ -72,18 +76,19 @@ download_legal_entity <- function(dep, cache = NULL, verbose = TRUE) {
 #' Matrice from `get_legal_entity` add `tx_boisee` information which is the
 #' percentage of land considered as forest :
 #' - `"L"`:  Landes
-#' - `"LB"`: Landes Boisées
+#' - `"LB"`: Landes Boisees
 #' - `"B"`:  Bois
 #' - `"BF"`: Futaies Feuillues
 #' - `"BM"`: Futaies Mixtes
 #' - `"BO"`: Oseraies
 #' - `"BP"`: Peupleraies
-#' - `"BR"`: Futaies Résineuses
+#' - `"BR"`: Futaies Resineuses
 #' - `"BS"`: Taillis sous Futaies
 #' - `"BT"`: Taillis Simples
 #'
 #' @importFrom cli cli_alert_info cli_abort cli_alert_success cli_alert_warning
 #' @importFrom utils read.csv2
+#' @importFrom stats aggregate
 #'
 #' @examples
 #' \dontrun{
@@ -144,7 +149,7 @@ get_legal_entity <- function(
   )
 
   if (length(code_insee)) raw <- raw[paste0(raw$dep, raw$com) %in% code_insee, ] # Keep insee code
-  raw <- raw[startsWith(raw$type, "P"), ] # Keep propriétaire
+  raw <- raw[startsWith(raw$type, "P"), ] # Keep proprietaire only
 
   if (verbose) cli_alert_info("Preparing CSV files...")
   legal_entity <- raw |>
@@ -203,17 +208,22 @@ get_legal_entity <- function(
 #'
 #' @importFrom cli cli_abort
 #'
+#' @details
+#' The search relies on a text–normalization step applied to both the inputs and
+#' the corresponding columns of the matrice. This makes the search robust
+#' to accents, punctuation, spacing irregularities and case differences.
+#'
+#' **Examples of normalization:**
+#'   - `"État / Forêts"` → `"ETATFORETS"`
+#'   - `"  Le Bois-de l'Orme  "` → `"LEBOISDELORME"`
+#'   - `"Société du Chêne"` → `"SOCIETEDUCHENE"`
+#'
 #' @return A `data.frame`.
 #'
 #' @examples
 #' \dontrun{
-#' # Recherche des parcelles dans la matrice pour le département 01
-#' pm29158 <- get_pm("29", "29158")
-#'
-#' # Recherche des parcelles pour une commune spécifique et un propriétaire
-#' cad <- search_pm(pm29158, prop = c("COMMUNE"))
-#' cad <- search_pm(pm29158, lieu_dit = "ECKMUHL")
-#' cad <- search_pm(pm29158, prop = c("COMMUNE"), lieu_dit = "ECKMUHL")
+#' matrice <- get_legal_entity(29158)
+#' search_mat <- search_matrice(matrice, c("penmarch", "guenole"))
 #' }
 #'
 #' @export

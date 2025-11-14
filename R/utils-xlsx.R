@@ -59,9 +59,11 @@ style_table <- function(wb, sheet, df, numfmt = "0.00"){
 #' Creates a new Excel workbook, adds each element of a named list of data frames
 #' as a separate sheet, writes the data, and applies `style_table()` to each sheet.
 #'
-#' @param tables A named list of data frames. List names are used as worksheet names.
-#' @param filename Character. File path where the workbook will be saved.
-#' @param overwite If FALSE, will not overwrite when file already exists
+#' @param x `list` A named list of data frames.
+#' List names are used as worksheet names.
+#' @param filename `character` File path where the workbook will be saved.
+#' @param overwrite `logical` If `TRUE`, filename is overwritten.
+#' @param verbose `logical` If `TRUE`, display messages.
 #'
 #' @return Invisibly returns the path `filename` after saving.
 #' @export
@@ -74,7 +76,16 @@ style_table <- function(wb, sheet, df, numfmt = "0.00"){
 #' tables <- list(FirstSheet = df1, SecondSheet = df2)
 #' save_tables_to_xlsx(tables, "my_data.xlsx")
 #' }
-seq_xlsx <- function(tables, filename, overwrite = FALSE, verbose = TRUE) {
+seq_xlsx <- function(x, filename, overwrite = FALSE, verbose = TRUE) {
+
+  not_a_list <- !inherits(x, "list")
+  if (not_a_list){
+    cli::cli_abort(c(
+      "{.field tables} must be a {.strong named} {.cls list} of {.cls data.frame}.",
+      "i" = "Example: {.code list(\"SHEET_NAME\" = df)}"
+    ))
+  }
+
   # Force .xlsx extension
   filename <- normalizePath(filename, mustWork = FALSE)
   if (!grepl("\\.xlsx$", filename, ignore.case = TRUE))
@@ -96,8 +107,8 @@ seq_xlsx <- function(tables, filename, overwrite = FALSE, verbose = TRUE) {
     )
   }
 
-  for (sheet in names(tables)) {
-    df <- tables[[sheet]]
+  for (sheet in names(x)) {
+    df <- x[[sheet]]
 
     wb <- wb |>
       wb_add_worksheet(sheet) |>

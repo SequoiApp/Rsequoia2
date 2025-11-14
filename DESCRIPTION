@@ -13,7 +13,6 @@ RoxygenNote: 7.3.2
 Imports: 
     archive,
     cli,
-    frcadastre,
     happign,
     openxlsx2
 Suggests: 

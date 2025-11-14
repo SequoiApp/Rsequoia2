@@ -23,15 +23,22 @@ A \code{data.frame}.
 This function allows searching for parcels in a forest matrix based on
 owner names or location (lieu-dit).
 }
+\details{
+The search relies on a text–normalization step applied to both the inputs and
+the corresponding columns of the matrice. This makes the search robust
+to accents, punctuation, spacing irregularities and case differences.
+
+\strong{Examples of normalization:}
+\itemize{
+\item \code{"État / Forêts"} → \code{"ETATFORETS"}
+\item \code{"  Le Bois-de l'Orme  "} → \code{"LEBOISDELORME"}
+\item \code{"Société du Chêne"} → \code{"SOCIETEDUCHENE"}
+}
+}
 \examples{
 \dontrun{
-# Recherche des parcelles dans la matrice pour le département 01
-pm29158 <- get_pm("29", "29158")
-
-# Recherche des parcelles pour une commune spécifique et un propriétaire
-cad <- search_pm(pm29158, prop = c("COMMUNE"))
-cad <- search_pm(pm29158, lieu_dit = "ECKMUHL")
-cad <- search_pm(pm29158, prop = c("COMMUNE"), lieu_dit = "ECKMUHL")
+matrice <- get_legal_entity(29158)
+search_mat <- search_matrice(matrice, c("penmarch", "guenole"))
 }
 
 }
