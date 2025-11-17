@@ -7,7 +7,8 @@
 get_path(key, dirname = ".", verbose = FALSE)
 }
 \arguments{
-\item{key}{\code{character}}
+\item{key}{\code{character} Name of a layer key to match against the entries
+defined in \code{inst/config/seq_layer.yaml}. (see \emph{Details} for partial matching).}
 
 \item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}

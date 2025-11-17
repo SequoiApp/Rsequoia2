@@ -77,7 +77,8 @@ get_id <- function(dirname = ".", verbose = FALSE) {
 #' (1) the forest ID extracted from the local *_matrice.xlsx file, and
 #' (2) the corresponding layer definition stored in `inst/config/seq_layer.yaml`.
 #'
-#' @param key `character`
+#' @param key `character` Name of a layer key to match against the entries
+#' defined in `inst/config/seq_layer.yaml`. (see *Details* for partial matching).
 #' @param dirname `character` Directory where the matrice file is located.
 #' Defaults to the current working directory.
 #' @param verbose `logical` If `TRUE`, display messages.
@@ -103,7 +104,7 @@ get_path <- function(key, dirname = ".", verbose = FALSE){
   cfg <- yaml::read_yaml(cfg_path)
 
   all_key <- names(cfg)
-  match_key <- grepv(key, all_key)
+  match_key <- grep(key, all_key, value = TRUE)
 
   if (length(match_key) > 1){
     cli::cli_abort(
@@ -127,6 +128,7 @@ get_path <- function(key, dirname = ".", verbose = FALSE){
   id <- get_id(dirname)
   filename <- sprintf("%s_%s.%s", id, entry$name, entry$ext)
   path <- file.path(dirname, filename)
+  names(path) <- match_key
 
   if (verbose) {
     cli::cli_alert_success(

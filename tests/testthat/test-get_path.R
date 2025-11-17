@@ -20,11 +20,13 @@ test_that("get_path() returns expected path", {
 
   tmp <- tempdir()
   m <- create_matrice(tmp, "MY_ID", verbose = F, overwrite = T)
-
   on.exit(unlink(m))
 
-  path <- get_path("v.inpn.znieff1.poly", tmp)
-  expect_equal(path, file.path(tmp, "MY_ID_INPN_ZNIEFF1_poly.geojson"))
+  key <- "v.inpn.znieff1.poly"
+  expected <- file.path(tmp, "MY_ID_INPN_ZNIEFF1_poly.geojson")
+  names(expected) <- key
+
+  expect_equal(get_path(key, tmp), expected)
 
 })
 
@@ -32,11 +34,13 @@ test_that("get_path() partial key matching", {
 
   tmp <- tempdir()
   m <- create_matrice(tmp, "MY_ID", verbose = F, overwrite = T)
-  expected_path <- file.path(tmp, "MY_ID_INPN_ZNIEFF1_poly.geojson")
+  on.exit(unlink(m))
 
-  on.exit(unlink(c(m, expected_path)))
+  key <- "v.inpn.znieff1.poly"
+  expected <- file.path(tmp, "MY_ID_INPN_ZNIEFF1_poly.geojson")
+  names(expected) <- key
 
-  expect_equal(get_path("znieff1", tmp), expected_path)
+  expect_equal(get_path("znieff1", tmp), expected)
 
 })
 
