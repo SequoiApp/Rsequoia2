@@ -4,11 +4,19 @@
 \alias{create_matrice}
 \title{Create a  forest matrice}
 \usage{
-create_matrice(filename = "~/matrice.xlsx", overwrite = FALSE, verbose = TRUE)
+create_matrice(
+  dirname = ".",
+  id = "MY_FOREST",
+  overwrite = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
-\item{filename}{\code{character} Path to the output \code{.xlsx} file. Defaults
-to \code{"~/matrice.xlsx"}.}
+\item{dirname}{\code{character} Path to the directory. Defaults to the current
+working directory.}
+
+\item{id}{\code{character} Identifier of the forest. Typically the name of the
+forest}
 
 \item{overwrite}{\code{logical} If \code{TRUE}, filename is overwritten.}
 

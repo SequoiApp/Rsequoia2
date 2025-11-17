@@ -4,11 +4,11 @@
 \alias{search_legal_entity}
 \title{Helpers to search within a forest matrix}
 \usage{
-search_legal_entity(matrice, prop = NULL, lieu_dit = NULL)
+search_legal_entity(x, prop = NULL, lieu_dit = NULL)
 }
 \arguments{
-\item{matrice}{\code{data.frame}; The matrix containing parcel information in a
-format readable by SEQUOIA.}
+\item{x}{\code{data.frame}; The matrix containing parcel legal entity information
+in a format readable by SEQUOIA.}
 
 \item{prop}{\code{character}; Owner name(s) used to further filter results. Defaults to \code{NULL}.
 Multiple owners can be specified.}
@@ -37,8 +37,8 @@ to accents, punctuation, spacing irregularities and case differences.
 }
 \examples{
 \dontrun{
-matrice <- get_legal_entity(29158)
-search_mat <- search_legal_entity(matrice, c("penmarch", "guenole"))
+legal_entity <- get_legal_entity(29158)
+search_mat <- search_legal_entity(legal_entity, c("penmarch", "guenole"))
 }
 
 }

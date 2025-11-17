@@ -1,38 +1,43 @@
 test_that("create_matrice() creates a valid Excel file", {
-  tmp <- tempfile(fileext = ".xlsx")
-  on.exit(unlink(tmp), add = TRUE)
+  tmpdir <- tempdir()
+  id <- "TEST_FOREST"
+  outfile <- file.path(tmpdir, paste0(id, "_matrice.xlsx"))
 
-  # should create file
-  create_matrice(tmp, verbose = FALSE)
-  expect_true(file.exists(tmp))
+  on.exit(unlink(outfile), add = TRUE)
 
-  # file should not be empty
-  expect_gt(file.size(tmp), 0)
-})
+  create_matrice(tmpdir, id = id, verbose = FALSE)
 
-test_that("create_matrice() adds .xlsx extension if missing", {
-  tmp <- tempfile()  # no extension
-  on.exit(unlink(paste0(tmp, ".xlsx")), add = TRUE)
+  expect_true(file.exists(outfile))
+  expect_gt(file.size(outfile), 0)
 
-  create_matrice(tmp, verbose = FALSE)
-  expect_true(file.exists(paste0(tmp, ".xlsx")))
+  # Check that IDENTIFIANT matches id
+  df <- openxlsx2::read_xlsx(outfile, sheet = "MATRICE")
+  expect_equal(df$IDENTIFIANT, id)
 })
 
 test_that("create_matrice() refuses to overwrite by default", {
-  tmp <- tempfile(fileext = ".xlsx")
-  on.exit(unlink(tmp), add = TRUE)
+  tmpdir <- tempdir()
+  id <- "FOREST_X"
+  outfile <- file.path(tmpdir, paste0(id, "_matrice.xlsx"))
 
-  create_matrice(tmp, verbose = FALSE)
+  on.exit(unlink(outfile), add = TRUE)
+
+  create_matrice(tmpdir, id = id, verbose = FALSE)
+
   expect_error(
-    create_matrice(tmp, verbose = FALSE),
-    "File already exists"
+    create_matrice(tmpdir, id = id, verbose = FALSE),
+    "exists"
   )
 })
 
 test_that("create_matrice() overwrites when requested", {
-  tmp <- tempfile(fileext = ".xlsx")
-  on.exit(unlink(tmp), add = TRUE)
+  tmpdir <- tempdir()
+  id <- "FOREST_Y"
+  outfile <- file.path(tmpdir, paste0(id, "_matrice.xlsx"))
 
-  create_matrice(tmp, verbose = FALSE)
-  expect_silent(create_matrice(tmp, overwrite = TRUE, verbose = FALSE))
+  on.exit(unlink(outfile), add = TRUE)
+
+  create_matrice(tmpdir, id = id, verbose = FALSE)
+
+  expect_silent(create_matrice(tmpdir, id = id, overwrite = TRUE, verbose = FALSE))
 })

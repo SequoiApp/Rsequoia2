@@ -2,6 +2,7 @@
 
 export(create_matrice)
 export(download_legal_entity)
+export(get_id)
 export(get_legal_entity)
 export(search_legal_entity)
 export(seq_xlsx)
