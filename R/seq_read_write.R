@@ -53,6 +53,16 @@ seq_write <- function(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE)
   path <- get_path(key, dirname, verbose = FALSE)
   key <- names(path)
 
+  if (file.exists(path) && !overwrite) {
+    cli::cli_warn(
+      c(
+        "!" = "{.file {basename(path)}} already exists.",
+        "i" = "Use {.arg overwrite = TRUE} to replace it."
+      )
+    )
+    return(invisible(path))
+  }
+
   is_vector <- startsWith(key, "v.")
   if (is_vector) {
     if (!inherits(x, c("sf", "sfc"))) {
@@ -61,7 +71,8 @@ seq_write <- function(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE)
         "i" = "Vector layers must be written using {.val v.*} keys."
       ))
     }
-    sf::write_sf(x, path, append = !overwrite)
+
+    sf::write_sf(x, path, delete_dsn = overwrite)
 
     if (verbose) {
       cli::cli_alert_success(
@@ -93,9 +104,4 @@ seq_write <- function(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE)
     return(invisible(path))
   }
 
-  # Unknown prefix ------------------------------------------------------------
-  cli::cli_abort(c(
-    "!" = "Unsupported layer type for key {.val {key}}.",
-    "i" = "Vector keys start with {.val v.}, raster keys with {.val r.}."
-  ))
 }
