@@ -1,0 +1,21 @@
+test_that("get_parca() works (local only)", {
+
+  skip_on_cran()
+  skip_on_ci()
+
+  idu <- "33103000AB0060"  # Tiny commune: 33103 (Castelmoron-d'Albret)
+
+  out <- get_parca(idu)
+  expect_s3_class(out, "sf")
+  expect_snapshot(str(sf::st_drop_geometry(out)))
+
+  out <- get_parca(idu, lieu_dit = TRUE)
+  expect_s3_class(out, "sf")
+  expect_snapshot(str(sf::st_drop_geometry(out)))
+
+  out <- get_parca(idu, bdp_geom = FALSE)
+  expect_s3_class(out, "sf")
+  expect_snapshot(str(sf::st_drop_geometry(out)))
+
+})
+

@@ -34,6 +34,19 @@ seq_read <- function(key, dirname = ".", verbose = FALSE) {
     return(invisible(terra::rast(path)))
   }
 
+  is_xlsx <- startsWith(key, "x.")
+  if (is_xlsx) {
+    if (verbose) {
+      cli::cli_alert_success(
+        "Loaded xlsx {.val {key}} from {.file {basename(path)}}."
+      )
+    }
+    return(invisible(openxlsx2::read_xlsx(
+      path,
+      na.strings = "",
+      skip_empty_rows = TRUE,
+      skip_empty_cols = TRUE)))
+  }
 }
 
 #' Write a spatial object based on a layer key

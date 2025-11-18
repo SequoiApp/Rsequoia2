@@ -12,59 +12,13 @@
 #' @export
 get_id <- function(dirname = ".", verbose = FALSE) {
 
-  path <- list.files(dirname, pattern = "_matrice\\.xlsx$", full.names = TRUE)
-
-  # No file
-  if (length(path) == 0) {
-    cli::cli_abort(c(
-      "!" = "No {.val *_matrice.xlsx} file found in {.path {normalizePath(dirname)}}.",
-      "i" = "See {.fn Rsequoia2::create_matrice} to generate one."
-    ))
-  }
-
-  # Multiple files
-  if (length(path) > 1) {
-    cli::cli_abort(c(
-      "!" = "Multiple {.val *_matrice.xlsx} files found in {.path {normalizePath(dirname)}}.",
-      "x" = "Only one matrice file is allowed.",
-      "v" = "Files found: {paste(basename(path), collapse = ', ')}"
-    ))
-  }
-
-  # 2) Read the file
-  matrice <- openxlsx2::read_xlsx(path)
-
-  # Missing IDENTIFIANT column
-  if (!"IDENTIFIANT" %in% names(matrice)) {
-    cli::cli_abort(c(
-      "!" = "Column {.field IDENTIFIANT} is missing in {.file {basename(path)}}."
-    ))
-  }
-
-  # Extract ID
-  id <- unique(matrice$IDENTIFIANT)
-  id <- id[!is.na(id) & nzchar(trimws(id))]   # remove NA + empty + spaces-only
-
-  # Empty IDs
-  if (length(id) == 0) {
-    cli::cli_abort(c(
-      "!" = "Column {.field IDENTIFIANT} is empty."
-    ))
-  }
-
-  # Multiple distinct IDs
-  if (length(id) > 1) {
-    cli::cli_abort(c(
-      "!" = "Multiple IDs detected in column {.field IDENTIFIANT}.",
-      "x" = "Only one unique ID is expected.",
-      "v" = "IDs found: {paste(id, collapse = ', ')}"
-    ))
-  }
+  m <- read_matrice(dirname)
+  id <- unique(m$IDENTIFIANT)
 
   # Success
   if (verbose){
     cli::cli_inform(c(
-      "v" = "Detected forest ID {.val {id}} from {.file {basename(path)}}."
+      "v" = "Detected forest ID {.val {id}}."
     ))
   }
 

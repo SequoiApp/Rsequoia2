@@ -1,4 +1,7 @@
 # RASTER
+x.matrice: {name: "MATRICE", ext: "xlsx"}
+
+# RASTER
 r.mns:    { name: "MNS",    ext: "tif" }
 r.mnt:    { name: "MNT",    ext: "tif" }
 r.mnh:    { name: "MNH",    ext: "tif" }
