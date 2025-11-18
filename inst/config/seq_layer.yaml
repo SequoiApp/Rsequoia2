@@ -100,15 +100,15 @@ v.road.poly: { name: "ROAD_poly", ext: "geojson" }
 v.cad.batiment.poly:    { name: "BATIMENT_poly",  ext: "geojson" }
 v.cad.borne.point:      { name: "BORNE_point",    ext: "geojson" }
 v.cad.commune.poly:     { name: "COMMUNE_poly",   ext: "geojson" }
-v.cad.lieudit.point:    { name: "lieudit_point",  ext: "geojson" }
-v.cad.numvoie.point:    { name: "numvoie_point",  ext: "geojson" }
-v.cad.parcelle.poly:    { name: "parcelle_poly",  ext: "geojson" }
-v.cad.section.poly:     { name: "section_poly",   ext: "geojson" }
-v.cad.subdfisc.poly:    { name: "subdfisc_poly",  ext: "geojson" }
-v.cad.symblim.point:    { name: "symblim_point",  ext: "geojson" }
-v.cad.tline.line:       { name: "tline_line",     ext: "geojson" }
-v.cad.tpoint.point:     { name: "tpoint_point",   ext: "geojson" }
-v.cad.tronfluv.poly:    { name: "tronfluv_poly",  ext: "geojson" }
-v.cad.tronroute.poly:   { name: "tronroute_poly", ext: "geojson" }
-v.cad.tsurf.point:      { name: "tsurf_point",    ext: "geojson" }
-v.cad.zoncommuni.line:  { name: "zoncommuni_line",ext: "geojson" }
+v.cad.lieudit.point:    { name: "LIEUDIT_point",  ext: "geojson" }
+v.cad.numvoie.point:    { name: "NUMVOIE_point",  ext: "geojson" }
+v.cad.parcelle.poly:    { name: "PARCELLE_poly",  ext: "geojson" }
+v.cad.section.poly:     { name: "SECTION_poly",   ext: "geojson" }
+v.cad.subdfisc.poly:    { name: "SUBDFISC_poly",  ext: "geojson" }
+v.cad.symblim.point:    { name: "SYMBLIM_point",  ext: "geojson" }
+v.cad.tline.line:       { name: "TLINE_line",     ext: "geojson" }
+v.cad.tpoint.point:     { name: "TPOINT_point",   ext: "geojson" }
+v.cad.tronfluv.poly:    { name: "TRONFLUV_poly",  ext: "geojson" }
+v.cad.tronroute.poly:   { name: "TRONROUTE_poly", ext: "geojson" }
+v.cad.tsurf.point:      { name: "TSURF_point",    ext: "geojson" }
+v.cad.zoncommuni.line:  { name: "ZONCOMMUNI_line",ext: "geojson" }
