@@ -12,3 +12,30 @@
 pad_left <- function(x, width, fill = "0") {
   gsub(" ", fill, sprintf(paste0("%", width, "s"), as.character(x)))
 }
+
+
+#' Split IDU
+#'
+#' Internal helper used to split idu
+#'
+#' @param idu `character` IDU(s) to pad
+#'
+#' @keywords internal
+#'
+idu_split <- function(idu) {
+
+  code_dep <- substr(idu, 1, 2)
+  code_com <- substr(idu, 3, 5)
+  insee <- paste0(code_dep, code_com)
+
+  data.frame(
+    idu     = idu,
+    code_dep = code_dep,
+    code_com = code_com,
+    prefix   = substr(idu, 6, 8),
+    section  = substr(idu, 9, 10),
+    numero   = substr(idu, 11, 14),
+    insee    = insee,
+    stringsAsFactors = FALSE
+  )
+}

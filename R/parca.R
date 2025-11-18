@@ -5,7 +5,7 @@
 #' @return An `sf` object containing the parcel geometry.
 #' @export
 get_parca_bdp <- function(idu){
-  idu_parts <- frcadastre::idu_split(idu)
+  idu_parts <- idu_split(idu)
 
   bdp_geom <- happign::get_apicarto_cadastre(
     idu_parts$insee,
@@ -27,7 +27,7 @@ get_parca_bdp <- function(idu){
 #' @export
 get_parca_etalab <- function(idu){
   url <- "https://cadastre.data.gouv.fr/bundler/cadastre-etalab/communes/%s/geojson/parcelles"
-  idu_parts <- frcadastre::idu_split(idu)
+  idu_parts <- idu_split(idu)
 
   urls <- sprintf(url, unique(idu_parts$insee))
 
@@ -50,7 +50,7 @@ get_parca_etalab <- function(idu){
 #' @return An `sf` object containing the parcel geometry.
 #' @export
 get_lieux_dits <- function(idu){
-  idu_parts <- frcadastre::idu_split(idu)
+  idu_parts <- idu_split(idu)
   insee <- unique(idu_parts$insee)
   urls <- paste0("https://cadastre.data.gouv.fr/bundler/cadastre-etalab/communes/",
                  insee,"/geojson/lieux_dits")
