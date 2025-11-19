@@ -169,7 +169,7 @@ get_parca <- function(idu, bdp_geom = TRUE, lieu_dit = FALSE, verbose = TRUE){
 #' @return An `sf` object
 #'
 #' @export
-seq_get_parca <- function(
+seq_parca <- function(
     dirname = ".",
     bdp_geom = TRUE,
     verbose = TRUE,

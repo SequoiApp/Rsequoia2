@@ -1,4 +1,4 @@
-test_that("seq_get_parca() works with mocked get_parca()", {
+test_that("seq_parca() works with mocked get_parca()", {
 
   d <- tempdir()
   idu <- "33103000AB0060" # Tiny commune: 33103 (Castelmoron-d'Albret)
@@ -27,7 +27,7 @@ test_that("seq_get_parca() works with mocked get_parca()", {
     get_parca = function(idu, bdp_geom, lieu_dit, verbose) fake_parca
   )
 
-  parca <- seq_get_parca(dirname = d, verbose = F)
+  parca <- seq_parca(dirname = d, verbose = F)
   parca_path <- get_path("v.seq.parca.poly", d)
 
   expect_s3_class(parca, "sf")
