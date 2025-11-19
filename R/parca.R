@@ -217,40 +217,25 @@ seq_get_parca <- function(
   return(seq_parca)
 }
 
-#' Check inconsistencies between cadastral and cartographic areas in a parca object
+#' Check inconsistencies between cadastral and cartographic areas
 #'
-#' This function evaluates discrepancies between cadastral areas (`SURF_CA`) and
-#' cartographic areas computed from geometry (`st_area`) within a
-#' parca object containing cadastral parcels.
+#' This function compares cadastral areas (`CONTENANCE`, in m2) with
+#' cartographic areas computed from geometry (`st_area`).
 #'
-#' Discrepancies are assessed according to two criteria: an absolute threshold
-#' expressed in square meters, and a relative threshold expressed as a percentage.
-#' A parcel is considered inconsistent when both thresholds are exceeded.
-#'
-#' @param parca An `sf` object representing cadastral parcels.
-#' It must contain the fields `IDU` (cadastral identifier)
-#' and `SURF_CA` (cadastral area in hectares).
-#' @param difference_threshold `integer`, default `500`.
-#' Absolute difference threshold (in square meters) above which a parcel is flagged.
+#' @param parca An `sf` object representing cadastral parcels. Must contain
+#'   the fields `IDU` (identifier) and `CONTENANCE` (cadastral area in m2).
+#' @param difference_threshold `numeric`, default `500`.
+#'   Absolute difference threshold (in m2).
 #' @param percent_threshold `numeric`, default `0.05`.
-#' Relative difference threshold (expressed as a fraction) above which a parcel is flagged.
+#'   Relative difference threshold (as a fraction).
 #' @param verbose `logical`, default `TRUE`.
-#' Whether to display informational messages using the `cli` package.
+#'   Whether to display CLI messages listing inconsistent `IDU` values.
 #'
-#' @return An `sf` object containing only the parcels identified as inconsistent.
-#' If no inconsistencies are found, an empty `sf` (with the same structure) is returned.
-#'
-#' @details
-#' For each parcel, the function computes:
-#' * the cartographic area in hectares (from `st_area`)
-#' * the absolute difference between cadastral and cartographic areas (converted to m2)
-#' * the relative difference (absolute difference divided by cadastral area in m2)
-#'
-#' A parcel is retained in the output only if **both** thresholds
-#' (`difference_threshold` and `percent_threshold`) are exceeded.
-#'
-#' When `verbose = TRUE`, the function outputs a summary of inconsistent IDU
-#' values using CLI warnings.
+#' @return The input `sf` object with four additional fields:
+#'   `AREA_SIG` (cartographic area in ha),
+#'   `AREA_DIFFERENCE_M2` (absolute difference in m2),
+#'   `AREA_DIFFERENCE_PCT` (relative difference),
+#'   `AREA_INCONSISTENT` (logical flag).
 #'
 #' @importFrom sf st_area
 #'
@@ -260,31 +245,26 @@ parca_check_area <- function(parca,
                              percent_threshold = 0.05,
                              verbose = TRUE) {
 
-  # Compute SIG surface in ha
-  parca$SIG_area <- as.numeric(sf::st_area(parca)) / 10000
+  # Compute cartographic area in ha
+  parca$AREA_SIG <- as.numeric(sf::st_area(parca)) / 10000
 
-  # Compute absolute difference (in m²) and percent difference
-  difference <- abs(parca$SURF_CA * 10000 - parca$SIG_area * 10000)
-  percent    <- difference / (parca$SURF_CA * 10000)
+  # Differences in m2 (CONTENANCE is in m2)
+  parca$AREA_DIFFERENCE_M2 <- abs(parca$CONTENANCE - parca$AREA_SIG * 10000)
 
-  # Determine inconsistent parcels
-  inconsistent <- (difference >= difference_threshold & percent >= percent_threshold)
+  # Proportional difference
+  parca$AREA_DIFFERENCE_PCT <- parca$AREA_DIFFERENCE_M2 / parca$CONTENANCE
 
-  # Build result sf (always returned, possibly empty)
-  result <- parca[inconsistent, ]
-  if (nrow(result) > 0) {
-    result$difference <- difference[inconsistent]
-    result$percent    <- percent[inconsistent]
-  } else {
-    # ensure the columns exist even when result is empty
-    result$difference <- numeric(0)
-    result$percent    <- numeric(0)
-  }
+  # Flag inconsistency
+  parca$AREA_INCONSISTENT <- (
+    parca$AREA_DIFFERENCE_M2  >= difference_threshold &
+      parca$AREA_DIFFERENCE_PCT >= percent_threshold
+  )
 
-  # Verbose output with cli
+  # Verbose output
   if (verbose) {
-    if (nrow(result) > 0) {
-      bad_idu <- unique(result$IDU)
+    bad_idu <- unique(parca$IDU[parca$AREA_INCONSISTENT])
+
+    if (length(bad_idu) > 0) {
       cli::cli_alert_warning("Detected {length(bad_idu)} inconsistent IDU:")
       cli::cli_ul()
       for (id in bad_idu) cli::cli_li("{id}")
@@ -293,49 +273,6 @@ parca_check_area <- function(parca,
       cli::cli_alert_success("No inconsistencies detected.")
     }
   }
-
-  return(result)
-}
-
-# get_parca2 can remove 82 lines by using frcadastre
-get_parca2 <- function(idu, bdp_geom = TRUE, lieu_dit = FALSE, verbose = TRUE){
-  idu <- unique(idu)
-  etalab <- frcadastre::idu_get_parcelle(idu, lieu_dit)
-
-  if (bdp_geom){
-    if (verbose) cli::cli_alert_info("Downloading BDP from IGN...")
-    bdp <- get_parca_bdp(idu)
-    idx <- match(etalab$idu, bdp$idu)
-    etalab$geometry[!is.na(idx)] <- bdp$geometry[idx[!is.na(idx)]]
-    if (verbose) {
-      missing_bdp_idu <- intersect(etalab$idu, bdp$idu)
-      if (length(missing_bdp_idu) > 0) {
-        cli::cli_alert_success("{length(missing_bdp_idu)} IDU geometries replace with BDP geom.")
-      }
-    }
-  }
-
-  if (verbose) {
-    missing_idu <- setdiff(idu, etalab$idu)
-    if (length(missing_idu) > 0) {
-      cli::cli_alert_warning("Geometry not found for {length(missing_idu)} IDU(s).")
-      cli::cli_ul(missing_idu)
-    }
-  }
-
-  parca <- etalab [, c("idu",
-                       "code_reg", "reg_name",
-                       "code_dep", "dep_name",
-                       "code_com", "com_name",
-                       "prefixe", "section", "numero", "lieudit", "contenance",
-                       "geometry")]
-
-  names(parca) <- c("IDU",
-                    "REG_NUM", "REG_NOM",
-                    "DEP_NUM", "DEP_NOM",
-                    "COM_NUM", "COM_NOM",
-                    "PREFIXE", "SECTION", "NUMERO", "LIEU_DIT", "CONTENANCE",
-                    "geometry")
 
   return(parca)
 }
