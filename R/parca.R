@@ -214,65 +214,51 @@ seq_parca <- function(
     overwrite = overwrite
   )
 
-  return(seq_parca)
+  return(invisible(parca_path))
 }
 
 #' Check inconsistencies between cadastral and cartographic areas
 #'
-#' This function compares cadastral areas (`CONTENANCE`, in m2) with
-#' cartographic areas computed from geometry (`st_area`).
+#' This function compares cadastral areas (`CONTENANCE`, in m²) with
+#' cartographic areas computed from geometry ([sf::st_area()]).
 #'
-#' @param parca An `sf` object representing cadastral parcels. Must contain
-#'   the fields `IDU` (identifier) and `CONTENANCE` (cadastral area in m2).
-#' @param difference_threshold `numeric`, default `500`.
-#'   Absolute difference threshold (in m2).
-#' @param percent_threshold `numeric`, default `0.05`.
-#'   Relative difference threshold (as a fraction).
-#' @param verbose `logical`, default `TRUE`.
-#'   Whether to display CLI messages listing inconsistent `IDU` values.
+#' @param parca `sf` Object from [Rsequoia2::seq_parca()] representing cadastral
+#' parcels.
+#' @param atol `numeric` Absolute difference tolerance in m². Default to `500m`.
+#' @param rtol `numeric` Relative difference. Default to `0.05`
+#' @param verbose `logical` If `TRUE`, display messages.
 #'
-#' @return The input `sf` object with four additional fields:
+#' @return The input `parca` with four additional fields:
 #'   `AREA_SIG` (cartographic area in ha),
-#'   `AREA_DIFFERENCE_M2` (absolute difference in m2),
-#'   `AREA_DIFFERENCE_PCT` (relative difference),
-#'   `AREA_INCONSISTENT` (logical flag).
+#'   `AREA_ATOL` (absolute difference in m2),
+#'   `AREA_RTOL` (relative difference),
+#'   `AREA_CHECK` (logical flag).
 #'
 #' @importFrom sf st_area
 #'
 #' @export
 parca_check_area <- function(parca,
-                             difference_threshold = 500,
-                             percent_threshold = 0.05,
+                             atol = 500,
+                             rtol = 0.05,
                              verbose = TRUE) {
 
-  # Compute cartographic area in ha
   parca$AREA_SIG <- as.numeric(sf::st_area(parca)) / 10000
+  parca$AREA_ATOL <- abs(parca$CONTENANCE - parca$AREA_SIG * 10000)
+  parca$AREA_RTOL <- parca$AREA_ATOL / parca$CONTENANCE
+  parca$AREA_CHECK <- (parca$AREA_ATOL >= atol & parca$AREA_RTOL >= rtol)
 
-  # Differences in m2 (CONTENANCE is in m2)
-  parca$AREA_DIFFERENCE_M2 <- abs(parca$CONTENANCE - parca$AREA_SIG * 10000)
+  bad_idu <- parca$IDU[parca$AREA_CHECK]
+  n_bad_idu <- length(bad_idu)
+  if (n_bad_idu > 0) {
+    cli::cli_warn("Detected {n_bad_idu} inconsistent IDU{?s}: {.val {bad_idu}}")
+  }
 
-  # Proportional difference
-  parca$AREA_DIFFERENCE_PCT <- parca$AREA_DIFFERENCE_M2 / parca$CONTENANCE
-
-  # Flag inconsistency
-  parca$AREA_INCONSISTENT <- (
-    parca$AREA_DIFFERENCE_M2  >= difference_threshold &
-      parca$AREA_DIFFERENCE_PCT >= percent_threshold
-  )
-
-  # Verbose output
-  if (verbose) {
-    bad_idu <- unique(parca$IDU[parca$AREA_INCONSISTENT])
-
-    if (length(bad_idu) > 0) {
-      cli::cli_alert_warning("Detected {length(bad_idu)} inconsistent IDU:")
-      cli::cli_ul()
-      for (id in bad_idu) cli::cli_li("{id}")
-      cli::cli_end()
-    } else {
+  if (verbose){
+    if (n_bad_idu == 0){
       cli::cli_alert_success("No inconsistencies detected.")
     }
   }
 
-  return(parca)
+  return(invisible(parca))
 }
+

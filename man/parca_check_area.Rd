@@ -4,34 +4,26 @@
 \alias{parca_check_area}
 \title{Check inconsistencies between cadastral and cartographic areas}
 \usage{
-parca_check_area(
-  parca,
-  difference_threshold = 500,
-  percent_threshold = 0.05,
-  verbose = TRUE
-)
+parca_check_area(parca, atol = 500, rtol = 0.05, verbose = TRUE)
 }
 \arguments{
-\item{parca}{An \code{sf} object representing cadastral parcels. Must contain
-the fields \code{IDU} (identifier) and \code{CONTENANCE} (cadastral area in m2).}
+\item{parca}{\code{sf} Object from \code{\link[=seq_parca]{seq_parca()}} representing cadastral
+parcels.}
 
-\item{difference_threshold}{\code{numeric}, default \code{500}.
-Absolute difference threshold (in m2).}
+\item{atol}{\code{numeric} Absolute difference tolerance in m². Default to \verb{500m}.}
 
-\item{percent_threshold}{\code{numeric}, default \code{0.05}.
-Relative difference threshold (as a fraction).}
+\item{rtol}{\code{numeric} Relative difference. Default to \code{0.05}}
 
-\item{verbose}{\code{logical}, default \code{TRUE}.
-Whether to display CLI messages listing inconsistent \code{IDU} values.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
-The input \code{sf} object with four additional fields:
+The input \code{parca} with four additional fields:
 \code{AREA_SIG} (cartographic area in ha),
-\code{AREA_DIFFERENCE_M2} (absolute difference in m2),
-\code{AREA_DIFFERENCE_PCT} (relative difference),
-\code{AREA_INCONSISTENT} (logical flag).
+\code{AREA_ATOL} (absolute difference in m2),
+\code{AREA_RTOL} (relative difference),
+\code{AREA_CHECK} (logical flag).
 }
 \description{
-This function compares cadastral areas (\code{CONTENANCE}, in m2) with
-cartographic areas computed from geometry (\code{st_area}).
+This function compares cadastral areas (\code{CONTENANCE}, in m²) with
+cartographic areas computed from geometry (\code{\link[sf:geos_measures]{sf::st_area()}}).
 }
