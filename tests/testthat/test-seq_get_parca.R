@@ -27,8 +27,10 @@ test_that("seq_parca() works with mocked get_parca()", {
     get_parca = function(idu, bdp_geom, lieu_dit, verbose) fake_parca
   )
 
-  parca <- seq_parca(dirname = d, verbose = F)
-  parca_path <- get_path("v.seq.parca.poly", d)
+  parca_path <- seq_parca(dirname = d, verbose = F)
+  expect_true(file.exists(parca_path))
+
+  parca <- sf::st_read(parca_path)
 
   expect_s3_class(parca, "sf")
   expect_equal(parca$IDU, idu)
