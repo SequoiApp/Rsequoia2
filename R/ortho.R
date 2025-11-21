@@ -1,10 +1,52 @@
-
+#' Download orthophotos from the IGN WMS (RGB or IRC)
+#'
+#' Downloads an orthophoto (RGB or infrared/IRC) from the IGN WMTS service for the
+#' area covering `x` expanded with a buffer.
+#' The result is returned as a masked `SpatRaster`, clipped to the input geometry
+#' to keep file size minimal.
+#'
+#' @param x `sf` or `sfc`; Geometry located in France.
+#' @param type `character`; Type of orthophoto to download. Must be one of:
+#'   - `"rgb"` — true-color orthophoto
+#'   - `"irc"` — near-infrared orthophoto
+#' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
+#' the download area.
+#' @param zoom `integer` between 0 and 21. The smaller the zoom level, the less
+#' precise the resolution(see [happign::get_wmts()])
+#' @param crs `numeric` or `character`; CRS of the returned raster (see
+#' [happign::get_wmts()])
+#' @param overwrite `logical`; If `TRUE`, file is overwritten.
+#' @param verbose `logical`; If `TRUE`, display messages.
+#'
+#' @details
+#' The orthophoto retrieved contains data for the whole bounding
+#' box (bbox) of `x` (plus the buffer).
+#' To reduce the final file size and avoid unnecessary pixels, the raster is
+#' immediately masked with the buffered geometry.
+#'
+#' @return `SpatRaster` object from [terra] package
+#'
+#' @seealso [happign::get_wmts()]
+#'
+#' @examples
+#' \dontrun{
+#'
+#' p <- sf::st_sfc(st_point(c(-4.372746579180652, 47.79820761331345)), crs = 4326)
+#'
+#' ortho <- get_ortho(p, type = "rgb", buffer = 50)
+#' irc <- get_ortho(p, type = "irc", buffer = 50)
+#'
+#' terra::plotRGB(ortho)
+#' terra::plotRGB(irc)
+#'
+#' }
+#'
 get_ortho <- function(
     x,
     type = c("irc", "rgb"),
-    res = 1,
-    crs = 2154,
     buffer = 200,
+    zoom = 12,
+    crs = 2154,
     overwrite = FALSE,
     verbose = TRUE){
 
@@ -15,11 +57,11 @@ get_ortho <- function(
       ))
   }
 
-  if (length(type) > 1 | !(type %in% c("irc", "rgb"))){
+  if (length(type) != 1 || !type %in% c("irc", "rgb")) {
     cli::cli_abort(c(
-      "x" = "{.arg type} is equal to {.val {type}}.",
-      "i" = "{.arg type} should be one of {.val irc} or {.val rgb}."
-      ))
+      "x" = "{.arg type} is equal to {.val {format(type)}}.",
+      "i" = "{.arg type} must be equal to {.val irc} or {.val rgb}."
+    ))
   }
 
   x <- sf::st_transform(x, 2154)
@@ -27,23 +69,44 @@ get_ortho <- function(
 
   layer <- switch(type,
                   "irc" = "ORTHOIMAGERY.ORTHOPHOTOS.IRC",
-                  "rgb" = "ORTHOIMAGERY.ORTHOPHOTOS"
+                  "rgb" = "ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO"
   )
 
-  r <- happign::get_wms_raster(
+  r <- happign::get_wmts(
     x_buff,
     layer = layer,
     crs = crs,
-    res = res,
+    zoom = zoom,
     verbose = verbose,
     overwrite = overwrite
-  )
+  ) |> suppressWarnings()
 
   r_mask <- terra::mask(r, terra::vect(x_buff))
 
   return(r_mask)
 }
 
+#' Download RGB and/or IRC orthophotos for a Sequoia project
+#'
+#' Downloads one or several orthophotos (RGB and/or IRC) from the IGN WMS service
+#' for the `parca` layer of a Sequoia project.
+#'
+#' This function is a convenience wrapper looping over [get_ortho()], allowing
+#' the user to download both products in one call and automatically write them
+#' to the project directory using [seq_write()].
+#'
+#' @inheritParams get_ortho
+#' @inheritParams seq_write
+#'
+#' @param type `character` One or several orthophoto types to download.
+#' Must be one or both of:
+#'   - `"rgb"` — true-color orthophoto
+#'   - `"irc"` — near-infrared orthophoto
+#'
+#' @return A named list of file paths written by [seq_write()], one per `type`.
+#'
+#' @seealso [get_ortho()], [seq_write()]
+#'
 seq_ortho <- function(
     dirname = ".",
     type = c("irc", "rgb"),
