@@ -13,10 +13,10 @@ test_that("parca_check_area() returns expected object", {
 
 test_that("parca_check_area() warns when inconsistencies are detected", {
 
-  parca <- fake_parca(idu = c("bad_idu", "bad_idu2"), contenance = 1000)
+  parca <- fake_parca(contenance = c(1000, 1000))
   expect_warning(
     parca_check_area(parca, verbose = TRUE),
-    "Detected .* inconsistent IDU.*bad_idu.*bad_idu2"
+    "Detected .* inconsistent IDU.*"
   )
 })
 

@@ -9,10 +9,10 @@ test_that("read_matrice() errors when no *_matrice.xlsx file", {
 test_that("read_matrice() errors when multiple *_matrice.xlsx files", {
   d <- tempdir()
   m1 <- file.path(d, "1_matrice.xlsx")
-  openxlsx2::write_xlsx(data.frame(IDENTIFIANT = "X1"), m1)
+  openxlsx2::write_xlsx(fake_matrice(id = "X1"), m1)
 
   m2 <- file.path(d, "2_matrice.xlsx")
-  openxlsx2::write_xlsx(data.frame(IDENTIFIANT = "X2"), m2)
+  openxlsx2::write_xlsx(fake_matrice(id = "X2"), m2)
 
   on.exit(unlink(c(m1, m2)))
 
@@ -38,14 +38,7 @@ test_that("read_matrice() errors when IDENTIFIANT is empty", {
   d <- tempdir()
 
   f <- file.path(d, "test_matrice.xlsx")
-  m <- data.frame(IDENTIFIANT = c("", NA, " "))
-  m$PROPRIETAIRE <- NA
-  m$INSEE <- NA
-  m$PREFIXE <- NA
-  m$SECTION <- NA
-  m$NUMERO <- NA
-  m$LIEU_DIT <- NA
-  m$TX_BOISEE <- NA
+  m <- fake_matrice(id = c("", NA, " "))
 
   openxlsx2::write_xlsx(m, f)
   on.exit(unlink(f))
@@ -57,14 +50,7 @@ test_that("read_matrice() errors when multiple IDENTIFIANT values", {
   d <- tempdir()
 
   f <- file.path(d, "test_matrice.xlsx")
-  m <- data.frame(IDENTIFIANT = c("A", "B"))
-  m$PROPRIETAIRE <- NA
-  m$INSEE <- NA
-  m$PREFIXE <- NA
-  m$SECTION <- NA
-  m$NUMERO <- NA
-  m$LIEU_DIT <- NA
-  m$TX_BOISEE <- NA
+  m <- fake_matrice(id = c("A", "B"))
 
   openxlsx2::write_xlsx(m, f)
   on.exit(unlink(f))
