@@ -4,12 +4,11 @@ test_that("get_ortho() validates x", {
 })
 
 test_that("get_ortho() validates type", {
-  p <- sf::st_sfc(st_point(c(0,0)), crs = 4326)
+  p <- sf::st_sfc(sf::st_point(c(0,0)), crs = 4326)
 
   expect_error(get_ortho(p, type = "foo"), "type")
   expect_error(get_ortho(p, type = c("irc","rgb")), "type")
 })
-
 
 test_that("get_ortho() works with real API (local only)", {
 
@@ -17,7 +16,7 @@ test_that("get_ortho() works with real API (local only)", {
   skip_on_ci()
   skip_if_offline()
 
-  p <- sf::st_sfc(st_point(c(-4.372746579180652, 47.79820761331345)), crs = 4326)
+  p <- sf::st_sfc(sf::st_point(c(-4.372746579180652, 47.79820761331345)), crs = 4326)
   ortho <- get_ortho(p, type = "rgb", buffer = 10, zoom = 7, crs = 2154)
 
   expect_s4_class(ortho, "SpatRaster")

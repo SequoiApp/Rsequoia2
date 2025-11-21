@@ -7,9 +7,9 @@
 seq_ortho(
   dirname = ".",
   type = c("irc", "rgb"),
-  res = 1,
-  crs = 2154,
   buffer = 200,
+  zoom = 12,
+  crs = 2154,
   overwrite = FALSE,
   verbose = TRUE
 )
@@ -25,18 +25,18 @@ Must be one or both of:
 \item \code{"irc"} — near-infrared orthophoto
 }}
 
-\item{res}{\code{numeric} Target resolution of the downloaded raster, expressed
-in the units of the coordinate system (see \code{\link[happign:get_wms_raster]{happign::get_wms_raster()}})}
-
-\item{crs}{\code{numeric} or \code{character} CRS of the returned raster (see
-\code{\link[happign:get_wms_raster]{happign::get_wms_raster()}})}
-
-\item{buffer}{\code{numeric} Buffer around \code{x} (in \strong{meters}) used to enlarge
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
 the download area.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{zoom}{\code{integer} between 0 and 21. The smaller the zoom level, the less
+precise the resolution(see \code{\link[happign:get_wmts]{happign::get_wmts()}})}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{crs}{\code{numeric} or \code{character}; CRS of the returned raster (see
+\code{\link[happign:get_wmts]{happign::get_wmts()}})}
+
+\item{overwrite}{\code{logical}; If \code{TRUE}, file is overwritten.}
+
+\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
 }
 \value{
 A named list of file paths written by \code{\link[=seq_write]{seq_write()}}, one per \code{type}.

@@ -24,7 +24,7 @@
 #' To reduce the final file size and avoid unnecessary pixels, the raster is
 #' immediately masked with the buffered geometry.
 #'
-#' @return `SpatRaster` object from [terra] package
+#' @return `SpatRaster` object from `terra` package
 #'
 #' @seealso [happign::get_wmts()]
 #'
@@ -67,9 +67,10 @@ get_ortho <- function(
   x <- sf::st_transform(x, 2154)
   x_buff <- sf::st_buffer(x, buffer)
 
-  layer <- switch(type,
-                  "irc" = "ORTHOIMAGERY.ORTHOPHOTOS.IRC",
-                  "rgb" = "ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO"
+  layer <- switch(
+    type,
+    "irc" = "ORTHOIMAGERY.ORTHOPHOTOS.IRC",
+    "rgb" = "ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO"
   )
 
   r <- happign::get_wmts(
@@ -110,9 +111,9 @@ get_ortho <- function(
 seq_ortho <- function(
     dirname = ".",
     type = c("irc", "rgb"),
-    res = 1,
-    crs = 2154,
     buffer = 200,
+    zoom = 12,
+    crs = 2154,
     overwrite = FALSE,
     verbose = TRUE){
 
@@ -122,7 +123,7 @@ seq_ortho <- function(
     r <- get_ortho(
       parca,
       type = type,
-      res = res,
+      zoom = zoom,
       crs = crs,
       buffer = buffer,
       overwrite = overwrite,

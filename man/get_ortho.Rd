@@ -8,39 +8,39 @@ get_ortho(
   x,
   type = c("irc", "rgb"),
   buffer = 200,
-  res = 1,
+  zoom = 12,
   crs = 2154,
   overwrite = FALSE,
   verbose = TRUE
 )
 }
 \arguments{
-\item{x}{\code{sf} or \code{sfc} Geometry located in France.}
+\item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
 
-\item{type}{\code{character} Type of orthophoto to download. Must be one of:
+\item{type}{\code{character}; Type of orthophoto to download. Must be one of:
 \itemize{
 \item \code{"rgb"} — true-color orthophoto
 \item \code{"irc"} — near-infrared orthophoto
 }}
 
-\item{buffer}{\code{numeric} Buffer around \code{x} (in \strong{meters}) used to enlarge
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
 the download area.}
 
-\item{res}{\code{numeric} Target resolution of the downloaded raster, expressed
-in the units of the coordinate system (see \code{\link[happign:get_wms_raster]{happign::get_wms_raster()}})}
+\item{zoom}{\code{integer} between 0 and 21. The smaller the zoom level, the less
+precise the resolution(see \code{\link[happign:get_wmts]{happign::get_wmts()}})}
 
-\item{crs}{\code{numeric} or \code{character} CRS of the returned raster (see
-\code{\link[happign:get_wms_raster]{happign::get_wms_raster()}})}
+\item{crs}{\code{numeric} or \code{character}; CRS of the returned raster (see
+\code{\link[happign:get_wmts]{happign::get_wmts()}})}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, file is overwritten.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
 }
 \value{
-\code{SpatRaster} object from \link{terra} package
+\code{SpatRaster} object from \code{terra} package
 }
 \description{
-Downloads an orthophoto (RGB or infrared/IRC) from the IGN WMS service for the
+Downloads an orthophoto (RGB or infrared/IRC) from the IGN WMTS service for the
 area covering \code{x} expanded with a buffer.
 The result is returned as a masked \code{SpatRaster}, clipped to the input geometry
 to keep file size minimal.
@@ -51,6 +51,20 @@ box (bbox) of \code{x} (plus the buffer).
 To reduce the final file size and avoid unnecessary pixels, the raster is
 immediately masked with the buffered geometry.
 }
+\examples{
+\dontrun{
+
+p <- sf::st_sfc(st_point(c(-4.372746579180652, 47.79820761331345)), crs = 4326)
+
+ortho <- get_ortho(p, type = "rgb", buffer = 50)
+irc <- get_ortho(p, type = "irc", buffer = 50)
+
+terra::plotRGB(ortho)
+terra::plotRGB(irc)
+
+}
+
+}
 \seealso{
-\code{\link[happign:get_wms_raster]{happign::get_wms_raster()}}
+\code{\link[happign:get_wmts]{happign::get_wmts()}}
 }
