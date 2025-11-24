@@ -90,7 +90,7 @@ surf_cad:
   class: numeric
   definition: "Surface cadastrale (hectares)"
 
-# Autres surface
+# surfaces
 surf_sig:
   name: "SURF_SIG"
   class: numeric
@@ -101,6 +101,7 @@ surf_cor:
   class: numeric
   definition: "Surface corrigée recalculée"
 
+# ua ----
 ug:
   name: "PARFOR"
   alias: ["ug"]

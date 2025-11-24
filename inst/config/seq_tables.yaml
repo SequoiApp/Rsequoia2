@@ -13,9 +13,9 @@ raw_parca:
   - surf_cad
 
 parca:
-  - idu
   - identifiant
   - proprietaire
+  - idu
   - reg_nom
   - reg_num
   - dep_nom
@@ -28,3 +28,41 @@ parca:
   - lieu_dit
   - occupation
   - surf_cad
+
+ua:
+  - identifiant
+  - proprietaire
+  - idu
+  - reg_nom
+  - reg_num
+  - dep_nom
+  - dep_num
+  - com_nom
+  - com_num
+  - prefix
+  - section
+  - numero
+  - lieu_dit
+  - occupation
+  - surf_cad
+  - ug
+  - parcelle
+  - sous_parcelle
+  - peuplement
+  - richesse
+  - stade
+  - annee
+  - structure
+  - ess1
+  - ess1_pct
+  - ess2
+  - ess2_pct
+  - ess3
+  - ess3_pct
+  - tse
+  - rege
+  - comment
+  - sol
+  - amenagement
+  - surf_sig
+  - surf_cor
