@@ -79,7 +79,7 @@ numero:
   definition: "Numéro cadastral (4 entiers)"
 
 lieu_dit:
-  name: "LIEUDIT"
+  name: "LIEU_DIT"
   alias: ["lieu_dit"]
   class: "character"
   definition: "Lieu-dit cadastral"

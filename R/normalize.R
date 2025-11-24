@@ -50,7 +50,7 @@ seq_normalize <- function(x, table){
   x <- field_rename(x)
   x <- field_add_drop(x, table)
   x <- field_check_class(x)
-  x <- field_order(x)
+  x <- field_order(x, table)
 
   return(x)
 }

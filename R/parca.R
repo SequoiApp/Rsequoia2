@@ -125,22 +125,14 @@ get_parca <- function(idu, bdp_geom = TRUE, lieu_dit = FALSE, verbose = TRUE){
   }
 
   # Add COG info
-  parca <- etalab |>
+  raw_parca <- etalab |>
     merge(happign::com_2025[, c("COM", "NCC_COM", "DEP")], by.x = "commune", by.y = "COM") |>
     merge(happign::dep_2025[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
-    merge(happign::reg_2025[, c("REG", "NCC_REG")], all.x = TRUE) |>
-    subset(select = c(
-      "idu", "NCC_REG","REG", "NCC_DEP", "DEP", "NCC_COM", "commune",
-      "prefixe", "section", "numero", "lieu_dit", "contenance", "geometry")
-      ) |>
-    setNames(
-      c(
-        "IDU", "REG_NOM", "REG_NUM", "DEP_NOM", "DEP_NUM", "COM_NOM", "COM_NUM",
-        "PREFIXE", "SECTION", "NUMERO", "LIEU_DIT","CONTENANCE", "geometry"
-      )
-    )
+    merge(happign::reg_2025[, c("REG", "NCC_REG")], all.x = TRUE)
 
-  return(parca)
+  raw_parca <- seq_normalize(raw_parca, "raw_parca")
+
+  return(raw_parca)
 }
 
 #' Download, enrich and write cadastral geometries
@@ -197,22 +189,22 @@ seq_parca <- function(
     verbose = verbose
   )
 
+  # test to leverage config name instead of matrice name
+  lieu_dit <- seq_field("lieu_dit")$name
+  names(raw_parca)[names(raw_parca) == lieu_dit] <- "RAW_LIEU_DIT"
+
   # merge raw_parca with matrice
-  seq_parca <- m[, c("IDU", "IDENTIFIANT", "PROPRIETAIRE", "LIEU_DIT", "TX_BOISEE")] |>
-    merge(raw_parca, by = "IDU", all.x = TRUE)
-
-  seq_parca$OCCUP_SOL <- ifelse(seq_parca$TX_BOISEE >= 0.5, "BOISEE", "NON BOISEE")
-  seq_parca$LIEU_DIT <- ifelse(
-    is.na(seq_parca$LIEU_DIT.x), seq_parca$LIEU_DIT.y, seq_parca$LIEU_DIT.x
-    )
-
-  # format parca
-  seq_parca <- seq_parca[, c(
-    "IDU", "IDENTIFIANT", "PROPRIETAIRE", "REG_NOM", "REG_NUM", "DEP_NOM",
-    "DEP_NUM", "COM_NOM", "COM_NUM", "PREFIXE", "SECTION", "NUMERO", "LIEU_DIT",
-    "OCCUP_SOL", "CONTENANCE", "geometry")] |>
+  seq_parca <- merge(m, raw_parca, by = "IDU", all.x = TRUE) |>
     sf::st_as_sf() |>
     sf::st_transform(2154)
+
+  seq_parca[[lieu_dit]] <- ifelse(
+    is.na(seq_parca[[lieu_dit]]), seq_parca$RAW_LIEU_DIT, seq_parca[[lieu_dit]]
+  )
+  seq_parca$OCCUP_SOL <- ifelse(seq_parca$TX_BOISEE >= 0.5, "BOISEE", "NON BOISEE")
+
+  # format parca
+  seq_parca <- seq_normalize(seq_parca, "parca")
 
   # write parca
   parca_path <- seq_write(

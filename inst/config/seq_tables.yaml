@@ -1,3 +1,17 @@
+raw_parca:
+  - idu
+  - reg_nom
+  - reg_num
+  - dep_nom
+  - dep_num
+  - com_nom
+  - com_num
+  - prefix
+  - section
+  - numero
+  - lieu_dit
+  - surf_cad
+
 parca:
   - idu
   - identifiant
