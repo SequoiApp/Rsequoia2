@@ -9,6 +9,10 @@ seq_table(table = NULL, filepath = NULL)
 \arguments{
 \item{table}{\code{character} or \code{NULL}; If provided, must match a key in
 \code{inst/config/seq_tables.yaml}.}
+
+\item{filepath}{\code{character} or \code{NULL}; override for the path to the default
+YAML configuration file (\code{inst/config/seq_fields.yaml}). Used mainly for
+testing.}
 }
 \value{
 A character vector of field keys for the selected table.

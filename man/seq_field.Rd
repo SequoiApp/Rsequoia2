@@ -9,6 +9,10 @@ seq_field(field = NULL, filepath = NULL)
 \arguments{
 \item{field}{\code{character} or \code{NULL}; If provided, must match a key in
 \code{inst/config/seq_fields.yaml}.}
+
+\item{filepath}{\code{character} or \code{NULL}; override for the path to the default
+YAML configuration file (\code{inst/config/seq_fields.yaml}). Used mainly for
+testing.}
 }
 \value{
 A list describing all fields, or a single field definition.
