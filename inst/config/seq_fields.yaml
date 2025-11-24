@@ -1,0 +1,206 @@
+id:
+  name: "IDENTIFIANT"
+  alias: ["foret", "id"]
+  class: "character"
+  definition: "Identifiant de la forêt, génrélament identique au nom"
+
+proprio:
+  name: "PROPRIETAIRE"
+  alias: ["prop", "owner", "proprio", "proprietaire"]
+  class: "character"
+  definition: "Nom du propriétaire"
+
+occupation:
+  name: "OCCUP_SOL"
+  alias: ["boisee", "is_boisee", "tx_boisee", "occupation"]
+  class: "character"
+  definition: "Occupation du sol"
+
+# cog ----
+reg_code:
+  name: "REG_CODE"
+  alias: ["REG"]
+  class: "character"
+  definition: "Code de la région selon l'INSEE"
+
+reg_nom:
+  name: "REG_NOM"
+  alias: ["NCC_REG"]
+  class: "character"
+  definition: "Nom de la région selon l'INSEE"
+
+dep_code:
+  name: "DEP_CODE"
+  alias: ["DEP"]
+  class: "character"
+  definition: "Code du département selon l'INSEE"
+
+dep_nom:
+  name: "DEP_NOM"
+  alias: ["NCC_DEP"]
+  class: "character"
+  definition: "Nom du département selon l'INSEE"
+
+com_code:
+  name: "COM_CODE"
+  alias: ["commune"]
+  class: "character"
+  definition: "Code de la commune selon l'INSEE"
+
+com_nom:
+  name: "COM_NOM"
+  alias: ["NCC_COM"]
+  class: "character"
+  definition: "Nom de la commune selon l'INSEE"
+
+# cadastre ----
+idu:
+  name: "IDU"
+  alias: ["idu"]
+  class: "character"
+  definition: "Identifiant cadastral unique"
+
+prefix:
+  name: "PREFIXE"
+  alias: ["com_abs", "prefixe"]
+  class: "character"
+  definition: "Préfixe cadastral (3 entiers)"
+
+section:
+  name: "SECTION"
+  alias: ["section"]
+  class: "character"
+  definition: "Section cadastrale (2 lettres ou chiffres)"
+
+numero:
+  name: "N_PARCA"
+  alias: ["numero"]
+  class: "character"
+  definition: "Numéro cadastral (4 entiers)"
+
+lieu_dit:
+  name: "LIEUDIT"
+  alias: ["lieu_dit"]
+  class: "character"
+  definition: "Lieu-dit cadastral"
+
+surf_cad:
+  name: "SURF_CA"
+  alias: ["contenance"]
+  class: numeric
+  definition: "Surface cadastrale (hectares)"
+
+# Autres surface
+surf_sig:
+  name: "SURF_SIG"
+  class: numeric
+  definition: "Surface SIG en hectares"
+
+surf_cor:
+  name: "SURF_COR"
+  class: numeric
+  definition: "Surface corrigée recalculée"
+
+ug:
+  name: "PARFOR"
+  alias: ["ug"]
+  class: "character"
+  definition: "Unité de gestion forestière"
+
+parcelle:
+  name: "N_PARFOR"
+  alias: ["pf"]
+  class: "character"
+  definition: "Parcelle forestière"
+
+sous_parcelle:
+  name: "N_SSPARFOR"
+  alias: ["sspf"]
+  class: "character"
+  definition: "Sous-parcelle forestière"
+
+peuplement:
+  name: "PLT_PLMT"
+  alias: ["PLT_TYPE"]
+  class: "character"
+  definition: "Peuplement"
+
+richesse:
+  name: "PLT_RICH"
+  class: "character"
+  definition: "Richesse"
+
+stade:
+  name: "PLT_STAD"
+  class: "character"
+  definition: "Stade"
+
+annee:
+  name: "PLT_ANNE"
+  class: "character"
+  definition: "Année d'origine"
+
+structure:
+  name: "PLT_STRU"
+  alias: ["PLT_STR", "REV_CA"]
+  class: "character"
+  definition: "Structure des réserves"
+
+ess1:
+  name: "ESS_1_NOM"
+  alias: ["PLT_ESS", "PLT_COMS"]
+  class: "character"
+  definition: "Essence principale"
+
+ess1_pct:
+  name: "ESS_1_PCT"
+  class: numeric
+  definition: "% essence principale"
+
+ess2:
+  name: "ESS_2_NOM"
+  class: "character"
+  definition: "Essence secondaire"
+
+ess2_pct:
+  name: "ESS_2_PCT"
+  class: numeric
+  definition: "% essence secondaire"
+
+ess3:
+  name: "ESS_3_NOM"
+  class: "character"
+  definition: "Essence tertiaire"
+
+ess3_pct:
+  name: "ESS_3_PCT"
+  class: numeric
+  definition: "% essence tertiaire"
+
+tse:
+  name: "TSE_DSCR"
+  class: "character"
+  definition: "Taillis ou sous-étage"
+
+rege:
+  name: "REG_DSCR"
+  class: "character"
+  definition: "Régénération"
+
+comment:
+  name: "COMMENTS"
+  class: "character"
+  definition: "Commentaires"
+
+sol:
+  name: "SOL_TYPE"
+  alias: ["GEOL_TYPE"]
+  class: "character"
+  definition: "Type de station forestière"
+
+amenagement:
+  name: "AME_TYPE"
+  class: "character"
+  definition: "Traitement retenu par le gestionnaire"
+
+
