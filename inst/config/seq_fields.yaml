@@ -1,10 +1,10 @@
-id:
+identifiant:
   name: "IDENTIFIANT"
   alias: ["foret", "id"]
   class: "character"
   definition: "Identifiant de la forêt, génrélament identique au nom"
 
-proprio:
+proprietaire:
   name: "PROPRIETAIRE"
   alias: ["prop", "owner", "proprio", "proprietaire"]
   class: "character"
@@ -17,7 +17,7 @@ occupation:
   definition: "Occupation du sol"
 
 # cog ----
-reg_code:
+reg_num:
   name: "REG_CODE"
   alias: ["REG"]
   class: "character"
@@ -29,7 +29,7 @@ reg_nom:
   class: "character"
   definition: "Nom de la région selon l'INSEE"
 
-dep_code:
+dep_num:
   name: "DEP_CODE"
   alias: ["DEP"]
   class: "character"
@@ -41,7 +41,7 @@ dep_nom:
   class: "character"
   definition: "Nom du département selon l'INSEE"
 
-com_code:
+com_num:
   name: "COM_CODE"
   alias: ["commune"]
   class: "character"

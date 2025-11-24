@@ -1,0 +1,16 @@
+parca:
+  - idu
+  - identifiant
+  - proprietaire
+  - reg_nom
+  - reg_num
+  - dep_nom
+  - dep_num
+  - com_nom
+  - com_num
+  - prefix
+  - section
+  - numero
+  - lieu_dit
+  - occupation
+  - surf_cad
