@@ -90,7 +90,7 @@ surf_cad:
   class: numeric
   definition: "Surface cadastrale (hectares)"
 
-# surfaces
+# surfaces ----
 surf_sig:
   name: "SURF_SIG"
   class: numeric
