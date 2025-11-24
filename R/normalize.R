@@ -64,6 +64,9 @@ seq_normalize <- function(x, table){
 #'
 #' @param field `character` or `NULL`; If provided, must match a key in
 #' `inst/config/seq_fields.yaml`.
+#' @param filepath `character` or `NULL`; override for the path to the default
+#' YAML configuration file (`inst/config/seq_fields.yaml`). Used mainly for
+#' testing.
 #'
 #' @return A list describing all fields, or a single field definition.
 #'
@@ -79,10 +82,13 @@ seq_normalize <- function(x, table){
 #' seq_field("identifiant")
 #' }
 #'
-seq_field <- function(field = NULL){
+seq_field <- function(field = NULL, filepath = NULL){
 
-  cfg_path <- system.file("config/seq_fields.yaml", package = "Rsequoia2")
-  cfg <- yaml::read_yaml(cfg_path)
+  if (is.null(filepath)) {
+    filepath <- system.file("config/seq_fields.yaml", package = "Rsequoia2")
+  }
+
+  cfg <- yaml::read_yaml(filepath)
 
   if (is.null(field)){
     return(cfg)
@@ -108,6 +114,9 @@ seq_field <- function(field = NULL){
 #'
 #' @param table `character` or `NULL`; If provided, must match a key in
 #' `inst/config/seq_tables.yaml`.
+#' @param filepath `character` or `NULL`; override for the path to the default
+#' YAML configuration file (`inst/config/seq_fields.yaml`). Used mainly for
+#' testing.
 #'
 #' @return A character vector of field keys for the selected table.
 #'
@@ -120,10 +129,14 @@ seq_field <- function(field = NULL){
 #' seq_table("parca")
 #' }
 #'
-seq_table <- function(table = NULL){
+seq_table <- function(table = NULL, filepath = NULL){
 
-  cfg_path <- system.file("config/seq_tables.yaml", package = "Rsequoia2")
-  cfg <- yaml::read_yaml(cfg_path)
+  # Use test path if provided
+  if (is.null(filepath)) {
+    filepath <- system.file("config/seq_tables.yaml", package = "Rsequoia2")
+  }
+
+  cfg <- yaml::read_yaml(filepath)
 
   if (is.null(table)){
     return(cfg)
@@ -152,11 +165,24 @@ field_rename <- function(x){
   alias_list <- lapply(fields, \(x) setNames(rep(x$name, length(x$alias)), x$alias))
   alias_map <- Reduce(c, alias_list, c())
 
-  to_rename <- names(x) %in% names(alias_map)
+  # Columns eligible for renaming
+  hits <- names(x) %in% names(alias_map)
+  new_names <- replace(names(x), hits, alias_map[names(x)[hits]])
+  duplicated_name <- unique(new_names[duplicated(new_names)])
 
-  if (length(to_rename) > 0){
-    names(x)[to_rename] <- alias_map[names(x)[to_rename]]
+  if (length(duplicated_name) > 0) {
+    conflicts <- names(x)[hits][new_names[hits] %in% duplicated_name]
+    targets <- new_names[hits][new_names[hits] %in% duplicated_name]
+    conflict_lines <- sprintf("  - %s -> %s", conflicts, targets)
+
+    cli::cli_abort(c(
+      "x" = "Multiple columns would be renamed to the same field name.",
+      "!" = c("Conflicting renames:\n", conflict_lines),
+      "i" = "Fix your input or update your alias definitions."
+    ))
   }
+
+  names(x) <- new_names
 
   return(x)
 }
@@ -186,6 +212,9 @@ field_check_class <- function(x){
   }
 
   for (cols in to_check) {
+    if (class_map[[cols]] %in% c("numeric", "double")){
+      x[[cols]] <- gsub(",", ".", x[[cols]], fixed = TRUE)
+    }
     x[[cols]] <- coerce_one(x[[cols]], class_map[[cols]])
   }
 

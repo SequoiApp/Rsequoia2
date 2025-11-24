@@ -4,7 +4,7 @@
 \alias{seq_field}
 \title{Load field definitions from the Sequoia configuration}
 \usage{
-seq_field(field = NULL)
+seq_field(field = NULL, filepath = NULL)
 }
 \arguments{
 \item{field}{\code{character} or \code{NULL}; If provided, must match a key in

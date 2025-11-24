@@ -4,7 +4,7 @@
 \alias{seq_table}
 \title{Load table definitions from the Sequoia configuration}
 \usage{
-seq_table(table = NULL)
+seq_table(table = NULL, filepath = NULL)
 }
 \arguments{
 \item{table}{\code{character} or \code{NULL}; If provided, must match a key in
