@@ -17,8 +17,9 @@ v.seq.parca.poly:  { name: "PARCA_poly",  ext: "geojson" }
 v.seq.foret.point: { name: "FORET_point", ext: "geojson" }
 v.seq.foret.line:  { name: "FORET_line",  ext: "geojson" }
 v.seq.foret.poly:  { name: "FORET_poly",  ext: "geojson" }
+v.seq.prop.point:  { name: "PROP_point",  ext: "geojson" }
 v.seq.prop.line:   { name: "PROP_line",   ext: "geojson" }
-v.seq.prop.poly:   { name: "FROP_poly",   ext: "geojson" }
+v.seq.prop.poly:   { name: "PROP_poly",   ext: "geojson" }
 v.seq.ua.poly:     { name: "UA_poly",     ext: "geojson" }
 v.seq.pf.line:     { name: "PF_line",     ext: "geojson" }
 v.seq.pf.poly:     { name: "PF_poly",     ext: "geojson" }

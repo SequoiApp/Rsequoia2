@@ -175,7 +175,10 @@ seq_parca <- function(
     verbose = TRUE,
     overwrite = FALSE){
 
+  # read matrice
   m <- read_matrice(dirname)
+
+  # create idu
   m$IDU <- paste0(
     pad_left(m$INSEE, 5),
     pad_left(m$PREFIXE, 3),
@@ -183,7 +186,10 @@ seq_parca <- function(
     pad_left(m$NUMERO, 4)
     )
 
+  # check empty lieudit in matrice
   have_empty_lieu_dit <- any(is.na(m$LIEU_DIT))
+
+  # retrieve parca
   raw_parca <- get_parca(
     m$IDU,
     bdp_geom = bdp_geom,
@@ -191,14 +197,16 @@ seq_parca <- function(
     verbose = verbose
   )
 
+  # merge raw_parca with matrice
   seq_parca <- m[, c("IDU", "IDENTIFIANT", "PROPRIETAIRE", "LIEU_DIT", "TX_BOISEE")] |>
     merge(raw_parca, by = "IDU", all.x = TRUE)
 
-  seq_parca$OCCUP_SOL <- ifelse(seq_parca$TX_BOISEE > 0.5, "BOISEE", "NON BOISEE")
+  seq_parca$OCCUP_SOL <- ifelse(seq_parca$TX_BOISEE >= 0.5, "BOISEE", "NON BOISEE")
   seq_parca$LIEU_DIT <- ifelse(
     is.na(seq_parca$LIEU_DIT.x), seq_parca$LIEU_DIT.y, seq_parca$LIEU_DIT.x
     )
 
+  # format parca
   seq_parca <- seq_parca[, c(
     "IDU", "IDENTIFIANT", "PROPRIETAIRE", "REG_NOM", "REG_NUM", "DEP_NOM",
     "DEP_NUM", "COM_NOM", "COM_NUM", "PREFIXE", "SECTION", "NUMERO", "LIEU_DIT",
@@ -206,6 +214,7 @@ seq_parca <- function(
     sf::st_as_sf() |>
     sf::st_transform(2154)
 
+  # write parca
   parca_path <- seq_write(
     seq_parca,
     "v.seq.parca.poly",
@@ -230,7 +239,7 @@ seq_parca <- function(
 #'
 #' @return The input `parca` with four additional fields:
 #'   `AREA_SIG` (cartographic area in ha),
-#'   `AREA_ATOL` (absolute difference in m2),
+#'   `AREA_ATOL` (absolute difference in m²),
 #'   `AREA_RTOL` (relative difference),
 #'   `AREA_CHECK` (logical flag).
 #'
@@ -261,4 +270,3 @@ parca_check_area <- function(parca,
 
   return(invisible(parca))
 }
-
