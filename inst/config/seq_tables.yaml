@@ -44,7 +44,6 @@ ua:
   - numero
   - lieu_dit
   - occupation
-  - surf_cad
   - ug
   - parcelle
   - sous_parcelle
@@ -59,10 +58,12 @@ ua:
   - ess2_pct
   - ess3
   - ess3_pct
-  - tse
+  - taillis
   - rege
-  - comment
   - sol
   - amenagement
+  - dispositif
+  - comment
   - surf_sig
   - surf_cor
+  - surf_cad

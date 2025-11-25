@@ -178,7 +178,7 @@ ess3_pct:
   class: numeric
   definition: "% essence tertiaire"
 
-tse:
+taillis:
   name: "TSE_DSCR"
   class: "character"
   definition: "Taillis ou sous-étage"
@@ -203,5 +203,10 @@ amenagement:
   name: "AME_TYPE"
   class: "character"
   definition: "Traitement retenu par le gestionnaire"
+
+dispositif:
+  name: "DISPOSITIF"
+  class: "character"
+  definition: "..."
 
 

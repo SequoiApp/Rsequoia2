@@ -166,6 +166,7 @@ ua_create_ug <- function(ua,
 #'
 #' @importFrom sf st_area
 #' @importFrom cli cli_alert_info cli_alert_success
+#' @importFrom stats ave
 #'
 #' @export
 ua_get_areas <- function(ua, verbose = TRUE) {
