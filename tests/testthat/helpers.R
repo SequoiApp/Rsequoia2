@@ -42,7 +42,7 @@ fake_raw_parca <- function(
     SECTION    = section,
     NUMERO     = numero,
     LIEU_DIT   = lieu_dit,
-    CONTENANCE = contenance,
+    SURF_CA    = contenance,
     geometry   = geom
   ) |> suppressWarnings()
 }

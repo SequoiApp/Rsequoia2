@@ -12,8 +12,10 @@ parca_to_ua <- function(parca) {
 
 #' Check cadastral IDU consistency between UA and PARCA sf objects
 #'
-#' @param ua `sf` object containing analysis units; must contain the idu field.
-#' @param parca `sf` Object containing cadastral parcels; must contain the idu field.
+
+#' @param ua `sf` Object from [Rsequoia2::parca_to_ua()] containing analysis
+#' units
+#' @inheritParams parca_to_ua
 #' @param verbose `logical` If `TRUE`, display progress messages.
 #'
 #' @return `TRUE` if all `parca` idu values are found in `ua`;
@@ -22,7 +24,7 @@ parca_to_ua <- function(parca) {
 #' @importFrom cli cli_alert_warning cli_ul
 #'
 #' @export
-ua_check_idu <- function(ua, parca, verbose = TRUE) {
+ua_check_idu <- function(ua, parca, verbose = FALSE) {
   # Get canonical idu field name
   idu <- seq_field("idu")$name
 
@@ -57,11 +59,7 @@ ua_check_idu <- function(ua, parca, verbose = TRUE) {
 #' This function compares cadastral area values between UA and PARCA,
 #' and updates UA wherever discrepancies are detected.
 #'
-#' @param ua `sf` object containing analysis units;
-#' must contain the idu and surf_cad fields.
-#' @param parca `sf` Object containing cadastral parcels;
-#' must contain the idu and surf_cad fields.
-#' @param verbose `logical` If `TRUE`, display progress messages.
+#' @inheritParams ua_check_idu
 #'
 #' @return Updated `ua` object.
 #'
@@ -69,7 +67,7 @@ ua_check_idu <- function(ua, parca, verbose = TRUE) {
 #' @importFrom cli cli_alert_warning cli_li cli_alert_success
 #'
 #' @export
-ua_update_surfcad <- function(ua, parca, verbose = TRUE) {
+ua_check_area <- function(ua, parca, verbose = FALSE) {
 
   # Field names from YAML structure
   idu <- seq_field("idu")$name            # e.g. "IDU"
@@ -88,20 +86,19 @@ ua_update_surfcad <- function(ua, parca, verbose = TRUE) {
 
   # Detect differences
   diff_idx <- which(!is.na(parca_vals) & ua[[surf_cad]] != parca_vals)
+  nb_diff <- length(diff_idx)
 
   # Apply corrections (vectorized)
-  if (length(diff_idx) > 0) {
-
-    if (verbose) {
-      cli_alert_warning(
-        "{length(diff_idx)} cadastral area value{?s} corrected in UA."
+  if (nb_diff > 0) {
+    bad_idu <- ua[[idu]][diff_idx]
+      cli::cli_warn(
+        "{nb_diff} cadastral area value{?s} corrected in UA. Affected Idu{?s}: {.val {bad_idu}}"
       )
-      cli_li("Affected IDU: {paste(ua[[idu]][diff_idx], collapse = ', ')}")
-    }
 
     ua[[surf_cad]][diff_idx] <- parca_vals[diff_idx]
+  }
 
-  } else if (verbose) {
+  if (verbose & nb_diff == 0) {
     cli_alert_success("No cadastral area discrepancies detected.")
   }
 
