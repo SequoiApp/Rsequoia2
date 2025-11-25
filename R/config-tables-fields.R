@@ -113,7 +113,7 @@ check_config <- function(filepath = NULL) {
     n_bad_key <- length(bad_key)
 
     if (n_bad_key > 0) {
-      cli::cli_alert_warning(
+      cli::cli_warn(
         "{n_bad_key} bad key{?s} found in table {.val {tbl_name}}: {.val {bad_key}}"
       )
     }
@@ -129,7 +129,7 @@ check_config <- function(filepath = NULL) {
   n_unused <- length(unused_fields)
 
   if (n_unused > 0) {
-    cli::cli_alert_warning(
+    cli::cli_warn(
       "{n_unused} field{?s} defined in seq_fields but not used in any table: {.val {unused_fields}}"
     )
   }
