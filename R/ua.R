@@ -122,7 +122,7 @@ ua_check_area <- function(ua, parca, verbose = FALSE) {
 #' @importFrom cli cli_alert_success
 #'
 #' @export
-ua_create_ug <- function(
+ua_generate_ug <- function(
     ua,
     ug_keys = c("parcelle", "sous_parcelle"),
     separator = ".",
@@ -165,10 +165,10 @@ ua_create_ug <- function(
 #' @importFrom stats ave
 #'
 #' @export
-ua_get_areas <- function(ua, verbose = TRUE) {
+ua_generate_area <- function(ua, verbose = TRUE) {
   # Field names from configuration
-  idu      <- seq_field("idu")$name
-  surf_cad  <- seq_field("surf_cad")$name
+  idu <- seq_field("idu")$name
+  surf_cad <- seq_field("surf_cad")$name
   surf_sig <- seq_field("surf_sig")$name
   surf_cor <- seq_field("surf_cor")$name
 
@@ -177,11 +177,11 @@ ua_get_areas <- function(ua, verbose = TRUE) {
 
   # Compute correction factor per cadastral ID
   sum_sig <- ave(ua[[surf_sig]], ua[[idu]], FUN = sum)
-  coeff   <- ua[[surf_sig]] / sum_sig
+  coeff <- ua[[surf_sig]] / sum_sig
 
   # Compute provisional corrected surfaces
   surf_temp <- round(ua[[surf_cad]] * coeff, 4)
-  resid     <- ua[[surf_cad]] - ave(surf_temp, ua[[idu]], FUN = sum)
+  resid <- ua[[surf_cad]] - ave(surf_temp, ua[[idu]], FUN = sum)
 
   # Identify pivot feature to absorb residual
   is_pivot <- surf_temp == ave(surf_temp, ua[[idu]], FUN = max)
@@ -191,5 +191,5 @@ ua_get_areas <- function(ua, verbose = TRUE) {
 
   if (verbose) cli_alert_success("Corrected cadastral areas calculated.")
 
-  return(ua)
+  return(invisible(ua))
 }
