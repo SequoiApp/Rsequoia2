@@ -22,8 +22,7 @@ test_that("ua_check_area() keeps ua unchanged when no difference", {
   expect_identical(res[[surf_cad]], ua[[surf_cad]])
 })
 
-
-test_that("ua_check_area() prints success message when no correction", {
+test_that("ua_check_area() prints success message when verbose = TRUE", {
 
   parca <- fake_parca()
   ua <- seq_normalize(parca, "ua")
@@ -36,12 +35,12 @@ test_that("ua_check_area() prints success message when no correction", {
 
 test_that("ua_check_area() ignores NA values from parca", {
 
-  parca <- fake_parca(1:3, 1:3, 1:3, 1:3, contenance = c(100, 200, 300))
-  ua <- seq_normalize(fake_parca(1:3, 1:3, 1:3, 1:3, contenance = c(150, NA, NA)), "ua")
+  parca <- fake_parca(1:3, 1:3, 1:3, 1:3, contenance = c(NA, 2, NA))
+  ua <- seq_normalize(fake_parca(1:3, 1:3, 1:3, 1:3, contenance = c(1, 2, 3)), "ua")
 
   res <- ua_check_area(ua, parca, verbose = FALSE) |> suppressWarnings()
 
   surf_cad <- seq_field("surf_cad")$name
-  expect_equal(res[[surf_cad]], c(150, 200))
+  expect_equal(res[[surf_cad]], c(1, 2, 3))
 })
 

@@ -243,9 +243,11 @@ parca_check_area <- function(parca,
                              rtol = 0.05,
                              verbose = TRUE) {
 
+  surf_cad <- seq_field("surf_cad")$name
+
   parca$AREA_SIG <- as.numeric(sf::st_area(parca)) / 10000
-  parca$AREA_ATOL <- abs(parca$CONTENANCE - parca$AREA_SIG * 10000)
-  parca$AREA_RTOL <- parca$AREA_ATOL / parca$CONTENANCE
+  parca$AREA_ATOL <- abs(parca[[surf_cad]] - parca$AREA_SIG * 10000)
+  parca$AREA_RTOL <- parca$AREA_ATOL / parca[[surf_cad]]
   parca$AREA_CHECK <- (parca$AREA_ATOL >= atol & parca$AREA_RTOL >= rtol)
 
   bad_idu <- parca$IDU[parca$AREA_CHECK]

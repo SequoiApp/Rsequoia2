@@ -4,14 +4,14 @@
 \alias{ua_check_area}
 \title{Update cadastral area values in UA using PARCA}
 \usage{
-ua_check_area(ua, parca, verbose = TRUE)
+ua_check_area(ua, parca, verbose = FALSE)
 }
 \arguments{
-\item{ua}{\code{sf} object containing analysis units;
-must contain the idu and surf_cad fields.}
+\item{ua}{\code{sf} Object from \code{\link[=parca_to_ua]{parca_to_ua()}} containing analysis
+units}
 
-\item{parca}{\code{sf} Object containing cadastral parcels;
-must contain the idu and surf_cad fields.}
+\item{parca}{\code{sf} Object from \code{\link[=seq_parca]{seq_parca()}} containing cadastral
+parcels.}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
 }

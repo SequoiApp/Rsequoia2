@@ -4,12 +4,14 @@
 \alias{ua_check_idu}
 \title{Check cadastral IDU consistency between UA and PARCA sf objects}
 \usage{
-ua_check_idu(ua, parca, verbose = TRUE)
+ua_check_idu(ua, parca, verbose = FALSE)
 }
 \arguments{
-\item{ua}{\code{sf} object containing analysis units; must contain the idu field.}
+\item{ua}{\code{sf} Object from \code{\link[=parca_to_ua]{parca_to_ua()}} containing analysis
+units}
 
-\item{parca}{\code{sf} Object containing cadastral parcels; must contain the idu field.}
+\item{parca}{\code{sf} Object from \code{\link[=seq_parca]{seq_parca()}} containing cadastral
+parcels.}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
 }
