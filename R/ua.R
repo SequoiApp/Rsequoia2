@@ -36,23 +36,20 @@ ua_check_idu <- function(ua, parca, verbose = TRUE) {
 
   # If mismatches found report + return FALSE
   if (length(missing_idu)) {
-    if (verbose) {
-      cli_alert_warning(
-        "Some cadastral IDUs from {.field parca} are missing in {.field ua}."
+    cli::cli_warn(
+      "Some cadastral IDUs from {.arg parca} are missing in {.arg ua}: {.val {sort(missing_idu)}}"
       )
-      cli_ul(sort(missing_idu))
-    }
     return(FALSE)
   }
 
   # All good return TRUE
   if (verbose) {
-    cli_alert_success(
-      "All cadastral IDUs from {.field parca} are present in {.field ua}."
+    cli::cli_alert_success(
+      "All cadastral IDUs from {.arg parca} are present in {.arg ua}."
     )
   }
 
-  TRUE
+  return(TRUE)
 }
 
 #' Update cadastral area values in UA using PARCA
