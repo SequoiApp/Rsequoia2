@@ -34,20 +34,24 @@ v.cog.com25000.line:  { name: "COMS_line",  ext: "geojson" }
 v.cog.com25000.poly:  { name: "COMS_poly",  ext: "geojson" }
 
 # SOL
-v.sol.geol.poly:  { name: "GEOL_poly", ext: "geojson" }
-v.sol.pedo.poly:  { name: "PEDO_poly", ext: "geojson" }
+v.sol.geol.poly:  { name: "SOL_GEOL_poly", ext: "geojson" }
+v.sol.pedo.poly:  { name: "SOL_PEDO_poly", ext: "geojson" }
+v.sol.aplg.poly:  { name: "SOL_APLG_poly", ext: "geojson" }
+v.sol.apg.poly:   { name: "SOL_APG_poly",  ext: "geojson" }
+v.sol.inpg.poly:  { name: "SOL_INPG_poly", ext: "geojson" }
 
 # PATRIMONIAUX
-v.pat.imdn.poly: { name: "PAT_IMDN_poly", ext: "geojson" }
-v.pat.padn.poly: { name: "PAT_PADN_poly", ext: "geojson" }
-v.pat.immh.poly: { name: "PAT_IMMH_poly", ext: "geojson" }
-v.pat.pamh.poly: { name: "PAT_PAMH_poly", ext: "geojson" }
-v.pat.imun.poly: { name: "PAT_IMUN_poly", ext: "geojson" }
-v.pat.paun.poly: { name: "PAT_PAUN_poly", ext: "geojson" }
-v.pat.sici.poly: { name: "PAT_SICI_poly", ext: "geojson" }
-v.pat.sipr.poly: { name: "PAT_SIPR_poly", ext: "geojson" }
-v.pat.lacr.poly: { name: "PAT_LACR_poly", ext: "geojson" }
-v.pat.zppa.poly: { name: "PAT_ZPPA_poly", ext: "geojson" }
+v.pat.imdn.poly:   { name: "PAT_IMDN_poly", ext: "geojson" }
+v.pat.padn.poly:   { name: "PAT_PADN_poly", ext: "geojson" }
+v.pat.immh.poly:   { name: "PAT_IMMH_poly", ext: "geojson" }
+v.pat.pamh.poly:   { name: "PAT_PAMH_poly", ext: "geojson" }
+v.pat.imun.poly:   { name: "PAT_IMUN_poly", ext: "geojson" }
+v.pat.paun.poly:   { name: "PAT_PAUN_poly", ext: "geojson" }
+v.pat.sici.poly:   { name: "PAT_SICI_poly", ext: "geojson" }
+v.pat.sipr.poly:   { name: "PAT_SIPR_poly", ext: "geojson" }
+v.pat.lacr.poly:   { name: "PAT_LACR_poly", ext: "geojson" }
+v.pat.zppa.poly:   { name: "PAT_ZPPA_poly", ext: "geojson" }
+v.pat.unesco.poly: { name: "INPN_UNESCO_poly", ext: "geojson" }
 
 # GPU
 v.gpu.point: { name: "GPU_point", ext: "geojson" }
@@ -73,16 +77,31 @@ v.hydro.point: { name: "HYDRO_point", ext: "geojson" }
 v.hydro.line:  { name: "HYDRO_line",  ext: "geojson" }
 v.hydro.poly:  { name: "HYDRO_poly",  ext: "geojson" }
 
-# INPN - A compléter avec happign
-v.inpn.znieff1.poly: { name: "INPN_ZNIEFF1_poly", ext: "geojson" }
-v.inpn.znieff2.poly: { name: "INPN_ZNIEFF2_poly", ext: "geojson" }
-v.inpn.zico.poly:    { name: "INPN_ZICO_poly",    ext: "geojson" }
-v.inpn.zps.poly:     { name: "INPN_ZPS_poly",     ext: "geojson" }
-v.inpn.pn.poly:      { name: "INPN_PN_poly",      ext: "geojson" }
-v.inpn.pnr.poly:     { name: "INPN_PNR_poly",     ext: "geojson" }
-v.inpn.apb.poly:     { name: "INPN_APB_poly",     ext: "geojson" }
-v.inpn.sic.poly:     { name: "INPN_SIC_poly",     ext: "geojson" }
-v.inpn.ramsar.poly:  { name: "INPN_RAMSAR_poly",  ext: "geojson" }
+# INPN
+v.inpn.apb.poly:               { name: "INPN_APB_poly",               ext: "geojson" }
+v.inpn.aphn.poly:              { name: "INPN_APHN_poly",              ext: "geojson" }
+v.inpn.bios.poly:              { name: "INPN_BIOS_poly",              ext: "geojson" }
+v.inpn.cdl.poly:               { name: "INPN_CDL_poly",               ext: "geojson" }
+v.inpn.cen.poly:               { name: "INPN_CEN_poly",               ext: "geojson" }
+v.inpn.gp.poly:                { name: "INPN_GP_poly",                ext: "geojson" }
+v.inpn.pn.poly:                { name: "INPN_PN_poly",                ext: "geojson" }
+v.inpn.pnm.poly:               { name: "INPN_PNM_poly",               ext: "geojson" }
+v.inpn.pnr.poly:               { name: "INPN_PNR_poly",               ext: "geojson" }
+v.inpn.pprnn.poly:             { name: "INPN_PPRNN_poly",             ext: "geojson" }
+v.inpn.ramsar.poly:            { name: "INPN_RAMSAR_poly",            ext: "geojson" }
+v.inpn.rb.poly:                { name: "INPN_RB_poly",                ext: "geojson" }
+v.inpn.ripn.poly:              { name: "INPN_RIPN_poly",              ext: "geojson" }
+v.inpn.rnc.poly:               { name: "INPN_RNC_poly",               ext: "geojson" }
+v.inpn.rncfs.poly:             { name: "INPN_RNCFS_poly",             ext: "geojson" }
+v.inpn.rnn.poly:               { name: "INPN_RNN_poly",               ext: "geojson" }
+v.inpn.rnr.poly:               { name: "INPN_RNR_poly",               ext: "geojson" }
+v.inpn.sic.poly:               { name: "INPN_SIC_poly",               ext: "geojson" }
+v.inpn.znieff1.poly:           { name: "INPN_ZNIEFF1_poly",           ext: "geojson" }
+v.inpn.znieffmer1.poly:       { name: "INPN_ZNIEFF1_MER_poly",       ext: "geojson" }
+v.inpn.znieff2.poly:           { name: "INPN_ZNIEFF2_poly",           ext: "geojson" }
+v.inpn.znieffmer2.poly:       { name: "INPN_ZNIEFF2_MER_poly",       ext: "geojson" }
+v.inpn.zpr.poly:               { name: "INPN_ZPR_poly",               ext: "geojson" }
+v.inpn.zps.poly:               { name: "INPN_ZPS_poly",               ext: "geojson" }
 
 # TOPONYME
 v.toponyme.point: { name: "TOPONYME_point", ext: "geojson" }
