@@ -122,10 +122,12 @@ ua_check_area <- function(ua, parca, verbose = FALSE) {
 #' @importFrom cli cli_alert_success
 #'
 #' @export
-ua_create_ug <- function(ua,
-                         ug_keys = c("parcelle", "sous_parcelle"),
-                         separator = ".",
-                         verbose = TRUE) {
+ua_create_ug <- function(
+    ua,
+    ug_keys = c("parcelle", "sous_parcelle"),
+    separator = ".",
+    verbose = TRUE
+    ){
 
   # Field names from YAML
   ug_ua <- seq_field("ug")$name
@@ -145,7 +147,7 @@ ua_create_ug <- function(ua,
 
   if (verbose) cli::cli_alert_success(paste0("UG field '", ug_ua, "' created."))
 
-  ua
+  return(invisible(ua))
 }
 
 #' Calculate areas in UA

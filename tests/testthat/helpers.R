@@ -58,3 +58,4 @@ fake_parca <- function(...){
       "OCCUP_SOL"  = "BOISEE") |>
     suppressWarnings()
 }
+

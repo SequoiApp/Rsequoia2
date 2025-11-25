@@ -1,33 +1,77 @@
-test_that("ua_create_ug creates UG field correctly with seq_field names", {
-  skip_if_not_installed("sf")
-  library(sf)
+test_that("ua_create_ug() creates UG field correctly", {
 
-  # Simulate seq_field() behavior for the test
-  seq_field <- function(key) {
-    list(name = switch(key,
-                       "parcelle" = "N_PARFOR",
-                       "sous_parcelle" = "N_SSPARFOR",
-                       "ug" = "PARFOR"))
-  }
-
-  # Sample sf object with correct column names
-  ua <- st_sf(
-    N_PARFOR =   c(1, 2, NA, "A"),
-    N_SSPARFOR = c(1, NA, 3, "B"),
-    geometry = st_sfc(st_point(c(0,0)), st_point(c(1,1)),
-                      st_point(c(2,2)), st_point(c(3,3)))
+  ua <- data.frame(
+    "N_PARFOR" = c(1,   1, "a", "a", 1,  NA),
+    "N_SSPARFOR" = c("a", 1,  1,  "a", NA, 1)
   )
 
-  # Call the function
-  ua_out <- ua_create_ug(ua, ug_keys = c("parcelle", "sous_parcelle"),
-                         separator = ".", verbose = FALSE)
+  ug_field <- "PARFOR"
+  local_mocked_bindings(
+    seq_field = function(x){
+      switch(x,
+        "parcelle" = list(name = "N_PARFOR"),
+        "sous_parcelle" = list(name = "N_SSPARFOR"),
+        "ug" = list(name = ug_field)
+      )
+    }
+  )
 
-  ug_field <- seq_field("ug")$name
+  res <- ua_create_ug(
+    ua, ug_keys = c("parcelle", "sous_parcelle"), separator = ".", verbose = FALSE
+  )
 
-  # UG field exists
-  expect_true(ug_field %in% names(ua_out))
+  expect_true(ug_field %in% names(res))
+  expect_equal(res[[ug_field]], c("01.a", "01.01", "a.01", "a.a", "01.00", "00.01"))
+})
 
-  # Check that UG values are as expected
-  expect_equal(ua_out[[ug_field]],
-               c("01.01", "02.00", "00.03", "A.B"))
+test_that("ua_create_ug() throw expected message when verbose = TRUE", {
+
+  ua <- data.frame(
+    "N_PARFOR" = c(1,   1, "a", "a", 1,  NA),
+    "N_SSPARFOR" = c("a", 1,  1,  "a", NA, 1)
+  )
+
+  ug_field <- "PARFOR"
+  local_mocked_bindings(
+    seq_field = function(x){
+      switch(x,
+             "parcelle" = list(name = "N_PARFOR"),
+             "sous_parcelle" = list(name = "N_SSPARFOR"),
+             "ug" = list(name = ug_field)
+      )
+    }
+  )
+
+  expect_message(
+    ua_create_ug(ua, ug_keys = c("parcelle", "sous_parcelle"), separator = ".", verbose = TRUE),
+    paste("UG field", ug_field, "created", sep = ".*")
+  )
+
+})
+
+test_that("ua_create_ug() separator arg is working", {
+
+  ua <- data.frame(
+    "N_PARFOR" = c(1,   1, "a", "a", 1,  NA),
+    "N_SSPARFOR" = c("a", 1,  1,  "a", NA, 1)
+  )
+
+  ug_field <- "PARFOR"
+  local_mocked_bindings(
+    seq_field = function(x){
+      switch(x,
+             "parcelle" = list(name = "N_PARFOR"),
+             "sous_parcelle" = list(name = "N_SSPARFOR"),
+             "ug" = list(name = ug_field)
+      )
+    }
+  )
+
+  res <- ua_create_ug(
+    ua, ug_keys = c("parcelle", "sous_parcelle"), separator = "_", verbose = FALSE
+  )
+
+  expect_true(ug_field %in% names(res))
+  expect_equal(res[[ug_field]], c("01_a", "01_01", "a_01", "a_a", "01_00", "00_01"))
+
 })
