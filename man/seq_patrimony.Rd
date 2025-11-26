@@ -4,7 +4,13 @@
 \alias{seq_patrimony}
 \title{Download patrimony vector layers for a Sequoia project}
 \usage{
-seq_patrimony(dirname = ".", buffer = 500, verbose = TRUE, overwrite = FALSE)
+seq_patrimony(
+  dirname = ".",
+  buffer = 500,
+  key = get_keys("pat"),
+  verbose = TRUE,
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{dirname}{\code{character} Directory where the matrice file is located.
@@ -13,13 +19,13 @@ Defaults to the current working directory.}
 \item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
 the download area.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
-
-\item{overwrite}{\code{logical}; If \code{TRUE}, file is overwritten.}
-
 \item{key}{\code{character}; List of layer identifiers to download. If not
 provided, the function uses \code{get_keys("pat")} to automatically select all
 patrimony layers defined in the Sequoia configuration (\code{inst/config/seq_layers.yaml})}
+
+\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
+
+\item{overwrite}{\code{logical}; If \code{TRUE}, file is overwritten.}
 }
 \value{
 A named list of file paths written by \code{\link[=seq_write]{seq_write()}}, one per layer.
