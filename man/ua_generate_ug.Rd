@@ -2,7 +2,7 @@
 % Please edit documentation in R/ua.R
 \name{ua_generate_ug}
 \alias{ua_generate_ug}
-\title{Create management unit field (UG) in the UA object}
+\title{Create management unit field (UG) in the UA sf object}
 \usage{
 ua_generate_ug(
   ua,
