@@ -13,11 +13,14 @@ RoxygenNote: 7.3.2
 Imports: 
     archive,
     cli,
+    frheritage,
     happign,
     openxlsx2,
     sf,
     terra,
     yaml
+Remotes:
+    github::mucau/frheritage
 Suggests: 
     testthat (>= 3.3.0)
 Config/testthat/edition: 3
