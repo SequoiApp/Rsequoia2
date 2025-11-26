@@ -220,7 +220,7 @@ ua_check_ug <- function(ua,
   fields <- intersect(c(ug_field, key_fields), names(ua))
 
   # Diagnostic signature
-  desc <- apply(as.data.frame(ua)[, fields, drop = FALSE], 1, function(r) paste0(na.omit(r), collapse = "|"))
+  desc <- apply(as.data.frame(ua)[, fields, drop = FALSE], 1, function(r) paste0(stats::na.omit(r), collapse = "|"))
 
   # Surface sums
   sum_by_desc <- stats::ave(ua[[surf_cor]], desc, FUN = function(x) sum(x, na.rm = TRUE))
@@ -308,7 +308,7 @@ ua_clean_ug <- function(ua,
   # Function to correct one UG
   correct_one_ug <- function(df, surf_cor, all_fields, atol, rtol) {
     # Build unique description per row
-    df$desc <- apply(df[, all_fields, drop = FALSE], 1, function(r) paste0(na.omit(r), collapse = "|"))
+    df$desc <- apply(df[, all_fields, drop = FALSE], 1, function(r) paste0(stats::na.omit(r), collapse = "|"))
 
     # Identify dominant row (largest total surface)
     sum_by_desc <- tapply(df[[surf_cor]], df$desc, sum, na.rm = TRUE)

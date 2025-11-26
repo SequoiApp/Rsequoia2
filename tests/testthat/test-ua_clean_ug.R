@@ -1,10 +1,12 @@
 test_that("ua_clean_ug fixes minor inconsistencies", {
-  ua <- st_sf(
+  skip_if_not_installed("sf")
+
+  ua <- sf::st_sf(
     IDU = c("A1", "A2", "A3"),
     PARFOR = c("UG1", "UG1", "UG1"),
     SURF_COR = c(10, 0.4, 10),
     PLT_PLMT = c("MFT", "PFT", "MFT"),
-    geometry = st_sfc(st_point(c(0,0)), st_point(c(1,1)), st_point(c(2,2)))
+    geometry = sf::st_sfc(sf::st_point(c(0,0)), sf::st_point(c(1,1)), sf::st_point(c(2,2)))
   )
 
   cleaned <- ua_clean_ug(ua, ug_keys = "peuplement", atol = 1, rtol = 0.05, verbose = FALSE)
@@ -15,12 +17,14 @@ test_that("ua_clean_ug fixes minor inconsistencies", {
 })
 
 test_that("ua_clean_ug does not change major inconsistent rows", {
-  ua <- st_sf(
+  skip_if_not_installed("sf")
+
+  ua <- sf::st_sf(
     IDU = c("A1", "A2"),
     PARFOR = c("UG1", "UG1"),
     SURF_COR = c(10, 10),
     PLT_PLMT = c("MFT", "PFT"),
-    geometry = st_sfc(st_point(c(0,0)), st_point(c(1,1)))
+    geometry = sf::st_sfc(sf::st_point(c(0,0)), sf::st_point(c(1,1)))
   )
 
   cleaned <- ua_clean_ug(ua, ug_keys = "peuplement", atol = 1, rtol = 0.05, verbose = FALSE)
@@ -31,13 +35,15 @@ test_that("ua_clean_ug does not change major inconsistent rows", {
 })
 
 test_that("ua_clean_ug handles multiple UGs independently", {
-  ua <- st_sf(
+  skip_if_not_installed("sf")
+
+  ua <- sf::st_sf(
     IDU = c("A1", "A2", "B1", "B2"),
     PARFOR = c("UG1", "UG1", "UG2", "UG2"),
     SURF_COR = c(10, 0.4, 5, 0.2),
     PLT_PLMT = c("MFT", "PFT", "PFT", "PPT"),
-    geometry = st_sfc(st_point(c(0,0)), st_point(c(1,1)),
-                      st_point(c(2,2)), st_point(c(3,3)))
+    geometry = sf::st_sfc(sf::st_point(c(0,0)), sf::st_point(c(1,1)),
+                      sf::st_point(c(2,2)), sf::st_point(c(3,3)))
   )
 
   cleaned <- ua_clean_ug(ua, ug_keys = "peuplement", atol = 1, rtol = 0.05, verbose = FALSE)
@@ -47,12 +53,14 @@ test_that("ua_clean_ug handles multiple UGs independently", {
 })
 
 test_that("ua_clean_ug keeps ug_valid column as logical", {
-  ua <- st_sf(
+  skip_if_not_installed("sf")
+
+  ua <- sf::st_sf(
     IDU = "A1",
     PARFOR = "UG1",
     SURF_COR = 10,
     PLT_PLMT = "MFT",
-    geometry = st_sfc(st_point(c(0,0)))
+    geometry = sf::st_sfc(sf::st_point(c(0,0)))
   )
 
   cleaned <- ua_clean_ug(ua, ug_keys = "peuplement", verbose = FALSE)
