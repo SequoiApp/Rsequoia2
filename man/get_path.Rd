@@ -28,7 +28,7 @@ The function resolves the input \code{key} using \strong{partial matching} again
 keys defined in \code{inst/config/seq_layers.yaml}.
 
 If exactly \strong{one} entry matches, it is selected : for example,
-\code{key = "znieff1"} can be used to match \code{v.inpn.znieff1.poly} because only
+\code{key = "znieff1"} can be used to match \code{v.mnhn.znieff1.poly} because only
 one key contain \verb{"znieff1}
 
 If \strong{multiple} entries match, the user is shown the ambiguous options and

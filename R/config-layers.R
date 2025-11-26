@@ -42,7 +42,7 @@ get_id <- function(dirname = ".", verbose = FALSE) {
 #' keys defined in `inst/config/seq_layers.yaml`.
 #'
 #' If exactly **one** entry matches, it is selected : for example,
-#' `key = "znieff1"` can be used to match `v.inpn.znieff1.poly` because only
+#' `key = "znieff1"` can be used to match `v.mnhn.znieff1.poly` because only
 #' one key contain `"znieff1`
 #'
 #' If **multiple** entries match, the user is shown the ambiguous options and
