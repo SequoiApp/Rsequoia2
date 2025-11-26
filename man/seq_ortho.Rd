@@ -42,7 +42,7 @@ precise the resolution(see \code{\link[happign:get_wmts]{happign::get_wmts()}})}
 A named list of file paths written by \code{\link[=seq_write]{seq_write()}}, one per \code{type}.
 }
 \description{
-Downloads one or several orthophotos (RGB and/or IRC) from the IGN WMS service
+Downloads one or several orthophotos (RGB and/or IRC) from the IGN WMTS service
 for the \code{parca} layer of a Sequoia project.
 }
 \details{

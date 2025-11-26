@@ -89,7 +89,7 @@ get_ortho <- function(
 
 #' Download RGB and/or IRC orthophotos for a Sequoia project
 #'
-#' Downloads one or several orthophotos (RGB and/or IRC) from the IGN WMS service
+#' Downloads one or several orthophotos (RGB and/or IRC) from the IGN WMTS service
 #' for the `parca` layer of a Sequoia project.
 #'
 #' This function is a convenience wrapper looping over [get_ortho()], allowing

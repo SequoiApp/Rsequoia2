@@ -1,5 +1,34 @@
-
-
+#' Download MNHN vector layer from IGN WFS (RGB or IRC)
+#'
+#' Downloads a vector layer from the IGN WFS service for the
+#' area covering `x` expanded with a buffer.
+#' Available layer are from MNHN (Nationale Museum of Natural History)
+#'
+#' @param x `sf` or `sfc`; Geometry located in France.
+#' @param key `character`; Layer to download. Must be one of from `get_keys("mnhn")`
+#' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
+#' the download area.
+#' @param overwrite `logical`; If `TRUE`, file is overwritten.
+#' @param verbose `logical`; If `TRUE`, display messages.
+#'
+#' @return `sf` object from `sf` package
+#'
+#' @seealso [happign::get_wfs()]
+#'
+#' @examples
+#' \dontrun{
+#' library(sf)
+#'
+#' x <- st_sfc(st_point(c(-4.372746579180652, 47.79820761331345)), crs = 4326)
+#'
+#' ospar <- get_mnhn(x, key = "ospar", buffer = 5000)
+#' x <- st_transform(x, st_crs(ospar))
+#'
+#' plot(st_geometry(ospar), col = "lightgrey")
+#' plot(st_geometry(st_buffer(x, 5000)), col = "#FFB3B3", add = TRUE)
+#' plot(st_geometry(x), col = "red", lwd =2, add = TRUE, pch = 19, cex = 2)
+#'
+#' }
 get_mnhn <- function(
     x,
     key,
@@ -15,9 +44,10 @@ get_mnhn <- function(
   }
 
   if (length(key) != 1) {
-    cli::cli_abort(
-      "{.arg key} should be length one not {.val {length(key)}}."
-    )
+    cli::cli_abort(c(
+      "x" = "{.arg key} must contain exactly one element.",
+      "i" = "You supplied {length(key)}."
+    ))
   }
 
   if (!key %in% get_keys("mnhn")){
@@ -73,10 +103,40 @@ get_mnhn <- function(
     spatial_filter = "intersects"
   ) |> suppressWarnings() |> suppressMessages()
 
+  f <- sf::st_transform(f, 2154)
 
   return(invisible(f))
 }
 
+#' Download MNHN vector layers for a Sequoia project
+#'
+#' Downloads one or several vector layers from the IGN WFS service
+#' for `mnhn` layer(s) of a Sequoia project.
+#'
+#' This function is a convenience wrapper looping over [get_mnhn()], allowing
+#' the user to download all products in one call and automatically write them
+#' to the project directory using [seq_write()].
+#'
+#' @inheritParams get_mnhn
+#' @inheritParams seq_write
+#'
+#' @param key `character`; List of MNHN layer identifiers to download. If not
+#' provided, the function uses `get_keys("mnhn")` to automatically select all
+#' MNHN layers defined in the Sequoia configuration (`inst/config/seq_layers.yaml`)
+#'
+#' @details
+#' For each value in `key`, the function attempts to query the corresponding
+#' MNHN layer using [get_mnhn()].
+#'
+#' - If the layer contains features, it is written to the project directory
+#'   via [seq_write()] and recorded as a successful download.
+#' - If the layer contains no features, it is skipped and marked
+#'   as empty.
+#'
+#' @return A named list of file paths written by [seq_write()], one per layer.
+#'
+#' @seealso [get_mnhn()], [seq_write()]
+#'
 seq_mnhn <- function(
     dirname = ".",
     buffer = 500,
@@ -85,11 +145,11 @@ seq_mnhn <- function(
     overwrite = FALSE){
 
   # read matrice
-  parca <- read_sf(get_path("v.seq.parca.poly"))
+  parca <- read_sf(get_path("v.seq.parca.poly", dirname = dirname))
 
   pb <- cli::cli_progress_bar(
     format = "{cli::pb_spin} Querying MNHN layer: {.val {k}} | [{cli::pb_current}/{cli::pb_total}]",
-    total  = length(key)
+    total = length(key)
   )
 
   quiet <- function(expr) {
@@ -101,11 +161,15 @@ seq_mnhn <- function(
   empty <- character()
   path <- list()
   for (k in key) {
-    cli::cli_progress_update(id = pb)
+
+    if (verbose) {cli::cli_progress_update(id = pb)}
+
+    # f mean feature in this context
     f <- quiet(get_mnhn(parca, k, buffer = buffer))
     if (!is.null(f)) {
       valid <- c(valid, k)
-      f_path <- seq_write(f, key, dirname, verbose = FALSE, overwrite = overwrite)
+      seq_key <- sprintf("v.mnhn.%s.poly", k)
+      f_path <- seq_write(f, seq_key, dirname, verbose = FALSE, overwrite = overwrite)
       path <- c(path, f_path)
     } else {
       empty <- c(empty, k)
@@ -113,12 +177,14 @@ seq_mnhn <- function(
   }
   cli::cli_progress_done(id = pb)
 
-  if (length(valid) > 0) {
-    cli::cli_alert_success(
-      "{length(valid)} non-empty layer{?s} found: {.val {valid}}"
-    )
-  } else {
-    cli::cli_warn("All layers are empty.")
+  if (verbose){
+    if (length(valid) > 0) {
+      cli::cli_alert_success(
+        "{length(valid)} non-empty layer{?s} found: {.val {valid}}"
+      )
+    } else {
+      cli::cli_warn("All layers are empty.")
+    }
   }
 
   return(path)
