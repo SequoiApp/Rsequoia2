@@ -17,7 +17,13 @@ test_that("get_ortho() works with real API (local only)", {
   skip_if_offline()
 
   p <- sf::st_sfc(sf::st_point(c(-4.372746579180652, 47.79820761331345)), crs = 4326)
-  ortho <- get_ortho(p, type = "rgb", buffer = 10, zoom = 7, crs = 2154)
+
+  quiet <- function(expr) {
+    utils::capture.output(result <- suppressMessages(suppressWarnings(expr)))
+    result
+  }
+
+  ortho <- quiet(get_ortho(p, type = "rgb", buffer = 10, zoom = 7, crs = 2154))
 
   expect_s4_class(ortho, "SpatRaster")
   expect_true(terra::ncell(ortho) > 0)

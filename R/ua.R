@@ -63,9 +63,6 @@ ua_check_idu <- function(ua, parca, verbose = FALSE) {
 #'
 #' @return Updated `ua` object.
 #'
-#' @importFrom sf st_drop_geometry
-#' @importFrom cli cli_alert_warning cli_li cli_alert_success
-#'
 #' @export
 ua_check_area <- function(ua, parca, verbose = FALSE) {
 
@@ -75,7 +72,7 @@ ua_check_area <- function(ua, parca, verbose = FALSE) {
 
   # Drop geometry and keep only needed PARCA fields
   parca_tab <- parca |>
-    st_drop_geometry() |>
+    sf::st_drop_geometry() |>
     subset(select = c(idu, surf_cad))
 
   # Match UA rows to PARCA rows
@@ -129,11 +126,11 @@ ua_generate_ug <- function(
     verbose = TRUE
     ){
 
-  # Field names from YAML
   ug_ua <- seq_field("ug")$name
   fields <- vapply(ug_keys, function(k) seq_field(k)$name, character(1))
 
-  # Clean/pad each column (vectorized)
+  # RMQ: Used to avoid bad filtering (ex : 1, 10, 2, 3 VS 01, 02, 03, 10)
+  # Clean/pad each column
   cleaned <- lapply(fields, function(f) {
     x <- ua[[f]]
     # Replace NA with "00", pad numeric strings, keep letters as is

@@ -18,7 +18,7 @@ test_that("seq_write() writes raster layers correctly", {
   m <- create_matrice(tmp, "MY_TEST", verbose = F, overwrite = T)
 
   r <- rast(nrows=5, ncols=5, vals=1:25)
-  seq_write(r, "r.irc", tmp)
+  seq_write(r, "r.ortho.irc", tmp)
   r_path <- file.path(tmp, "MY_TEST_IRC.tif")
   on.exit(unlink(c(r_path, m)))
 
@@ -49,11 +49,11 @@ test_that("seq_write() overwrite raster properly correctly", {
 
   r <- rast(nrows=5, ncols=5, vals=1:25)
   r_path <- file.path(tmp, "MY_TEST_IRC.tif")
-  seq_write(r, "r.irc", tmp)
+  seq_write(r, "r.ortho.irc", tmp)
 
   on.exit(unlink(c(r_path, m)))
 
-  expect_silent(seq_write(r, "r.irc", tmp, overwrite = TRUE))
-  expect_warning(seq_write(r, "r.irc", tmp, overwrite = FALSE))
+  expect_silent(seq_write(r, "r.ortho.irc", tmp, overwrite = TRUE))
+  expect_warning(seq_write(r, "r.ortho.irc", tmp, overwrite = FALSE))
 
 })

@@ -1,11 +1,4 @@
-get_inpn_keys <- function(){
-  cfg_path <- system.file("config/seq_layers.yaml", package = "Rsequoia2")
-  cfg <- yaml::read_yaml(cfg_path)
-  inpn_key <- grepv("inpn", names(cfg))
-  inpn_reduce_key <- sapply(strsplit(inpn_key, "\\."), `[`, 3)
 
-  return(inpn_reduce_key)
-}
 
 get_inpn <- function(
     x,
@@ -27,10 +20,10 @@ get_inpn <- function(
     )
   }
 
-  if (!key %in% get_inpn_keys()){
+  if (!key %in% get_keys("inpn")){
     cli::cli_abort(c(
       "x" = "{.arg key} {.val {key}} isn't valid.",
-      "i" = "Run {.run Rsequoia2::get_inpn_keys()} for available layers."
+      "i" = "Run {.run Rsequoia2::get_keys()} for available layers."
     ))
   }
 
@@ -84,7 +77,7 @@ seq_inpn <- function(
 
   # read matrice
   parca <- read_sf(get_path("v.seq.parca.poly"))
-  keys <- get_inpn_keys()
+  keys <- get_keys("inpn")
 
   pb <- cli::cli_progress_bar(
     format = "{cli::pb_bar} {.val {key}} | [{pb_current}/{pb_total}]",

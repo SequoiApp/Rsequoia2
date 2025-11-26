@@ -132,7 +132,7 @@ seq_ortho <- function(
 
     path <- seq_write(
       r,
-      key = switch(type, "irc" = "r.irc", "rgb" = "r.rgb"),
+      key = switch(type, "irc" = "r.ortho.irc", "rgb" = "r.rgb"),
       dirname = dirname,
       overwrite = overwrite,
       verbose = verbose

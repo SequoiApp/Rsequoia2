@@ -34,13 +34,13 @@ test_that("seq_read() reads raster layers correctly", {
 
   terra::writeRaster(r, r_path, overwrite = TRUE)
 
-  r_read <- seq_read("r.irc", tmp)
+  r_read <- seq_read("r.ortho.irc", tmp)
 
   expect_s4_class(r_read, "SpatRaster")
   expect_equal(dim(r), dim(r_read))
 
   expect_message(
-    seq_read("r.irc", tmp, verbose = TRUE),
+    seq_read("r.ortho.irc", tmp, verbose = TRUE),
     "Loaded raster layer"
   )
 

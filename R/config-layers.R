@@ -92,3 +92,97 @@ get_path <- function(key, dirname = ".", verbose = FALSE){
 
   return(path)
 }
+
+#' Helper to find layer configuration keys
+#'
+#' This helper function searches for keys defined in `inst/config/seq_layers.yaml`.
+#' Keys are matched using a regular-expression `pattern`.
+#'
+#'
+#' @param pattern `character` or `NULL`; regular-expression pattern used to
+#' filter keys. If `NULL`, all keys defined in the configuration are returned.
+#' @param reduce `logical`; if `TRUE` (default), reduce each matching key.
+#' @param filepath `character` or `NULL`; optional override for the path to the
+#' YAML configuration file. Mainly used for testing purposes.
+#'
+#' @details
+#' **Reduction process**
+#' Configuration keys typically follow a three/four-part structure such as
+#' `"v.seq.parca.poly"` or `"r.ortho.irc"`. When `reduce = TRUE`, each key is
+#' split on `"."` and only the third element is returned (s). This provides a
+#' short, semantic identifier for internal use.
+#'
+#' ```
+#' "v.seq.parca.poly" → "parca"
+#' "r.ortho.irc"      → "irc"
+#' ```
+#'
+#' If multiple full keys reduce to the same name, the function aborts to
+#' prevent ambiguity.
+#'
+#' @return
+#' A character vector of matching keys.
+#' If `reduce = TRUE`, the returned keys are the reduced forms.
+#' If `pattern = NULL`, all configuration keys are returned.
+#'
+#' @examples
+#' \dontrun{
+#' # List all available layer keys
+#' get_keys()
+#'
+#' # List full keys matching "parca"
+#' get_keys("parca", reduce = FALSE)
+#'
+#' # Return reduced keys (3rd element of each dotted key)
+#' get_keys("parca", reduce = TRUE)
+#' }
+#'
+#' @export
+get_keys <- function(pattern = NULL, reduce = TRUE, filepath = NULL){
+
+  # Resolve config path
+  if (is.null(filepath)) {
+    filepath <- system.file("config/seq_layers.yaml", package = "Rsequoia2")
+  }
+
+  cfg <- yaml::read_yaml(filepath)
+
+  # Return all keys if no pattern is provided
+  if (is.null(pattern)){
+    return(names(cfg))
+  }
+
+  # Filter matching keys
+  keys <- grep(pattern, names(cfg), value = TRUE)
+
+  # No match → informative abort
+  if (length(keys) == 0){
+    red_warn <- cli::combine_ansi_styles("red", "bold")
+    cli::cli_abort(c(
+      "x" = "{.arg pattern} {.val {pattern}} does not exist.",
+      "i" = "Valid keys are defined in {.path inst/config/seq_layers.yaml}.",
+      "!" = red_warn("This file is part of the package and must not be modified.")
+    ))
+  }
+
+  # Reduction logic
+  if (reduce) {
+
+    reduced <- vapply(strsplit(keys, "\\."), `[`, character(1), 3)
+
+    # Detect duplicates after reduction
+    if (anyDuplicated(reduced)) {
+      dupes <- unique(reduced[duplicated(reduced)])
+      cli::cli_abort(c(
+        "x" = "Key reduction produced duplicated names.",
+        "!" = "Duplicated reduced names: {.val {dupes}}",
+        "i" = "Disable with {.code reduce = FALSE}."
+      ))
+    }
+
+    return(reduced)
+  }
+
+  # If reduce = FALSE
+  return(keys)
+}
