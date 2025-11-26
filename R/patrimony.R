@@ -87,26 +87,47 @@ get_patrimony <- function(
 seq_patrimony <- function(
     dirname = ".",
     buffer = 500,
+    key = get_keys("pat"),
     verbose = TRUE,
     overwrite = FALSE){
 
   # read matrice
-  parca <- read_sf(get_path("v.seq.parca.poly"))
-  keys <- get_pat_keys()
+  parca <- read_sf(get_path("v.seq.parca.poly", dirname = dirname))
 
   pb <- cli::cli_progress_bar(
-    format = "{cli::pb_bar} {.val {key}} | [{pb_current}/{pb_total}]",
-    total = length(keys)
+    format = "{cli::pb_spin} Querying MNHN layer: {.val {k}} | [{cli::pb_current}/{cli::pb_total}]",
+    total = length(key)
   )
 
-  time_start <- Sys.time()
-  res <- lapply(keys, function(key){
-    cli::cli_progress_update(id = pb)
-    get_pat(parca, key, buffer = buffer)
-  })
+  valid <- character()
+  empty <- character()
+  path <- list()
+  for (k in key) {
+
+    if (verbose) {cli::cli_progress_update(id = pb)}
+
+    # f mean feature in this context
+    f <- get_patrimony(parca, k, buffer = buffer)
+    if (!is.null(f)) {
+      valid <- c(valid, k)
+      seq_key <- sprintf("v.pat.%s.poly", k)
+      f_path <- seq_write(f, seq_key, dirname, verbose = FALSE, overwrite = overwrite)
+      path <- c(path, f_path)
+    } else {
+      empty <- c(empty, k)
+    }
+  }
   cli::cli_progress_done(id = pb)
-  cli::cli_alert_success(
-    "Downloaded {length(keys)} PAT layers in {Sys.time() - time_start}."
-  )
 
+  if (verbose){
+    if (length(valid) > 0) {
+      cli::cli_alert_success(
+        "{length(valid)} non-empty layer{?s} found: {.val {valid}}"
+      )
+    } else {
+      cli::cli_warn("All layers are empty.")
+    }
+  }
+
+  return(path)
 }
