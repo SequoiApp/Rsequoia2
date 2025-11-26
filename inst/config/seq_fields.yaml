@@ -1,12 +1,12 @@
 identifiant:
   name: "IDENTIFIANT"
-  alias: ["foret", "id"]
+  alias: ["ADRESSE", "FORET", "foret", "id"]
   class: "character"
   definition: "Identifiant de la forêt, génrélament identique au nom"
 
 proprietaire:
   name: "PROPRIETAIRE"
-  alias: ["prop", "owner", "proprio", "proprietaire"]
+  alias: ["PROP", "prop", "owner", "proprio", "proprietaire"]
   class: "character"
   definition: "Nom du propriétaire"
 
@@ -80,7 +80,7 @@ numero:
 
 lieu_dit:
   name: "LIEU_DIT"
-  alias: ["lieu_dit"]
+  alias: ["LIEUDIT", "lieu_dit"]
   class: "character"
   definition: "Lieu-dit cadastral"
 
@@ -183,7 +183,7 @@ taillis:
   class: "character"
   definition: "Taillis ou sous-étage"
 
-rege:
+regeneration:
   name: "REG_DSCR"
   class: "character"
   definition: "Régénération"
