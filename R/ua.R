@@ -188,17 +188,20 @@ ua_generate_area <- function(ua, verbose = TRUE) {
 
 #' Check management unit (UG) consistency in the UA sf object
 #'
-#' A management unit must (UG) correspond to a single description. Therefore,
+#' A management unit must (UG) can only have a single description. Therefore,
 #' all units of analysis within the same UG must include the same descriptive
 #' elements.
 #' This function analyzes the consistency of the descriptive elements for each
 #' management unit, and marks each row with a logical flag `ug_valid`
-#' indicating whether it is consistent with the majority description of the UG.
+#' indicating whether it is consistent with the dominant description of the UG.
+#'
+#' The dominant description corresponds to the one with the largest surface
+#' area share.
 #'
 #' @param ua `sf` object containing analysis units;
 #' with at least the UG identifier field and relevant attribute fields.
 #' @param ug_keys `character` vector of attribute keys used to define UG
-#' descriptions.
+#' descriptions. All attributes must be the same for one UG.
 #' @param verbose `logical` If `TRUE`, display progress messages.
 #'
 #' @return An `sf` object identical to `ua`, with an additional logical column
