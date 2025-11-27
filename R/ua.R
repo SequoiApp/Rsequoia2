@@ -188,11 +188,12 @@ ua_generate_area <- function(ua, verbose = TRUE) {
 
 #' Check management unit (UG) consistency in the UA sf object
 #'
-#' Check the internal consistency of management units (UG) in UA by
-#' comparing the summed corrected surface (`surf_cor`) for each unique
-#' combination of UG attributes against the total surface of the UG.
-#' Marks each row with a logical flag `ug_valid` indicating whether it is
-#' consistent with the majority description of the UG.
+#' A management unit must (UG) correspond to a single description. Therefore,
+#' all units of analysis within the same UG must include the same descriptive
+#' elements.
+#' This function analyzes the consistency of the descriptive elements for each
+#' management unit, and marks each row with a logical flag `ug_valid`
+#' indicating whether it is consistent with the majority description of the UG.
 #'
 #' @param ua `sf` object containing analysis units;
 #' with at least the UG identifier field and relevant attribute fields.
@@ -248,7 +249,7 @@ ua_check_ug <- function(ua,
 
 #' Clean management units (UG) by correcting minor inconsistencies in the UA sf object
 #'
-#' Detects and optionally corrects minor inconsistencies within management units
+#' Detects and corrects minor inconsistencies within management units
 #' (UG) in UA. Lines with small surfaces relative to their UG are updated
 #' to match the dominant description.
 #'
@@ -260,8 +261,9 @@ ua_check_ug <- function(ua,
 #' @param rtol Relative tolerance for surface correction within a UG (default 0.10).
 #' @param verbose `logical` If `TRUE`, display progress messages.
 #'
-#' @return An `sf` object identical to `ua`, with minor inconsistent lines corrected
-#' and an additional logical column `ug_valid` indicating UG consistency.
+#' @return An `sf` object identical to `ua`, with minor inconsistent lines
+#' corrected and an additional logical column `ug_valid` indicating UG
+#' consistency.
 #'
 #' @details
 #' The function works by:
@@ -360,7 +362,7 @@ ua_clean_ug <- function(ua,
 #' - cadastral areas checked and corrected,
 #' - management unit fields generated,
 #' - corrected cadastral areas added,
-#' - management unit consistency validated.
+#' - management unit consistency checked and corrected.
 #'
 #' @export
 ua_to_ua <- function(ua, parca, verbose = TRUE){
@@ -376,8 +378,7 @@ ua_to_ua <- function(ua, parca, verbose = TRUE){
   ua <- ua_check_area(ua, parca, verbose = verbose) |>
     ua_generate_ug(verbose = verbose) |>
     ua_generate_area() |>
-    ua_clean_ug(verbose = verbose) |>
-    seq_normalise(ua, "ua")
+    ua_clean_ug(verbose = verbose)
 
   # Warn if UG problems remain
   if (isFALSE(all(ua$ug_valid))) {
