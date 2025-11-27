@@ -18,11 +18,6 @@ test_that("get_mnhn() works with real API (local only)", {
 
   x <- sf::st_sfc(sf::st_point(c(-4.372746579180652, 47.79820761331345)), crs = 4326)
 
-  quiet <- function(expr) {
-    utils::capture.output(result <- suppressMessages(suppressWarnings(expr)))
-    result
-  }
-
   ospar <- quiet(get_mnhn(x, key = "ospar", buffer = 500))
 
   expect_s3_class(ospar, "sf")

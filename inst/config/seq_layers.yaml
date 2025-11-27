@@ -55,8 +55,8 @@ v.gpu.line:  { name: "GPU_line",  ext: "geojson" }
 v.gpu.poly:  { name: "GPU_poly",  ext: "geojson" }
 
 # ARS
-v.ars.point: { name: "ARS_point", ext: "geojson" }
-v.ars.poly:  { name: "ARS_poly", ext: "geojson" }
+v.ars.perimetre.poly: { name: "ARS_PERIMETRES_poly", ext: "geojson" }
+v.ars.captage.point:  { name: "ARS_CAPTAGE_point", ext: "geojson" }
 
 # INFRA
 v.infra.point: { name: "INFRA_point", ext: "geojson" }

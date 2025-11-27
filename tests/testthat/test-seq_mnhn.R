@@ -1,4 +1,4 @@
-test_that("seq_mnhn() works with mocked get_parca()", {
+test_that("seq_mnhn() works with mocked get_mnhn()", {
 
   d <- tempdir()
 

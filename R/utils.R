@@ -13,7 +13,6 @@ pad_left <- function(x, width, fill = "0") {
   gsub(" ", fill, sprintf(paste0("%", width, "s"), as.character(x)))
 }
 
-
 #' Split IDU
 #'
 #' Internal helper used to split idu
@@ -38,4 +37,16 @@ idu_split <- function(idu) {
     insee    = insee,
     stringsAsFactors = FALSE
   )
+}
+#' Force silent function
+#'
+#' Internal helper used to silent function
+#'
+#' @param expr Code to capture
+#'
+#' @keywords internal
+#'
+quiet <- function(expr) {
+  utils::capture.output(result <- suppressMessages(suppressWarnings(expr)))
+  result
 }

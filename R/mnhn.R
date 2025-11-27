@@ -8,7 +8,6 @@
 #' @param key `character`; Layer to download. Must be one of from `get_keys("mnhn")`
 #' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
 #' the download area.
-#' @param overwrite `logical`; If `TRUE`, file is overwritten.
 #' @param verbose `logical`; If `TRUE`, display messages.
 #'
 #' @return `sf` object from `sf` package
@@ -33,7 +32,6 @@ get_mnhn <- function(
     x,
     key,
     buffer = 500,
-    overwrite = FALSE,
     verbose = TRUE){
 
   if (!inherits(x, c("sf", "sfc"))){
@@ -99,11 +97,12 @@ get_mnhn <- function(
   f <- happign::get_wfs(
     x_buff,
     layer = layer,
-    overwrite = overwrite,
     spatial_filter = "intersects"
   ) |> suppressWarnings() |> suppressMessages()
 
-  f <- sf::st_transform(f, 2154)
+  if (!(is.null(f))){
+    f <- sf::st_transform(f, 2154)
+  }
 
   return(invisible(f))
 }
@@ -151,11 +150,6 @@ seq_mnhn <- function(
     format = "{cli::pb_spin} Querying MNHN layer: {.val {k}} | [{cli::pb_current}/{cli::pb_total}]",
     total = length(key)
   )
-
-  quiet <- function(expr) {
-    utils::capture.output(result <- suppressMessages(suppressWarnings(expr)))
-    result
-  }
 
   valid <- character()
   empty <- character()
