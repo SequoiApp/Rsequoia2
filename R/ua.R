@@ -12,7 +12,6 @@ parca_to_ua <- function(parca) {
 
 #' Check cadastral IDU consistency between UA and PARCA sf objects
 #'
-
 #' @param ua `sf` Object from [Rsequoia2::parca_to_ua()] containing analysis
 #' units
 #' @inheritParams parca_to_ua
@@ -343,4 +342,47 @@ ua_clean_ug <- function(ua,
   ua_corrected <- ua_check_ug(ua_corrected, ug_keys = ug_keys, verbose = verbose)
 
   return(ua_corrected)
+}
+
+#' Check and update UA consistency with cadastral PARCA data
+#'
+#' This function verifies and updates the consistency of analysis units (UA)
+#' using cadastral parcel data (PARCA). It checks matching IDUs, validates areas,
+#' generates management units (UG), computes corrected areas, and ensures the
+#' internal consistency of the resulting UA object.
+#'
+#' @param ua `sf` object containing analysis units.
+#' @param parca `sf` object, typically produced by [Rsequoia2::seq_parca()],
+#'   containing cadastral parcels.
+#'
+#' @return An updated `sf` object identical to `ua`, but with:
+#' - IDUs checked against PARCA,
+#' - cadastral areas checked and corrected,
+#' - management unit fields generated,
+#' - corrected cadastral areas added,
+#' - management unit consistency validated.
+#'
+#' @export
+ua_to_ua <- function(ua, parca, verbose = TRUE){
+
+  # Check ua
+  idu_valid <- ua_check_idu(ua, parca, verbose = verbose)
+  if (isFALSE(idu_valid)) {
+    cli::cli_warn("The IDUs of the PARCA layer must be found in the UA layer.")
+    return(ua)
+  }
+
+  # Compute ua
+  ua <- ua_check_area(ua, parca, verbose = verbose) |>
+    ua_generate_ug(verbose = verbose) |>
+    ua_generate_area() |>
+    ua_clean_ug(verbose = verbose) |>
+    seq_normalise(ua, "ua")
+
+  # Warn if UG problems remain
+  if (isFALSE(all(ua$ug_valid))) {
+    cli::cli_warn("You need to correct the inconsistent units in the UA layer.")
+  }
+
+  ua
 }
