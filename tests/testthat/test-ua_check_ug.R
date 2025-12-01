@@ -1,5 +1,4 @@
 test_that("ua_check_ug marks consistent UG correctly", {
-  skip_if_not_installed("sf")
 
   ua <- sf::st_sf(
     IDU = c("A1", "A2"),
@@ -15,7 +14,6 @@ test_that("ua_check_ug marks consistent UG correctly", {
 })
 
 test_that("ua_check_ug detects inconsistent UG", {
-  skip_if_not_installed("sf")
 
   ua <- sf::st_sf(
     IDU = c("A1", "A2"),

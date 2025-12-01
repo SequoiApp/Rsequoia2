@@ -197,8 +197,6 @@ ua_generate_area <- function(ua, verbose = TRUE) {
 #'
 #' @param ua `sf` object containing analysis units;
 #' with at least the UG identifier field and relevant attribute fields.
-#' @param ug_keys `character` vector of attribute keys used to define UG
-#' descriptions.
 #' @param verbose `logical` If `TRUE`, display progress messages.
 #'
 #' @return An `sf` object identical to `ua`, with an additional logical column
@@ -206,31 +204,45 @@ ua_generate_area <- function(ua, verbose = TRUE) {
 #'
 #' @export
 ua_check_ug <- function(ua,
-                        ug_keys = c("peuplement", "richesse", "stade", "annee", "structure",
-                                    "ess1", "ess1_pct", "ess2", "ess2_pct", "ess3", "ess3_pct",
-                                    "taillis", "regeneration", "amenagement"),
                         verbose = TRUE) {
 
+  # What mean desc ?
+
+  desc_keys <-  c(
+    "peuplement", "richesse", "stade",
+    "annee", "structure",
+    "ess1", "ess1_pct",
+    "ess2", "ess2_pct",
+    "ess3", "ess3_pct",
+    "taillis", "regeneration", "amenagement"
+  )
+
   # Resolve field names
-  ug_field   <- seq_field("ug")$name
-  key_fields <- vapply(ug_keys, function(k) seq_field(k)$name, character(1))
-  surf_cor   <- seq_field("surf_cor")$name
+  ug <- seq_field("ug")$name
+  surf_cor <- seq_field("surf_cor")$name
+  desc_field <- vapply(desc_keys, function(k) seq_field(k)$name, character(1))
 
   # Keep only existing fields
-  fields <- intersect(c(ug_field, key_fields), names(ua))
+  # Whatd fields ? Stand for what ?
+  fields <- intersect(c(ug, ug_fields), names(ua))
 
   # Diagnostic signature
-  desc <- apply(as.data.frame(ua)[, fields, drop = FALSE], 1, function(r) paste0(stats::na.omit(r), collapse = "|"))
+  # Whats is this for ?? UG unique identifier ?
+  desc <- apply(
+    sf::st_drop_geometry(ua[, fields]),
+    1,
+    function(r) paste0(stats::na.omit(r), collapse = "|")
+  )
 
   # Surface sums
   sum_by_desc <- stats::ave(ua[[surf_cor]], desc, FUN = function(x) sum(x, na.rm = TRUE))
-  sum_by_ug   <- stats::ave(ua[[surf_cor]], ua[[ug_field]], FUN = function(x) sum(x, na.rm = TRUE))
+  sum_by_ug   <- stats::ave(ua[[surf_cor]], ua[[ug]], FUN = function(x) sum(x, na.rm = TRUE))
 
   # Logical validity
   ua$ug_valid <- sum_by_desc == sum_by_ug
 
   # UG inconsistencies
-  invalid_ugs <- unique(ua[[ug_field]][!ua$ug_valid])
+  invalid_ugs <- unique(ua[[ug]][!ua$ug_valid])
   n_invalid <- length(invalid_ugs)
 
   # CLI messages

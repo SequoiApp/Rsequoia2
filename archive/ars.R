@@ -98,8 +98,8 @@ get_ars <- function(
 #'
 seq_ars <- function(
     dirname = ".",
-    buffer = 1000,
-    key = get_keys("mnhn"),
+    buffer = 500,
+    key = c("captage", "ppi", "ppr", "ppe"),
     verbose = TRUE,
     overwrite = FALSE){
 

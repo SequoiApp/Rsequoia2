@@ -41,7 +41,7 @@ seq_field <- function(field = NULL, filepath = NULL){
   if (bad_field_name){
     cli::cli_abort(c(
       "x" = "Bad {.arg field} value : {.val {field}}",
-      "i" = "Run {.run  Rsequoia2:::seq_field()} for all available fields."
+      "i" = "Run {.run  Rsequoia2::seq_field()} for all available fields."
     ))
   }
 

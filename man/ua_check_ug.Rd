@@ -4,20 +4,11 @@
 \alias{ua_check_ug}
 \title{Check management unit (UG) consistency in the UA sf object}
 \usage{
-ua_check_ug(
-  ua,
-  ug_keys = c("peuplement", "richesse", "stade", "annee", "structure", "ess1",
-    "ess1_pct", "ess2", "ess2_pct", "ess3", "ess3_pct", "taillis", "regeneration",
-    "amenagement"),
-  verbose = TRUE
-)
+ua_check_ug(ua, verbose = TRUE)
 }
 \arguments{
 \item{ua}{\code{sf} object containing analysis units;
 with at least the UG identifier field and relevant attribute fields.}
-
-\item{ug_keys}{\code{character} vector of attribute keys used to define UG
-descriptions.}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
 }

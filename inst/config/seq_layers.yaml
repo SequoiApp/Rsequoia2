@@ -14,12 +14,12 @@ r.sol.geol:   { name: "GEOL",   ext: "tif" }
 
 # SEQUOIA
 v.seq.parca.poly:  { name: "PARCA_poly",  ext: "geojson" }
-v.seq.foret.point: { name: "FORET_point", ext: "geojson" }
-v.seq.foret.line:  { name: "FORET_line",  ext: "geojson" }
-v.seq.foret.poly:  { name: "FORET_poly",  ext: "geojson" }
-v.seq.prop.point:  { name: "PROP_point",  ext: "geojson" }
-v.seq.prop.line:   { name: "PROP_line",   ext: "geojson" }
-v.seq.prop.poly:   { name: "PROP_poly",   ext: "geojson" }
+v.seq.forest.point: { name: "FORET_point", ext: "geojson" }
+v.seq.forest.line:  { name: "FORET_line",  ext: "geojson" }
+v.seq.forest.poly:  { name: "FORET_poly",  ext: "geojson" }
+v.seq.owner.point:  { name: "OWNER_point",  ext: "geojson" }
+v.seq.owner.line:   { name: "OWNER_line",   ext: "geojson" }
+v.seq.owner.poly:   { name: "OWNER_poly",   ext: "geojson" }
 v.seq.ua.poly:     { name: "UA_poly",     ext: "geojson" }
 v.seq.pf.line:     { name: "PF_line",     ext: "geojson" }
 v.seq.pf.poly:     { name: "PF_poly",     ext: "geojson" }
@@ -54,7 +54,7 @@ v.gpu.point: { name: "GPU_point", ext: "geojson" }
 v.gpu.line:  { name: "GPU_line",  ext: "geojson" }
 v.gpu.poly:  { name: "GPU_poly",  ext: "geojson" }
 
-# ARS
+# ARS - Done
 v.ars.perimetre.poly: { name: "ARS_PERIMETRES_poly", ext: "geojson" }
 v.ars.captage.point:  { name: "ARS_CAPTAGE_point", ext: "geojson" }
 
@@ -73,7 +73,7 @@ v.hydro.point: { name: "HYDRO_point", ext: "geojson" }
 v.hydro.line:  { name: "HYDRO_line",  ext: "geojson" }
 v.hydro.poly:  { name: "HYDRO_poly",  ext: "geojson" }
 
-# MNHN
+# MNHN - Done
 v.mnhn.apb.poly:        { name: "MNHN_APB_poly",        ext: "geojson"}
 v.mnhn.apg.poly:        { name: "MNHN_APG_poly",        ext: "geojson"}
 v.mnhn.aphn.poly:       { name: "MNHN_APHN_poly",       ext: "geojson"}
@@ -114,7 +114,7 @@ v.toponyme.point: { name: "TOPONYME_point", ext: "geojson" }
 # PRSF
 v.prsf.point: { name: "PRSF_point", ext: "geojson" }
 
-# TOPOGRAPHIE
+# TOPOGRAPHY
 v.topography.line: { name: "TOPOGRAPHY_line", ext: "geojson" }
 
 # ROAD
