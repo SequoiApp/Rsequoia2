@@ -12,7 +12,6 @@ parca_to_ua <- function(parca) {
 
 #' Check cadastral IDU consistency between UA and PARCA sf objects
 #'
-
 #' @param ua `sf` Object from [Rsequoia2::parca_to_ua()] containing analysis
 #' units
 #' @inheritParams parca_to_ua
@@ -189,14 +188,23 @@ ua_generate_area <- function(ua, verbose = TRUE) {
 
 #' Check management unit (UG) consistency in the UA sf object
 #'
-#' Check the internal consistency of management units (UG) in UA by
-#' comparing the summed corrected surface (`surf_cor`) for each unique
-#' combination of UG attributes against the total surface of the UG.
-#' Marks each row with a logical flag `ug_valid` indicating whether it is
-#' consistent with the majority description of the UG.
+#' A management unit must (UG) can only have a single description. Therefore,
+#' all units of analysis within the same UG must include the same descriptive
+#' elements.
+#' This function analyzes the consistency of the descriptive elements for each
+#' management unit, and marks each row with a logical flag `ug_valid`
+#' indicating whether it is consistent with the dominant description of the UG.
+#'
+#' The dominant description corresponds to the one with the largest surface
+#' area share.
 #'
 #' @param ua `sf` object containing analysis units;
 #' with at least the UG identifier field and relevant attribute fields.
+<<<<<<< HEAD
+=======
+#' @param ug_keys `character` vector of attribute keys used to define UG
+#' descriptions. All attributes must be the same for one UG.
+>>>>>>> f926ba66c5394d7e5002b69a05e80f1edac95fbb
 #' @param verbose `logical` If `TRUE`, display progress messages.
 #'
 #' @return An `sf` object identical to `ua`, with an additional logical column
@@ -261,7 +269,7 @@ ua_check_ug <- function(ua,
 
 #' Clean management units (UG) by correcting minor inconsistencies in the UA sf object
 #'
-#' Detects and optionally corrects minor inconsistencies within management units
+#' Detects and corrects minor inconsistencies within management units
 #' (UG) in UA. Lines with small surfaces relative to their UG are updated
 #' to match the dominant description.
 #'
@@ -273,8 +281,9 @@ ua_check_ug <- function(ua,
 #' @param rtol Relative tolerance for surface correction within a UG (default 0.10).
 #' @param verbose `logical` If `TRUE`, display progress messages.
 #'
-#' @return An `sf` object identical to `ua`, with minor inconsistent lines corrected
-#' and an additional logical column `ug_valid` indicating UG consistency.
+#' @return An `sf` object identical to `ua`, with minor inconsistent lines
+#' corrected and an additional logical column `ug_valid` indicating UG
+#' consistency.
 #'
 #' @details
 #' The function works by:
@@ -355,4 +364,46 @@ ua_clean_ug <- function(ua,
   ua_corrected <- ua_check_ug(ua_corrected, ug_keys = ug_keys, verbose = verbose)
 
   return(ua_corrected)
+}
+
+#' Check and update UA consistency with cadastral PARCA data
+#'
+#' This function verifies and updates the consistency of analysis units (UA)
+#' using cadastral parcel data (PARCA). It checks matching IDUs, validates areas,
+#' generates management units (UG), computes corrected areas, and ensures the
+#' internal consistency of the resulting UA object.
+#'
+#' @param ua `sf` object containing analysis units.
+#' @param parca `sf` object, typically produced by [Rsequoia2::seq_parca()],
+#'   containing cadastral parcels.
+#'
+#' @return An updated `sf` object identical to `ua`, but with:
+#' - IDUs checked against PARCA,
+#' - cadastral areas checked and corrected,
+#' - management unit fields generated,
+#' - corrected cadastral areas added,
+#' - management unit consistency checked and corrected.
+#'
+#' @export
+ua_to_ua <- function(ua, parca, verbose = TRUE){
+
+  # Check ua
+  idu_valid <- ua_check_idu(ua, parca, verbose = verbose)
+  if (isFALSE(idu_valid)) {
+    cli::cli_warn("The IDUs of the PARCA layer must be found in the UA layer.")
+    return(ua)
+  }
+
+  # Compute ua
+  ua <- ua_check_area(ua, parca, verbose = verbose) |>
+    ua_generate_ug(verbose = verbose) |>
+    ua_generate_area() |>
+    ua_clean_ug(verbose = verbose)
+
+  # Warn if UG problems remain
+  if (isFALSE(all(ua$ug_valid))) {
+    cli::cli_warn("You need to correct the inconsistent units in the UA layer.")
+  }
+
+  ua
 }
