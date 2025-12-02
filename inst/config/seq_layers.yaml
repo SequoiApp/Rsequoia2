@@ -13,18 +13,19 @@ r.img.scan25: { name: "SCAN25", ext: "tif" }
 r.sol.geol:   { name: "GEOL",   ext: "tif" }
 
 # SEQUOIA
-v.seq.parca.poly:  { name: "PARCA_poly",  ext: "geojson" }
-v.seq.forest.point: { name: "FORET_point", ext: "geojson" }
-v.seq.forest.line:  { name: "FORET_line",  ext: "geojson" }
-v.seq.forest.poly:  { name: "FORET_poly",  ext: "geojson" }
-v.seq.owner.point:  { name: "OWNER_point",  ext: "geojson" }
-v.seq.owner.line:   { name: "OWNER_line",   ext: "geojson" }
-v.seq.owner.poly:   { name: "OWNER_poly",   ext: "geojson" }
-v.seq.ua.poly:     { name: "UA_poly",     ext: "geojson" }
-v.seq.pf.line:     { name: "PF_line",     ext: "geojson" }
-v.seq.pf.poly:     { name: "PF_poly",     ext: "geojson" }
-v.seq.sspf.poly:   { name: "SSPF_poly",   ext: "geojson" }
-v.seq.ame.poly:    { name: "AME_poly",    ext: "geojson" }
+v.seq.parca.poly:   { name: "SEQ_PARCA_poly",  ext: "geojson" }
+v.seq.forest.point: { name: "SEQ_FORET_point", ext: "geojson" }
+v.seq.forest.line:  { name: "SEQ_FORET_line",  ext: "geojson" }
+v.seq.forest.poly:  { name: "SEQ_FORET_poly",  ext: "geojson" }
+v.seq.owner.point:  { name: "SEQ_OWNER_point", ext: "geojson" }
+v.seq.owner.line:   { name: "SEQ_OWNER_line",  ext: "geojson" }
+v.seq.owner.poly:   { name: "SEQ_OWNER_poly",  ext: "geojson" }
+v.seq.ua.poly:      { name: "SEQ_UA_poly",     ext: "geojson" }
+v.seq.pf.line:      { name: "SEQ_PF_line",     ext: "geojson" }
+v.seq.pf.poly:      { name: "SEQ_PF_poly",     ext: "geojson" }
+v.seq.sspf.poly:    { name: "SEQ_SSPF_poly",   ext: "geojson" }
+v.seq.sspf.line:    { name: "SEQ_SSPF_line",   ext: "geojson" }
+v.seq.ame.poly:     { name: "SEQ_AME_poly",    ext: "geojson" }
 
 # COG - STAND-BY
 v.cog.com7500.point:  { name: "COM_point",  ext: "geojson" }

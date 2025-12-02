@@ -186,3 +186,39 @@ get_keys <- function(pattern = NULL, reduce = TRUE, filepath = NULL){
   # If reduce = FALSE
   return(keys)
 }
+
+#' Load layer config from the Sequoia configuration
+#'
+#' Internal helper used to determine layer info like name or extension are stored
+#' in `inst/config/seq_layerss.yaml`.
+#'
+#' @inheritParams get_keys
+#'
+#' @return A list describing matched layer
+#'
+#' @examples
+#' \dontrun{
+#' # List all available tables
+#' names(seq_table())
+#'
+#' # Load field keys for the "parcelle" table
+#' seq_table("parca")
+#' }
+#'
+seq_layer <- function(pattern = NULL, filepath = NULL){
+  # Use test path if provided
+  if (is.null(filepath)) {
+    filepath <- system.file("config/seq_layers.yaml", package = "Rsequoia2")
+  }
+
+  cfg <- yaml::read_yaml(filepath)
+
+  if (is.null(pattern)){
+    return(cfg)
+  }
+
+  key <- get_keys(pattern, reduce = FALSE)
+
+  return(cfg[[key]])
+
+}
