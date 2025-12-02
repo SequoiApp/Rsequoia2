@@ -4,35 +4,23 @@
 \alias{ua_clean_ug}
 \title{Clean management units (UG) by correcting minor inconsistencies in the UA sf object}
 \usage{
-ua_clean_ug(
-  ua,
-  ug_keys = c("peuplement", "richesse", "stade", "annee", "structure", "ess1",
-    "ess1_pct", "ess2", "ess2_pct", "ess3", "ess3_pct", "taillis", "regeneration",
-    "amenagement"),
-  atol = 0.5,
-  rtol = 0.1,
-  verbose = TRUE
-)
+ua_clean_ug(ua, atol = 0.5, rtol = 0.1)
 }
 \arguments{
 \item{ua}{\code{sf} object containing analysis units;
 with at least the UG identifier field and relevant attribute fields.}
 
-\item{ug_keys}{\code{character} vector of attribute keys used to define UG
-descriptions.}
-
 \item{atol}{Absolute tolerance for surface correction (default 0.50 ha).}
 
-\item{rtol}{Relative tolerance for surface correction within a UG (default 0.10).}
-
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+\item{rtol}{Relative tolerance for surface correction within a UG (default 10\%).}
 }
 \value{
-An \code{sf} object identical to \code{ua}, with minor inconsistent lines corrected
-and an additional logical column \code{ug_valid} indicating UG consistency.
+An \code{sf} object identical to \code{ua}, with minor inconsistent lines
+corrected and an additional logical column \code{ug_valid} indicating UG
+consistency.
 }
 \description{
-Detects and optionally corrects minor inconsistencies within management units
+Detects and corrects minor inconsistencies within management units
 (UG) in UA. Lines with small surfaces relative to their UG are updated
 to match the dominant description.
 }

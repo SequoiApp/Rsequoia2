@@ -40,7 +40,7 @@ seq_boundaries <- function(
     overwrite = FALSE){
 
   identifiant <- seq_field("identifiant")$name
-  ownerrietaire <- seq_field("ownerrietaire")$name
+  owner <- seq_field("owner")$name
   surf_cad <- seq_field("surf_cad")$name
 
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
@@ -67,8 +67,8 @@ seq_boundaries <- function(
   f_point <- seq_write(forest, "v.seq.forest.point", overwrite = overwrite, verbose = verbose)
 
   # Owner boudaries
-  by_id_owner <- list(parca[[identifiant]], parca[[ownerrietaire]]) |>
-    setNames(c(identifiant, ownerrietaire))
+  by_id_owner <- list(parca[[identifiant]], parca[[owner]]) |>
+    setNames(c(identifiant, owner))
 
   owner <- aggregate(
     parca[surf_cad],

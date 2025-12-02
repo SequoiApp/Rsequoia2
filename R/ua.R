@@ -98,7 +98,7 @@ ua_check_area <- function(ua, parca, verbose = FALSE) {
     cli_alert_success("No cadastral area discrepancies detected.")
   }
 
-  return(ua)
+  return(invisible(ua))
 }
 
 #' Create management unit field (UG) in the UA sf object
@@ -169,6 +169,8 @@ ua_generate_area <- function(ua, verbose = TRUE) {
 
   # Compute correction factor per cadastral ID
   sum_sig <- stats::ave(ua[[surf_sig]], ua[[idu]], FUN = sum)
+  # Avoid edge case when sum_sig == 0
+  sum_sig <- replace(sum_sig, sum_sig == 0, 1)
   coeff <- ua[[surf_sig]] / sum_sig
 
   # Compute provisional corrected surfaces
@@ -186,6 +188,23 @@ ua_generate_area <- function(ua, verbose = TRUE) {
   return(invisible(ua))
 }
 
+#' Retrieve description field names
+#'
+#' Returns the list of UA description fields as defined in the configuration.
+#' This is an internal helper used to keep `ua_*()` functions consistent.
+#'
+#' @return A character vector of field names.
+#' @keywords internal
+#' @noRd
+seq_desc_fields <- function() {
+  keys <- c(
+    "peuplement","richesse","stade","annee","structure",
+    "ess1","ess1_pct","ess2","ess2_pct","ess3","ess3_pct",
+    "taillis","regeneration","amenagement"
+  )
+  vapply(keys, function(k) seq_field(k)$name, character(1))
+}
+
 #' Check management unit (UG) consistency in the UA sf object
 #'
 #' A management unit must (UG) can only have a single description. Therefore,
@@ -200,11 +219,6 @@ ua_generate_area <- function(ua, verbose = TRUE) {
 #'
 #' @param ua `sf` object containing analysis units;
 #' with at least the UG identifier field and relevant attribute fields.
-<<<<<<< HEAD
-=======
-#' @param ug_keys `character` vector of attribute keys used to define UG
-#' descriptions. All attributes must be the same for one UG.
->>>>>>> f926ba66c5394d7e5002b69a05e80f1edac95fbb
 #' @param verbose `logical` If `TRUE`, display progress messages.
 #'
 #' @return An `sf` object identical to `ua`, with an additional logical column
@@ -214,57 +228,27 @@ ua_generate_area <- function(ua, verbose = TRUE) {
 ua_check_ug <- function(ua,
                         verbose = TRUE) {
 
-  # What mean desc ?
-
-  desc_keys <-  c(
-    "peuplement", "richesse", "stade",
-    "annee", "structure",
-    "ess1", "ess1_pct",
-    "ess2", "ess2_pct",
-    "ess3", "ess3_pct",
-    "taillis", "regeneration", "amenagement"
-  )
-
-  # Resolve field names
+  # Resolve field name
+  # desc : descriptive fields
   ug <- seq_field("ug")$name
-  surf_cor <- seq_field("surf_cor")$name
-  desc_field <- vapply(desc_keys, function(k) seq_field(k)$name, character(1))
+  desc <- intersect(seq_desc_fields(), names(ua))
 
-  # Keep only existing fields
-  # Whatd fields ? Stand for what ?
-  fields <- intersect(c(ug, ug_fields), names(ua))
+  ua_no_geom <- sf::st_drop_geometry(ua)
+  desc_id <- do.call(paste, c(ua_no_geom[desc], sep = "|"))
 
-  # Diagnostic signature
-  # Whats is this for ?? UG unique identifier ?
-  desc <- apply(
-    sf::st_drop_geometry(ua[, fields]),
-    1,
-    function(r) paste0(stats::na.omit(r), collapse = "|")
-  )
-
-  # Surface sums
-  sum_by_desc <- stats::ave(ua[[surf_cor]], desc, FUN = function(x) sum(x, na.rm = TRUE))
-  sum_by_ug   <- stats::ave(ua[[surf_cor]], ua[[ug]], FUN = function(x) sum(x, na.rm = TRUE))
-
-  # Logical validity
-  ua$ug_valid <- sum_by_desc == sum_by_ug
-
-  # UG inconsistencies
-  invalid_ugs <- unique(ua[[ug]][!ua$ug_valid])
-  n_invalid <- length(invalid_ugs)
+  # More than one desc_id in a UG -> inconsistency
+  valid <- tapply(desc_id, ua[[ug]], \(x) length(unique(x)) == 1)
+  invalid <- names(valid)[!valid]
 
   # CLI messages
-  if (verbose){
-    if (n_invalid > 0) {
-      cli::cli_warn(
-        "{n_invalid} UG{?s} inconsistent. Affected UG{?s}: {.val {invalid_ugs}}"
-      )
-    } else {
-      cli::cli_alert_success("All UG are consistent.")
-    }
+  if (length(invalid)) {
+    cli::cli_warn("{length(invalid)} inconsistent UG{?s}: {.val {invalid}}")
+    return(invisible(FALSE))
   }
 
-  ua
+  if (verbose) cli::cli_alert_success("All UG are consistent.")
+
+  return(invisible(TRUE))
 }
 
 #' Clean management units (UG) by correcting minor inconsistencies in the UA sf object
@@ -275,11 +259,8 @@ ua_check_ug <- function(ua,
 #'
 #' @param ua `sf` object containing analysis units;
 #' with at least the UG identifier field and relevant attribute fields.
-#' @param ug_keys `character` vector of attribute keys used to define UG
-#' descriptions.
 #' @param atol Absolute tolerance for surface correction (default 0.50 ha).
-#' @param rtol Relative tolerance for surface correction within a UG (default 0.10).
-#' @param verbose `logical` If `TRUE`, display progress messages.
+#' @param rtol Relative tolerance for surface correction within a UG (default 10%).
 #'
 #' @return An `sf` object identical to `ua`, with minor inconsistent lines
 #' corrected and an additional logical column `ug_valid` indicating UG
@@ -294,76 +275,37 @@ ua_check_ug <- function(ua,
 #' 4. Returning the corrected UA and rechecking inconsistencies.
 #'
 #' @export
-ua_clean_ug <- function(ua,
-                        ug_keys = c("peuplement", "richesse", "stade", "annee", "structure",
-                                    "ess1", "ess1_pct", "ess2", "ess2_pct", "ess3", "ess3_pct",
-                                    "taillis", "regeneration", "amenagement"),
-                        atol = 0.50,
-                        rtol = 0.10,
-                        verbose = TRUE) {
+ua_clean_ug <- function(
+    ua,
+    atol = 0.50,
+    rtol = 0.10){
 
-  # Resolve field names
-  ug_field   <- seq_field("ug")$name
-  key_fields <- vapply(ug_keys, function(k) seq_field(k)$name, character(1))
-  surf_cor   <- seq_field("surf_cor")$name
-  all_fields <- intersect(c(ug_field, key_fields), names(ua))
+  ug <- seq_field("ug")$name
+  surf <- seq_field("surf_cor")$name
+  desc <- intersect(seq_desc_fields(), names(ua))
 
-  # Initial inconsistency check
-  ua_checked <- ua_check_ug(ua, ug_keys = ug_keys, verbose = FALSE)
-  invalid_idx <- which(!ua_checked$ug_valid)
+  cleaned <- by(ua, ua[[ug]], function(df) {
 
-  if (length(invalid_idx) == 0) {
-    if (verbose) cli::cli_alert_success("No inconsistencies detected.")
-    return(ua_checked)
-  }
+    df_no_geom <- sf::st_drop_geometry(df)
+    desc_id <- do.call(paste, c(df_no_geom[desc], sep = "|"))
+    s <- df[[surf]]
 
-  if (verbose) {
-    bad_ugs <- unique(ua_checked[[ug_field]][invalid_idx])
-    cli::cli_alert_warning("{length(bad_ugs)} UG{?s} inconsistent. Affected UG{?s}: {.val {bad_ugs}}")
-    cli::cli_alert_warning("Attempt to fix")
-  }
+    # Total surface per description
+    s_by_desc <- tapply(s, desc_id, sum, na.rm = TRUE)
+    main_id <- names(which.max(s_by_desc))
+    main_row <- match(main_id, desc_id)
 
-  # Split by UG
-  ua_split <- split(ua_checked, ua_checked[[ug_field]])
+    # Rows that should be corrected
+    to_fix <- (s <= atol) | (s <= rtol * max(s_by_desc))
 
-  # Function to correct one UG
-  correct_one_ug <- function(df, surf_cor, all_fields, atol, rtol) {
-    # Build unique description per row
-    df$desc <- apply(df[, all_fields, drop = FALSE], 1, function(r) paste0(stats::na.omit(r), collapse = "|"))
+    df[to_fix, desc] <- sf::st_drop_geometry(df[main_row, desc])
 
-    # Identify dominant row (largest total surface)
-    sum_by_desc <- tapply(df[[surf_cor]], df$desc, sum, na.rm = TRUE)
-    dominant_desc <- names(sum_by_desc)[which.max(sum_by_desc)]
-    total_surface <- sum(df[[surf_cor]], na.rm = TRUE)
-    dominant_row <- df[df$desc == dominant_desc, all_fields, drop = FALSE][1, ]
+    return(df)
+  })
 
-    # Lines that differ from dominant description
-    diff_idx <- which(df$desc != dominant_desc)
+  ua_cleaned <- sf::st_as_sf(do.call(rbind.data.frame, cleaned))
 
-    # Minor lines: small absolute and relative surface
-    minor_idx <- diff_idx[df[[surf_cor]][diff_idx] < atol & df[[surf_cor]][diff_idx] / total_surface < rtol]
-
-    # Correct minor lines by copying dominant row values
-    if (length(minor_idx) > 0) {
-      for (col_name in all_fields) {
-        df[minor_idx, col_name] <- dominant_row[[col_name]]
-      }
-    }
-
-    df[, setdiff(names(df), "desc")]
-  }
-
-  # Apply correction to each UG
-  corrected_list <- lapply(
-    ua_split,
-    function(df) correct_one_ug(df, surf_cor = surf_cor, all_fields = all_fields, atol = atol, rtol = rtol)
-  )
-  ua_corrected <- do.call(rbind, corrected_list)
-
-  # Recheck inconsistencies after correction
-  ua_corrected <- ua_check_ug(ua_corrected, ug_keys = ug_keys, verbose = verbose)
-
-  return(ua_corrected)
+  return(ua_cleaned)
 }
 
 #' Check and update UA consistency with cadastral PARCA data
@@ -376,6 +318,7 @@ ua_clean_ug <- function(ua,
 #' @param ua `sf` object containing analysis units.
 #' @param parca `sf` object, typically produced by [Rsequoia2::seq_parca()],
 #'   containing cadastral parcels.
+#' @param verbose `logical` If `TRUE`, display progress messages.
 #'
 #' @return An updated `sf` object identical to `ua`, but with:
 #' - IDUs checked against PARCA,
@@ -388,22 +331,23 @@ ua_clean_ug <- function(ua,
 ua_to_ua <- function(ua, parca, verbose = TRUE){
 
   # Check ua
+  # Why adding this warning ? it is already in ua_check_idu() right ?
   idu_valid <- ua_check_idu(ua, parca, verbose = verbose)
-  if (isFALSE(idu_valid)) {
-    cli::cli_warn("The IDUs of the PARCA layer must be found in the UA layer.")
-    return(ua)
+  if (!idu_valid){
+    cli::cli_abort("Please correct IDU inconsistency before going further.")
   }
 
   # Compute ua
   ua <- ua_check_area(ua, parca, verbose = verbose) |>
     ua_generate_ug(verbose = verbose) |>
-    ua_generate_area() |>
-    ua_clean_ug(verbose = verbose)
+    ua_generate_area(verbose = verbose) |>
+    ua_clean_ug()
 
-  # Warn if UG problems remain
-  if (isFALSE(all(ua$ug_valid))) {
+  is_valid <- ua_check_ug(ua, verbose = verbose)
+  if (!is_valid) {
     cli::cli_warn("You need to correct the inconsistent units in the UA layer.")
   }
 
-  ua
+  return(ua)
 }
+
