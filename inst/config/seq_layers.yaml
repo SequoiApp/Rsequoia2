@@ -2,8 +2,8 @@
 x.seq.matrice: {name: "MATRICE", ext: "xlsx"}
 
 # RASTER
-r.alt.mns:    { name: "MNS",    ext: "tif" }
 r.alt.mnt:    { name: "MNT",    ext: "tif" }
+r.alt.mns:    { name: "MNS",    ext: "tif" }
 r.alt.mnh:    { name: "MNH",    ext: "tif" }
 r.alt.pente:  { name: "PENTE",  ext: "tif" }
 r.alt.expo:   { name: "EXPO",   ext: "tif" }
