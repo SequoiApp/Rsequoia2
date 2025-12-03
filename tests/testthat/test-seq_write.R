@@ -51,7 +51,7 @@ test_that("seq_write() overwrite raster properly correctly", {
 
   m <- create_matrice(d, "MY_TEST", verbose = F, overwrite = T)
 
-  r <- rast(nrows=5, ncols=5, vals=1:25, crs = "")
+  r <- rast(nrows=5, ncols=5, vals=1:25)
   r_path <- get_path("irc", d)
   seq_write(r, "irc", d)
 
