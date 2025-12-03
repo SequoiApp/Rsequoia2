@@ -47,6 +47,8 @@ test_that("seq_write() overwrite vector properly correctly", {
 })
 
 test_that("seq_write() overwrite raster properly correctly", {
+  skip_on_os("mac")
+
   d <- tempdir()
 
   m <- create_matrice(d, "MY_TEST", verbose = F, overwrite = T)

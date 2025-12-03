@@ -35,7 +35,8 @@ v.cog.com25000.line:  { name: "COMS_line",  ext: "geojson" }
 v.cog.com25000.poly:  { name: "COMS_poly",  ext: "geojson" }
 
 # SOL
-v.sol.geol.poly:  { name: "SOL_GEOL_poly", ext: "geojson" }
+v.sol.bdcharm50.poly:  { name: "SOL_BDCHARM50_poly", ext: "geojson" }
+v.sol.carhab.poly:  { name: "SOL_CARHAB_poly", ext: "geojson" }
 v.sol.pedo.poly:  { name: "SOL_PEDO_poly", ext: "geojson" }
 
 # PATRIMONIAUX

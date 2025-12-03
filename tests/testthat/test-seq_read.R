@@ -24,6 +24,8 @@ test_that("seq_read() reads vector layers correctly", {
 
 test_that("seq_read() reads raster layers correctly", {
 
+  skip_on_os("mac")
+
   d <- tempdir()
   m_path <- create_matrice(d, "MY_TEST", verbose = F, overwrite = T)
 

@@ -1,6 +1,6 @@
 test_that("download_brgm() downloads when file is missing", {
 
-  d <- tempdir()
+  cache <- tempdir()
 
   tracker <- new.env(parent = emptyenv())
   tracker$called <- FALSE
@@ -13,12 +13,36 @@ test_that("download_brgm() downloads when file is missing", {
     .package = "curl"
   )
 
-  zip_path <- download_brgm(dep = "29", cache = d, verbose = FALSE)
+  zip_path <- download_brgm(dep = "29", source = "carhab", cache = cache, verbose = FALSE)
   on.exit(unlink(zip_path))
 
   expect_true(tracker$called)
   expect_true(file.exists(zip_path))
-  expect_match(zip_path, "GEO050K_HARM_029.zip")
+  expect_match(zip_path, "CARHAB_29_FINISTERE")
+
+})
+
+test_that("download_brgm() properly change source", {
+
+  cache <- tempdir()
+
+  tracker <- new.env(parent = emptyenv())
+  tracker$called <- FALSE
+
+  local_mocked_bindings(
+    curl_download = function(url, destfile, quiet){
+      tracker$called <- TRUE
+      file.create(destfile)
+    },
+    .package = "curl"
+  )
+
+  zip_path <- download_brgm(dep = "29", source = "bdcharm50", cache = cache, verbose = FALSE)
+  on.exit(unlink(zip_path))
+
+  expect_true(tracker$called)
+  expect_true(file.exists(zip_path))
+  expect_match(zip_path, "GEO050K_HARM_029")
 
 })
 
@@ -26,7 +50,7 @@ test_that("download_brgm() skips download when file already exists", {
 
   d <- tempdir()
 
-  zip_path <- file.path(d, "GEO050K_HARM_029.zip")
+  zip_path <- file.path(d, "CARHAB_29_FINISTERE.zip")
   file.create(zip_path)
   on.exit(unlink(zip_path))
 
@@ -49,9 +73,12 @@ test_that("download_brgm() skips download when file already exists", {
   expect_true(file.exists(out))
 })
 
-test_that("download_brgm() errors on invalid dep", {
+test_that("download_brgm() errors on invalid input", {
+
+  expect_error(download_brgm(dep = 1, source = "bad_source"))
 
   expect_error(download_brgm(dep = 1:2), "must contain exactly one element")
+  expect_error(download_brgm(dep = 1, source = 1:2), "must contain exactly one element")
 
   expect_error(download_brgm(dep = 123), "Invalid department code")
   expect_error(download_brgm(dep = "A1"), "Invalid department code")
@@ -81,10 +108,12 @@ test_that("download_brgm() builds correct ZIP name", {
     .package = "curl"
   )
 
-  zip_path <- download_brgm(8, cache = cache, verbose = FALSE)
-  on.exit(unlink(zip_path))
+  bdcharm50_path <- download_brgm(8, cache = cache, source = "bdcharm50", verbose = FALSE)
+  carhab_path <- download_brgm(8, cache = cache, source = "carhab", verbose = FALSE)
+  on.exit(unlink(c(bdcharm50_path, bdcharm50_path)))
 
-  expect_match(basename(zip_path), "^GEO050K_HARM_008\\.zip$")
+  expect_match(basename(bdcharm50_path), "^GEO050K_HARM_008\\.zip$")
+  expect_match(basename(carhab_path), "^CARHAB_08_ARDENNES\\.zip$")
 })
 
 test_that("download_brgm() emits messages when verbose = TRUE", {
@@ -121,7 +150,7 @@ test_that("download_brgm() overwrites existing ZIP when overwrite=TRUE", {
   )
 
   # Call overwrite = TRUE
-  out <- download_brgm("29", cache = d, verbose = FALSE, overwrite = TRUE)
+  out <- download_brgm("29", source = "bdcharm50", cache = d, verbose = FALSE, overwrite = TRUE)
 
   expect_true(tracker$called)
   expect_true(file.exists(out))

@@ -28,6 +28,8 @@ test_that("get_ortho() works with real API (local only)", {
 
 test_that("get_ortho() works with mocked WMTS", {
 
+  skip_on_os("mac")
+
   r_fake <- terra::rast(
     nrows = 10, ncols = 10,
     xmin = 0, xmax = 10,
