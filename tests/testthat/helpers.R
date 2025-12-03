@@ -27,6 +27,7 @@ fake_raw_parca <- function(
     insee = "29158", prefix = "000",
     section = "ZR", numero = "0003",
     contenance = 50, lieu_dit = "LIEU_DIT",
+    dep = 29,
     geom = sf::st_point(c(-0.0116, 44.6794)) |> sf::st_sfc(crs = 2154)
 ){
 
@@ -35,7 +36,7 @@ fake_raw_parca <- function(
     REG_NOM    = "REG_NOM",
     REG_NUM    = "01",
     DEP_NOM    = "DEP_NOM",
-    DEP_NUM    = "DEP_CODE",
+    DEP_NUM    = dep,
     COM_NOM    = "COM_TEST",
     COM_NUM    = insee,
     PREFIXE    = prefix,

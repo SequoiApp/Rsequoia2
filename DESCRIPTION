@@ -13,6 +13,7 @@ RoxygenNote: 7.3.2
 Imports: 
     archive,
     cli,
+    curl,
     frheritage,
     happign,
     openxlsx2,
