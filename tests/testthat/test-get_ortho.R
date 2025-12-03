@@ -32,7 +32,7 @@ test_that("get_ortho() works with mocked WMTS", {
     nrows = 10, ncols = 10,
     xmin = 0, xmax = 10,
     ymin = 0, ymax = 10,
-    crs = "EPSG:2154"
+    crs = "epsg:2154"
   )
   terra::values(r_fake) <- 1
 

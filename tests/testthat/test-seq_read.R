@@ -27,7 +27,7 @@ test_that("seq_read() reads raster layers correctly", {
   d <- tempdir()
   m_path <- create_matrice(d, "MY_TEST", verbose = F, overwrite = T)
 
-  r <- rast(nrows=5, ncols=5, vals=1:25)
+  r <- rast(nrows=5, ncols=5, vals=1:25, crs = ""))
   r_path <- get_path("irc", dirname = d)
 
   on.exit(unlink(c(r_path, m_path)))
