@@ -7,8 +7,8 @@ r.alt.mnt:    { name: "MNT",    ext: "tif" }
 r.alt.mnh:    { name: "MNH",    ext: "tif" }
 r.alt.pente:  { name: "PENTE",  ext: "tif" }
 r.alt.expo:   { name: "EXPO",   ext: "tif" }
-r.ortho.irc:    { name: "IRC",    ext: "tif" }
-r.ortho.rgb:    { name: "RGB",    ext: "tif" }
+r.ortho.irc:  { name: "IRC",    ext: "tif" }
+r.ortho.rgb:  { name: "RGB",    ext: "tif" }
 r.img.scan25: { name: "SCAN25", ext: "tif" }
 r.sol.geol:   { name: "GEOL",   ext: "tif" }
 
