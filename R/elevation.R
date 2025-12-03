@@ -48,20 +48,19 @@ get_chm <- function(x = NULL, dem = NULL, dsm = NULL, minmax = c(0, 50), ...){
   # --- Invalid case: user mixed modes ---------------------------------------
   if (!is.null(x) && (!is.null(dem) || !is.null(dsm))) {
     cli::cli_abort(c(
-      "x" = "You supplied both {.arg x} and {.arg dem}/{.arg dsm}.",
-      "i" = "Either:",
-      "*" = "Provide {.arg x} → DEM and DSM will be computed automatically.",
-      "*" = "Or provide {.arg dem} and {.arg dsm} directly."
+      "x" = "Invalid input: {.arg x} cannot be used together with {.arg dem}/{.arg dsm}.",
+      "i" = "When {.arg x} is {.code NULL}, provide both {.arg dem} and {.arg dsm}.",
+      "i" = "To download them automatically, provide {.arg x} only."
     ))
   }
 
-  # --- Mode 1: x isn't provided → compute DEM & DSM ----------------------------
+  # --- Mode 1: x isn't provided -> compute DEM & DSM ----------------------------
   if (!is.null(x)) {
     dem <- get_dem(x, ...)
     dsm <- get_dsm(x, ...)
   }
 
-  # --- Mode 2: x is NULL → dem & dsm must be provided ------------------------
+  # --- Mode 2: x is NULL -> dem & dsm must be provided ------------------------
   if (is.null(dem) || is.null(dsm)) {
     cli::cli_abort(c(
       "x" = "{.arg dem} and {.arg dsm} must be provided when {.arg x} is NULL.",
@@ -83,35 +82,29 @@ get_chm <- function(x = NULL, dem = NULL, dsm = NULL, minmax = c(0, 50), ...){
 
 get_slope <- function(x = NULL, dem = NULL, agg = 5, ...){
 
-  # --- Invalid case: user mixed modes ---------------------------------------
-  if (!is.null(x) && (!is.null(dem))) {
+  if (!is.null(x) && !is.null(dem)) {
     cli::cli_abort(c(
-      "x" = "You supplied both {.arg x} and {.arg dem}.",
-      "i" = "Either:",
-      "*" = "Provide {.arg x} → DEM will be computed automatically.",
-      "*" = "Or provide {.arg dem}."
+      "x" = "Invalid input: {.arg x} cannot be used together with {.arg dem}.",
+      "i" = "When {.arg x} is {.code NULL}, provide both {.arg dem}.",
+      "i" = "To download them automatically, provide {.arg x} only."
     ))
   }
-  # --- Mode 1: x is provided → compute DEM & DSM ----------------------------
+
   if (!is.null(x)) {
     # By default res = agg
-    if (!"res" %in% names(list(...))) {
-      dem <- get_dem(x, res = agg, ...)
-    } else {
-      dem <- get_dem(x, ...)
-    }
+    args <- utils::modifyList(list("res" = agg), list(...))
+    dem  <- do.call(get_dem, c(list(x), args))
   }
 
-  # --- Mode 2: x is NULL → dem & dsm must be provided ------------------------
   if (is.null(dem)) {
     cli::cli_abort(c(
       "x" = "{.arg dem} must be provided when {.arg x} is NULL."
     ))
   }
 
-  resolution <- res(dem)[1]
+  resolution <- terra::res(dem)[1]
   if (resolution < agg){
-    cli::cli_alert_info("Aggregating DEM: {resolution}m → {agg}m to avoid computational artefacts.")
+    cli::cli_alert_info("Aggregating DEM: {resolution}m -> {agg}m to avoid computational artefacts.")
     dem <- terra::aggregate(dem, fact = agg, fun = mean)
   }
 
@@ -121,35 +114,30 @@ get_slope <- function(x = NULL, dem = NULL, agg = 5, ...){
 }
 
 get_aspect <- function(x = NULL, dem = NULL, agg = 5, ...){
-  # --- Invalid case: user mixed modes ---------------------------------------
-  if (!is.null(x) && (!is.null(dem))) {
+
+  if (!is.null(x) && !is.null(dem)) {
     cli::cli_abort(c(
-      "x" = "You supplied both {.arg x} and {.arg dem}.",
-      "i" = "Either:",
-      "*" = "Provide {.arg x} → DEM will be computed automatically.",
-      "*" = "Or provide {.arg dem}."
+      "x" = "Invalid input: {.arg x} cannot be used together with {.arg dem}.",
+      "i" = "When {.arg x} is {.code NULL}, provide both {.arg dem}.",
+      "i" = "To download them automatically, provide {.arg x} only."
     ))
   }
-  # --- Mode 1: x is provided → compute DEM & DSM ----------------------------
+
   if (!is.null(x)) {
     # By default res = agg
-    if (!"res" %in% names(list(...))) {
-      dem <- get_dem(x, res = agg, ...)
-    } else {
-      dem <- get_dem(x, ...)
-    }
+    args <- utils::modifyList(list("res" = agg), list(...))
+    dem  <- do.call(get_dem, c(list(x), args))
   }
 
-  # --- Mode 2: x is NULL → dem & dsm must be provided ------------------------
   if (is.null(dem)) {
     cli::cli_abort(c(
       "x" = "{.arg dem} must be provided when {.arg x} is NULL."
     ))
   }
 
-  resolution <- res(dem)[1]
+  resolution <- terra::res(dem)[1]
   if (resolution < agg){
-    cli::cli_alert_info("Aggregating DEM: {resolution}m → {agg}m toavoid computational artefacts.")
+    cli::cli_alert_info("Aggregating DEM: {resolution}m -> {agg}m to avoid computational artefacts.")
     dem <- terra::aggregate(dem, fact = agg, fun = mean)
   }
 
