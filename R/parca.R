@@ -7,16 +7,18 @@
 get_parca_bdp <- function(idu){
   idu_parts <- idu_split(idu)
 
-  bdp_geom <- happign::get_apicarto_cadastre(
+  bdp <- happign::get_apicarto_cadastre(
     idu_parts$insee,
     code_abs = idu_parts$prefix,
     section = idu_parts$section,
     numero = idu_parts$numero,
     type = "parcelle",
     source = "bdp") |>
-    transform(idu = idu)
+    suppressWarnings()
 
-  return(bdp_geom)
+  bdp$idu <- idu_build(bdp$code_dep, bdp$code_com, bdp$com_abs, bdp$section, bdp$numero)
+
+  return(bdp)
 }
 
 #' Retrieve a cadastral parcel geometry from Etalab
@@ -98,20 +100,20 @@ get_parca <- function(idu, bdp_geom = TRUE, lieu_dit = FALSE, verbose = TRUE){
     idx <- match(etalab$idu, bdp$idu)
     etalab$geometry[!is.na(idx)] <- bdp$geometry[idx[!is.na(idx)]]
     if (verbose) {
-      missing_bdp_idu <- intersect(etalab$idu, bdp$idu)
-      if (length(missing_bdp_idu) > 0) {
-        cli::cli_alert_success("{length(missing_bdp_idu)} IDU geometries replace with BDP geom.")
+      valid_bdp_idu <- intersect(etalab$idu, bdp$idu)
+      if (length(valid_bdp_idu) > 0) {
+        cli::cli_alert_success(
+          "{length(valid_bdp_idu)} of {length(etalab$idu)} ETALAB geom successfully replaced with BDP geom."
+          )
       }
     }
   }
 
-  if (verbose) {
-    missing_idu <- setdiff(idu, etalab$idu)
-    if (length(missing_idu) > 0) {
-      cli::cli_alert_warning("Geometry not found for {length(missing_idu)} IDU(s).")
-      cli::cli_ul(missing_idu)
-    }
+  missing_idu <- setdiff(idu, etalab$idu)
+  if (length(missing_idu) > 0) {
+      cli::cli_warn("Geometry not found for {length(missing_idu)} IDU(s): {.val {missing_idu}}")
   }
+
 
   # Ajout des lieux dits
   if (lieu_dit){

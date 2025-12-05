@@ -3,7 +3,7 @@
     Code
       str(sf::st_drop_geometry(out))
     Output
-      'data.frame':	1 obs. of  11 variables:
+      tibble [1 x 11] (S3: tbl_df/tbl/data.frame)
        $ id        : chr "parcelle.29343868"
        $ numero    : chr "0086"
        $ feuille   : int 1

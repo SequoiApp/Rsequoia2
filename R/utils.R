@@ -38,6 +38,24 @@ idu_split <- function(idu) {
     stringsAsFactors = FALSE
   )
 }
+#' Build IDU
+#'
+#' Internal helper used to build idu
+#'
+#' @param idu `character` IDU(s) to pad
+#'
+#' @keywords internal
+#'
+idu_build <- function(dep, com, prefix, section, numero) {
+
+  dep <- pad_left(dep, 2)
+  com <- pad_left(com, 3)
+  prefix <- pad_left(prefix, 3)
+  section <- pad_left(section, 2)
+  numero <- pad_left(numero, 4)
+
+  return(paste0(dep, com, prefix, section, numero))
+}
 #' Force silent function
 #'
 #' Internal helper used to silent function

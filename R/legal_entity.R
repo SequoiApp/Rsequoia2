@@ -235,10 +235,10 @@ search_legal_entity <- function(x, prop = NULL, lieu_dit = NULL) {
     trimws(x)
   }
 
-  matrice$prop_norm <- normalize_txt(matrice$PROPRIETAIRE)
-  matrice$lieu_dit_norm <- normalize_txt(matrice$LIEU_DIT)
+  x$prop_norm <- normalize_txt(x$PROPRIETAIRE)
+  x$lieu_dit_norm <- normalize_txt(x$LIEU_DIT)
 
-  res <- matrice
+  res <- x
   if (!is.null(prop)) {
     prop_pattern <- paste(normalize_txt(prop), collapse = "|")
     res <- subset(res, grepl(prop_pattern, prop_norm))
