@@ -147,6 +147,8 @@ get_chm <- function(x = NULL, dem = NULL, dsm = NULL, minmax = c(0, 50), ...){
   chm[chm < minmax[1]] <- NA  # Remove negative value
   chm[chm > minmax[2]] <- minmax[2] # Remove height more than 50m
 
+  names(chm) <- "chm"
+
   return(chm)
 
 }
@@ -215,7 +217,7 @@ get_slope <- function(x = NULL, dem = NULL, agg = 5, verbose = TRUE, ...){
 
   resolution <- terra::res(dem)[1]
   if (resolution < agg){
-    if (verbose)cli::cli_alert_info("Aggregating DEM: {resolution}m -> {agg}m to avoid computational artefacts.")
+    if (verbose) cli::cli_alert_info("Aggregating DEM: {resolution}m -> {agg}m to avoid computational artefacts.")
     dem <- terra::aggregate(dem, fact = agg, fun = mean)
   }
 
@@ -336,16 +338,16 @@ seq_elevation <- function(
   dem <- get_dem(parca, buffer = buffer, res = res, crs = crs, verbose = verbose)
   dem_path <- seq_write2(dem, "r.alt.mnt")
 
-  dsm <- get_dem(parca, buffer = buffer, res = res, crs = crs, verbose = verbose)
+  dsm <- get_dsm(parca, buffer = buffer, res = res, crs = crs, verbose = verbose)
   dsm_path <- seq_write2(dsm, "r.alt.mns")
 
-  chm <- get_chm(x = NULL, dem = dem, chm = chm)
+  chm <- get_chm(x = NULL, dem = dem, dsm = dsm, verbose = verbose)
   chm_path <- seq_write2(chm, "r.alt.mnh")
 
-  slope <- get_slope(x = NULL, dem = dem)
+  slope <- get_slope(x = NULL, dem = dem, verbose = verbose)
   slope_path <- seq_write2(slope, "r.alt.pente")
 
-  aspect <- get_aspect(x = NULL, dem = dem)
+  aspect <- get_aspect(x = NULL, dem = dem, verbose = verbose)
   aspect_path <- seq_write2(aspect, "r.alt.expo")
 
   return(c(dem_path, dsm_path, chm_path, slope_path, aspect_path) |> as.list())

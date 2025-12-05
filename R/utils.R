@@ -42,7 +42,11 @@ idu_split <- function(idu) {
 #'
 #' Internal helper used to build idu
 #'
-#' @param idu `character` IDU(s) to pad
+#' @param dep `character` dep code
+#' @param com `character` com code
+#' @param prefix `character` prefic code
+#' @param section `character` section code
+#' @param numero `character` numero code
 #'
 #' @keywords internal
 #'
