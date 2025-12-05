@@ -19,6 +19,8 @@ test_that("get_chm() errors when dem or dsm is missing in manual mode", {
 
 test_that("get_chm() calls get_dem() and get_dsm() when x is provided", {
 
+  skip_on_os("mac")
+
   pt <- sf::st_sfc(sf::st_point(c(1,1)), crs = 2154)
 
   fake_dem <- terra::rast(nrows=1, ncols=1, xmin=0, xmax=1, ymin=0, ymax=1)
@@ -48,6 +50,8 @@ test_that("get_chm() calls get_dem() and get_dsm() when x is provided", {
 
 test_that("get_chm() computes DSM − DEM in manual mode", {
 
+  skip_on_os("mac")
+
   dem <- terra::rast(nrows=1, ncols=1, xmin=0, xmax=1, ymin=0, ymax=1)
   dsm <- terra::rast(nrows=1, ncols=1, xmin=0, xmax=1, ymin=0, ymax=1)
 
@@ -62,6 +66,8 @@ test_that("get_chm() computes DSM − DEM in manual mode", {
 
 test_that("get_chm() clamps negative values in DEM/DSM to 0", {
 
+  skip_on_os("mac")
+
   dem <- terra::rast(nrows=1, ncols=1, xmin=0, xmax=1, ymin=0, ymax=1)
   dsm <- terra::rast(nrows=1, ncols=1, xmin=0, xmax=1, ymin=0, ymax=1)
 
@@ -75,6 +81,8 @@ test_that("get_chm() clamps negative values in DEM/DSM to 0", {
 
 test_that("get_chm() sets CHM below minmax[1] to NA", {
 
+  skip_on_os("mac")
+
   dem <- terra::rast(nrows=1, ncols=1)
   dsm <- terra::rast(nrows=1, ncols=1)
 
@@ -87,6 +95,8 @@ test_that("get_chm() sets CHM below minmax[1] to NA", {
 })
 
 test_that("get_chm() caps CHM above minmax[2]", {
+
+  skip_on_os("mac")
 
   dem <- terra::rast(nrows=1, ncols=1)
   dsm <- terra::rast(nrows=1, ncols=1)

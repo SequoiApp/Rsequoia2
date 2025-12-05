@@ -327,29 +327,47 @@ seq_elevation <- function(
     res = 1,
     crs = 2154,
     overwrite = FALSE,
-    verbose = TRUE){
+    verbose = TRUE) {
 
-  seq_write2 <- function(x, key) {
-    seq_write(x, key, dirname = dirname, verbose = verbose, overwrite = overwrite)
+  seq_get_or_read <- function(key, compute_fn) {
+    path <- get_path(key, dirname = dirname)
+
+    if (!overwrite && file.exists(path)) {
+      return(list(path = path, data = seq_read(key, dirname = dirname)))
+    }
+
+    x <- compute_fn()
+    path <- seq_write(x, key, dirname = dirname, verbose = verbose, overwrite = overwrite)
+    return(list(path = path, data = x))
   }
 
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
 
-  dem <- get_dem(parca, buffer = buffer, res = res, crs = crs, verbose = verbose)
-  dem_path <- seq_write2(dem, "r.alt.mnt")
+  # DEM ----
+  dem <- seq_get_or_read("r.alt.mnt", function() {
+    get_dem(parca, buffer = buffer, res = res, crs = crs, verbose = verbose)
+  })
 
-  dsm <- get_dsm(parca, buffer = buffer, res = res, crs = crs, verbose = verbose)
-  dsm_path <- seq_write2(dsm, "r.alt.mns")
+  # DSM ----
+  dsm <- seq_get_or_read("r.alt.mns", function() {
+    get_dsm(parca, buffer = buffer, res = res, crs = crs, verbose = verbose)
+  })
 
-  chm <- get_chm(x = NULL, dem = dem, dsm = dsm, verbose = verbose)
-  chm_path <- seq_write2(chm, "r.alt.mnh")
+  # CHM ----
+  chm <- seq_get_or_read("r.alt.mnh", function() {
+    get_chm(x = NULL, dem = dem$data, dsm = dsm$data, verbose = verbose)
+  })
 
-  slope <- get_slope(x = NULL, dem = dem, verbose = verbose)
-  slope_path <- seq_write2(slope, "r.alt.pente")
+  # SLOPE ----
+  slope <- seq_get_or_read("r.alt.pente", function() {
+    get_slope(x = NULL, dem = dem$data, verbose = verbose)
+  })
 
-  aspect <- get_aspect(x = NULL, dem = dem, verbose = verbose)
-  aspect_path <- seq_write2(aspect, "r.alt.expo")
+  # ASPECT ----
+  aspect <- seq_get_or_read("r.alt.expo", function() {
+    get_aspect(x = NULL, dem = dem$data, verbose = verbose)
+  })
 
-  return(c(dem_path, dsm_path, chm_path, slope_path, aspect_path) |> as.list())
-
+  return(c(dem$path, dsm$path, chm$path, slope$path, aspect$path) |> as.list())
 }
+

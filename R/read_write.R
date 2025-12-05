@@ -13,6 +13,15 @@ seq_read <- function(key, dirname = ".", verbose = FALSE) {
   path <- get_path(key, dirname, verbose = FALSE)
   key <- names(path)
 
+  file_not_exist <- !file.exists(path)
+  if (file_not_exist) {
+      cli::cli_abort(c(
+        "!" = "File {.file {basename(path)}} for key {.val {key}} doesn't exist.",
+        "i" = "{.code NULL} is returned."
+      ))
+    return(invisible(NULL))
+  }
+
   is_vector <- startsWith(key, "v.")
   if (is_vector) {
     if (verbose) {

@@ -48,3 +48,23 @@ test_that("seq_read() reads raster layers correctly", {
 
 })
 
+test_that("seq_read() returns error file does not exist", {
+
+  d <- tempdir()
+  m_path <- create_matrice(d, "MY_TEST", verbose = FALSE, overwrite = TRUE)
+
+  # Path for a layer that does NOT exist
+  missing_path <- get_path("parca", dirname = d)
+
+  # Ensure file is absent
+  if (file.exists(missing_path)) unlink(missing_path)
+
+  on.exit(unlink(m_path))
+
+  # Expect a warning + NULL result
+  expect_error(
+    seq_read("parca", d, verbose = TRUE),
+    "doesn't exist"
+  )
+
+})

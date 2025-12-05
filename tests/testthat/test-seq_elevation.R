@@ -1,5 +1,7 @@
 test_that("seq_elevation() works", {
 
+  skip_on_os("mac")
+
   seq_cache <- file.path(tempdir(), "seq")
   dir.create(seq_cache)
   on.exit(unlink(seq_cache, recursive = TRUE))

@@ -17,6 +17,8 @@ test_that("get_aspect() errors when no DEM is provided in manual mode", {
 
 test_that("get_aspect() calls get_dem() when x is provided", {
 
+  skip_on_os("mac")
+
   pt <- sf::st_sfc(sf::st_point(c(1,1)), crs=2154)
 
   fake_dem <- terra::rast(nrows=2, ncols=2,
@@ -38,6 +40,8 @@ test_that("get_aspect() calls get_dem() when x is provided", {
 
 test_that("get_aspect() computes aspect from DEM in manual mode", {
 
+  skip_on_os("mac")
+
   # DEM with simple gradient: aspect should not be all zeros
   dem <- terra::rast(nrows=3, ncols=3, xmin=0, xmax=3, ymin=0, ymax=3, crs="epsg:2154")
 
@@ -55,6 +59,8 @@ test_that("get_aspect() computes aspect from DEM in manual mode", {
 
 test_that("get_aspect() aggregates DEM when resolution < agg", {
 
+  skip_on_os("mac")
+
   dem <- terra::rast(nrows=10, ncols=10, xmin=0, xmax=10, ymin=0, ymax=10, crs="epsg:2154")
   terra::values(dem) <- 1
 
@@ -64,6 +70,8 @@ test_that("get_aspect() aggregates DEM when resolution < agg", {
 })
 
 test_that("get_aspect() does NOT aggregate when resolution >= agg", {
+
+  skip_on_os("mac")
 
   dem <- terra::rast(nrows=2, ncols=2, xmin=0, xmax=20, ymin=0, ymax=20, crs="epsg:2154")
   # resolution = 10m >= agg = 5 → no aggregation

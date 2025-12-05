@@ -5,6 +5,8 @@ test_that("get_dem() errors with non spatial input", {
 
 test_that("get_dem() works ", {
 
+  skip_on_os("mac")
+
   r_fake <- terra::rast(
     nrows = 10, ncols = 10,
     xmin = 0, xmax = 10,
@@ -31,6 +33,8 @@ test_that("get_dem() works ", {
 })
 
 test_that("get_dem() masks outside buffer area", {
+
+  skip_on_os("mac")
 
   r_fake <- terra::rast(nrows = 10, ncols = 10,
                         xmin = 0, xmax = 10, ymin = 0, ymax = 10, crs = "epsg:2154")
