@@ -1,3 +1,115 @@
+#' Aggregate _UA_ surfaces at the `parcelle` field level
+#'
+#' Aggregates corrected surface areas (`surf_cor`) from a _UA_ layer by
+#' grouping rows according to the `parcelle` field, as defined by the
+#' configuration returned by [seq_field()].
+#'
+#' This function is typically used internally by [seq_parcels()], but may also
+#' be called directly when a PF-level summary of a UA dataset is required.
+#'
+#' @param ua `sf` object containing analysis units
+#'
+#' @return `sf` object where polygons are aggregated at the _PF_ level, with
+#' corrected surfaces.
+#'
+#' @seealso [ua_to_sspf()], [seq_parcels()], [seq_field()], [seq_normalize()]
+#'
+#' @export
+ua_to_pf <- function(ua){
+  # Sanity check
+  ua <- seq_normalize(ua, "ua")
+
+  pf <- seq_field("parcelle")$name
+  pf_alias <- seq_field("parcelle")$alias
+  s <- seq_field("surf_cor")$name
+
+  # Because of seq_normalize, pf field will always exist
+  # If ua[[pf]] == NA, it means the input UA doesn't contain the PF column.
+  # This usually means the field alias is missing in the configuration.
+  bad_pf_name <- all(is.na(ua[[pf]]))
+  if (bad_pf_name) {
+    cli::cli_abort(c(
+      "x" = "Field used to group by parcels is missing in the input layer.",
+      "i" = "Available aliases for this field: {.val {pf_alias}}.",
+      "i" = "Check or fix the field names in the input layer."
+    ))
+  }
+
+  # Generate pf ----
+  by_pf <- list(ua[[pf]]) |> setNames(pf)
+  pf_poly <- aggregate(
+    x = ua[, s],
+    by = by_pf,
+    FUN = sum,
+    na.rm = TRUE
+  )
+
+  return(pf_poly)
+}
+
+#' Aggregate _UA_ surfaces at the `sspf` field level
+#'
+#' Aggregates corrected surface areas (`surf_cor`) from a _UA_ layer by
+#' grouping rows according to the `sspf` field, as
+#' defined by the configuration returned by [seq_field()].
+#'
+#' In addition to summing surfaces, descriptive fields are preserved.
+#'
+#' This function is used internally by [seq_parcels()], but may be called
+#' directly when a SSPF-level summary of UA data is needed.
+#'
+#' @param ua `sf` object containing analysis units
+#'
+#' @return An `sf` object where polygons and descriptive fields are aggregated
+#' at the _SSPF_ level.
+#'
+#' @seealso [ua_to_pf()], [seq_parcels()], [seq_field()], [seq_normalize()]
+#'
+#' @export
+ua_to_sspf <- function(ua){
+  # Sanity check
+  ua <- seq_normalize(ua, "ua")
+
+  ug <- seq_field("ug")$name
+  ug_alias <- seq_field("ug")$alias
+
+  s <- seq_field("surf_cor")$name
+
+  # Because of seq_normalize, ug field will always exist
+  # If ua[[ug]] == NA, it means the input UA doesn't contain the SSPF column.
+  # This usually means the field alias is missing in the configuration.
+  bad_ug_name <- all(is.na(ua[[ug]]))
+  if (bad_ug_name) {
+    cli::cli_abort(c(
+      "x" = "Field used to group by UG is missing in the input layer.",
+      "i" = "Available aliases for this field: {.val {ug_alias}}.",
+      "i" = "Check or fix the field names in the input layer."
+    ))
+  }
+
+  # Generate sspf ----
+  by_ug <- list(ua[[ug]]) |> setNames(ug)
+  sspf_poly_raw <- aggregate(
+    x = ua[, s],
+    by = by_ug,
+    FUN = sum,
+    na.rm = TRUE
+  )
+
+  # Adding description to sspf ----
+  desc <- intersect(seq_desc_fields(), names(ua))
+  desc_tbl <- unique(ua[, c(ug, desc)] |> sf::st_drop_geometry())
+  sspf_poly <- merge(
+    sspf_poly_raw,
+    desc_tbl,
+    by = ug,
+    all.x = TRUE
+  )
+
+  return(sspf_poly)
+
+}
+
 #' Create _PF_ and _SSPF_ object from _UA_ for a Sequoia project
 #'
 #' This function reads the UA polygon layer (`v.seq.ua.poly`) of a Sequoia
@@ -35,35 +147,13 @@ seq_parcels <- function(dirname = ".", verbose = FALSE, overwrite = FALSE){
   # Resolve field and layer ----
   ua <- seq_read("v.seq.ua.poly", dirname = dirname)
 
-  pf <- seq_field("parcelle")$name
-  sspf <- seq_field("sous_parcelle")$name
-  s <- seq_field("surf_cor")$name
-
-  # Generate pf ----
-  by_pf <- list(ua[[pf]]) |> setNames(pf)
-  pf_poly <- aggregate(
-    x = ua[, s],
-    by = by_pf,
-    FUN = sum,
-    na.rm = TRUE
-  )
-
+  pf_poly <- ua_to_pf(ua)
   pf_line <- poly_to_line(pf_poly)
-
   path_pf_poly <- seq_write2(pf_poly, "v.seq.pf.poly")
   path_pf_line <- seq_write2(pf_line, "v.seq.pf.line")
 
-  # Generate sspf ----
-  by_sspf <- list(ua[[pf]], ua[[sspf]]) |> setNames(c(pf, sspf))
-  sspf_poly <- aggregate(
-    x = ua[, s],
-    by = by_sspf,
-    FUN = sum,
-    na.rm = TRUE
-  )
-
+  sspf_poly <- ua_to_sspf(ua)
   sspf_line <- poly_to_line(sspf_poly)
-
   path_sspf_poly <- seq_write2(sspf_poly, "v.seq.sspf.poly")
   path_sspf_line <- seq_write2(sspf_line, "v.seq.sspf.line")
 

@@ -14,12 +14,13 @@ test_that("seq_parcels() works in full case", {
     )
   )
 
-  d <- tempdir()
-  m_path <- create_matrice(d, "MY_TEST", verbose = F)
-  ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = d)
-  paths <- seq_parcels(dirname = d, verbose = FALSE)
+  seq_dir <- file.path(tempdir(), "seq")
+  dir.create(seq_dir)
+  on.exit(unlink(seq_dir, recursive = TRUE))
 
-  on.exit(unlink(c(m_path, ua_path, paths)))
+  m_path <- create_matrice(seq_dir, "MY_TEST", verbose = F, overwrite = TRUE)
+  ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = seq_dir)
+  paths <- seq_parcels(dirname = seq_dir, verbose = FALSE)
 
   expect_length(paths, 4)
   expect_all_true(vapply(paths, file.exists, T))
@@ -38,7 +39,7 @@ test_that("seq_parcels() works in full case", {
   expect_shape(pf_line, ncol = 2)
 
   sspf_poly <- all_sf$v.seq.sspf.poly
-  expect_shape(sspf_poly, dim = c(5, 4))
+  expect_shape(sspf_poly, dim = c(5, 2 + length(seq_desc_fields())))
   expect_equal(sspf_poly$SURF_COR, c(2, 1, 1, 1, 1))
 
   sspf_line <- all_sf$v.seq.pf.line
@@ -57,19 +58,21 @@ test_that("seq_parcels() does not overwrite existing layers when overwrite=FALSE
     geometry = sf::st_sfc(sf::st_polygon(square), crs = 2154)
   )
 
-  d <- tempdir()
-  m_path <- create_matrice(d, "MY_TEST", verbose = F)
-  ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = d)
+  seq_dir <- file.path(tempdir(), "seq")
+  dir.create(seq_dir)
+  on.exit(unlink(seq_dir, recursive = TRUE))
+
+  m_path <- create_matrice(seq_dir, "MY_TEST", verbose = F)
+  ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = seq_dir)
 
   # first call OK
-  paths <- seq_parcels(dirname = d, overwrite = FALSE)
+  paths <- seq_parcels(dirname = seq_dir, overwrite = FALSE)
 
   # second call should **fail**
-  warn <- capture_warnings(seq_parcels(dirname = d, overwrite = FALSE))
+  warn <- capture_warnings(seq_parcels(dirname = seq_dir, overwrite = FALSE))
   expect_length(warn, 4)
   expect_all_true(grepl("already exists", warn))
 
-  on.exit(unlink(c(m_path, ua_path, paths)))
 })
 
 test_that("seq_parcels() works with a single parcel", {
@@ -84,11 +87,14 @@ test_that("seq_parcels() works with a single parcel", {
     geometry = sf::st_sfc(sf::st_polygon(square), crs = 2154)
   )
 
-  d <- tempdir()
-  m_path <- create_matrice(d, "MY_TEST4", verbose = FALSE)
-  ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = d)
+  seq_dir <- file.path(tempdir(), "seq")
+  dir.create(seq_dir)
+  on.exit(unlink(seq_dir, recursive = TRUE))
 
-  paths <- seq_parcels(dirname = d, verbose = FALSE)
+  m_path <- create_matrice(seq_dir, "MY_TEST4", verbose = FALSE)
+  ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = seq_dir)
+
+  paths <- seq_parcels(dirname = seq_dir, verbose = FALSE)
 
   all_sf <- lapply(paths, read_sf)
   pf_poly <- all_sf$v.seq.pf.poly
@@ -99,14 +105,13 @@ test_that("seq_parcels() works with a single parcel", {
   expect_equal(pf_poly$SURF_COR, 10)
   expect_equal(sspf_poly$SURF_COR, 10)
 
-  on.exit(unlink(c(ua_path, m_path, paths)))
 })
 
 test_that("seq_parcels() correctly splits SSPF inside a PF", {
 
   ua <- sf::st_sf(
     data.frame(
-      PARFOR      = c("01.01", "01.01", "01.01"),
+      PARFOR      = c("01.01", "01.02", "01.03"),
       N_PARFOR    = c("01", "01", "01"),
       N_SSPARFOR  = c("01", "02", "03"),
       SURF_COR    = c(1, 2, 3)
@@ -117,11 +122,14 @@ test_that("seq_parcels() correctly splits SSPF inside a PF", {
     )
   )
 
-  d <- tempdir()
-  m_path <- create_matrice(d, "MY_TEST5", verbose = FALSE)
-  ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = d)
+  seq_dir <- file.path(tempdir(), "seq")
+  dir.create(seq_dir)
+  on.exit(unlink(seq_dir, recursive = TRUE))
 
-  paths <- seq_parcels(dirname = d, verbose = FALSE)
+  m_path <- create_matrice(seq_dir, "MY_TEST5", verbose = FALSE)
+  ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = seq_dir)
+
+  paths <- seq_parcels(dirname = seq_dir, verbose = FALSE)
   all_sf <- lapply(paths, read_sf)
 
   pf_poly <- all_sf$v.seq.pf.poly
@@ -135,5 +143,4 @@ test_that("seq_parcels() correctly splits SSPF inside a PF", {
   expect_equal(pf_poly$SURF_COR, 6)
   expect_equal(sspf_poly$SURF_COR, c(1, 2, 3))
 
-  on.exit(unlink(c(ua_path, m_path, paths)))
 })

@@ -31,7 +31,7 @@ reg_nom:
 
 dep_num:
   name: "DEP_NUM"
-  alias: ["DEP"]
+  alias: ["DEP", "DEP_CODE"]
   class: "character"
   definition: "Code du département selon l'INSEE"
 
@@ -110,13 +110,13 @@ ug:
 
 parcelle:
   name: "N_PARFOR"
-  alias: ["pf"]
+  alias: ["PF", "PRF", "PARCELLE", "PAR"]
   class: "character"
   definition: "Parcelle forestière"
 
 sous_parcelle:
   name: "N_SSPARFOR"
-  alias: ["sspf"]
+  alias: ["SSPF", "SSPRF", "SOUS_PARCELLE", "SPAR"]
   class: "character"
   definition: "Sous-parcelle forestière"
 
