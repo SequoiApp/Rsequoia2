@@ -25,5 +25,5 @@ This function is used internally by \code{\link[=seq_parcels]{seq_parcels()}}, b
 directly when a SSPF-level summary of UA data is needed.
 }
 \seealso{
-\code{\link[=ua_to_pf]{ua_to_pf()}}, \code{\link[=seq_parcels]{seq_parcels()}}, \code{\link[=seq_field]{seq_field()}}, \code{\link[=seq_desc_fields]{seq_desc_fields()}}, \code{\link[=seq_normalize]{seq_normalize()}}
+\code{\link[=ua_to_pf]{ua_to_pf()}}, \code{\link[=seq_parcels]{seq_parcels()}}, \code{\link[=seq_field]{seq_field()}}, \code{\link[=seq_normalize]{seq_normalize()}}
 }
