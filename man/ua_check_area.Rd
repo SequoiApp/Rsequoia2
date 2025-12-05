@@ -2,7 +2,7 @@
 % Please edit documentation in R/ua.R
 \name{ua_check_area}
 \alias{ua_check_area}
-\title{Update cadastral area values in UA using PARCA}
+\title{Update cadastral area values in \emph{UA} using \emph{PARCA}}
 \usage{
 ua_check_area(ua, parca, verbose = FALSE)
 }
@@ -19,6 +19,6 @@ parcels.}
 Updated \code{ua} object.
 }
 \description{
-This function compares cadastral area values between UA and PARCA,
-and updates UA wherever discrepancies are detected.
+This function compares cadastral area values between \emph{UA} and \emph{PARCA},
+and updates \emph{UA} wherever discrepancies are detected.
 }

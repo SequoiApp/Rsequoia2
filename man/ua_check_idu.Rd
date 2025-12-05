@@ -2,7 +2,7 @@
 % Please edit documentation in R/ua.R
 \name{ua_check_idu}
 \alias{ua_check_idu}
-\title{Check cadastral IDU consistency between UA and PARCA sf objects}
+\title{Check cadastral IDU consistency between \emph{UA} and \emph{PARCA} sf objects}
 \usage{
 ua_check_idu(ua, parca, verbose = FALSE)
 }
@@ -20,5 +20,5 @@ parcels.}
 \code{FALSE} otherwise (with CLI messages if \code{verbose = TRUE}).
 }
 \description{
-Check cadastral IDU consistency between UA and PARCA sf objects
+Check cadastral IDU consistency between \emph{UA} and \emph{PARCA} sf objects
 }

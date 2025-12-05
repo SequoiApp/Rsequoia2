@@ -10,7 +10,45 @@ parca_to_ua <- function(parca) {
   ua <- seq_normalize(parca, "ua")
 }
 
-#' Check cadastral IDU consistency between UA and PARCA sf objects
+#' Create analysis units layer
+#'
+#' This function reads the cadastral layer file from a project directory
+#' and create the analysis units layer.
+#'
+#' The resulting object is returned invisibly as an `sf` polygons layer.
+#' The output file is automatically written into the working directory defined
+#' by `dirname`.
+#'
+#' @inheritParams create_matrice
+#' @param parca `sf` Object from [Rsequoia2::seq_parca()] representing cadastral
+#' layer.
+#'
+#' @return An `sf` object
+#'
+#' @export
+seq_parca_to_ua <- function(
+    dirname = ".",
+    verbose = TRUE,
+    overwrite = FALSE){
+
+  # create ua
+  seq_ua <- seq_read("v.seq.parca.poly",
+                     dirname = dirname,
+                     verbose = verbose) |> parca_to_ua()
+
+  # write ua
+  ua_path <- seq_write(
+    seq_ua,
+    "v.seq.ua.poly",
+    dirname = dirname,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+
+  return(invisible(ua_path))
+}
+
+#' Check cadastral IDU consistency between _UA_ and _PARCA_ sf objects
 #'
 #' @param ua `sf` Object from [Rsequoia2::parca_to_ua()] containing analysis
 #' units
@@ -53,10 +91,10 @@ ua_check_idu <- function(ua, parca, verbose = FALSE) {
   return(TRUE)
 }
 
-#' Update cadastral area values in UA using PARCA
+#' Update cadastral area values in _UA_ using _PARCA_
 #'
-#' This function compares cadastral area values between UA and PARCA,
-#' and updates UA wherever discrepancies are detected.
+#' This function compares cadastral area values between _UA_ and _PARCA_,
+#' and updates _UA_ wherever discrepancies are detected.
 #'
 #' @inheritParams ua_check_idu
 #'
@@ -101,9 +139,9 @@ ua_check_area <- function(ua, parca, verbose = FALSE) {
   return(invisible(ua))
 }
 
-#' Create management unit field (UG) in the UA sf object
+#' Create management unit field (UG) in the _UA_ sf object
 #'
-#' Generates a standardized management unit identifier (UG) in the UA object
+#' Generates a standardized management unit identifier (UG) in the _UA_ object
 #' based on configured parcel keys.
 #'
 #' @param ua `sf` object containing analysis units;
@@ -146,7 +184,7 @@ ua_generate_ug <- function(
   return(invisible(ua))
 }
 
-#' Calculate areas in the UA sf object
+#' Calculate areas in the _UA_ sf object
 #'
 #' Computes the corrected cadastral areas for units of analysis according to
 #' cartographic area.
@@ -190,7 +228,7 @@ ua_generate_area <- function(ua, verbose = TRUE) {
 
 #' Retrieve description field names
 #'
-#' Returns the list of UA description fields as defined in the configuration.
+#' Returns the list of _UA_ description fields as defined in the configuration.
 #' This is an internal helper used to keep `ua_*()` functions consistent.
 #'
 #' @return A character vector of field names.
@@ -205,7 +243,7 @@ seq_desc_fields <- function() {
   vapply(keys, function(k) seq_field(k)$name, character(1))
 }
 
-#' Check management unit (UG) consistency in the UA sf object
+#' Check management unit (UG) consistency in the _UA_ sf object
 #'
 #' A management unit must (UG) can only have a single description. Therefore,
 #' all units of analysis within the same UG must include the same descriptive
@@ -251,10 +289,10 @@ ua_check_ug <- function(ua,
   return(invisible(TRUE))
 }
 
-#' Clean management units (UG) by correcting minor inconsistencies in the UA sf object
+#' Clean management units (UG) by correcting minor inconsistencies in the _UA_ sf object
 #'
 #' Detects and corrects minor inconsistencies within management units
-#' (UG) in UA. Lines with small surfaces relative to their UG are updated
+#' (UG) in _UA_. Lines with small surfaces relative to their UG are updated
 #' to match the dominant description.
 #'
 #' @param ua `sf` object containing analysis units;
@@ -308,7 +346,7 @@ ua_clean_ug <- function(
   return(ua_cleaned)
 }
 
-#' Check and update UA consistency with cadastral PARCA data
+#' Check and update _UA_ consistency with cadastral _PARCA_ data
 #'
 #' This function verifies and updates the consistency of analysis units (UA)
 #' using cadastral parcel data (PARCA). It checks matching IDUs, validates areas,
@@ -351,3 +389,57 @@ ua_to_ua <- function(ua, parca, verbose = TRUE){
   return(ua)
 }
 
+#' Check and update the analysis units layer
+#'
+#' This function reads the analysis units layer file from a project directory,
+#' check and udapte attributes and overwrite it.
+#'
+#' The resulting object is returned invisibly as an `sf` polygons layer.
+#' The output file is automatically written into the working directory defined
+#' by `dirname`.
+#'
+#' @inheritParams ua_to_ua
+#' @param secure `logical`. If `TRUE`, also writes a timestamped secure copy
+#' of the file.
+#'
+#' @return An `sf` object
+#'
+#' @export
+seq_ua <- function(
+    dirname = ".",
+    verbose = TRUE,
+    overwrite = FALSE){
+
+  # read
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname, verbose = verbose)
+  ua <- seq_read("v.seq.ua.poly", dirname = dirname, verbose = verbose)
+
+  # ua treatment
+  seq_ua <- ua_to_ua(ua, parca, verbose = verbose)
+
+  # write ua
+  ua_path <- seq_write(
+    seq_ua,
+    "v.seq.ua.poly",
+    dirname = dirname,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+
+  # secure write
+  if (secure) {
+    date_str <- gsub(":", "", format(Sys.time(), "%Y%m%d_%H%M%S"))
+    ext <- tools::file_ext(ua_path)
+    base <- sub(paste0("\\.", ext, "$"), "", ua_path)
+    secure_ua_path <- paste0(base, "_", date_str, ".", ext)
+
+    sf::st_write(
+      obj = seq_ua,
+      dsn = secure_ua_path,
+      quiet = TRUE,
+      layer_options = "ENCODING=UTF-8"
+    ) |> suppressWarnings()
+  }
+
+  return(invisible(ua_path))
+}

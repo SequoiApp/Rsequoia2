@@ -2,7 +2,7 @@
 % Please edit documentation in R/ua.R
 \name{ua_clean_ug}
 \alias{ua_clean_ug}
-\title{Clean management units (UG) by correcting minor inconsistencies in the UA sf object}
+\title{Clean management units (UG) by correcting minor inconsistencies in the \emph{UA} sf object}
 \usage{
 ua_clean_ug(ua, atol = 0.5, rtol = 0.1)
 }
@@ -21,7 +21,7 @@ consistency.
 }
 \description{
 Detects and corrects minor inconsistencies within management units
-(UG) in UA. Lines with small surfaces relative to their UG are updated
+(UG) in \emph{UA}. Lines with small surfaces relative to their UG are updated
 to match the dominant description.
 }
 \details{

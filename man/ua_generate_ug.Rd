@@ -2,7 +2,7 @@
 % Please edit documentation in R/ua.R
 \name{ua_generate_ug}
 \alias{ua_generate_ug}
-\title{Create management unit field (UG) in the UA sf object}
+\title{Create management unit field (UG) in the \emph{UA} sf object}
 \usage{
 ua_generate_ug(
   ua,
@@ -26,6 +26,6 @@ Keys used to build the UG identifier.}
 \code{sf} object UA with UG field filled.
 }
 \description{
-Generates a standardized management unit identifier (UG) in the UA object
+Generates a standardized management unit identifier (UG) in the \emph{UA} object
 based on configured parcel keys.
 }

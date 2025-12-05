@@ -2,7 +2,7 @@
 % Please edit documentation in R/ua.R
 \name{ua_to_ua}
 \alias{ua_to_ua}
-\title{Check and update UA consistency with cadastral PARCA data}
+\title{Check and update \emph{UA} consistency with cadastral \emph{PARCA} data}
 \usage{
 ua_to_ua(ua, parca, verbose = TRUE)
 }

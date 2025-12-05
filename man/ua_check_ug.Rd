@@ -2,7 +2,7 @@
 % Please edit documentation in R/ua.R
 \name{ua_check_ug}
 \alias{ua_check_ug}
-\title{Check management unit (UG) consistency in the UA sf object}
+\title{Check management unit (UG) consistency in the \emph{UA} sf object}
 \usage{
 ua_check_ug(ua, verbose = TRUE)
 }

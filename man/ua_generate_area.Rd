@@ -2,7 +2,7 @@
 % Please edit documentation in R/ua.R
 \name{ua_generate_area}
 \alias{ua_generate_area}
-\title{Calculate areas in the UA sf object}
+\title{Calculate areas in the \emph{UA} sf object}
 \usage{
 ua_generate_area(ua, verbose = TRUE)
 }
