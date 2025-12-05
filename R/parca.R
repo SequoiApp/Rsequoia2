@@ -134,7 +134,7 @@ get_parca <- function(idu, bdp_geom = TRUE, lieu_dit = FALSE, verbose = TRUE){
 
   raw_parca <- seq_normalize(raw_parca, "raw_parca")
 
-  return(raw_parca)
+  return(invisible(raw_parca))
 }
 
 #' Download, enrich and write cadastral geometries

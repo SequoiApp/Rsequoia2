@@ -80,7 +80,7 @@ test_that("get_parca() warns about missing IDU", {
 
   # missing idu = 2
   expect_warning(
-    get_parca(idu = 1:2, verbose = FALSE),
+    get_parca(idu = 1:2, bdp_geom = FALSE, verbose = FALSE),
     regexp = "Geometry not found"
   )
 
