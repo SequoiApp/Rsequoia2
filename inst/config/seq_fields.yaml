@@ -209,4 +209,32 @@ dispositif:
   class: "character"
   definition: "..."
 
+# vector ----
+type:
+  name: "TYPE"
+  class: "character"
+  definition: "Acronym used in SEQUOIA process"
 
+nature:
+  name: "NATURE"
+  alias: ["nature"]
+  class: "character"
+  definition: "Nature from IGN BDTopo"
+
+name:
+  name: "NAME"
+  alias: ["NOM"]
+  class: "character"
+  definition: "Name from IGN BDTopo"
+
+offset:
+  name: "OFFSET"
+  alias: ["DECA"]
+  class: "character"
+  definition: "Offset used in SEQUOIA process"
+
+rotation:
+  name: "ROTATION"
+  alias: ["ROT"]
+  class: "character"
+  definition: "Rotation used in SEQUOIA process"

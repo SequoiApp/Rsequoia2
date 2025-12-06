@@ -67,3 +67,20 @@ ua:
   - surf_sig
   - surf_cor
   - surf_cad
+
+vct_poly:
+  - type
+  - nature
+  - name
+
+vct_line:
+  - type
+  - nature
+  - name
+  - offset
+
+vct_point:
+  - type
+  - nature
+  - name
+  - rotation
