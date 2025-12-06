@@ -19,6 +19,7 @@ Imports:
     openxlsx2,
     sf,
     terra,
+    units,
     yaml
 Remotes:
     github::mucau/frheritage

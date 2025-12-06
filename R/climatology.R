@@ -1,9 +1,9 @@
-get_climate_fiche <- function(x, destfile = NULL, verbose = TRUE) {
-  # 1. Prepare destfile folder (R_user_dir by default)
-  if (is.null(destfile)) {
-    destfile <- tools::R_user_dir("Rsequoia2", which = "destfile")
+get_climate_fiche <- function(x, dirname = NULL, verbose = TRUE) {
+  # 1. Prepare dirname folder (R_user_dir by default)
+  if (is.null(dirname)) {
+    dirname <- tools::R_user_dir("Rsequoia2", which = "data")
   }
-  dir.create(destfile, recursive = TRUE, showWarnings = FALSE)
+  dir.create(dirname, recursive = TRUE, showWarnings = FALSE)
 
   # 2. Download station dataset (points)
   stations_url <- "https://www.data.gouv.fr/api/1/datasets/r/596f6898-3698-4aca-add4-49f38de03009"
@@ -12,9 +12,9 @@ get_climate_fiche <- function(x, destfile = NULL, verbose = TRUE) {
   stations <- sf::read_sf(stations_url) |> sf::st_transform(sf::st_crs(x))
 
   # 3. Nearest station to x
-  pt <- sf::sf::st_centroid(sf::st_union(x)) |> suppressWarnings()
-  nearesf::st_idx <- sf::sf::st_nearesf::st_feature(pt, stations)
-  station <- stations[nearesf::st_idx, ]
+  pt <- sf::st_centroid(sf::st_union(x)) |> suppressWarnings()
+  nearest_idx <- sf::st_nearest_feature(pt, stations)
+  station <- stations[nearest_idx, ]
 
   dist <- units::set_units(sf::st_distance(pt, station), "km")
   if (verbose) {
@@ -23,15 +23,15 @@ get_climate_fiche <- function(x, destfile = NULL, verbose = TRUE) {
 
   # 4. Build output file path
   pdf_url <- station$chemin
-  destfile <- file.path(destfile, basename(pdf_url))
+  dirname <- file.path(dirname, basename(pdf_url))
 
   # 5. Download PDF
-  curl::curl_download(pdf_url, destfile, quiet = )
-  if (verbose) cli::cli_alert_info("Downloading climate fiche PDF to {.path {out_file}}")
+  curl::curl_download(pdf_url, dirname, quiet = )
+  if (verbose) cli::cli_alert_info("Downloading climate fiche PDF to {.path {dirname}}")
 
   # 6. Return useful information
   list(
-    pdf = out_file,
+    pdf = dirname,
     station = station
   )
 }
