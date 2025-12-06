@@ -13,9 +13,6 @@ working directory.}
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
 \item{overwrite}{\code{logical} If \code{TRUE}, filename is overwritten.}
-
-\item{parca}{\code{sf} Object from \code{\link[=seq_parca]{seq_parca()}} representing cadastral
-layer.}
 }
 \value{
 An \code{sf} object

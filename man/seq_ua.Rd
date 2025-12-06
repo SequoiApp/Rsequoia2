@@ -4,13 +4,18 @@
 \alias{seq_ua}
 \title{Check and update the analysis units layer}
 \usage{
-seq_ua(dirname = ".", verbose = TRUE, overwrite = FALSE)
+seq_ua(dirname = ".", secure = TRUE, verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+\item{dirname}{\code{character} Directory where the matrice file is located.
+Defaults to the current working directory.}
 
 \item{secure}{\code{logical}. If \code{TRUE}, also writes a timestamped secure copy
 of the file.}
+
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+
+\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
 }
 \value{
 An \code{sf} object

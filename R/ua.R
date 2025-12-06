@@ -20,8 +20,6 @@ parca_to_ua <- function(parca) {
 #' by `dirname`.
 #'
 #' @inheritParams create_matrice
-#' @param parca `sf` Object from [Rsequoia2::seq_parca()] representing cadastral
-#' layer.
 #'
 #' @return An `sf` object
 #'
@@ -32,9 +30,8 @@ seq_parca_to_ua <- function(
     overwrite = FALSE){
 
   # create ua
-  seq_ua <- seq_read("v.seq.parca.poly",
-                     dirname = dirname,
-                     verbose = verbose) |> parca_to_ua()
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname, verbose = verbose)
+  ua <- parca_to_ua(parca)
 
   # write ua
   ua_path <- seq_write(
@@ -45,7 +42,7 @@ seq_parca_to_ua <- function(
     overwrite = overwrite
   )
 
-  return(invisible(ua_path))
+  return(invisible(ua_path |> as.list()))
 }
 
 #' Check cadastral IDU consistency between _UA_ and _PARCA_ sf objects
@@ -398,7 +395,7 @@ ua_to_ua <- function(ua, parca, verbose = TRUE){
 #' The output file is automatically written into the working directory defined
 #' by `dirname`.
 #'
-#' @inheritParams ua_to_ua
+#' @inheritParams seq_write
 #' @param secure `logical`. If `TRUE`, also writes a timestamped secure copy
 #' of the file.
 #'
@@ -407,6 +404,7 @@ ua_to_ua <- function(ua, parca, verbose = TRUE){
 #' @export
 seq_ua <- function(
     dirname = ".",
+    secure = TRUE,
     verbose = TRUE,
     overwrite = FALSE){
 
@@ -428,17 +426,21 @@ seq_ua <- function(
 
   # secure write
   if (secure) {
-    date_str <- gsub(":", "", format(Sys.time(), "%Y%m%d_%H%M%S"))
-    ext <- tools::file_ext(ua_path)
-    base <- sub(paste0("\\.", ext, "$"), "", ua_path)
-    secure_ua_path <- paste0(base, "_", date_str, ".", ext)
+    date_str <- format(Sys.time(), "%Y%m%dT%H%M%S")
+    secure_ua_path <- sprintf(
+      "%s_%s.%s",
+      tools::file_path_sans_ext(ua_path),
+      date_str,
+      tools::file_ext(ua_path)
+    )
 
-    sf::st_write(
-      obj = seq_ua,
-      dsn = secure_ua_path,
-      quiet = TRUE,
-      layer_options = "ENCODING=UTF-8"
-    ) |> suppressWarnings()
+    sf::write_sf(seq_ua, ua_path, secure_ua_path)
+
+    if (verbose) {
+      cli::cli_alert_success(
+        "UA also saved as {.file {basename(secure_ua_path)}} for safety."
+      )
+    }
   }
 
   return(invisible(ua_path))
