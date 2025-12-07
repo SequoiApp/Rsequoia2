@@ -147,7 +147,7 @@ dissolve <- function(
     eps = 0.01,
     endCapStyle = "SQUARE",
     joinStyle = "MITRE",
-    mitreLimit = 10){
+    mitreLimit = 5){
 
   if (get_geom_type(x) != "POLYGON") {
     cli::cli_abort("{.arg x} should be a POLYGON {.cls sf} object")
@@ -167,7 +167,8 @@ dissolve <- function(
       joinStyle = joinStyle,
       mitreLimit = mitreLimit
     ) |>
-    sf::st_make_valid()
+    sf::st_make_valid() |>
+    sf::st_snap(x, tol)
 
   return(x_dissolved)
 }
@@ -184,7 +185,7 @@ dissolve <- function(
 #' @return An `sf` object of convex polygons.
 #'
 #' @noRd
-buffer_to_convex <- function(x, dist, crs = 4326) {
+buffer_to_convex <- function(x, dist, crs = 2154) {
 
   # 1. Ensure valid input geometries
   x <- sf::st_make_valid(x)
