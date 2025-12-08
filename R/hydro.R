@@ -10,7 +10,7 @@
 #' @return An `sf` object transformed to the target CRS, `NULL` if the request fails.
 #'
 #' @noRd
-get_topo <- function(x, layer, crs = 2154) {
+get_topo <- function(x, layer, crs = 2154, strict = TRUE) {
 
   f <- happign::get_wfs(
     x = x,
@@ -22,7 +22,9 @@ get_topo <- function(x, layer, crs = 2154) {
 
   if (!(is.null(f))){
     f <- sf::st_transform(f, crs) |>
-      sf::st_zm()
+      sf::st_zm() |>  # Security if there Z dim in the dataset (common case in bd topo)
+      st_intersection(x) |>
+      suppressWarnings()
   }
 
   return(invisible(f))
@@ -52,23 +54,29 @@ get_hydro_poly <- function(x){
   convex <- buffer_to_convex(x, 1000)
 
   # empty sf
-  hydro_poly <- sf::st_sf(TYPE   = character(),
-                          NATURE = character(),
-                          geometry = sf::st_sfc(crs = 2154))
+  hydro_poly <- sf::st_sf(
+    TYPE = character(),
+    NATURE = character(),
+    geometry = sf::st_sfc(crs = 2154)
+  )
 
   # reservoir
   rso <- get_topo(convex, "BDTOPO_V3:reservoir")
+
+  type <- seq_field("type")$name
   if(!(is.null(rso))){
-    rso$TYPE = "RSO"
+    rso[[type]] <- "RSO"
     rso <- seq_normalize(rso, "vct_poly")
     hydro_poly <- rbind(hydro_poly, rso)
   }
 
   # surface
   sfo <- get_topo(convex, "BDTOPO_V3:surface_hydrographique")
+
+  name <- seq_field("name")$name
   if(!(is.null(sfo))){
-    sfo$TYPE <- ifelse(sfo$persistance == "Permanent", "SFO", "SFI")
-    sfo$NAME <- sfo$cpx_toponyme_de_plan_d_eau
+    sfo[[type]] <- ifelse(sfo$persistance == "Permanent", "SFO", "SFI")
+    sfo[[name]] <- sfo$cpx_toponyme_de_plan_d_eau
     sfo <- seq_normalize(sfo, "vct_poly")
     hydro_poly <- rbind(hydro_poly, sfo)
   }
@@ -105,17 +113,22 @@ get_hydro_line <- function(x){
   convex <- buffer_to_convex(x, 1000)
 
   # empty sf
-  hydro_line <- sf::st_sf(TYPE   = character(),
-                          NATURE = character(),
-                          NAME = character(),
-                          OFFSET = character(),
-                          geometry = sf::st_sfc(crs = 2154))
+  hydro_line <- sf::st_sf(
+    TYPE = character(),
+    NATURE = character(),
+    NAME = character(),
+    OFFSET = character(),
+    geometry = sf::st_sfc(crs = 2154)
+  )
 
   # troncon
   rui <- get_topo(convex, "BDTOPO_V3:troncon_hydrographique")
+
+  type <- seq_field("type")$name
+  name <- seq_field("name")$name
   if(!(is.null(rui))){
-    rui$TYPE = ifelse(rui$persistance == "Permanent", "RUI", "RIN")
-    rui$NAME = rui$cpx_toponyme_de_cours_d_eau
+    rui[[type]] = ifelse(rui$persistance == "Permanent", "RUI", "RIN")
+    rui[[name]] = rui$cpx_toponyme_de_cours_d_eau
     rui <- seq_normalize(rui, "vct_line")
     hydro_line <- rbind(hydro_line, rui)
   }
@@ -152,17 +165,22 @@ get_hydro_point <- function(x){
   convex <- buffer_to_convex(x, 1000)
 
   # empty sf
-  hydro_point <- sf::st_sf(TYPE   = character(),
-                           NATURE = character(),
-                           NAME = character(),
-                           ROTATION = character(),
-                           geometry = sf::st_sfc(crs = 2154))
+  hydro_point <- sf::st_sf(
+    TYPE   = character(),
+    NATURE = character(),
+    NAME = character(),
+    ROTATION = character(),
+    geometry = sf::st_sfc(crs = 2154)
+  )
 
   # mare
   mar <- get_topo(convex, "BDTOPO_V3:detail_hydrographique")
+
+  type <- seq_field("type")$name
+  name <- seq_field("name")$name
   if(!(is.null(mar))){
-    mar$TYPE = "MAR"
-    mar$NAME = mar$toponyme
+    mar[[type]] <- "MAR"
+    mar[[name]] <- mar$toponyme
     mar <- seq_normalize(mar, "vct_point")
     hydro_point <- rbind(hydro_point, mar)
   }
