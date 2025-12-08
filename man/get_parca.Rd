@@ -4,7 +4,7 @@
 \alias{get_parca}
 \title{Download and format cadastral parcel(s)}
 \usage{
-get_parca(idu, bdp_geom = TRUE, lieu_dit = FALSE, verbose = TRUE)
+get_parca(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{idu}{\code{character} Vector of IDU identifiers.}

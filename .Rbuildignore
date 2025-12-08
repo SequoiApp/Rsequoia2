@@ -7,3 +7,4 @@
 ^pkgdown$
 ^LICENSE\.md$
 ^archive$
+^vignettes/articles$

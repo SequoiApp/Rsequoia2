@@ -90,23 +90,26 @@ get_lieux_dits <- function(idu){
 #'
 #' @return An `sf` object of parcels with harmonized attributes.
 #' @export
-get_parca <- function(idu, bdp_geom = TRUE, lieu_dit = FALSE, verbose = TRUE){
+get_parca <- function(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE){
   idu <- unique(idu)
   etalab <- get_parca_etalab(idu)
 
   if (bdp_geom){
     if (verbose) cli::cli_alert_info("Downloading BDP from IGN...")
-    bdp <- get_parca_bdp(idu)
-    idx <- match(etalab$idu, bdp$idu)
-    etalab$geometry[!is.na(idx)] <- bdp$geometry[idx[!is.na(idx)]]
-    if (verbose) {
-      valid_bdp_idu <- intersect(etalab$idu, bdp$idu)
-      if (length(valid_bdp_idu) > 0) {
-        cli::cli_alert_success(
-          "{length(valid_bdp_idu)} of {length(etalab$idu)} ETALAB geom successfully replaced with BDP geom."
+    tryCatch({
+      bdp <- get_parca_bdp(idu)
+      idx <- match(etalab$idu, bdp$idu)
+      etalab$geometry[!is.na(idx)] <- bdp$geometry[idx[!is.na(idx)]]
+      if (verbose) {
+        valid_bdp_idu <- intersect(etalab$idu, bdp$idu)
+        if (length(valid_bdp_idu) > 0) {
+          cli::cli_alert_success(
+            "{length(valid_bdp_idu)} of {length(etalab$idu)} ETALAB geom successfully replaced with BDP geom."
           )
+        }
       }
-    }
+    }, error = \(e) cli::cli_alert_warning("BDP not available, ETALAB geom only is used.")
+    )
   }
 
   missing_idu <- setdiff(idu, etalab$idu)

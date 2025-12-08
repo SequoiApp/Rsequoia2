@@ -3,7 +3,7 @@ test_that("get_dsm() errors with non spatial input", {
   expect_error(get_dsm("abc"), "must be.*sf.*sfc")
 })
 
-test_that("get_dsm() works ", {
+test_that("get_dsm() works", {
 
   skip_on_os("mac")
 
