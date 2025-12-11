@@ -28,3 +28,4 @@ Suggests:
 Config/testthat/edition: 3
 Depends: R (>= 4.1.0)
 Config/Needs/website: rmarkdown
+URL: https://mucau.github.io/Rsequoia2/
