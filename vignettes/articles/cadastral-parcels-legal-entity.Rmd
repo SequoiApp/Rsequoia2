@@ -1,0 +1,98 @@
+---
+title: "Cadastral parcels - legal entity"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How to retrieve cadastral parcels}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  out.width = "100%",
+  dpi = 300,
+  fig.width = 7.2916667,
+  comment = "#>"
+)
+```
+
+```{r, echo = FALSE, message = FALSE}
+library(tmap)
+tmap_options(scale = 0.75)
+```
+
+```{r package}
+library(Rsequoia2)
+library(tmap)
+library(openxlsx2)
+library(sf)
+```
+
+As always, we need to setup a Sequoia dir (temporary in this case)
+
+```{r setup_seqdir}
+seq_dir <- file.path(tempdir(), "MY_FOREST")
+dir.create(seq_dir,)
+```
+
+
+# What is Legal Entity.
+
+In France, legal entity is known as "Personne morale". Unlike a physical person, a legal entity has its own juridical existence and is identified by national codes such as SIREN (9 digits) or SIRET. In Forestry, typical entities include "groupements forestiers" or companies.
+
+France provides open datasets that describe cadastral parcels owned by legal entities. These files, published by the Direction Générale des Finances Publiques (DGFiP), allow users to retrieve cadastral parcels for a given owner.
+
+`Rsequoia2` give acces to this dataset and helpers to search specific owner.
+
+## Retrieve legal entity owner
+
+`get_legal_entity()` function download and prepare data as a Sequoia matrice. 
+
+There is a cache system to this function to avoid downloading each time. By default `cache = NULL`whic downlaod dtata in a dedicated cache dir (see `tools::R_user_dir()`).
+
+You should keep this directory but if for any reason you need raw data elswhere use `cache`.
+
+Be aware that you can load data from a department code or an insee code. The first can be a bit time-consuming but you can then search all dep if owner have cadastral parcels accros multiple commune.
+
+```{r}
+insee <- c("29158", "29165")
+
+legal_entity_cp <- get_legal_entity(insee)
+
+head(legal_entity_cp)
+```
+## Search legal entity owner
+
+After loading the file you can use helpers `search_legal_entity()`. 
+
+This helpers relies on a text–normalization applied to both the inputs and the corresponding columns of the matrice. This makes the search robust to accents, punctuation, spacing irregularities and case differences.
+
+Below we search all GFA ("Groupement Foncier Agricole").
+
+```{r}
+search_mat <- search_legal_entity(legal_entity_cp, prop = "gfa")
+
+unique(search_mat$PROPRIETAIRE)
+```
+
+## Save to start Sequoia process
+
+As you can see in article ..., starting a Sequoia process need a excel matrice. To generate this one you can use `seq_xlsx()` function.
+
+Notice that the `data.frame` generated with `get_legal_entity()` is already formated for Sequoia process. This mean you have the `"IDENTIFIANT"` columns. To avoid filling it in excel, we encouraged you to do it before saving.
+
+```{r}
+id <- "MY_FOREST"
+search_mat$IDENTIFIANT <- id
+
+# "MATRICE" = search_mat mean write search_mat to sheet "MATRICE
+seq_xlsx(
+  x = list("MATRICE" = search_mat),
+  filename = file.path(seq_dir, paste0(id, "_matrice.xlsx"))
+)
+
+```
+
+
+

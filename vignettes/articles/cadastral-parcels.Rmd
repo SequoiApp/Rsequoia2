@@ -1,5 +1,5 @@
 ---
-title: "How to retrieve cadastral parcels"
+title: "Cadastral parcels"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{How to retrieve cadastral parcels}
@@ -9,11 +9,17 @@ vignette: >
 
 ```{r setup}
 knitr::opts_chunk$set(
-   collapse = TRUE,
-   comment = "#>",
-   fig.center = TRUE,
-   fig.align = "center"
+  collapse = TRUE,
+  out.width = "100%",
+  dpi = 300,
+  fig.width = 7.2916667,
+  comment = "#>"
 )
+```
+
+```{r, echo = FALSE, message = FALSE}
+library(tmap)
+tmap_options(scale = 0.75)
 ```
 
 ```{r package}
@@ -40,25 +46,26 @@ This vignette shows you how retrieve cadastral parcels (CP) from and for Rsequoi
 *Rq :* IDU is a 14-character code that uniquely identifies one cadastral parcel in France 
 
 For example : 29158000AX0696
-29     -> Departement code (2 digits)
-158    -> Commune code (3 digits)
-000    -> Prefix / code abs (3 digits)
-AX     -> Section (2 characters)
-0696   -> Parcel number (4 digits)
+- "29"   -> Departement code (2 digits)
+- "158"  -> Commune code (3 digits)
+- "000"  -> Prefix / code abs (3 digits)
+- "AX"   -> Section (2 characters)
+- "0696" -> Parcel number (4 digits)
 
-```{r single_idu}
+```{r single_idu, fig.height = 3.5}
 idu <- c("29158000AX0696") 
 
 cp <- get_parca(idu)
 
 tm_tiles("OpenStreetMap")+
 tm_shape(cp)+
-  tm_borders(col = "red", lwd = 2)
+  tm_borders(col = "red", lwd = 2)+
+tm_layout(bg = F)
 	
 ```
 `get_parca()` is vectorized so multiple idu can be used
 
-```{r multiple_idu}
+```{r multiple_idu, fig.height = 3.5}
 idus <- paste0("29158000AX0", 696:704)
 
 cp <- get_parca(idus)
@@ -81,18 +88,17 @@ Using BDP data may therefore improve spatial accuracy, although it does not guar
 
 To use BDP geometries in `get_parca()`, set `bdp_geom = TRUE`; when BDP geometry exists for a given IDU, it automatically replaces the Etalab geometry.
 
-In the example below, Etalab and BDP geometries match perfectly.
-```{r etalab_vs_bdp}
-idus <- paste0("29158000AX0", 696:704)
+```{r etalab_vs_bdp, fig.height = 3.5}
+idus <- paste0("545400000C0", 101:109)
 
 etalab <- get_parca(idus, bdp_geom = FALSE)
 bdp <- get_parca(idus, bdp_geom = TRUE)
 
 tm_tiles("OpenStreetMap")+
 tm_shape(etalab)+
-  tm_borders(col = "firebrick", lwd = 10)+
+  tm_borders(col = "firebrick", lwd = 2)+
 tm_shape(bdp)+
-  tm_borders(col = "springgreen", lwd = 2)
+  tm_borders(col = "blue", lwd = 2)
 
 ```
  
@@ -108,7 +114,7 @@ However, a separate dataset exists, and retrieving lieu-dit requires performing 
 
 */!\* Note that this spatial join may be time-consuming for large numbers of parcels.
 
-```{r}
+```{r lieu_dit, fig.height = 3.5}
 idus <- paste0("29158000BD00", 10:60)
 
 with_lieu_dit <- get_parca(idus, lieu_dit = TRUE)
@@ -191,7 +197,7 @@ write_xlsx(matrice, file.path(sequoia_dir, "ECKMUHL_matrice.xlsx"))
 
 ### Step 2 — Run seq_parca() and load the resulting parcels
 
-```{r seq_parca}
+```{r seq_parca, fig.height = 3.5}
 parca_path <- seq_parca(sequoia_dir)
 parca <- read_sf(parca_path)
 

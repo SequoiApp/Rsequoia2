@@ -105,7 +105,6 @@ seq_write <- function(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE)
     return(invisible(path))
   }
 
-
   is_raster <- startsWith(key, "r.")
   if (is_raster) {
     if (!inherits(x, "SpatRaster")) {

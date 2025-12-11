@@ -102,6 +102,7 @@ dg_get_dataset <- function(id) {
         description = r$description,
         format = r$format,
         filesize = r$filesize,
+        last_modified = r$last_modified,
         url = r$url
       )
     })

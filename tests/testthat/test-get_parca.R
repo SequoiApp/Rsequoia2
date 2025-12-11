@@ -40,7 +40,7 @@ test_that("get_parca() add bdp geom when possible", {
     get_parca_bdp = function(idu) fake_bdp
   )
 
-  res <- get_parca(idu = 1:2, verbose = FALSE)
+  res <- get_parca(idu = 1:2, bdp_geom = TRUE, verbose = FALSE)
   expect_identical(res$geometry[replaced_idu,], geom_bdp)
 })
 
@@ -62,7 +62,7 @@ test_that("get_parca() does not replace geometry when BDP has no matching IDU", 
     get_parca_bdp = function(idu) fake_bdp,
   )
 
-  res <- get_parca(idu = 1, verbose = FALSE)
+  res <- get_parca(idu = 1, bdp_geom = TRUE, verbose = FALSE)
   expect_true(all(sf::st_coordinates(res$geometry) == c(1,1)))
 })
 

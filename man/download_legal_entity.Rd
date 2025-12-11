@@ -4,11 +4,9 @@
 \alias{download_legal_entity}
 \title{Download and cache cadastral data for legal entities ("Personnes Morales")}
 \usage{
-download_legal_entity(dep, cache = NULL, verbose = TRUE)
+download_legal_entity(cache = NULL, verbose = TRUE)
 }
 \arguments{
-\item{dep}{\code{character}; Department code(s) (see \link[happign:dep_2025]{happign::dep_2025}).}
-
 \item{cache}{\code{character}; Storage directory. Defaults to the user cache
 directory (see \code{\link[tools:userdir]{tools::R_user_dir()}}).}
 

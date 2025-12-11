@@ -6,7 +6,6 @@
 #' legal entities. The data are automatically cached locally to avoid
 #' repeated downloads.
 #'
-#' @param dep `character`; Department code(s) (see [happign::dep_2025]).
 #' @param cache `character`; Storage directory. Defaults to the user cache
 #' directory (see [tools::R_user_dir()]).
 #' @param verbose `logical` If `TRUE`, display messages.
@@ -23,30 +22,28 @@
 #' }
 #'
 #' @export
-download_legal_entity <- function(dep, cache = NULL, verbose = TRUE) {
-  # Helpers ----
-  pad_right <- function(x, width) gsub(" ", "0", sprintf(paste0("%-", width, "s"), x))
+download_legal_entity <- function(cache = NULL, verbose = TRUE) {
 
-  if (is.null(cache)){
+    if (is.null(cache)){
     cache <- tools::R_user_dir("Rsequoia2", which = "cache")
     dir.create(cache, recursive = TRUE, showWarnings = FALSE)
   }
 
-  year <- 2025
-  base_url <- paste0(
-    "https://data.economie.gouv.fr/api/datasets/1.0/",
-    "fichiers-des-locaux-et-des-parcelles-des-personnes-morales/attachments"
-  )
+  # dgfip_id <- "534fff8ea3a7292c64a77f02"
+  dataset_id <- "605d268f4661cf23272817c3"
+  resource <- dg_get_dataset(dataset_id)$resource
 
-  urls <- sprintf(
-    "%s/fichier_des_parcelles_situation_%d_dpts_%s_zip",
-    base_url, year, c("01_a_56", "57_a_976")
-  )
+  # Find lates year
+  years <- regmatches(resource$title, gregexpr("\\b\\d{4}\\b", resource$title))
+  latest_year <- max(as.numeric(unlist(years)), na.rm = TRUE)
 
-  dep_chr <- pad_right(dep, 3)
-  pattern <- paste("PM", format(Sys.Date(), "%y"), "NB", dep_chr, sep = "_")
-  is_download <- length(list.files(cache, pattern = pattern, recursive = TRUE)) > 0
+  parcelles_latest <- resource[grepl(paste0("parcelle.*", latest_year), resource$title, ignore.case = TRUE), ]
+  zip <- parcelles_latest[parcelles_latest$format == "zip", ]
 
+  urls <- unlist(zip$url)
+  title <- unlist(zip$title) |> tools::file_path_sans_ext()
+
+  is_download <- all(title %in% dir(cache))
   if (!is_download) {
     if (verbose) cli::cli_alert_info("Downloading legal entity datasets...")
     invisible(lapply(urls, \(x) archive::archive_extract(x, dir = cache)))
@@ -130,7 +127,7 @@ get_legal_entity <- function(
   }
 
   deps <- c(code_dep, substr(code_insee, 1, 2)) |> unique()
-  cache <- download_legal_entity(dep = deps, cache = cache)
+  cache <- download_legal_entity(cache = cache, verbose = verbose)
 
   files <- grep(
     paste(deps, collapse = "|"),
@@ -248,6 +245,9 @@ search_legal_entity <- function(x, prop = NULL, lieu_dit = NULL) {
     lieu_dit_pattern <- paste(normalize_txt(lieu_dit), collapse = "|")
     res <- subset(res, grepl(lieu_dit_pattern, lieu_dit_norm))
   }
+
+  res$prop_norm <- NULL
+  res$lieu_dit_norm <- NULL
 
   return(res)
 }
