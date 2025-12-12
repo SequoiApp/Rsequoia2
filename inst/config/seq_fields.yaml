@@ -79,8 +79,8 @@ section:
   definition: "Section cadastrale (2 lettres ou chiffres)"
 
 numero:
-  name: "N_PARCA"
-  alias: ["numero"]
+  name: "NUMERO"
+  alias: ["numero", "n_parca"]
   class: "character"
   definition: "Numéro cadastral (4 entiers)"
 

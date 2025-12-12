@@ -175,26 +175,33 @@ seq_parca <- function(
   # read matrice
   m <- read_matrice(dirname)
 
+  idu <- seq_field("idu")$name
+  insee <- seq_field("insee")$name
+  prefix <- seq_field("prefix")$name
+  section <- seq_field("section")$name
+  numero <- seq_field("numero")$name
+  lieu_dit <- seq_field("lieu_dit")$name
+  tx_boisee <- seq_field("tx_boisee")$name
+
   # create idu
-  m$IDU <- paste0(
-    pad_left(m$INSEE, 5),
-    pad_left(m$PREFIXE, 3),
-    pad_left(m$SECTION, 2),
-    pad_left(m$NUMERO, 4)
+  m[[idu]] <- paste0(
+    pad_left(m[[insee]], 5),
+    pad_left(m[[prefix]], 3),
+    pad_left(m[[section]], 2),
+    pad_left(m[[numero]], 4)
     )
 
   # check empty lieudit in matrice
-  have_empty_lieu_dit <- any(is.na(m$LIEU_DIT))
+  have_empty_lieu_dit <- any(is.na(m[[lieu_dit]]))
 
   # retrieve parca
   raw_parca <- get_parca(
-    m$IDU,
+    m[[idu]],
     bdp_geom = bdp_geom,
     lieu_dit = have_empty_lieu_dit,
     verbose = verbose
   )
 
-  lieu_dit <- seq_field("lieu_dit")$name
   names(raw_parca)[names(raw_parca) == lieu_dit] <- "RAW_LIEU_DIT"
 
   # merge raw_parca with matrice
@@ -208,7 +215,6 @@ seq_parca <- function(
     seq_parca[[lieu_dit]]
   )
 
-  tx_boisee <- seq_field("tx_boisee")$name
   seq_parca[[tx_boisee]] <- ifelse(seq_parca[[tx_boisee]] >= 0.5, "BOISEE", "NON BOISEE")
 
   # format parca

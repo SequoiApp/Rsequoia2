@@ -17,7 +17,7 @@ fake_matrice <- function(
     LIEU_DIT = lieu_dit,
     TX_BOISEE = as.numeric(tx_boisee),
     stringsAsFactors = FALSE
-  )
+  ) |> seq_normalize("matrice")
 
   return(matrice)
 }

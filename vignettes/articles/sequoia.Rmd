@@ -53,13 +53,13 @@ All `seq_*` function have `dirname = "."` argument which mean by default it will
 
 For the example, will used a fictif forest named `"ECKMUHL"`.
 
-```{r, eval=FALSE}
+```{r eval=FALSE}
 # tempdir is used for the exampl
-forest <- "ECKMUHL"
-dir.create(forest)
+sequoia_dir <- "ECKMUHL"
+dir.create(sequoia_dir)
 
 # setting current dir to our sequoia dir
-setwd(seq_dir)
+setwd(sequoia_dir)
 ```
 
 # Creating an excel matrice
@@ -96,8 +96,8 @@ To facilitate the downloading process, `seq_` function should be used. Those fun
 If you want to customize folder structure, you can do it here
 
 ```{r downloading_data, eval=FALSE}
-vdir <- file.path(seq_dir, "VECTOR")
-rdir <- file.path(seq_dir, "RASTER")
+vdir <- file.path(sequoia_dir, "VECTOR")
+rdir <- file.path(sequoia_dir, "RASTER")
 
 seq_parca(vdir)
 seq_mnhn(vdir)
@@ -112,15 +112,15 @@ seq_patrimony(vdir)
 
 All this process can be done be the wrapper `seq_data()` :
 
-```{r}
-seq_data(seq_dir)
+```{r seq_data, eval=FALSE}
+seq_data(sequoia_dir)
 ```
 
 Be aware that `seq_dir()` as a `config` arg that allow any user to create customize directory. This config file as a .yaml that can be generate with `seq_config()`.
 
 For the exemple a fake yaml is used.
 
-```{r}
+```{r seq_data_config, eval=FALSE}
 folder_str <- list(
   "seq_parca" = "PARCA",
   "seq_mnhn" = "ENVIRONNEMENT",
@@ -131,7 +131,7 @@ folder_str <- list(
   "seq_patrimony" = "PATRIMOINE"
 ) |> as.yaml()
 
-seq_data(seq_dir, config = folder_str)
+seq_data(forest, config = folder_str)
 
 ```
 # GIS part

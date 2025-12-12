@@ -1,14 +1,15 @@
 test_that("seq_write() writes vector layers correctly", {
 
-  d <- tempdir()
-  m_path <- create_matrice(d, "MY_TEST", verbose = F, overwrite = T)
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache, showWarnings = FALSE)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+
+  m <- create_matrice(seq_cache, "MY_TEST", verbose = F, overwrite = T)
 
   v <- sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
-  v_path <- get_path("parca", d)
+  v_path <- get_path("parca", seq_cache)
 
-  on.exit(unlink(c(v_path, m_path)))
-
-  seq_write(v, "parca", d)
+  seq_write(v, "parca", seq_cache)
 
   expect_true(file.exists(v_path))
 

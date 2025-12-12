@@ -1,4 +1,4 @@
-pf  <- seq_field("parcelle")$name
+pf <- seq_field("parcelle")$name
 surf <- seq_field("surf_cor")$name
 
 test_that("ua_to_pf() aggregates surfaces correctly", {

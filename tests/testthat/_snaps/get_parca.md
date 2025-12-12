@@ -13,7 +13,7 @@
        $ COM_CODE: chr "33103"
        $ PREFIXE : chr "000"
        $ SECTION : chr "AB"
-       $ N_PARCA : chr "0060"
+       $ NUMERO  : chr "0060"
        $ LIEU_DIT: chr NA
        $ SURF_CA : num 150
 
@@ -32,7 +32,7 @@
        $ COM_CODE: chr "33103"
        $ PREFIXE : chr "000"
        $ SECTION : chr "AB"
-       $ N_PARCA : chr "0060"
+       $ NUMERO  : chr "0060"
        $ LIEU_DIT: chr "LE BOURG"
        $ SURF_CA : num 150
 
@@ -51,7 +51,7 @@
        $ COM_CODE: chr "33103"
        $ PREFIXE : chr "000"
        $ SECTION : chr "AB"
-       $ N_PARCA : chr "0060"
+       $ NUMERO  : chr "0060"
        $ LIEU_DIT: chr NA
        $ SURF_CA : num 150
 

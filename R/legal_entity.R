@@ -180,7 +180,8 @@ get_legal_entity <- function(
     "numero" = substr(legal_entity_clean$idu, 11, 14),
     "lieu_dit" = legal_entity_clean$lieu_dit,
     "tx_boisee" = legal_entity_clean$tx_boisee
-  )
+  ) |>
+    seq_normalize("parca")
 
   if (verbose) {
     cli::cli_alert_success("Matrix successfully generated ({.val {nrow(legal_entity_clean)}} rows).")

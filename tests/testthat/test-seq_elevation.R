@@ -4,7 +4,7 @@ test_that("seq_elevation() works", {
 
   seq_cache <- file.path(tempdir(), "seq")
   dir.create(seq_cache)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
 
   m <- fake_matrice(id = "TEST")
   m_path <- file.path(seq_cache, "TEST_matrice.xlsx")

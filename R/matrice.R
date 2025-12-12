@@ -21,15 +21,15 @@
 create_matrice <- function(dirname = ".", id = "MY_FOREST", overwrite = FALSE, verbose = TRUE){
 
   matrice <- data.frame(
-    "IDENTIFIANT" = id,
-    "PROPRIETAIRE" = "NAME OF THE OWNER",
-    "INSEE" = "33103",
-    "PREFIXE" = "000",
-    "SECTION" = "AB",
-    "NUMERO" = "60",
-    "LIEU_DIT" = "NAME OF LIEU DIT",
-    "TX_BOISEE" = 0.8
-  )
+    "id" = id,
+    "prop" = "NAME OF THE OWNER",
+    "insee" = "33103",
+    "prefixe" = "000",
+    "section" = "AB",
+    "numero" = "60",
+    "lieu_dit" = "NAME OF LIEU DIT",
+    "tx_boisee" = 0.8
+  ) |> seq_normalize("matrice")
 
   seq_xlsx(
     x = list("MATRICE" = matrice),
@@ -78,10 +78,12 @@ read_matrice <- function(dirname = "."){
   )
 
   # name_check
-  required <- c(
-    "IDENTIFIANT", "PROPRIETAIRE", "INSEE", "PREFIXE", "SECTION",
-    "NUMERO", "LIEU_DIT", "TX_BOISEE"
+  matrice_keys <- c(
+    "identifiant", "proprietaire", "insee", "prefix", "section",
+    "numero", "lieu_dit", "tx_boisee"
   )
+
+  required <- sapply(matrice_keys, \(x) seq_field(x)$name)
   missing  <- setdiff(required, names(m))
 
   if (length(missing) > 0) {
@@ -89,7 +91,8 @@ read_matrice <- function(dirname = "."){
   }
 
   # Extract ID
-  id <- unique(m$IDENTIFIANT)
+  identifiant <- seq_field("identifiant")$name
+  id <- unique(m[[identifiant]])
   id <- id[!is.na(id) & nzchar(trimws(id))]   # remove NA + empty + spaces-only
 
   # Empty IDs
@@ -108,12 +111,15 @@ read_matrice <- function(dirname = "."){
     ))
   }
 
-  m$IDENTIFIANT <- id
-  m$INSEE <- pad_left(m$INSEE, 5)
-  m$PREFIXE <- pad_left(m$PREFIXE, "0")
-  m$SECTION <- pad_left(m$SECTION, "0")
-  m$NUMERO <- pad_left(m$NUMERO, "0")
-  m$TX_BOISEE <- as.numeric(gsub(",", ".", m$TX_BOISEE))
+  # Resolve field names once
+  f <- function(x) seq_field(x)$name
+
+  m[[f("identifiant")]] <- id
+  m[[f("insee")]] <- pad_left(m[[f("insee")]], 5)
+  m[[f("prefix")]] <- pad_left(m[[f("prefix")]], "0")
+  m[[f("section")]] <- pad_left(m[[f("section")]], "0")
+  m[[f("numero")]] <- pad_left(m[[f("numero")]], "0")
+  m[[f("tx_boisee")]] <- as.numeric(gsub(",", ".", m[[f("tx_boisee")]]))
 
   return(m)
 
