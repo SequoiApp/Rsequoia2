@@ -112,7 +112,7 @@ seq_patrimony(vdir)
 
 All this process can be done be the wrapper `seq_data()` :
 
-```{r}
+```{r seq_data, eval=FALSE}
 seq_data(sequoia_dir)
 ```
 
@@ -120,7 +120,7 @@ Be aware that `seq_dir()` as a `config` arg that allow any user to create custom
 
 For the exemple a fake yaml is used.
 
-```{r}
+```{r seq_data_config, eval=FALSE}
 folder_str <- list(
   "seq_parca" = "PARCA",
   "seq_mnhn" = "ENVIRONNEMENT",
