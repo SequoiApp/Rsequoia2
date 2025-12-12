@@ -2,7 +2,7 @@ test_that("seq_mnhn() works with mocked get_mnhn()", {
 
   seq_cache <- file.path(tempdir(), "seq")
   dir.create(seq_cache)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE, add = TRUE))
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
 
   m <- fake_matrice(id = "TEST")
   m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
@@ -35,7 +35,7 @@ test_that("seq_mnhn() works when verbose = TRUE", {
 
   seq_cache <- file.path(tempdir(), "seq")
   dir.create(seq_cache)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE))
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
 
   m <- fake_matrice(id = "TEST")
   m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
