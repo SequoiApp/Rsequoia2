@@ -13,11 +13,11 @@ fake_matrice <- function(
     INSEE = pad_left(insee, 5),
     PREFIXE = pad_left(prefix, 3),
     SECTION = pad_left(section, 2),
-    NUMERO = pad_left(numero, 4),
+    N_PARCA = pad_left(numero, 4),
     LIEU_DIT = lieu_dit,
     TX_BOISEE = as.numeric(tx_boisee),
     stringsAsFactors = FALSE
-  )
+  ) |> seq_normalize("matrice")
 
   return(matrice)
 }
@@ -41,7 +41,7 @@ fake_raw_parca <- function(
     COM_NUM    = insee,
     PREFIXE    = prefix,
     SECTION    = section,
-    NUMERO     = numero,
+    N_PARCA     = numero,
     LIEU_DIT   = lieu_dit,
     SURF_CA    = contenance,
     geometry   = geom

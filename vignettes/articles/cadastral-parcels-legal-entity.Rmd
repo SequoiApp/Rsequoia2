@@ -33,7 +33,7 @@ As always, we need to setup a Sequoia dir (temporary in this case)
 
 ```{r setup_seqdir}
 seq_dir <- file.path(tempdir(), "MY_FOREST")
-dir.create(seq_dir,)
+dir.create(seq_dir)
 ```
 
 
@@ -55,7 +55,7 @@ You should keep this directory but if for any reason you need raw data elswhere 
 
 Be aware that you can load data from a department code or an insee code. The first can be a bit time-consuming but you can then search all dep if owner have cadastral parcels accros multiple commune.
 
-```{r}
+```{r get_legal_entity}
 insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
@@ -70,7 +70,7 @@ This helpers relies on a text–normalization applied to both the inputs and the
 
 Below we search all GFA ("Groupement Foncier Agricole").
 
-```{r}
+```{r search_legal_entity}
 search_mat <- search_legal_entity(legal_entity_cp, prop = "gfa")
 
 unique(search_mat$PROPRIETAIRE)
@@ -82,7 +82,7 @@ As you can see in article ..., starting a Sequoia process need a excel matrice. 
 
 Notice that the `data.frame` generated with `get_legal_entity()` is already formated for Sequoia process. This mean you have the `"IDENTIFIANT"` columns. To avoid filling it in excel, we encouraged you to do it before saving.
 
-```{r}
+```{r save_legal_entity}
 id <- "MY_FOREST"
 search_mat$IDENTIFIANT <- id
 
