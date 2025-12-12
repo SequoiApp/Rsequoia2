@@ -14,13 +14,13 @@ test_that("seq_parcels() works in full case", {
     )
   )
 
-  seq_dir <- file.path(tempdir(), "seq")
-  dir.create(seq_dir)
-  on.exit(unlink(seq_dir, recursive = TRUE, force = TRUE))
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
 
-  m_path <- create_matrice(seq_dir, "MY_TEST", verbose = F, overwrite = TRUE)
-  ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = seq_dir)
-  paths <- seq_parcels(dirname = seq_dir, verbose = FALSE)
+  m_path <- create_matrice(seq_cache, "MY_TEST", verbose = F, overwrite = TRUE)
+  ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = seq_cache)
+  paths <- seq_parcels(dirname = seq_cache, verbose = FALSE)
 
   expect_length(paths, 4)
   expect_all_true(vapply(paths, file.exists, T))
@@ -58,18 +58,18 @@ test_that("seq_parcels() does not overwrite existing layers when overwrite=FALSE
     geometry = sf::st_sfc(sf::st_polygon(square), crs = 2154)
   )
 
-  seq_dir <- file.path(tempdir(), "seq")
-  dir.create(seq_dir)
-  on.exit(unlink(seq_dir, recursive = TRUE, force = TRUE))
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
 
-  m_path <- create_matrice(seq_dir, "MY_TEST", verbose = F)
-  ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = seq_dir)
+  m_path <- create_matrice(seq_cache, "MY_TEST", verbose = F)
+  ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = seq_cache)
 
   # first call OK
-  paths <- seq_parcels(dirname = seq_dir, overwrite = FALSE)
+  paths <- seq_parcels(dirname = seq_cache, overwrite = FALSE)
 
   # second call should **fail**
-  warn <- capture_warnings(seq_parcels(dirname = seq_dir, overwrite = FALSE))
+  warn <- capture_warnings(seq_parcels(dirname = seq_cache, overwrite = FALSE))
   expect_length(warn, 4)
   expect_all_true(grepl("already exists", warn))
 
@@ -87,14 +87,14 @@ test_that("seq_parcels() works with a single parcel", {
     geometry = sf::st_sfc(sf::st_polygon(square), crs = 2154)
   )
 
-  seq_dir <- file.path(tempdir(), "seq")
-  dir.create(seq_dir)
-  on.exit(unlink(seq_dir, recursive = TRUE, force = TRUE))
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
 
-  m_path <- create_matrice(seq_dir, "MY_TEST4", verbose = FALSE)
-  ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = seq_dir)
+  m_path <- create_matrice(seq_cache, "MY_TEST4", verbose = FALSE)
+  ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = seq_cache)
 
-  paths <- seq_parcels(dirname = seq_dir, verbose = FALSE)
+  paths <- seq_parcels(dirname = seq_cache, verbose = FALSE)
 
   all_sf <- lapply(paths, read_sf)
   pf_poly <- all_sf$v.seq.pf.poly
@@ -122,14 +122,14 @@ test_that("seq_parcels() correctly splits SSPF inside a PF", {
     )
   )
 
-  seq_dir <- file.path(tempdir(), "seq")
-  dir.create(seq_dir)
-  on.exit(unlink(seq_dir, recursive = TRUE, force = TRUE))
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
 
-  m_path <- create_matrice(seq_dir, "MY_TEST5", verbose = FALSE)
-  ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = seq_dir)
+  m_path <- create_matrice(seq_cache, "MY_TEST5", verbose = FALSE)
+  ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = seq_cache)
 
-  paths <- seq_parcels(dirname = seq_dir, verbose = FALSE)
+  paths <- seq_parcels(dirname = seq_cache, verbose = FALSE)
   all_sf <- lapply(paths, read_sf)
 
   pf_poly <- all_sf$v.seq.pf.poly

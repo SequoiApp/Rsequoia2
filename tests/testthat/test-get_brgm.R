@@ -8,7 +8,7 @@ fake_brgm_zip <- function(dep, cache){
   # Write shapefile to temporary directory
   sf_path <- tempfile()
   dir.create(sf_path)
-  on.exit(unlink(sf_path, recursive = TRUE))
+  on.exit(unlink(sf_path, recursive = TRUE), add = TRUE)
   sf::write_sf(fake_sf, file.path(sf_path, "S_FGEOL.shp"), quiet = TRUE)
   base::writeLines("", file.path(sf_path, "S_FGEOL.qml"))
 
@@ -28,7 +28,7 @@ test_that("get_brgm() works for one dep", {
 
   cache <- file.path(tempdir(), "brgm")
   dir.create(cache)
-  on.exit(unlink(cache, recursive = TRUE))
+  on.exit(unlink(cache, recursive = TRUE), add = TRUE)
 
   dep <- 29
   dep29 <- fake_brgm_zip(dep, cache = cache)
@@ -42,7 +42,7 @@ test_that("get_brgm() works for multiple dep", {
 
   cache <- file.path(tempdir(), "brgm")
   dir.create(cache)
-  on.exit(unlink(cache, recursive = TRUE))
+  on.exit(unlink(cache, recursive = TRUE), add = TRUE)
 
   dep1 <- fake_brgm_zip(1, cache = cache)
   dep2 <- fake_brgm_zip(2, cache = cache)

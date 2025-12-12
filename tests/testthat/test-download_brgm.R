@@ -2,7 +2,7 @@ test_that("download_brgm() downloads when file is missing", {
 
   brgm_cache <- file.path(tempdir(), "brgm")
   dir.create(brgm_cache)
-  on.exit(unlink(brgm_cache, recursive = TRUE))
+  on.exit(unlink(brgm_cache, recursive = TRUE), add = TRUE)
 
   tracker <- new.env(parent = emptyenv())
   tracker$called <- FALSE
@@ -27,7 +27,7 @@ test_that("download_brgm() properly change source", {
 
   brgm_cache <- file.path(tempdir(), "brgm")
   dir.create(brgm_cache)
-  on.exit(unlink(brgm_cache, recursive = TRUE))
+  on.exit(unlink(brgm_cache, recursive = TRUE), add = TRUE)
 
   tracker <- new.env(parent = emptyenv())
   tracker$called <- FALSE

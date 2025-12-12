@@ -144,7 +144,13 @@ field_add_drop <- function(x, table){
   table_names <- unlist(lapply(table_fields, `[[`, "name"))
 
   to_add <- setdiff(table_names, names(x))
-  x[to_add] <- NA_character_
+
+  is_empty <- nrow(x) == 0
+  if (is_empty){
+    x[to_add] <- rep(list(character(0)), length(to_add))
+  }else{
+    x[to_add] <- NA_character_
+  }
 
   keep <- intersect(names(x), table_names)
   x <- x[keep]
