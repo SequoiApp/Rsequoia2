@@ -14,30 +14,33 @@ test_that("get_path() throw error when multiple matching key", {
 
 test_that("get_path() returns expected path", {
 
-  d <- tempdir()
-  m <- create_matrice(d, "MY_ID", verbose = F, overwrite = T)
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
 
-  on.exit(unlink(m))
+  m <- create_matrice(seq_cache, "MY_ID", verbose = F, overwrite = T)
 
   key <- "v.mnhn.znieff1.poly"
-  expected <- file.path(d, "MY_ID_MNHN_ZNIEFF1_poly.geojson")
+  expected <- file.path(seq_cache, "MY_ID_MNHN_ZNIEFF1_poly.geojson")
   names(expected) <- key
 
-  expect_equal(get_path(key, d), expected)
+  expect_equal(get_path(key, seq_cache), expected)
 
 })
 
 test_that("get_path() partial key matching", {
 
-  d <- tempdir()
-  m <- create_matrice(d, "MY_ID", verbose = F, overwrite = T)
-  on.exit(unlink(m))
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+
+  m <- create_matrice(seq_cache, "MY_ID", verbose = F, overwrite = T)
 
   key <- "v.mnhn.znieff1.poly"
-  expected <- file.path(d, "MY_ID_MNHN_ZNIEFF1_poly.geojson")
+  expected <- file.path(seq_cache, "MY_ID_MNHN_ZNIEFF1_poly.geojson")
   names(expected) <- key
 
-  expect_equal(get_path("znieff1", d), expected)
+  expect_equal(get_path("znieff1", seq_cache), expected)
 
 })
 

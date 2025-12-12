@@ -1,3 +1,13 @@
+matrice:
+  - identifiant
+  - proprietaire
+  - insee
+  - prefix
+  - section
+  - numero
+  - lieu_dit
+  - tx_boisee
+
 raw_parca:
   - idu
   - reg_nom
@@ -26,7 +36,7 @@ parca:
   - section
   - numero
   - lieu_dit
-  - occupation
+  - tx_boisee
   - surf_cad
 
 ua:
@@ -43,7 +53,7 @@ ua:
   - section
   - numero
   - lieu_dit
-  - occupation
+  - tx_boisee
   - ug
   - parcelle
   - sous_parcelle

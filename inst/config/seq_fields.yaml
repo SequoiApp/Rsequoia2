@@ -1,37 +1,37 @@
 identifiant:
   name: "IDENTIFIANT"
-  alias: ["ADRESSE", "FORET", "foret", "id"]
+  alias: ["foret", "id"]
   class: "character"
   definition: "Identifiant de la forêt, génrélament identique au nom"
 
 proprietaire:
   name: "PROPRIETAIRE"
-  alias: ["PROP", "prop", "owner", "proprio", "proprietaire"]
+  alias: ["prop", "owner", "proprio", "proprietaire"]
   class: "character"
   definition: "Nom du propriétaire"
 
-occupation:
-  name: "OCCUP_SOL"
-  alias: ["boisee", "is_boisee", "tx_boisee", "occupation"]
+tx_boisee:
+  name: "TX_BOISEE"
+  alias: ["boisee", "is_boisee", "occupation"]
   class: "character"
   definition: "Occupation du sol"
 
 # cog ----
 reg_num:
   name: "REG_CODE"
-  alias: ["REG"]
+  alias: ["reg"]
   class: "character"
   definition: "Code de la région selon l'INSEE"
 
 reg_nom:
   name: "REG_NOM"
-  alias: ["NCC_REG"]
+  alias: ["ncc_reg"]
   class: "character"
   definition: "Nom de la région selon l'INSEE"
 
 dep_num:
   name: "DEP_NUM"
-  alias: ["DEP", "DEP_CODE"]
+  alias: ["dep", "dep_code"]
   class: "character"
   definition: "Code du département selon l'INSEE"
 
@@ -43,15 +43,21 @@ dep_nom:
 
 com_num:
   name: "COM_CODE"
-  alias: ["commune"]
+  alias: ["commune", "com"]
   class: "character"
   definition: "Code de la commune selon l'INSEE"
 
 com_nom:
   name: "COM_NOM"
-  alias: ["NCC_COM"]
+  alias: ["ncc_com"]
   class: "character"
   definition: "Nom de la commune selon l'INSEE"
+
+insee:
+  name: "INSEE"
+  alias: ["insee", "code_insee"]
+  class: "character"
+  definition: "Code INSEE de la commune"
 
 # cadastre ----
 idu:

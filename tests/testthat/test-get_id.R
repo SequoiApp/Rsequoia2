@@ -1,25 +1,24 @@
 test_that("get_id() returns correct ID (single value)", {
-  d <- tempdir()
 
-  f <- file.path(d, "test_matrice.xlsx")
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+
   m <- fake_matrice(id = c("ABC", "ABC", "ABC"))
+  openxlsx2::write_xlsx(m, file.path(seq_cache, "test_matrice.xlsx"))
 
-  openxlsx2::write_xlsx(m, f)
-  on.exit(unlink(f))
-
-  expect_invisible(expect_equal(get_id(d), "ABC"))
+  expect_invisible(expect_equal(get_id(seq_cache), "ABC"))
 
 })
 
 test_that("get_id() verbose mode prints info", {
-  d <- tempdir()
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
 
-  f <- file.path(d, "test_matrice.xlsx")
   m <- fake_matrice(id = c("ABC", "ABC", "ABC"))
+  openxlsx2::write_xlsx(m, file.path(seq_cache, "test_matrice.xlsx"))
 
-  openxlsx2::write_xlsx(m, f)
-  on.exit(unlink(f))
-
-  expect_message(get_id(d, verbose = TRUE), "Detected forest ID")
+  expect_message(get_id(seq_cache, verbose = TRUE), "Detected forest ID")
 
 })

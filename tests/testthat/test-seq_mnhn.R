@@ -1,13 +1,15 @@
 test_that("seq_mnhn() works with mocked get_mnhn()", {
 
-  d <- tempdir()
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
 
   m <- fake_matrice(id = "TEST")
-  m_path <- file.path(d, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   p <- fake_parca()
-  parca_path <- seq_write(p, "parca", dirname = d)
+  parca_path <- seq_write(p, "parca", dirname = seq_cache)
 
   local_mocked_bindings(
     get_mnhn = function(x, key, buffer, overwrite, verbose){
@@ -15,7 +17,7 @@ test_that("seq_mnhn() works with mocked get_mnhn()", {
     }
   )
 
-  mnhn_path <- seq_mnhn(dirname = d, buffer = 500, key = c("pn", "pnr"), verbose = FALSE)
+  mnhn_path <- seq_mnhn(dirname = seq_cache, buffer = 500, key = c("pn", "pnr"), verbose = FALSE)
   pn_path <- mnhn_path[[1]]
   pnr_path <- mnhn_path[[2]]
   expect_all_true(c(file.exists(pn_path), file.exists(pnr_path)))
@@ -26,20 +28,21 @@ test_that("seq_mnhn() works with mocked get_mnhn()", {
   pnr <- sf::read_sf(pnr_path)
   expect_s3_class(pnr, "sf")
 
-  on.exit(unlink(c(m_path, parca_path, pn_path, pnr_path)))
 })
 
 
 test_that("seq_mnhn() works when verbose = TRUE", {
 
-  d <- tempdir()
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
 
   m <- fake_matrice(id = "TEST")
-  m_path <- file.path(d, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   p <- fake_parca()
-  parca_path <- seq_write(p, "parca", dirname = d)
+  parca_path <- seq_write(p, "parca", dirname = seq_cache)
 
   local_mocked_bindings(
     get_mnhn = function(x, key, buffer, overwrite, verbose){
@@ -48,7 +51,7 @@ test_that("seq_mnhn() works when verbose = TRUE", {
   )
 
   expect_message(
-    mnhn_path <- seq_mnhn(dirname = d, buffer = 500, key = c("pn", "pnr"), verbose = TRUE),
+    mnhn_path <- seq_mnhn(dirname = seq_cache, buffer = 500, key = c("pn", "pnr"), verbose = TRUE),
     "non-empty layers found:"
   )
 
@@ -62,5 +65,4 @@ test_that("seq_mnhn() works when verbose = TRUE", {
   pnr <- sf::read_sf(pnr_path)
   expect_s3_class(pnr, "sf")
 
-  on.exit(unlink(c(m_path, parca_path, pn_path, pnr_path)))
 })

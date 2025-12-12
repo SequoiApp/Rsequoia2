@@ -1,43 +1,46 @@
 test_that("create_matrice() creates a valid Excel file", {
-  tmpdir <- tempdir()
-  id <- "TEST_FOREST"
-  outfile <- file.path(tmpdir, paste0(id, "_matrice.xlsx"))
 
-  on.exit(unlink(outfile), add = TRUE)
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
 
-  create_matrice(tmpdir, id = id, verbose = FALSE)
+  id <- "TEST"
+  outfile <- file.path(seq_cache, paste0(id, "_matrice.xlsx"))
+
+  create_matrice(seq_cache, id = id, verbose = FALSE)
 
   expect_true(file.exists(outfile))
   expect_gt(file.size(outfile), 0)
 
   # Check that IDENTIFIANT matches id
+  identifiant <- seq_field("identifiant")$name
   df <- openxlsx2::read_xlsx(outfile, sheet = "MATRICE")
-  expect_equal(df$IDENTIFIANT, id)
+  expect_equal(df[[identifiant]], id)
 })
 
 test_that("create_matrice() refuses to overwrite by default", {
-  tmpdir <- tempdir()
-  id <- "FOREST_X"
-  outfile <- file.path(tmpdir, paste0(id, "_matrice.xlsx"))
 
-  on.exit(unlink(outfile), add = TRUE)
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
 
-  create_matrice(tmpdir, id = id, verbose = FALSE)
+  id <- "TEST"
+  create_matrice(seq_cache, id = id, verbose = FALSE)
 
   expect_error(
-    create_matrice(tmpdir, id = id, verbose = FALSE),
+    create_matrice(seq_cache, id = id, verbose = FALSE),
     "exists"
   )
 })
 
 test_that("create_matrice() overwrites when requested", {
-  tmpdir <- tempdir()
-  id <- "FOREST_Y"
-  outfile <- file.path(tmpdir, paste0(id, "_matrice.xlsx"))
 
-  on.exit(unlink(outfile), add = TRUE)
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
 
-  create_matrice(tmpdir, id = id, verbose = FALSE)
+  id <- "TEST"
+  create_matrice(seq_cache, id = id, verbose = FALSE)
 
-  expect_silent(create_matrice(tmpdir, id = id, overwrite = TRUE, verbose = FALSE))
+  expect_silent(create_matrice(seq_cache, id = id, overwrite = TRUE, verbose = FALSE))
 })

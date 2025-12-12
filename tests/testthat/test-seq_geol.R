@@ -32,11 +32,13 @@ fake_brgm_zip <- function(dep, source, cache){
 }
 
 test_that("seq_geol() works for one dep", {
-  brgm_cache <- file.path(tempdir(), "brgm")
-  dir.create(brgm_cache)
   seq_cache <- file.path(tempdir(), "seq")
   dir.create(seq_cache)
-  on.exit(unlink(c(brgm_cache, seq_cache), recursive = TRUE))
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+
+  brgm_cache <- file.path(tempdir(), "brgm")
+  dir.create(brgm_cache)
+  on.exit(unlink(brgm_cache, recursive = TRUE, force = TRUE))
 
   m <- fake_matrice(id = "TEST")
   m_path <- file.path(seq_cache, "TEST_matrice.xlsx")

@@ -194,7 +194,6 @@ seq_parca <- function(
     verbose = verbose
   )
 
-  # test to leverage config name instead of matrice name
   lieu_dit <- seq_field("lieu_dit")$name
   names(raw_parca)[names(raw_parca) == lieu_dit] <- "RAW_LIEU_DIT"
 
@@ -204,9 +203,13 @@ seq_parca <- function(
     sf::st_transform(2154)
 
   seq_parca[[lieu_dit]] <- ifelse(
-    is.na(seq_parca[[lieu_dit]]), seq_parca$RAW_LIEU_DIT, seq_parca[[lieu_dit]]
+    is.na(seq_parca[[lieu_dit]]),
+    seq_parca$RAW_LIEU_DIT,
+    seq_parca[[lieu_dit]]
   )
-  seq_parca$OCCUP_SOL <- ifelse(seq_parca$TX_BOISEE >= 0.5, "BOISEE", "NON BOISEE")
+
+  tx_boisee <- seq_field("tx_boisee")$name
+  seq_parca[[tx_boisee]] <- ifelse(seq_parca[[tx_boisee]] >= 0.5, "BOISEE", "NON BOISEE")
 
   # format parca
   seq_parca <- seq_normalize(seq_parca, "parca")

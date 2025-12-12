@@ -1,9 +1,11 @@
 test_that("seq_field() returns full config when field = NULL", {
 
   # Create a temporary config file
-  tmp <- tempdir()
-  cfg_path <- file.path(tmp, "seq_fields.yaml")
-  on.exit(unlink(cfg_path))
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+
+  cfg_path <- file.path(seq_cache, "seq_fields.yaml")
 
   fake_cfg <- list(
     id = list(name = "IDENTIFIANT", alias = c("id", "foret")),
@@ -22,9 +24,11 @@ test_that("seq_field() returns full config when field = NULL", {
 test_that("seq_field() returns a single field entry", {
 
   # Create a temporary config file
-  tmp <- tempdir()
-  cfg_path <- file.path(tmp, "seq_fields.yaml")
-  on.exit(unlink(cfg_path))
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+
+  cfg_path <- file.path(seq_cache, "seq_fields.yaml")
 
   fake_cfg <- list(
     id = list(name = "IDENTIFIANT", alias = c("id", "foret")),
@@ -43,9 +47,11 @@ test_that("seq_field() returns a single field entry", {
 test_that("seq_field() errors on invalid field name", {
 
   # Create a temporary config file
-  tmp <- tempdir()
-  cfg_path <- file.path(tmp, "seq_fields.yaml")
-  on.exit(unlink(cfg_path))
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+
+  cfg_path <- file.path(seq_cache, "seq_fields.yaml")
 
   fake_cfg <- list(
     id = list(name = "IDENTIFIANT", alias = c("id", "foret")),

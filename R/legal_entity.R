@@ -129,11 +129,8 @@ get_legal_entity <- function(
   deps <- c(code_dep, substr(code_insee, 1, 2)) |> unique()
   cache <- download_legal_entity(cache = cache, verbose = verbose)
 
-  files <- grep(
-    paste(deps, collapse = "|"),
-    list.files(cache, recursive = TRUE, full.names = TRUE),
-    value = TRUE
-  )
+  pattern <- paste0(deps, ".*\\.csv$")
+  files <- list.files(cache, pattern = pattern, recursive = TRUE, full.names = TRUE)
 
   boisee <- c("L", "LB", "B", "BF", "BM", "BO", "BP", "BR", "BS", "BT")
 
@@ -175,14 +172,14 @@ get_legal_entity <- function(
     transform(tx_boisee = surf_tot / contenance)
 
   matrice_legal_entity <- data.frame(
-    "IDENTIFIANT" = "",
-    "PROPRIETAIRE" = legal_entity_clean$prop,
-    "CODE_INSEE" = substr(legal_entity_clean$idu, 1, 5),
-    "PREFIXE" = substr(legal_entity_clean$idu, 6, 8),
-    "SECTION" = substr(legal_entity_clean$idu, 9, 10),
-    "NUMERO" = substr(legal_entity_clean$idu, 11, 14),
-    "LIEU_DIT" = legal_entity_clean$lieu_dit,
-    "TX_BOISEE" = legal_entity_clean$tx_boisee
+    "identifiant" = "",
+    "proprietaire" = legal_entity_clean$prop,
+    "insee" = substr(legal_entity_clean$idu, 1, 5),
+    "prefix" = substr(legal_entity_clean$idu, 6, 8),
+    "section" = substr(legal_entity_clean$idu, 9, 10),
+    "numero" = substr(legal_entity_clean$idu, 11, 14),
+    "lieu_dit" = legal_entity_clean$lieu_dit,
+    "tx_boisee" = legal_entity_clean$tx_boisee
   )
 
   if (verbose) {

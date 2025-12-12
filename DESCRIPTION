@@ -16,6 +16,7 @@ Imports:
     curl,
     frheritage,
     happign,
+    jsonlite,
     openxlsx2,
     sf,
     terra,

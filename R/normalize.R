@@ -59,12 +59,17 @@ seq_normalize <- function(x, table){
 field_rename <- function(x){
 
   fields <- seq_field()
-  alias_list <- lapply(fields, \(x) setNames(rep(x$name, length(x$alias)), x$alias))
-  alias_map <- Reduce(c, alias_list, c())
+  alias_map <- unlist(
+    lapply(names(fields), function(key) {
+      f <- fields[[key]]
+      aliases <- c(f$alias, key) |> tolower() |> unique()
+      setNames(rep(f$name, length(aliases)), aliases)
+    })
+  )
 
   # Columns eligible for renaming
-  hits <- names(x) %in% names(alias_map)
-  new_names <- replace(names(x), hits, alias_map[names(x)[hits]])
+  hits <- tolower(names(x)) %in% names(alias_map)
+  new_names <- replace(names(x), hits, alias_map[tolower(names(x))[hits]])
   duplicated_name <- unique(new_names[duplicated(new_names)])
 
   if (length(duplicated_name) > 0) {

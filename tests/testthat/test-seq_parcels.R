@@ -16,7 +16,7 @@ test_that("seq_parcels() works in full case", {
 
   seq_dir <- file.path(tempdir(), "seq")
   dir.create(seq_dir)
-  on.exit(unlink(seq_dir, recursive = TRUE))
+  on.exit(unlink(seq_dir, recursive = TRUE, force = TRUE))
 
   m_path <- create_matrice(seq_dir, "MY_TEST", verbose = F, overwrite = TRUE)
   ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = seq_dir)
@@ -60,7 +60,7 @@ test_that("seq_parcels() does not overwrite existing layers when overwrite=FALSE
 
   seq_dir <- file.path(tempdir(), "seq")
   dir.create(seq_dir)
-  on.exit(unlink(seq_dir, recursive = TRUE))
+  on.exit(unlink(seq_dir, recursive = TRUE, force = TRUE))
 
   m_path <- create_matrice(seq_dir, "MY_TEST", verbose = F)
   ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = seq_dir)
@@ -89,7 +89,7 @@ test_that("seq_parcels() works with a single parcel", {
 
   seq_dir <- file.path(tempdir(), "seq")
   dir.create(seq_dir)
-  on.exit(unlink(seq_dir, recursive = TRUE))
+  on.exit(unlink(seq_dir, recursive = TRUE, force = TRUE))
 
   m_path <- create_matrice(seq_dir, "MY_TEST4", verbose = FALSE)
   ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = seq_dir)
@@ -124,7 +124,7 @@ test_that("seq_parcels() correctly splits SSPF inside a PF", {
 
   seq_dir <- file.path(tempdir(), "seq")
   dir.create(seq_dir)
-  on.exit(unlink(seq_dir, recursive = TRUE))
+  on.exit(unlink(seq_dir, recursive = TRUE, force = TRUE))
 
   m_path <- create_matrice(seq_dir, "MY_TEST5", verbose = FALSE)
   ua_path <- seq_write(ua, "v.seq.ua.poly", dirname = seq_dir)

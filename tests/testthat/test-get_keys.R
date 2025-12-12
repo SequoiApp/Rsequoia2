@@ -1,7 +1,9 @@
 test_that("get_keys() returns all keys when pattern = NULL", {
-  tmp <- tempdir()
-  cfg_path <- file.path(tmp, "seq_layers.yaml")
-  on.exit(unlink(cfg_path))
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+
+  cfg_path <- file.path(seq_cache, "seq_layers.yaml")
 
   fake_cfg <- list(
     "v.seq.parca.poly" = list(),
@@ -17,9 +19,12 @@ test_that("get_keys() returns all keys when pattern = NULL", {
 
 
 test_that("get_keys() filters keys by pattern", {
-  tmp <- tempdir()
-  cfg_path <- file.path(tmp, "seq_layers.yaml")
-  on.exit(unlink(cfg_path, recursive = TRUE))
+
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+
+  cfg_path <- file.path(seq_cache, "seq_layers.yaml")
 
   fake_cfg <- list(
     "v.seq.parca.poly" = list(),
@@ -34,9 +39,12 @@ test_that("get_keys() filters keys by pattern", {
 
 
 test_that("get_keys() reduces keys correctly", {
-  tmp <- tempdir()
-  cfg_path <- file.path(tmp, "seq_layers.yaml")
-  on.exit(unlink(cfg_path, recursive = TRUE))
+
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+
+  cfg_path <- file.path(seq_cache, "seq_layers.yaml")
 
   fake_cfg <- list(
     "v.seq.parca.poly" = list(),
@@ -51,9 +59,12 @@ test_that("get_keys() reduces keys correctly", {
 
 
 test_that("get_keys() aborts when reduced keys are duplicated", {
-  tmp <- tempdir()
-  cfg_path <- file.path(tmp, "seq_layers.yaml")
-  on.exit(unlink(cfg_path, recursive = TRUE))
+
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+
+  cfg_path <- file.path(seq_cache, "seq_layers.yaml")
 
   fake_cfg <- list(
     "v.seq.parca.point" = list(),
@@ -69,9 +80,12 @@ test_that("get_keys() aborts when reduced keys are duplicated", {
 
 
 test_that("get_keys() aborts when pattern does not match anything", {
-  tmp <- tempdir()
-  cfg_path <- file.path(tmp, "seq_layers.yaml")
-  on.exit(unlink(cfg_path, recursive = TRUE))
+
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+
+  cfg_path <- file.path(seq_cache, "seq_layers.yaml")
 
   fake_cfg <- list(
     "v.seq.parca.poly" = list(),
