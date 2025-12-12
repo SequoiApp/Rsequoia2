@@ -1,8 +1,8 @@
 ---
-title: "sequoia"
+title: "Sequoia"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{How to retrieve cadastral parcels}
+  %\VignetteIndexEntry{Sequoia}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -25,7 +25,8 @@ Imports:
 Remotes:
     github::mucau/frheritage
 Suggests: 
-    testthat (>= 3.3.0)
+    testthat (>= 3.3.0),
+    tmap
 Config/testthat/edition: 3
 Depends: R (>= 4.1.0)
 Config/Needs/website: rmarkdown

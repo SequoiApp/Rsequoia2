@@ -2,7 +2,7 @@
 title: "Cadastral parcels"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{How to retrieve cadastral parcels}
+  %\VignetteIndexEntry{Cadastral parcels}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

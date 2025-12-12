@@ -2,7 +2,7 @@
 title: "Cadastral parcels - legal entity"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{How to retrieve cadastral parcels}
+  %\VignetteIndexEntry{Cadastral parcels - legal entity}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
