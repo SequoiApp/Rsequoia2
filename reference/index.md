@@ -1,0 +1,191 @@
+# Package index
+
+## All functions
+
+- [`create_matrice()`](https://mucau.github.io/Rsequoia2/reference/create_matrice.md)
+  : Create a forest matrice
+
+- [`download_brgm()`](https://mucau.github.io/Rsequoia2/reference/download_brgm.md)
+  : Download BRGM "BD Charm 50" harmonised geology ZIP files
+
+- [`download_legal_entity()`](https://mucau.github.io/Rsequoia2/reference/download_legal_entity.md)
+  : Download and cache cadastral data for legal entities ("Personnes
+  Morales")
+
+- [`get_aspect()`](https://mucau.github.io/Rsequoia2/reference/get_aspect.md)
+  : Compute a Aspect Raster from a DEM
+
+- [`get_brgm()`](https://mucau.github.io/Rsequoia2/reference/get_brgm.md)
+  : Download and read BRGM "BD Charm 50" harmonised geology layers
+
+- [`get_chm()`](https://mucau.github.io/Rsequoia2/reference/get_chm.md)
+  : Compute Canopy Height Model (CHM)
+
+- [`get_dem()`](https://mucau.github.io/Rsequoia2/reference/get_dem.md)
+  : Download Digital Elevation Model (DEM) raster from IGN RGEAlti
+
+- [`get_dsm()`](https://mucau.github.io/Rsequoia2/reference/get_dsm.md)
+  : Download Digital Surface Model (DSM) raster from IGN RGEAlti
+
+- [`get_hydro_line()`](https://mucau.github.io/Rsequoia2/reference/get_hydro_line.md)
+  : Retrieve and assemble hydrographic lines around an area
+
+- [`get_hydro_point()`](https://mucau.github.io/Rsequoia2/reference/get_hydro_point.md)
+  : Retrieve and assemble hydrographic points around an area
+
+- [`get_hydro_poly()`](https://mucau.github.io/Rsequoia2/reference/get_hydro_poly.md)
+  : Retrieve hydrographic polygons around an area
+
+- [`get_id()`](https://mucau.github.io/Rsequoia2/reference/get_id.md) :
+  Extract forest ID from a matrice.xlsx file
+
+- [`get_keys()`](https://mucau.github.io/Rsequoia2/reference/get_keys.md)
+  : Helper to find layer configuration keys
+
+- [`get_legal_entity()`](https://mucau.github.io/Rsequoia2/reference/get_legal_entity.md)
+  : Create a forest matrice for legal entity from insee code
+
+- [`get_lieux_dits()`](https://mucau.github.io/Rsequoia2/reference/get_lieux_dits.md)
+  : Retrieve a "Lieud-dit" from Etalab
+
+- [`get_mnhn()`](https://mucau.github.io/Rsequoia2/reference/get_mnhn.md)
+  : Download MNHN vector layer from IGN WFS (RGB or IRC)
+
+- [`get_ortho()`](https://mucau.github.io/Rsequoia2/reference/get_ortho.md)
+  : Download orthophotos from the IGN WMS (RGB or IRC)
+
+- [`get_parca()`](https://mucau.github.io/Rsequoia2/reference/get_parca.md)
+  : Download and format cadastral parcel(s)
+
+- [`get_parca_bdp()`](https://mucau.github.io/Rsequoia2/reference/get_parca_bdp.md)
+  : Retrieve a BDP parcel geometry from BDP
+
+- [`get_parca_etalab()`](https://mucau.github.io/Rsequoia2/reference/get_parca_etalab.md)
+  : Retrieve a cadastral parcel geometry from Etalab
+
+- [`get_path()`](https://mucau.github.io/Rsequoia2/reference/get_path.md)
+  : Construct filepath for a given layer key
+
+- [`get_patrimony()`](https://mucau.github.io/Rsequoia2/reference/get_patrimony.md)
+  : Download patrimony vector layer
+
+- [`get_slope()`](https://mucau.github.io/Rsequoia2/reference/get_slope.md)
+  : Compute a Slope Raster from a DEM
+
+- [`parca_check_area()`](https://mucau.github.io/Rsequoia2/reference/parca_check_area.md)
+  : Check inconsistencies between cadastral and cartographic areas
+
+- [`parca_to_ua()`](https://mucau.github.io/Rsequoia2/reference/parca_to_ua.md)
+  :
+
+  Create *UA* sf object from *PARCA* sf object
+
+- [`poly_to_line()`](https://mucau.github.io/Rsequoia2/reference/poly_to_line.md)
+  : Get a border layer from polygons
+
+- [`read_matrice()`](https://mucau.github.io/Rsequoia2/reference/read_matrice.md)
+  : Read matrice and format for Rsequoia2
+
+- [`search_legal_entity()`](https://mucau.github.io/Rsequoia2/reference/search_legal_entity.md)
+  : Helpers to search within a forest matrix
+
+- [`seq_boundaries()`](https://mucau.github.io/Rsequoia2/reference/seq_boundaries.md)
+  :
+
+  Create *FOREST* and *OWNER* object from *PARCA* for a Sequoia project
+
+- [`seq_elevation()`](https://mucau.github.io/Rsequoia2/reference/seq_elevation.md)
+  : Download and Compute Elevation Products for a Sequoia Project
+
+- [`seq_field()`](https://mucau.github.io/Rsequoia2/reference/seq_field.md)
+  : Load field definitions from the Sequoia configuration
+
+- [`seq_layer()`](https://mucau.github.io/Rsequoia2/reference/seq_layer.md)
+  : Load layer config from the Sequoia configuration
+
+- [`seq_mnhn()`](https://mucau.github.io/Rsequoia2/reference/seq_mnhn.md)
+  : Download MNHN vector layers for a Sequoia project
+
+- [`seq_normalize()`](https://mucau.github.io/Rsequoia2/reference/seq_normalize.md)
+  : Normalize a data frame according to Sequoia table definitions
+
+- [`seq_ortho()`](https://mucau.github.io/Rsequoia2/reference/seq_ortho.md)
+  : Download RGB and/or IRC orthophotos for a Sequoia project
+
+- [`seq_parca()`](https://mucau.github.io/Rsequoia2/reference/seq_parca.md)
+  : Download, enrich and write cadastral geometries
+
+- [`seq_parca_to_ua()`](https://mucau.github.io/Rsequoia2/reference/seq_parca_to_ua.md)
+  : Create analysis units layer
+
+- [`seq_parcels()`](https://mucau.github.io/Rsequoia2/reference/seq_parcels.md)
+  :
+
+  Create *PF* and *SSPF* object from *UA* for a Sequoia project
+
+- [`seq_patrimony()`](https://mucau.github.io/Rsequoia2/reference/seq_patrimony.md)
+  : Download patrimony vector layers for a Sequoia project
+
+- [`seq_read()`](https://mucau.github.io/Rsequoia2/reference/seq_read.md)
+  : Open file based on key name
+
+- [`seq_table()`](https://mucau.github.io/Rsequoia2/reference/seq_table.md)
+  : Load table definitions from the Sequoia configuration
+
+- [`seq_ua()`](https://mucau.github.io/Rsequoia2/reference/seq_ua.md) :
+  Check and update the analysis units layer
+
+- [`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
+  : Write a spatial object based on a layer key
+
+- [`seq_xlsx()`](https://mucau.github.io/Rsequoia2/reference/seq_xlsx.md)
+  : Save Multiple Data Frames to an Excel Workbook with Styling
+
+- [`style_table()`](https://mucau.github.io/Rsequoia2/reference/style_table.md)
+  : Style a Data Frame Table in an openxlsx2 Workbook
+
+- [`ua_check_area()`](https://mucau.github.io/Rsequoia2/reference/ua_check_area.md)
+  :
+
+  Update cadastral area values in *UA* using *PARCA*
+
+- [`ua_check_idu()`](https://mucau.github.io/Rsequoia2/reference/ua_check_idu.md)
+  :
+
+  Check cadastral IDU consistency between *UA* and *PARCA* sf objects
+
+- [`ua_check_ug()`](https://mucau.github.io/Rsequoia2/reference/ua_check_ug.md)
+  :
+
+  Check management unit (UG) consistency in the *UA* sf object
+
+- [`ua_clean_ug()`](https://mucau.github.io/Rsequoia2/reference/ua_clean_ug.md)
+  :
+
+  Clean management units (UG) by correcting minor inconsistencies in the
+  *UA* sf object
+
+- [`ua_generate_area()`](https://mucau.github.io/Rsequoia2/reference/ua_generate_area.md)
+  :
+
+  Calculate areas in the *UA* sf object
+
+- [`ua_generate_ug()`](https://mucau.github.io/Rsequoia2/reference/ua_generate_ug.md)
+  :
+
+  Create management unit field (UG) in the *UA* sf object
+
+- [`ua_to_pf()`](https://mucau.github.io/Rsequoia2/reference/ua_to_pf.md)
+  :
+
+  Aggregate *UA* surfaces at the `parcelle` field level
+
+- [`ua_to_sspf()`](https://mucau.github.io/Rsequoia2/reference/ua_to_sspf.md)
+  :
+
+  Aggregate *UA* surfaces at the `sspf` field level
+
+- [`ua_to_ua()`](https://mucau.github.io/Rsequoia2/reference/ua_to_ua.md)
+  :
+
+  Check and update *UA* consistency with cadastral *PARCA* data
