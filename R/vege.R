@@ -173,10 +173,10 @@ get_vege_point <- function(x){
   if(!(is.null(zone_vege))){
 
     # type table
-    nature_vals <- c("Forêt fermée de feuillus",
-                     "Forêt fermée mixte",
-                     "Forêt fermée de conifères",
-                     "Forêt ouverte",
+    nature_vals <- c("For\u00eat ferm\u00e9e de feuillus",
+                     "For\u00eat ferm\u00e9e mixte",
+                     "For\u00eat ferm\u00e9e de conif\u00e8res",
+                     "For\u00eat ouverte",
                      "Peupleraie",
                      "Bois",
                      "Lande ligneuse",
