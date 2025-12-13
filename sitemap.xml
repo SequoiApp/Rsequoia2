@@ -8,6 +8,7 @@
 <url><loc>https://mucau.github.io/Rsequoia2/articles/sequoia.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/authors.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/index.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/create_empty_sf.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/create_matrice.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/download_brgm.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/download_legal_entity.html</loc></url>
@@ -31,6 +32,9 @@
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_path.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_patrimony.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_slope.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/get_vege_line.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/get_vege_point.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/get_vege_poly.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/idu_build.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/idu_split.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/index.html</loc></url>

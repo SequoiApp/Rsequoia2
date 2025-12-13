@@ -2,6 +2,9 @@
 
 ## All functions
 
+- [`create_empty_sf()`](https://mucau.github.io/Rsequoia2/reference/create_empty_sf.md)
+  : Create an empty sf object
+
 - [`create_matrice()`](https://mucau.github.io/Rsequoia2/reference/create_matrice.md)
   : Create a forest matrice
 
@@ -71,6 +74,15 @@
 
 - [`get_slope()`](https://mucau.github.io/Rsequoia2/reference/get_slope.md)
   : Compute a Slope Raster from a DEM
+
+- [`get_vege_line()`](https://mucau.github.io/Rsequoia2/reference/get_vege_line.md)
+  : Retrieve forest vegetation lines around an area
+
+- [`get_vege_point()`](https://mucau.github.io/Rsequoia2/reference/get_vege_point.md)
+  : Generate vegetation point features around an area
+
+- [`get_vege_poly()`](https://mucau.github.io/Rsequoia2/reference/get_vege_poly.md)
+  : Retrieve forest vegetation polygons around an area
 
 - [`parca_check_area()`](https://mucau.github.io/Rsequoia2/reference/parca_check_area.md)
   : Check inconsistencies between cadastral and cartographic areas
