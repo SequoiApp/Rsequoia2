@@ -36,6 +36,37 @@ get_geom_type <- function(x) {
   return(type)
 }
 
+#' Create an empty sf object
+#'
+#' This function creates an empty `sf` object with the desired geometry type
+#' (point, line, polygon, etc.).
+#'
+#' @param geom_type `character`; one of the geometry types supported by `sf`: `POLYGON`,
+#' `LINESTRING`, `POINT`, `MULTIPOLYGON`, `MULTILINESTRING`, `MULTIPOINT`.
+#' @param ... Named attributes with their classes. For example, you can pass
+#'  arguments like `PLACETTE = character(0)`. Each argument must be named according
+#'  to the attribute, with the corresponding empty vector of the appropriate class.
+#'
+#' @importFrom sf st_sf st_sfc
+#'
+#' @return An `sf` object
+#' @export
+#' @examples
+#' \dontrun{
+#' empty_sf <- create_empty_sf(
+#'   "LINESTRING",
+#'   PLACETTE = character(0),
+#'   TSE_VOL = numeric(0)
+#' )
+#' }
+create_empty_sf <- function(geom_type, ...){
+  empty_sf_geom <- sf::st_sfc()
+  class(empty_sf_geom) <- c(paste0("sfc_", toupper(geom_type)), class(empty_sf_geom)[-1])
+  fields <- list(..., geometry = empty_sf_geom)
+  template <- sf::st_sf(fields, crs = 2154)
+  return(template)
+}
+
 #' Get a border layer from polygons
 #'
 #' This function convert polygon to line and remove shared lines
