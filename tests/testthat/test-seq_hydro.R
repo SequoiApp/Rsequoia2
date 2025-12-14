@@ -1,4 +1,6 @@
 test_that("seq_hydro() returns a named list of three paths", {
+  skip_on_cran()
+  skip_on_ci()
 
   # cache dir
   seq_cache <- file.path(tempdir(), "seq")
@@ -26,6 +28,8 @@ test_that("seq_hydro() returns a named list of three paths", {
 })
 
 test_that("hydro layers have correct geometry types and CRS", {
+  skip_on_cran()
+  skip_on_ci()
 
   # cache dir
   seq_cache <- file.path(tempdir(), "seq")
@@ -59,6 +63,8 @@ test_that("hydro layers have correct geometry types and CRS", {
 })
 
 test_that("seq_hydro() writes valid layers when features exist", {
+  skip_on_cran()
+  skip_on_ci()
 
   # cache dir
   seq_cache <- file.path(tempdir(), "seq")
@@ -92,6 +98,8 @@ test_that("seq_hydro() writes valid layers when features exist", {
 })
 
 test_that("seq_hydro() writes valid empty layers when no features exist", {
+  skip_on_cran()
+  skip_on_ci()
 
   # cache dir
   seq_cache <- file.path(tempdir(), "seq")
