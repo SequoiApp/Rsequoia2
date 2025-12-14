@@ -173,7 +173,6 @@ The Excel matrix must contain the following columns:
 - SECTION: Cadastral section
 - NUMERO: Parcel number
 - LIEU_DIT: Locality name (optional)
-- TX_BOISEE: Forested proportion (between 0 and 1)
 
 *Rules to follow:* - The file name must end with “\_matrice.xlsx” - Only
 one matrix file should exist in the Sequoia directory - The matrix must
@@ -186,7 +185,7 @@ sequoia_dir <- file.path(tempdir(), "MY_FOREST")
 dir.create(sequoia_dir)
 
 matrice_path <- create_matrice(sequoia_dir, id = "MY_FOREST")
-#> ✔ Excel file created at: /tmp/RtmpVOmCbu/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/RtmpdUFhnd/MY_FOREST/MY_FOREST_matrice.xlsx
 ```
 
 You can then manually fill the Excel file.

@@ -29,31 +29,6 @@ get_legal_entity(x, cache = NULL, verbose = TRUE)
 
   `logical` If `TRUE`, display messages.
 
-## Details
-
-Matrice from `get_legal_entity` add `tx_boisee` information which is the
-percentage of land considered as forest :
-
-- `"L"`: Landes
-
-- `"LB"`: Landes Boisees
-
-- `"B"`: Bois
-
-- `"BF"`: Futaies Feuillues
-
-- `"BM"`: Futaies Mixtes
-
-- `"BO"`: Oseraies
-
-- `"BP"`: Peupleraies
-
-- `"BR"`: Futaies Resineuses
-
-- `"BS"`: Taillis sous Futaies
-
-- `"BT"`: Taillis Simples
-
 ## Examples
 
 ``` r
