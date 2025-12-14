@@ -151,7 +151,6 @@ The Excel matrix must contain the following columns:
 - SECTION: Cadastral section
 - NUMERO: Parcel number
 - LIEU_DIT: Locality name (optional)
-- TX_BOISEE: Forested proportion (between 0 and 1)
 
 *Rules to follow:*
 - The file name must end with "_matrice.xlsx"

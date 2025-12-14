@@ -27,8 +27,7 @@ create_matrice <- function(dirname = ".", id = "MY_FOREST", overwrite = FALSE, v
     "prefixe" = "000",
     "section" = "AB",
     "numero" = "60",
-    "lieu_dit" = "NAME OF LIEU DIT",
-    "tx_boisee" = 0.8
+    "lieu_dit" = "NAME OF LIEU DIT"
   ) |> seq_normalize("matrice")
 
   seq_xlsx(
@@ -79,8 +78,8 @@ read_matrice <- function(dirname = "."){
 
   # name_check
   matrice_keys <- c(
-    "identifiant", "proprietaire", "insee", "prefix", "section",
-    "numero", "lieu_dit", "tx_boisee"
+    "identifiant", "proprietaire", "insee", "prefix",
+    "section", "numero", "lieu_dit"
   )
 
   required <- sapply(matrice_keys, \(x) seq_field(x)$name)
@@ -119,7 +118,6 @@ read_matrice <- function(dirname = "."){
   m[[f("prefix")]] <- pad_left(m[[f("prefix")]], "0")
   m[[f("section")]] <- pad_left(m[[f("section")]], "0")
   m[[f("numero")]] <- pad_left(m[[f("numero")]], "0")
-  m[[f("tx_boisee")]] <- as.numeric(gsub(",", ".", m[[f("tx_boisee")]]))
 
   return(m)
 

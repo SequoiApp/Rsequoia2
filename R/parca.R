@@ -181,7 +181,6 @@ seq_parca <- function(
   section <- seq_field("section")$name
   numero <- seq_field("numero")$name
   lieu_dit <- seq_field("lieu_dit")$name
-  tx_boisee <- seq_field("tx_boisee")$name
 
   # create idu
   m[[idu]] <- paste0(
@@ -214,8 +213,6 @@ seq_parca <- function(
     seq_parca$RAW_LIEU_DIT,
     seq_parca[[lieu_dit]]
   )
-
-  seq_parca[[tx_boisee]] <- ifelse(seq_parca[[tx_boisee]] >= 0.5, "BOISEE", "NON BOISEE")
 
   # format parca
   seq_parca <- seq_normalize(seq_parca, "parca")

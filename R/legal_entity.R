@@ -54,7 +54,7 @@ download_legal_entity <- function(cache = NULL, verbose = TRUE) {
 }
 
 globalVariables(c(
-  "dep", "com", "prefix", "section", "numero", "nature", "is_boisee", "surf_tot",
+  "dep", "com", "prefix", "section", "numero", "nature", "surf_tot",
   "contenance", "prop_norm", "lieu_dit_norm"
 ))
 #' Create a forest matrice for legal entity from insee code
@@ -68,20 +68,6 @@ globalVariables(c(
 #'
 #' @param x `character`; Code(s) INSEE or code(s) department (see
 #' [happign::com_2025] or [happign::dep_2025])
-#'
-#' @details
-#' Matrice from `get_legal_entity` add `tx_boisee` information which is the
-#' percentage of land considered as forest :
-#' - `"L"`:  Landes
-#' - `"LB"`: Landes Boisees
-#' - `"B"`:  Bois
-#' - `"BF"`: Futaies Feuillues
-#' - `"BM"`: Futaies Mixtes
-#' - `"BO"`: Oseraies
-#' - `"BP"`: Peupleraies
-#' - `"BR"`: Futaies Resineuses
-#' - `"BS"`: Taillis sous Futaies
-#' - `"BT"`: Taillis Simples
 #'
 #' @importFrom cli cli_alert_info cli_abort cli_alert_success cli_alert_warning
 #' @importFrom utils read.csv2
@@ -132,8 +118,6 @@ get_legal_entity <- function(
   pattern <- paste0(deps, ".*\\.csv$")
   files <- list.files(cache, pattern = pattern, recursive = TRUE, full.names = TRUE)
 
-  boisee <- c("L", "LB", "B", "BF", "BM", "BO", "BP", "BR", "BS", "BT")
-
   if (verbose) cli_alert_info("Reading CSV files...")
   col_classes <- replace(rep("NULL", 24), c(1, 3, 5, 6, 7, 13, 14, 16, 17, 18, 24), NA)
   raw <- do.call(rbind, lapply(files, read.csv2, colClasses = col_classes))
@@ -154,11 +138,9 @@ get_legal_entity <- function(
         ifelse(is.na(prefix), "000", pad_left(prefix, 3)),
         pad_left(section, 2),
         pad_left(numero, 4)
-      ),
-      is_boisee = sub(" -.*", "", nature) %in% boisee
+      )
     )
 
-  legal_entity_boisee <- aggregate(contenance ~ idu, data = legal_entity, subset = is_boisee, FUN = sum, na.rm = TRUE)
   legal_entity_prop <- aggregate(prop ~ idu, data = legal_entity, FUN = \(x) paste(unique(x), collapse = " \\ "))
   legal_entity_lieu_dit <- aggregate(lieu_dit ~ idu, data = legal_entity, FUN = \(x) paste(unique(x), collapse = " \\ "))
 
@@ -166,10 +148,8 @@ get_legal_entity <- function(
   legal_entity_clean <- legal_entity |>
     subset(select = c("idu", "surf_tot")) |>
     unique() |>
-    merge(legal_entity_boisee, all.x = TRUE) |>
     merge(legal_entity_prop, all.x = TRUE) |>
-    merge(legal_entity_lieu_dit, all.x = TRUE) |>
-    transform(tx_boisee = surf_tot / contenance)
+    merge(legal_entity_lieu_dit, all.x = TRUE)
 
   matrice_legal_entity <- data.frame(
     "identifiant" = "",
@@ -178,8 +158,7 @@ get_legal_entity <- function(
     "prefix" = substr(legal_entity_clean$idu, 6, 8),
     "section" = substr(legal_entity_clean$idu, 9, 10),
     "numero" = substr(legal_entity_clean$idu, 11, 14),
-    "lieu_dit" = legal_entity_clean$lieu_dit,
-    "tx_boisee" = legal_entity_clean$tx_boisee
+    "lieu_dit" = legal_entity_clean$lieu_dit
   ) |>
     seq_normalize("parca")
 

@@ -23,11 +23,9 @@ test_that("seq_parca() works with mocked get_parca()", {
   parca <- sf::read_sf(parca_path)
 
   lieu_dit <- seq_field("lieu_dit")$name
-  tx_boisee <- seq_field("tx_boisee")$name
 
   expect_s3_class(parca, "sf")
-  expect_equal(parca[[lieu_dit]], c("LIEU_DIT1", "OWNER")) # replace NA lieu-dit
-  expect_all_equal(parca[[tx_boisee]], "BOISEE")
+  expect_equal(parca[[lieu_dit]], c("LIEU_DIT1", "OWNER"))
 
 })
 

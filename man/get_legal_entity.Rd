@@ -21,22 +21,6 @@ information (e.g., \code{IDENTIFIANT}, \code{PROPRIETAIRE}) and cadastral attrib
 (\code{CODE_INSEE}, \code{PREFIXE}, \code{SECTION}, \code{NUMERO}, \code{LIEU_DIT}) for legal
 entity.
 }
-\details{
-Matrice from \code{get_legal_entity} add \code{tx_boisee} information which is the
-percentage of land considered as forest :
-\itemize{
-\item \code{"L"}:  Landes
-\item \code{"LB"}: Landes Boisees
-\item \code{"B"}:  Bois
-\item \code{"BF"}: Futaies Feuillues
-\item \code{"BM"}: Futaies Mixtes
-\item \code{"BO"}: Oseraies
-\item \code{"BP"}: Peupleraies
-\item \code{"BR"}: Futaies Resineuses
-\item \code{"BS"}: Taillis sous Futaies
-\item \code{"BT"}: Taillis Simples
-}
-}
 \examples{
 \dontrun{
 pm <- get_legal_entity(c("29158", "08185"))

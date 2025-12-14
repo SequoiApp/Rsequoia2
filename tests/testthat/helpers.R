@@ -4,7 +4,7 @@ fake_matrice <- function(
     id = "FOREST", prop = "OWNER",
     insee = "29158", prefix = "000",
     section = "ZR", numero = "0003",
-    lieu_dit = "LIEU_DIT", tx_boisee = 0.8
+    lieu_dit = "LIEU_DIT"
 ) {
 
   matrice <- data.frame(
@@ -15,7 +15,6 @@ fake_matrice <- function(
     SECTION = pad_left(section, 2),
     NUMERO = pad_left(numero, 4),
     LIEU_DIT = lieu_dit,
-    TX_BOISEE = as.numeric(tx_boisee),
     stringsAsFactors = FALSE
   ) |> seq_normalize("matrice")
 
