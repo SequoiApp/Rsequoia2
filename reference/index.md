@@ -75,6 +75,9 @@
 - [`get_slope()`](https://mucau.github.io/Rsequoia2/reference/get_slope.md)
   : Compute a Slope Raster from a DEM
 
+- [`get_toponyme()`](https://mucau.github.io/Rsequoia2/reference/get_toponyme.md)
+  : Retrieve and classify toponymic point features around an area
+
 - [`get_vege_line()`](https://mucau.github.io/Rsequoia2/reference/get_vege_line.md)
   : Retrieve forest vegetation lines around an area
 
