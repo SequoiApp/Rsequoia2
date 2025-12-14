@@ -112,6 +112,10 @@
 - [`seq_field()`](https://mucau.github.io/Rsequoia2/reference/seq_field.md)
   : Load field definitions from the Sequoia configuration
 
+- [`seq_hydro()`](https://mucau.github.io/Rsequoia2/reference/seq_hydro.md)
+  : Generates hydrographic polygon, line and point layers for a Sequoia
+  project.
+
 - [`seq_layer()`](https://mucau.github.io/Rsequoia2/reference/seq_layer.md)
   : Load layer config from the Sequoia configuration
 
@@ -146,6 +150,10 @@
 
 - [`seq_ua()`](https://mucau.github.io/Rsequoia2/reference/seq_ua.md) :
   Check and update the analysis units layer
+
+- [`seq_vege()`](https://mucau.github.io/Rsequoia2/reference/seq_vege.md)
+  : Generates vegetation polygon, line and point layers for a Sequoia
+  project.
 
 - [`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
   : Write a spatial object based on a layer key
