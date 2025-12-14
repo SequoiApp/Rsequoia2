@@ -32,6 +32,7 @@ get_toponyme <- function(x) {
 
   # retrieve toponymic point
   toponyme <- get_topo(convex, "BDTOPO_V3:toponymie")
+
   if (is.null(toponyme)) {
     return(NULL)
   }
@@ -48,6 +49,7 @@ get_toponyme <- function(x) {
     "D\u00E9tails hydrographiques",
     "N\u0153uds hydrographiques",
     "Plans d\u0027eau",
+    "Plan d\u0027eau",
     "R\u00E9servoirs",
     "Surfaces hydrographiques",
     "Tron\u00E7ons hydrographiques",
@@ -63,8 +65,8 @@ get_toponyme <- function(x) {
 
   # type
   toponyme[[type]] <- "TYPON"
-  toponyme[[type]][toponyme$classe_de_l_objet %in% t_hydr] <- "THYDR"
-  toponyme[[type]][toponyme$classe_de_l_objet %in% t_vege] <- "TVEGE"
+  toponyme[toponyme$classe_de_l_objet %in% t_hydr, type] <- "THYDR"
+  toponyme[toponyme$classe_de_l_objet %in% t_vege, type] <- "TVEGE"
 
   # autres champs
   toponyme[[nature]] <- toponyme$nature_de_l_objet
