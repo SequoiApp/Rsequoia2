@@ -77,18 +77,24 @@ ua:
   - surf_cad
 
 vct_poly:
+  - identifiant
   - type
   - nature
   - name
+  - source
 
 vct_line:
+  - identifiant
   - type
   - nature
   - name
+  - source
   - offset
 
 vct_point:
+  - identifiant
   - type
   - nature
   - name
+  - source
   - rotation

@@ -216,6 +216,11 @@ dispositif:
   definition: "..."
 
 # vector ----
+source:
+  name: "SOURCE"
+  class: "character"
+  definition: "Source from which the data comes"
+
 type:
   name: "TYPE"
   class: "character"
