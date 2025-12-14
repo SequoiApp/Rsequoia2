@@ -36,14 +36,16 @@ get_vege_poly <- function(x) {
   forest_mask <- get_topo(convex1000, "IGNF_MASQUE-FORET.2021-2023:masque_foret")
 
   if(!(is.null(forest_mask))){
+
+    forest_mask <- sf::st_intersection(forest_mask, convex1500) |>
+      sf::st_cast("POLYGON") |>
+      quiet()
+
+    forest_mask <- forest_mask[, setdiff(names(forest_mask), names(convex1500))] |>
+      seq_normalize("vct_poly")
+
     forest_mask[[type]]   <- "FOR"
     forest_mask[[source]] <- "IGNF_MASQUE-FORET"
-
-    forest_mask <- suppressWarnings(
-      sf::st_intersection(forest_mask, convex1500) |>
-        sf::st_cast("POLYGON") |>
-        seq_normalize("vct_poly")
-    )
 
     vege_poly <- rbind(vege_poly, forest_mask)
   }
@@ -94,13 +96,15 @@ get_vege_line <- function(x) {
   vege_poly <- get_vege_poly(x)
 
   if (!is.null(vege_poly) && nrow(vege_poly) > 0) {
-    line <- suppressWarnings(
-      dissolve(vege_poly, tol = 5) |>
-        poly_to_line() |>
-        sf::st_intersection(convex1499)|>
-        sf::st_cast("LINESTRING") |>
-        seq_normalize("vct_line")
-    )
+
+    line <- dissolve(vege_poly, tol = 5) |>
+      poly_to_line() |>
+      sf::st_intersection(convex1499)|>
+      sf::st_cast("LINESTRING") |>
+      quiet()
+
+    line <- line[, setdiff(names(line), names(convex1499))] |>
+      seq_normalize("vct_line")
 
     line[[type]]   <- "FOR"
     line[[source]] <- "IGNF_MASQUE-FORET"
@@ -194,8 +198,7 @@ get_vege_point <- function(x){
     # geometry processing
     zone_vege <- sf::st_intersection(zone_vege, convex1500) |>
       sf::st_cast("POLYGON") |>
-      suppressWarnings() |>
-      seq_normalize("vct_point") |>
+      quiet() |>
       subset(!get(type) %in% c("LAN", "HAI"))
 
     # point
@@ -204,12 +207,100 @@ get_vege_point <- function(x){
       point <- sf::st_sf(sf::st_sample(zone_vege, n_points, type = "hexagonal")) |>
         sf::st_join(zone_vege, join = sf::st_intersects) |>
         sf::st_intersection(convex1499) |>
-        suppressWarnings()
+        quiet()
     }
     sf::st_geometry(point) <- "geometry"
+
+    point <- point[, setdiff(names(point), names(convex1500))] |>
+      seq_normalize("vct_point")
 
     vege_point <- rbind(vege_point, point)
   }
 
   invisible(vege_point)
+}
+
+#' Generates vegetation polygon, line and point layers for a Sequoia project.
+#'
+#' This function is a convenience wrapper around [get_vege_poly()],
+#' [get_vege_line()] and [get_vege_point()], allowing the user to download
+#' all products in one call and automatically write them to the project
+#' directory using [seq_write()].
+#'
+#' @param dirname `character` Path to the directory. Defaults to the current
+#' working directory.
+#' @inheritParams seq_write
+#'
+#' @details
+#' Each vegetation layer is always written to disk using [seq_write()],
+#' even when it contains no features (`nrow == 0`).
+#'
+#' Informational messages are displayed to indicate whether a layer
+#' contains features or is empty.
+#'
+#' @return A named list of file paths written by [seq_write()],
+#' one per vegetation layer.
+#'
+#' @seealso
+#' [get_vege_poly()], [get_vege_line()], [get_vege_point()],
+#' [seq_write()]
+#'
+seq_vege <- function(
+    dirname = ".",
+    verbose = TRUE,
+    overwrite = FALSE
+) {
+
+  # read PARCA
+  f_parca <- read_sf(get_path("v.seq.parca.poly", dirname = dirname))
+  f_id <- get_id(dirname)
+
+  id <- seq_field("identifiant")$name
+
+  # create empty path list
+  path <- list()
+
+  # hydro layer specifications
+  layers <- list(
+    poly  = list(fun = get_vege_poly,  key = "v.vege.poly", geom = "POLYGON"),
+    line  = list(fun = get_vege_line,  key = "v.vege.line", geom = "LINESTRING"),
+    point = list(fun = get_vege_point, key = "v.vege.point", geom = "POINT")
+  )
+
+  for (k in names(layers)) {
+
+    f <- layers[[k]]$fun(f_parca)
+
+    if (nrow(f)>0){
+      f[[id]]<- f_id
+
+      geom_union <- sf::st_union(f_parca)
+      f <- quiet(sf::st_difference(f, geom_union))
+      f <- quiet(sf::st_cast(f, layers[[k]]$geom))
+    }
+
+    f_path <- quiet(seq_write(
+      f,
+      layers[[k]]$key,
+      dirname = dirname,
+      verbose = FALSE,
+      overwrite = overwrite
+    ))
+
+    path <- c(path, f_path)
+
+    if (verbose) {
+      if (nrow(f) == 0) {
+        cli::cli_alert_info(
+          c("i" = "Vege {.field {k}} layer written (empty layer)")
+        )
+      } else {
+        cli::cli_alert_success(
+          "Vege {.field {k}} layer written with {nrow(f)} feature{?s}"
+        )
+      }
+    }
+  }
+
+  return(invisible(path))
 }
