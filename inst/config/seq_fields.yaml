@@ -10,9 +10,9 @@ proprietaire:
   class: "character"
   definition: "Nom du propriétaire"
 
-tx_boisee:
-  name: "TX_BOISEE"
-  alias: ["boisee", "is_boisee", "occupation"]
+land_use:
+  name: "LAND_USE"
+  alias: ["boisee", "is_boisee", "occupation", "occup_sol"]
   class: "character"
   definition: "Occupation du sol"
 

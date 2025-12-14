@@ -6,7 +6,6 @@ matrice:
   - section
   - numero
   - lieu_dit
-  - tx_boisee
 
 raw_parca:
   - idu
@@ -36,7 +35,6 @@ parca:
   - section
   - numero
   - lieu_dit
-  - tx_boisee
   - surf_cad
 
 ua:
@@ -53,7 +51,7 @@ ua:
   - section
   - numero
   - lieu_dit
-  - tx_boisee
+  - land_use
   - ug
   - parcelle
   - sous_parcelle
