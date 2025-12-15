@@ -20,6 +20,7 @@ raw_parca:
   - numero
   - lieu_dit
   - surf_cad
+  - source
 
 parca:
   - identifiant
@@ -36,6 +37,7 @@ parca:
   - numero
   - lieu_dit
   - surf_cad
+  - source
 
 ua:
   - identifiant
