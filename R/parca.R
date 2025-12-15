@@ -18,6 +18,9 @@ get_parca_bdp <- function(idu){
 
   bdp$idu <- idu_build(bdp$code_dep, bdp$code_com, bdp$com_abs, bdp$section, bdp$numero)
 
+  source <- seq_field("source")$name
+  bdp[[source]] <- "bdp"
+
   return(bdp)
 }
 
@@ -33,16 +36,19 @@ get_parca_etalab <- function(idu){
 
   urls <- sprintf(url, unique(idu_parts$insee))
 
-  etalab_geom <- lapply(urls, read_sf)
-  etalab_geom <- do.call(rbind, etalab_geom)
-  etalab_geom$prefixe <- pad_left(etalab_geom$prefixe, 3)
-  etalab_geom$section <- pad_left(etalab_geom$section, 2)
-  etalab_geom$numero <- pad_left(etalab_geom$numero, 4)
+  etalab <- lapply(urls, read_sf)
+  etalab <- do.call(rbind, etalab)
+  etalab$prefixe <- pad_left(etalab$prefixe, 3)
+  etalab$section <- pad_left(etalab$section, 2)
+  etalab$numero <- pad_left(etalab$numero, 4)
 
-  etalab_geom <- etalab_geom[etalab_geom$id %in% idu,]
+  etalab <- etalab[etalab$id %in% idu,]
 
-  names(etalab_geom)[names(etalab_geom) == "id"] <- "idu"
-  return(etalab_geom)
+  names(etalab)[names(etalab) == "id"] <- "idu"
+
+  source <- seq_field("source")$name
+  etalab[[source]] <- "etalab"
+  return(etalab)
 }
 
 #' Retrieve a "Lieud-dit" from Etalab
@@ -100,6 +106,10 @@ get_parca <- function(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE){
       bdp <- get_parca_bdp(idu)
       idx <- match(etalab$idu, bdp$idu)
       etalab$geometry[!is.na(idx)] <- bdp$geometry[idx[!is.na(idx)]]
+
+      source <- seq_field("source")$name
+      etalab[[source]][!is.na(idx)] <- bdp[[source]][idx[!is.na(idx)]]
+
       if (verbose) {
         valid_bdp_idu <- intersect(etalab$idu, bdp$idu)
         if (length(valid_bdp_idu) > 0) {
@@ -116,7 +126,6 @@ get_parca <- function(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE){
   if (length(missing_idu) > 0) {
       cli::cli_warn("Geometry not found for {length(missing_idu)} IDU(s): {.val {missing_idu}}")
   }
-
 
   # Ajout des lieux dits
   if (lieu_dit){

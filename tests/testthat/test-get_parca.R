@@ -114,3 +114,35 @@ test_that("get_parca() joins lieux-dits only when enabled", {
   res2 <- get_parca(idu = 1, bdp_geom = FALSE,lieu_dit = FALSE, verbose = FALSE)
   expect_true(is.na(res2[[lieu_dit_field]]))
 })
+
+test_that("get_parca() updates source field when BDP geometry replaces ETALAB", {
+
+  source_field <- seq_field("source")$name
+
+  fake_etalab <- sf::st_sf(
+    idu = c(1, 2),
+    commune = "29158",
+    geometry = sf::st_sfc(
+      sf::st_point(c(1, 1)),
+      sf::st_point(c(1, 1))
+    )
+  )
+  fake_etalab[[source_field]] <- "etalab"
+
+  fake_bdp <- sf::st_sf(
+    idu = 2,
+    geometry = sf::st_sfc(sf::st_point(c(2, 2)))
+  )
+  fake_bdp[[source_field]] <- "bdp"
+
+  local_mocked_bindings(
+    get_parca_etalab = function(idu) fake_etalab,
+    get_parca_bdp    = function(idu) fake_bdp
+  )
+
+  res <- get_parca(idu = c(1, 2), bdp_geom = TRUE, verbose = FALSE)
+
+  # IDU 2 → replaced
+  expect_equal(res[[source_field]], c("etalab", "bdp"))
+
+})

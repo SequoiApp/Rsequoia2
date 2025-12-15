@@ -3,7 +3,7 @@
     Code
       str(sf::st_drop_geometry(out))
     Output
-      'data.frame':	1 obs. of  12 variables:
+      'data.frame':	1 obs. of  13 variables:
        $ IDU     : chr "33103000AB0060"
        $ REG_NOM : chr "NOUVELLE AQUITAINE"
        $ REG_CODE: chr "75"
@@ -16,13 +16,14 @@
        $ NUMERO  : chr "0060"
        $ LIEU_DIT: chr NA
        $ SURF_CA : num 150
+       $ SOURCE  : chr "etalab"
 
 ---
 
     Code
       str(sf::st_drop_geometry(out))
     Output
-      'data.frame':	1 obs. of  12 variables:
+      'data.frame':	1 obs. of  13 variables:
        $ IDU     : chr "33103000AB0060"
        $ REG_NOM : chr "NOUVELLE AQUITAINE"
        $ REG_CODE: chr "75"
@@ -35,13 +36,14 @@
        $ NUMERO  : chr "0060"
        $ LIEU_DIT: chr "LE BOURG"
        $ SURF_CA : num 150
+       $ SOURCE  : chr "etalab"
 
 ---
 
     Code
       str(sf::st_drop_geometry(out))
     Output
-      'data.frame':	1 obs. of  12 variables:
+      'data.frame':	1 obs. of  13 variables:
        $ IDU     : chr "33103000AB0060"
        $ REG_NOM : chr "NOUVELLE AQUITAINE"
        $ REG_CODE: chr "75"
@@ -54,4 +56,5 @@
        $ NUMERO  : chr "0060"
        $ LIEU_DIT: chr NA
        $ SURF_CA : num 150
+       $ SOURCE  : chr "etalab"
 
