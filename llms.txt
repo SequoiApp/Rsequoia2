@@ -96,6 +96,9 @@ library(Rsequoia2)
 - [`get_patrimony()`](https://mucau.github.io/Rsequoia2/reference/get_patrimony.md)
   : Download patrimony vector layer
 
+- [`get_prsf()`](https://mucau.github.io/Rsequoia2/reference/get_prsf.md)
+  : Retrieve PRSF point features around an area
+
 - [`get_slope()`](https://mucau.github.io/Rsequoia2/reference/get_slope.md)
   : Compute a Slope Raster from a DEM
 
