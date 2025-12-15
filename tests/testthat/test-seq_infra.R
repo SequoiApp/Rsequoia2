@@ -1,4 +1,4 @@
-test_that("seq_hydro() returns a named list of three paths", {
+test_that("seq_infra() returns a named list of three paths", {
   skip_on_cran()
   skip_on_ci()
 
@@ -15,8 +15,8 @@ test_that("seq_hydro() returns a named list of three paths", {
   # parca
   p <- seq_parca(seq_cache, verbose = FALSE)
 
-  # seq_hydro
-  paths <- seq_hydro(seq_cache, verbose = FALSE)
+  # seq_infra
+  paths <- seq_infra(seq_cache, verbose = FALSE)
 
   # tests
   expect_type(paths, "list")
@@ -26,7 +26,7 @@ test_that("seq_hydro() returns a named list of three paths", {
   expect_true(all(file.exists(unlist(paths))))
 })
 
-test_that("hydro layers have correct geometry types and CRS", {
+test_that("infra layers have correct geometry types and CRS", {
   skip_on_cran()
   skip_on_ci()
 
@@ -43,8 +43,8 @@ test_that("hydro layers have correct geometry types and CRS", {
   # parca
   p <- seq_parca(seq_cache, verbose = FALSE)
 
-  # seq_hydro
-  paths <- seq_hydro(seq_cache, verbose = FALSE)
+  # seq_infra
+  paths <- seq_infra(seq_cache, verbose = FALSE)
 
   # tests
   poly  <- sf::read_sf(paths[[1]])
@@ -60,7 +60,7 @@ test_that("hydro layers have correct geometry types and CRS", {
   expect_true(all(sf::st_geometry_type(point) == "POINT"))
 })
 
-test_that("seq_hydro() writes valid layers when features exist", {
+test_that("seq_infra() writes valid layers when features exist", {
   skip_on_cran()
   skip_on_ci()
 
@@ -77,8 +77,8 @@ test_that("seq_hydro() writes valid layers when features exist", {
   # parca
   p <- seq_parca(seq_cache, verbose = FALSE)
 
-  # seq_hydro
-  paths <- seq_hydro(seq_cache, verbose = FALSE)
+  # seq_infra
+  paths <- seq_infra(seq_cache, verbose = FALSE)
 
   # tests
   poly  <- sf::read_sf(paths[[1]])
@@ -94,7 +94,7 @@ test_that("seq_hydro() writes valid layers when features exist", {
   expect_s3_class(point, "sf")
 })
 
-test_that("seq_hydro() writes valid empty layers when no features exist", {
+test_that("seq_infra() writes valid empty layers when no features exist", {
   skip_on_cran()
   skip_on_ci()
 
@@ -112,8 +112,8 @@ test_that("seq_hydro() writes valid empty layers when no features exist", {
   p <- fake_parca()
   parca_path <- seq_write(p, "parca", dirname = seq_cache)
 
-  # seq_hydro
-  paths <- seq_hydro(seq_cache, verbose = FALSE)
+  # seq_infra
+  paths <- seq_infra(seq_cache, verbose = FALSE)
 
   # tests
   poly  <- sf::read_sf(paths[[1]])

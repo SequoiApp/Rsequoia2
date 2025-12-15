@@ -317,3 +317,84 @@ get_infra_point <- function(x) {
 
   invisible(infra_point)
 }
+
+#' Generates infrastructure polygon, line and point layers for a Sequoia project.
+#'
+#' This function is a convenience wrapper around [get_infra_poly()],
+#' [get_infra_line()] and [get_infra_point()], allowing the user to download
+#' all products in one call and automatically write them to the project
+#' directory using [seq_write()].
+#'
+#' @param dirname `character` Path to the directory. Defaults to the current
+#' working directory.
+#' @inheritParams seq_write
+#'
+#' @details
+#' Each infrastructure layer is always written to disk using [seq_write()],
+#' even when it contains no features (`nrow == 0`).
+#'
+#' Informational messages are displayed to indicate whether a layer
+#' contains features or is empty.
+#'
+#' @return A named list of file paths written by [seq_write()],
+#' one per hydrographic layer.
+#'
+#' @seealso
+#' [get_infra_poly()], [get_infra_line()], [get_infra_point()],
+#' [seq_write()]
+#'
+seq_infra <- function(
+    dirname = ".",
+    verbose = TRUE,
+    overwrite = FALSE
+) {
+
+  # read PARCA
+  f_parca <- read_sf(get_path("v.seq.parca.poly", dirname = dirname))
+  f_id <- get_id(dirname)
+
+  id <- seq_field("identifiant")$name
+
+  # create empty path list
+  path <- list()
+
+  # hydro layer specifications
+  layers <- list(
+    poly  = list(fun = get_infra_poly,  key = "v.infra.poly"),
+    line  = list(fun = get_infra_line,  key = "v.infra.line"),
+    point = list(fun = get_infra_point, key = "v.infra.point")
+  )
+
+  for (k in names(layers)) {
+
+    f <- layers[[k]]$fun(f_parca)
+
+    if (nrow(f)>0){
+      f[[id]]<- f_id
+    }
+
+    f_path <- seq_write(
+      f,
+      layers[[k]]$key,
+      dirname = dirname,
+      verbose = FALSE,
+      overwrite = overwrite
+    )
+
+    path <- c(path, f_path)
+
+    if (verbose) {
+      if (nrow(f) == 0) {
+        cli::cli_alert_info(
+          c("i" = "Infra {.field {k}} layer written (empty layer)")
+        )
+      } else {
+        cli::cli_alert_success(
+          "Infra {.field {k}} layer written with {nrow(f)} feature{?s}"
+        )
+      }
+    }
+  }
+
+  return(invisible(path))
+}
