@@ -1,5 +1,6 @@
 # Standard field names ----
 type   <- seq_field("type")$name
+nature <- seq_field("nature")$name
 name   <- seq_field("name")$name
 source <- seq_field("source")$name
 
@@ -35,7 +36,7 @@ test_that("get_vege_poly() returns empty sf on area with no forest", {
 
   expect_s3_class(vege_poly_empty, "sf")
   expect_equal(nrow(vege_poly_empty), 0)
-  expect_true(all(c(type, source, name) %in% names(vege_poly_empty)))
+  expect_true(all(c(type, nature, source, name) %in% names(vege_poly_empty)))
   expect_true(all(sf::st_geometry_type(vege_poly_empty) == "POLYGON"))
 })
 
@@ -47,7 +48,7 @@ test_that("get_veg_line() returns sf with expected fields and values", {
   vege_line <- get_vege_line(area_sf)
 
   expect_s3_class(vege_line, "sf")
-  expect_true(all(c(type, source, name) %in% names(vege_line)))
+  expect_true(all(c(type, nature, source, name) %in% names(vege_line)))
   expect_true(sf::st_crs(vege_line)$epsg == 2154)
   expect_true(all(vege_line[[type]] %in% c("FOR")))
   expect_true(all(sf::st_geometry_type(vege_line) == "LINESTRING"))
@@ -61,7 +62,7 @@ test_that("get_veg_line() returns empty sf on area with no vegetation polygons",
 
   expect_s3_class(vege_line_empty, "sf")
   expect_equal(nrow(vege_line_empty), 0)
-  expect_true(all(c(type, source, name) %in% names(vege_line_empty)))
+  expect_true(all(c(type, nature, source, name) %in% names(vege_line_empty)))
   expect_true(all(sf::st_geometry_type(vege_line_empty) == "LINESTRING"))
 })
 
@@ -73,7 +74,7 @@ test_that("get_vege_point() returns sf with expected fields and values", {
   vege_point <- get_vege_point(area_sf)
 
   expect_s3_class(vege_point, "sf")
-  expect_true(all(c(type, source, name) %in% names(vege_point)))
+  expect_true(all(c(type, nature, source, name) %in% names(vege_point)))
   expect_true(sf::st_crs(vege_point)$epsg == 2154)
   expect_true(all(sf::st_geometry_type(vege_point) == "POINT"))
   expect_true(all(vege_point[[type]] %in% c("FFF", "FFM", "FFC", "FOI", "PEU", "BOI", "VER", "VEG")))
@@ -87,6 +88,6 @@ test_that("get_vege_point() returns empty sf on area with no vegetation", {
 
   expect_s3_class(vege_point_empty, "sf")
   expect_equal(nrow(vege_point_empty), 0)
-  expect_true(all(c(type, source, name) %in% names(vege_point_empty)))
+  expect_true(all(c(type, nature, source, name) %in% names(vege_point_empty)))
   expect_true(all(sf::st_geometry_type(vege_point_empty) == "POINT"))
 })
