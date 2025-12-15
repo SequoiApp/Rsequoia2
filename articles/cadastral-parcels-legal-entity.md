@@ -61,9 +61,9 @@ insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
 #> ℹ Downloading legal entity datasets...
-#> ⠙ 20 extracted | 909 MB (300 MB/s) | 3s
-#> ⠙ 27 extracted | 1.0 GB (303 MB/s) | 3.4s
-#> ⠹ 45 extracted | 1.8 GB (289 MB/s) | 6.4s
+#> ⠙ 18 extracted | 868 MB (307 MB/s) | 2.8s
+#> ⠙ 20 extracted | 758 MB (241 MB/s) | 3.2s
+#> ⠹ 41 extracted | 1.7 GB (275 MB/s) | 6.1s
 #> ✔ Data available at: /home/runner/.cache/R/Rsequoia2
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
@@ -78,13 +78,13 @@ head(legal_entity_cp)
 #> 4                LES TERRES BLEUES <NA>    <NA>     <NA>    <NA>    <NA>
 #> 5             TI PORZH LES ROCHERS <NA>    <NA>     <NA>    <NA>    <NA>
 #> 6                     L ATELIER 89 <NA>    <NA>     <NA>    <NA>    <NA>
-#>   COM_NOM COM_CODE PREFIXE SECTION NUMERO              LIEU_DIT SURF_CA
-#> 1    <NA>     <NA>     000      AB   0005          DES GOELANDS      NA
-#> 2    <NA>     <NA>     000      AB   0006           DES EMBRUNS      NA
-#> 3    <NA>     <NA>     000      AB   0007         SAINT GUENOLE      NA
-#> 4    <NA>     <NA>     000      AB   0008          DES GOELANDS      NA
-#> 5    <NA>     <NA>     000      AB   0011         ROGER QUINIOU      NA
-#> 6    <NA>     <NA>     000      AB   0025 PIERRE ET JEAN DUPOUY      NA
+#>   COM_NOM COM_CODE PREFIXE SECTION NUMERO              LIEU_DIT SURF_CA SOURCE
+#> 1    <NA>     <NA>     000      AB   0005          DES GOELANDS      NA   <NA>
+#> 2    <NA>     <NA>     000      AB   0006           DES EMBRUNS      NA   <NA>
+#> 3    <NA>     <NA>     000      AB   0007         SAINT GUENOLE      NA   <NA>
+#> 4    <NA>     <NA>     000      AB   0008          DES GOELANDS      NA   <NA>
+#> 5    <NA>     <NA>     000      AB   0011         ROGER QUINIOU      NA   <NA>
+#> 6    <NA>     <NA>     000      AB   0025 PIERRE ET JEAN DUPOUY      NA   <NA>
 ```
 
 ### Search legal entity owner
@@ -128,5 +128,5 @@ seq_xlsx(
   x = list("MATRICE" = search_mat),
   filename = file.path(seq_dir, paste0(id, "_matrice.xlsx"))
 )
-#> ✔ Excel file created at: /tmp/RtmpYMumcD/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/Rtmp8cw4M2/MY_FOREST/MY_FOREST_matrice.xlsx
 ```

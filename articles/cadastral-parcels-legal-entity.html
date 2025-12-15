@@ -116,9 +116,9 @@ dep if owner have cadastral parcels accros multiple commune.</p>
 <span></span>
 <span><span class="va">legal_entity_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_legal_entity.html">get_legal_entity</a></span><span class="op">(</span><span class="va">insee</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading legal entity datasets...</span></span>
-<span><span class="co">#&gt; ⠙ 20 extracted | 909 MB (300 MB/s) | 3s</span></span>
-<span><span class="co">#&gt; ⠙ 27 extracted | 1.0 GB (303 MB/s) | 3.4s</span></span>
-<span><span class="co">#&gt; ⠹ 45 extracted | 1.8 GB (289 MB/s) | 6.4s</span></span>
+<span><span class="co">#&gt; ⠙ 18 extracted | 868 MB (307 MB/s) | 2.8s</span></span>
+<span><span class="co">#&gt; ⠙ 20 extracted | 758 MB (241 MB/s) | 3.2s</span></span>
+<span><span class="co">#&gt; ⠹ 41 extracted | 1.7 GB (275 MB/s) | 6.1s</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Data available at: <span style="color: #0000BB;">/home/runner/.cache/R/Rsequoia2</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Reading CSV files...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Preparing CSV files...</span></span>
@@ -133,13 +133,13 @@ dep if owner have cadastral parcels accros multiple commune.</p>
 <span><span class="co">#&gt; 4                LES TERRES BLEUES &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 5             TI PORZH LES ROCHERS &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 6                     L ATELIER 89 &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;   COM_NOM COM_CODE PREFIXE SECTION NUMERO              LIEU_DIT SURF_CA</span></span>
-<span><span class="co">#&gt; 1    &lt;NA&gt;     &lt;NA&gt;     000      AB   0005          DES GOELANDS      NA</span></span>
-<span><span class="co">#&gt; 2    &lt;NA&gt;     &lt;NA&gt;     000      AB   0006           DES EMBRUNS      NA</span></span>
-<span><span class="co">#&gt; 3    &lt;NA&gt;     &lt;NA&gt;     000      AB   0007         SAINT GUENOLE      NA</span></span>
-<span><span class="co">#&gt; 4    &lt;NA&gt;     &lt;NA&gt;     000      AB   0008          DES GOELANDS      NA</span></span>
-<span><span class="co">#&gt; 5    &lt;NA&gt;     &lt;NA&gt;     000      AB   0011         ROGER QUINIOU      NA</span></span>
-<span><span class="co">#&gt; 6    &lt;NA&gt;     &lt;NA&gt;     000      AB   0025 PIERRE ET JEAN DUPOUY      NA</span></span></code></pre></div>
+<span><span class="co">#&gt;   COM_NOM COM_CODE PREFIXE SECTION NUMERO              LIEU_DIT SURF_CA SOURCE</span></span>
+<span><span class="co">#&gt; 1    &lt;NA&gt;     &lt;NA&gt;     000      AB   0005          DES GOELANDS      NA   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2    &lt;NA&gt;     &lt;NA&gt;     000      AB   0006           DES EMBRUNS      NA   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3    &lt;NA&gt;     &lt;NA&gt;     000      AB   0007         SAINT GUENOLE      NA   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4    &lt;NA&gt;     &lt;NA&gt;     000      AB   0008          DES GOELANDS      NA   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5    &lt;NA&gt;     &lt;NA&gt;     000      AB   0011         ROGER QUINIOU      NA   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 6    &lt;NA&gt;     &lt;NA&gt;     000      AB   0025 PIERRE ET JEAN DUPOUY      NA   &lt;NA&gt;</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="search-legal-entity-owner">Search legal entity owner<a class="anchor" aria-label="anchor" href="#search-legal-entity-owner"></a>
@@ -176,7 +176,7 @@ filling it in excel, we encouraged you to do it before saving.</p>
 <span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"MATRICE"</span> <span class="op">=</span> <span class="va">search_mat</span><span class="op">)</span>,</span>
 <span>  filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">seq_dir</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">id</span>, <span class="st">"_matrice.xlsx"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Excel file created at: <span style="color: #0000BB;">/tmp/RtmpYMumcD/MY_FOREST/MY_FOREST_matrice.xlsx</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Excel file created at: <span style="color: #0000BB;">/tmp/Rtmp8cw4M2/MY_FOREST/MY_FOREST_matrice.xlsx</span></span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
