@@ -116,14 +116,16 @@ v.toponyme.point: { name: "TOPONYME_point", ext: "geojson" }
 # PRSF
 v.prsf.point: { name: "PRSF_point", ext: "geojson" }
 
-# HYPSOMETRIC curves
+# HYPSOMETRIC CURVES
 v.curves.line: { name: "CURVES_line", ext: "geojson" }
 
 # ROAD
-v.road.line: { name: "ROAD_line", ext: "geojson" }
-v.road.poly: { name: "ROAD_poly", ext: "geojson" }
+v.tronroute.line: { name: "TRONROUTE_line", ext: "geojson" }
+v.road.line:      { name: "ROAD_line",      ext: "geojson" }
+v.road.poly:      { name: "ROAD_poly",      ext: "geojson" }
 
 # CADASTRE
+v.cad.vides.poly:       { name: "VIDES_poly",     ext: "geojson" }
 v.cad.batiment.poly:    { name: "BATIMENT_poly",  ext: "geojson" }
 v.cad.borne.point:      { name: "BORNE_point",    ext: "geojson" }
 v.cad.commune.poly:     { name: "COMMUNE_poly",   ext: "geojson" }
