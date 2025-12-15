@@ -116,8 +116,8 @@ v.toponyme.point: { name: "TOPONYME_point", ext: "geojson" }
 # PRSF
 v.prsf.point: { name: "PRSF_point", ext: "geojson" }
 
-# TOPOGRAPHY
-v.topography.line: { name: "TOPOGRAPHY_line", ext: "geojson" }
+# HYPSOMETRIC curves
+v.curves.line: { name: "CURVES_line", ext: "geojson" }
 
 # ROAD
 v.road.line: { name: "ROAD_line", ext: "geojson" }

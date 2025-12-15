@@ -1,4 +1,4 @@
-test_that("get_prsf() returns sf with expected fields and values", {
+test_that("get_curves() returns sf with expected fields and values", {
   skip_on_cran()
   skip_on_ci()
 
@@ -8,15 +8,15 @@ test_that("get_prsf() returns sf with expected fields and values", {
   area_sf <- sf::st_sf(id = 1, geometry = poly)
 
   # get_toponyme()
-  prsf <- get_prsf(area_sf)
+  curves <- get_curves(area_sf)
 
   # tests
-  expect_s3_class(prsf, "sf")
-  expect_true(all(sf::st_geometry_type(prsf) == "POINT"))
-  expect_true(sf::st_crs(prsf)$epsg == 2154)
+  expect_s3_class(curves, "sf")
+  expect_true(all(sf::st_geometry_type(curves) == "LINESTRING"))
+  expect_true(sf::st_crs(curves)$epsg == 2154)
 })
 
-test_that("get_prsf() returns NULL on area with no forest", {
+test_that("get_curves() returns NULL on area with no forest", {
   skip_on_cran()
   skip_on_ci()
 
@@ -25,7 +25,7 @@ test_that("get_prsf() returns NULL on area with no forest", {
   empty_poly <- sf::st_as_sfc(sf::st_bbox(empty_bbox, crs = 2154))
   empty_area_sf <- sf::st_sf(id = 1, geometry = empty_poly)
 
-  prsf <- get_prsf(empty_area_sf)
+  curves <- get_curves(empty_area_sf)
 
-  expect_null(prsf)
+  expect_null(curves)
 })
