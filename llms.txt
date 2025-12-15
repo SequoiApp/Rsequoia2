@@ -69,6 +69,15 @@ library(Rsequoia2)
 - [`get_id()`](https://mucau.github.io/Rsequoia2/reference/get_id.md) :
   Extract forest ID from a matrice.xlsx file
 
+- [`get_infra_line()`](https://mucau.github.io/Rsequoia2/reference/get_infra_line.md)
+  : Retrieve linear infrastructure features around an area
+
+- [`get_infra_point()`](https://mucau.github.io/Rsequoia2/reference/get_infra_point.md)
+  : Retrieve point infrastructure features around an area
+
+- [`get_infra_poly()`](https://mucau.github.io/Rsequoia2/reference/get_infra_poly.md)
+  : Retrieve infrastructure polygon features around an area
+
 - [`get_keys()`](https://mucau.github.io/Rsequoia2/reference/get_keys.md)
   : Helper to find layer configuration keys
 
