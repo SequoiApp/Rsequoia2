@@ -24,6 +24,9 @@
 - [`get_chm()`](https://mucau.github.io/Rsequoia2/reference/get_chm.md)
   : Compute Canopy Height Model (CHM)
 
+- [`get_curves()`](https://mucau.github.io/Rsequoia2/reference/get_curves.md)
+  : Retrieve hypsometric curves around an area
+
 - [`get_dem()`](https://mucau.github.io/Rsequoia2/reference/get_dem.md)
   : Download Digital Elevation Model (DEM) raster from IGN RGEAlti
 
