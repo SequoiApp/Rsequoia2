@@ -120,9 +120,10 @@ v.prsf.point: { name: "PRSF_point", ext: "geojson" }
 v.curves.line: { name: "CURVES_line", ext: "geojson" }
 
 # ROAD
-v.tronroute.line: { name: "TRONROUTE_line", ext: "geojson" }
-v.road.line:      { name: "ROAD_line",      ext: "geojson" }
-v.road.poly:      { name: "ROAD_poly",      ext: "geojson" }
+v.road.topo.line:     { name: "ROAD_TOPO_line",    ext: "geojson" }
+v.road.topo.poly:     { name: "ROAD_TOPO_poly",    ext: "geojson" }
+v.road.graphic.line:  { name: "ROAD_GRAPH_line",   ext: "geojson" }
+v.road.graphic.poly:  { name: "ROAD_GRAPH_poly",   ext: "geojson" }
 
 # CADASTRE
 v.cad.vides.poly:       { name: "VIDES_poly",     ext: "geojson" }
