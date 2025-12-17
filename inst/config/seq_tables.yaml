@@ -100,3 +100,14 @@ vct_point:
   - name
   - source
   - rotation
+
+road_line:
+  - identifiant
+  - type
+  - nature
+  - importance
+  - private
+  - restriction
+  - name
+  - source
+  - offset

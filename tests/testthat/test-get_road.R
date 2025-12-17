@@ -15,12 +15,12 @@ empty_bbox <- c(xmin = 0, ymin = 0, xmax = 1, ymax = 1)
 empty_poly <- sf::st_as_sfc(sf::st_bbox(empty_bbox, crs = 2154))
 empty_area_sf <- sf::st_sf(id = 1, geometry = empty_poly)
 
-# get_tronroute() ----
-test_that("get_tronroute() returns sf with expected fields and values", {
+# get_road() ----
+test_that("get_road() returns sf with expected fields and values", {
   skip_on_cran()
   skip_on_ci()
 
-  troncon <- get_tronroute(area_sf)
+  troncon <- get_road(area_sf)
 
   expect_s3_class(troncon, "sf")
   expect_true(all(c(type, nature, source, name) %in% names(troncon)))
@@ -33,11 +33,11 @@ test_that("get_tronroute() returns sf with expected fields and values", {
   )
 })
 
-test_that("get_tronroute() returns NULL on area with no linear infrastructure", {
+test_that("get_road() returns NULL on area with no linear infrastructure", {
   skip_on_cran()
   skip_on_ci()
 
-  troncon_empty <- get_tronroute(empty_area_sf)
+  troncon_empty <- get_road(empty_area_sf)
 
   expect_null(troncon_empty)
 })

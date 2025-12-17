@@ -249,3 +249,22 @@ rotation:
   alias: ["ROT"]
   class: "character"
   definition: "Rotation used in SEQUOIA process"
+
+# road ----
+importance:
+  name: "IMPORTANCE"
+  alias: ["importance"]
+  class: "integer"
+  definition: "Importance from IGN BDTopo"
+
+private:
+  name: "PRIVATE"
+  alias: ["prive"]
+  class: "boolean"
+  definition: "Private from IGN BDTopo"
+
+restriction:
+  name: "RESTRICTION"
+  alias: ["restriction_de_poids_total"]
+  class: "character"
+  definition: "Weight restriction from IGN BDTopo"

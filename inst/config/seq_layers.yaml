@@ -27,12 +27,12 @@ v.seq.sspf.poly:    { name: "SEQ_SSPF_poly",   ext: "geojson" }
 v.seq.sspf.line:    { name: "SEQ_SSPF_line",   ext: "geojson" }
 v.seq.ame.poly:     { name: "SEQ_AME_poly",    ext: "geojson" }
 
-# COG - STAND-BY
-v.cog.com7500.point:  { name: "COM_point",  ext: "geojson" }
-v.cog.com7500.line:   { name: "COM_line",   ext: "geojson" }
-v.cog.com25000.point: { name: "COMS_point", ext: "geojson" }
-v.cog.com25000.line:  { name: "COMS_line",  ext: "geojson" }
-v.cog.com25000.poly:  { name: "COMS_poly",  ext: "geojson" }
+# COMMUNE
+v.com.graphic.point:  { name: "COM_GRAPHIC_point",  ext: "geojson" }
+v.com.graphic.line:   { name: "COM_GRAPHIC_line",   ext: "geojson" }
+v.com.topo.point:     { name: "COMS_TOPO_point",    ext: "geojson" }
+v.com.topo.line:      { name: "COMS_TOPO_line",     ext: "geojson" }
+v.com.topo.poly:      { name: "COMS_TOPO_poly",     ext: "geojson" }
 
 # SOL
 v.sol.bdcharm50.poly:  { name: "SOL_BDCHARM50_poly", ext: "geojson" }

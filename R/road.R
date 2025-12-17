@@ -26,7 +26,7 @@
 #' standardized `sf` object.
 #'
 #' @export
-get_tronroute <- function(x){
+get_road <- function(x){
 
   # PREPARATION
   ## convex buffer
@@ -120,14 +120,10 @@ get_tronroute <- function(x){
   nom[nom == ""] <- NA
 
   # OUT
-
-  out <- tr[, "geometry"]
+  out <- seq_normalize(tr, "road_line")
   out[[type]]   <- type_synth
-  out[[nature]] <- tr$nature
   out[[name]]   <- nom
   out[[source]] <- "BDTOPO V3"
-
-  out <- seq_normalize(out, "vct_line")
 
   out
 }
