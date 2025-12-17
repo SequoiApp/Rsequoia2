@@ -93,6 +93,9 @@
 - [`get_toponyme()`](https://mucau.github.io/Rsequoia2/reference/get_toponyme.md)
   : Retrieve and classify toponymic point features around an area
 
+- [`get_tronroute()`](https://mucau.github.io/Rsequoia2/reference/get_tronroute.md)
+  : Retrieve road sections around an area
+
 - [`get_vege_line()`](https://mucau.github.io/Rsequoia2/reference/get_vege_line.md)
   : Retrieve forest vegetation lines around an area
 
@@ -133,6 +136,10 @@
 - [`seq_hydro()`](https://mucau.github.io/Rsequoia2/reference/seq_hydro.md)
   : Generates hydrographic polygon, line and point layers for a Sequoia
   project.
+
+- [`seq_infra()`](https://mucau.github.io/Rsequoia2/reference/seq_infra.md)
+  : Generates infrastructure polygon, line and point layers for a
+  Sequoia project.
 
 - [`seq_layer()`](https://mucau.github.io/Rsequoia2/reference/seq_layer.md)
   : Load layer config from the Sequoia configuration
