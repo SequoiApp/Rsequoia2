@@ -61,10 +61,11 @@ insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
 #> ℹ Downloading legal entity datasets...
-#> ⠙ 9 extracted | 430 MB (166 MB/s) | 2.6s
-#> ⠹ 29 extracted | 1.3 GB (225 MB/s) | 5.6s
-#> ⠙ 29 extracted | 1.1 GB (265 MB/s) | 4.1s
-#> ⠹ 50 extracted | 2.0 GB (280 MB/s) | 7.1s
+#> ⠙ 8 extracted | 388 MB (170 MB/s) | 2.3s
+#> ⠹ 24 extracted | 1.1 GB (204 MB/s) | 5.2s
+#> ⠙ 14 extracted | 509 MB (184 MB/s) | 2.8s
+#> ⠹ 32 extracted | 1.2 GB (210 MB/s) | 5.7s
+#> ⠸ 48 extracted | 1.9 GB (219 MB/s) | 8.8s
 #> ✔ Data available at: /home/runner/.cache/R/Rsequoia2
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
@@ -129,5 +130,5 @@ seq_xlsx(
   x = list("MATRICE" = search_mat),
   filename = file.path(seq_dir, paste0(id, "_matrice.xlsx"))
 )
-#> ✔ Excel file created at: /tmp/RtmpCmqnrE/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/RtmpkZkySV/MY_FOREST/MY_FOREST_matrice.xlsx
 ```

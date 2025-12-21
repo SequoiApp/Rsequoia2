@@ -48,6 +48,15 @@ library(Rsequoia2)
 - [`get_chm()`](https://mucau.github.io/Rsequoia2/reference/get_chm.md)
   : Compute Canopy Height Model (CHM)
 
+- [`get_com_line()`](https://mucau.github.io/Rsequoia2/reference/get_com_line.md)
+  : Retrieve and assemble commune boundary lines around an area
+
+- [`get_com_point()`](https://mucau.github.io/Rsequoia2/reference/get_com_point.md)
+  : Retrieve commune representative points around an area
+
+- [`get_com_poly()`](https://mucau.github.io/Rsequoia2/reference/get_com_poly.md)
+  : Retrieve administrative boundary polygons around an area
+
 - [`get_curves()`](https://mucau.github.io/Rsequoia2/reference/get_curves.md)
   : Retrieve hypsometric curves around an area
 
@@ -150,6 +159,10 @@ library(Rsequoia2)
   :
 
   Create *FOREST* and *OWNER* object from *PARCA* for a Sequoia project
+
+- [`seq_com()`](https://mucau.github.io/Rsequoia2/reference/seq_com.md)
+  : Generates commune polygon, line and point layers for a Sequoia
+  project.
 
 - [`seq_elevation()`](https://mucau.github.io/Rsequoia2/reference/seq_elevation.md)
   : Download and Compute Elevation Products for a Sequoia Project

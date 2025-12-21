@@ -112,7 +112,7 @@ digits) - “AX” -&gt; Section (2 characters) - “0696” -&gt; Parcel number
 <span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">cp</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">+</span></span>
 <span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html" class="external-link">tm_layout</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cadastral-parcels_files/figure-html/single_idu-1.png" class="r-plt" width="100%"><code><a href="../reference/get_parca.html">get_parca()</a></code> is vectorized so multiple idu can be used</p>
+<p><img src="cadastral-parcels_files/figure-html/single_idu-1.png" class="r-plt" alt="" width="100%"><code><a href="../reference/get_parca.html">get_parca()</a></code> is vectorized so multiple idu can be used</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">idus</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"29158000AX0"</span>, <span class="fl">696</span><span class="op">:</span><span class="fl">704</span><span class="op">)</span></span>
 <span></span>
@@ -121,7 +121,7 @@ digits) - “AX” -&gt; Section (2 characters) - “0696” -&gt; Parcel number
 <span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_basemap.html" class="external-link">tm_tiles</a></span><span class="op">(</span><span class="st">"OpenStreetMap"</span><span class="op">)</span><span class="op">+</span></span>
 <span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">cp</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"firebrick"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cadastral-parcels_files/figure-html/multiple_idu-1.png" class="r-plt" width="100%">
+<p><img src="cadastral-parcels_files/figure-html/multiple_idu-1.png" class="r-plt" alt="" width="100%">
 # BDP and Lieu-dit</p>
 <p><code><a href="../reference/get_parca.html">get_parca()</a></code> come with two arguments :
 <code>bdp_geom</code> &amp; <code>lieu_dit</code></p>
@@ -152,7 +152,7 @@ it automatically replaces the Etalab geometry.</p>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"firebrick"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">+</span></span>
 <span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">bdp</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"blue"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cadastral-parcels_files/figure-html/etalab_vs_bdp-1.png" class="r-plt" width="100%"></p>
+<p><img src="cadastral-parcels_files/figure-html/etalab_vs_bdp-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="lieu-dit">Lieu-dit :<a class="anchor" aria-label="anchor" href="#lieu-dit"></a>
@@ -183,7 +183,7 @@ numbers of parcels.</p>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_polygons</a></span><span class="op">(</span></span>
 <span>    fill <span class="op">=</span> <span class="st">"LIEU_DIT"</span>,</span>
 <span>    fill.legend <span class="op">=</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_legend.html" class="external-link">tm_legend</a></span><span class="op">(</span>position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"right"</span>, <span class="st">"bottom"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cadastral-parcels_files/figure-html/lieu_dit-1.png" class="r-plt" width="100%">
+<p><img src="cadastral-parcels_files/figure-html/lieu_dit-1.png" class="r-plt" alt="" width="100%">
 # How does it works in Sequoia?</p>
 <p>As shown earlier, <code><a href="../reference/get_parca.html">get_parca()</a></code> retrieves cadastral
 parcels directly from their IDU. However, listing all IDUs manually
@@ -220,7 +220,7 @@ with:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">sequoia_dir</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">matrice_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_matrice.html">create_matrice</a></span><span class="op">(</span><span class="va">sequoia_dir</span>, id <span class="op">=</span> <span class="st">"MY_FOREST"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Excel file created at: <span style="color: #0000BB;">/tmp/Rtmpi8XAZB/MY_FOREST/MY_FOREST_matrice.xlsx</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Excel file created at: <span style="color: #0000BB;">/tmp/RtmpdB8hGW/MY_FOREST/MY_FOREST_matrice.xlsx</span></span></span></code></pre></div>
 <p>You can then manually fill the Excel file.</p>
 </div>
 <div class="section level3">
@@ -256,8 +256,6 @@ it<a class="anchor" aria-label="anchor" href="#step-1-set-up-a-sequoia-directory
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">parca_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/seq_parca.html">seq_parca</a></span><span class="op">(</span><span class="va">sequoia_dir</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading BDP from IGN...</span></span>
-<span><span class="co">#&gt; ⠙ iterating 1 done (0.43/s) | 2.3s</span></span>
-<span><span class="co">#&gt; iterating <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> 9 of 9 ETALAB geom successfully replaced with BDP geom.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Vector layer <span style="color: #0000BB;">"v.seq.parca.poly"</span> saved to <span style="color: #0000BB;">ECKMUHL_SEQ_PARCA_poly.geojson</span>.</span></span>
 <span><span class="va">parca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="va">parca_path</span><span class="op">)</span></span>
@@ -265,7 +263,7 @@ it<a class="anchor" aria-label="anchor" href="#step-1-set-up-a-sequoia-directory
 <span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_basemap.html" class="external-link">tm_tiles</a></span><span class="op">(</span><span class="st">"OpenStreetMap"</span><span class="op">)</span><span class="op">+</span></span>
 <span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">parca</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"firebrick"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cadastral-parcels_files/figure-html/seq_parca-1.png" class="r-plt" width="100%"></p>
+<p><img src="cadastral-parcels_files/figure-html/seq_parca-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 </div>
 </div>
