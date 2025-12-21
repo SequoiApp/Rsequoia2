@@ -19,7 +19,7 @@ land_use:
 # cog ----
 reg_num:
   name: "REG_CODE"
-  alias: ["reg"]
+  alias: ["reg", "code_insee_de_la_region"]
   class: "character"
   definition: "Code de la région selon l'INSEE"
 
@@ -31,7 +31,7 @@ reg_nom:
 
 dep_num:
   name: "DEP_NUM"
-  alias: ["dep", "dep_code"]
+  alias: ["dep", "dep_code", "code_insee_du_departement"]
   class: "character"
   definition: "Code du département selon l'INSEE"
 
@@ -49,7 +49,7 @@ com_num:
 
 com_nom:
   name: "COM_NOM"
-  alias: ["ncc_com"]
+  alias: ["ncc_com", "nom_officiel"]
   class: "character"
   definition: "Nom de la commune selon l'INSEE"
 
@@ -58,6 +58,13 @@ insee:
   alias: ["insee", "code_insee"]
   class: "character"
   definition: "Code INSEE de la commune"
+
+# com ----
+postal:
+  name: "POSTAL"
+  alias: ["code_postal"]
+  class: "character"
+  definition: "Postal code of the town"
 
 # cadastre ----
 idu:

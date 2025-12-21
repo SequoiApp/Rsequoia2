@@ -111,3 +111,11 @@ road_line:
   - name
   - source
   - offset
+
+com_poly:
+  - identifiant
+  - reg_num
+  - dep_num
+  - insee
+  - postal
+  - com_nom
