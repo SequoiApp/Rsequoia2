@@ -29,7 +29,6 @@ get_pedology <- function(x) {
   # Intersection
   intersect <- sf::st_intersection(pedology, x) |>
     sf::st_cast("POLYGON") |>
-    ua_generate_area(verbose = FALSE) |>
     quiet()
 
   # Field names from configuration
@@ -37,8 +36,14 @@ get_pedology <- function(x) {
   surf_cad <- seq_field("surf_cad")$name
   surf_sig <- seq_field("surf_sig")$name
   surf_cor <- seq_field("surf_cor")$name
+  required_fields <- c(idu, surf_cad, surf_sig, surf_cor)
 
-  pedology <- intersect[, c(names(pedology), idu, surf_cad, surf_sig, surf_cor)]
+  if (all(required_fields %in% names(intersect))) {
+    pedology <- ua_generate_area(intersect, verbose = FALSE)
+    pedology <- intersect[, c(names(pedology), idu, surf_cad, surf_sig, surf_cor)]
+  } else  {
+    pedology <- intersect[, c(names(pedology))]
+  }
 
   invisible(pedology)
 }
@@ -81,7 +86,7 @@ get_pedology_pdf <- function(pedology,
     cli::cli_abort("Field {.field id_ucs} is missing from the input object.")
   }
 
-  id_ucs <- unique(na.omit(pedology$id_ucs))
+  id_ucs <- unique(pedology$id_ucs[!is.na(pedology$id_ucs)])
 
   if (length(id_ucs) == 0) {
     if (verbose) {
@@ -154,15 +159,19 @@ get_pedology_pdf <- function(pedology,
 #'   Defaults to `FALSE`.
 #'
 #' @details
-#' The pedology polygon layer is retrieved using [get_pedology()] and
-#' always written to disk using [seq_write()], even when it contains
-#' no features.
+#' Pedology polygon features are retrieved using [get_pedology()].
 #'
-#' When pedology features are present, associated UCS PDF reports are
-#' downloaded using [get_pedology_pdf()] and saved into `dirname`.
+#' If no pedology features intersect the project area, the function
+#' returns `NULL` invisibly and no file is written.
+#'
+#' When pedology features are present, the polygon layer is written
+#' to disk using [seq_write()] with the key `"v.sol.pedo.poly"`.
+#' Associated UCS PDF reports are then downloaded into `dirname`
+#' using [get_pedology_pdf()].
 #'
 #' @return
 #' Invisibly returns a named list of file paths written by [seq_write()].
+#' Returns `NULL` invisibly when no pedology features are found.
 #'
 #' @seealso
 #' [get_pedology()], [get_pedology_pdf()], [seq_write()]
@@ -178,16 +187,24 @@ seq_pedology <- function(
   f_parca <- sf::read_sf(get_path("v.seq.parca.poly", dirname = dirname))
   f_id    <- get_id(dirname)
 
-  id <- seq_field("identifiant")$name
-
   # Retrieve pedology ----
   pedo <- get_pedology(f_parca)
 
-  if (!is.null(pedo) && nrow(pedo) > 0) {
-    pedo[[id]] <- f_id
+  # Exit early if nothing to write
+  if (is.null(pedo) || nrow(pedo) == 0) {
+    if (verbose) {
+      cli::cli_alert_info(
+        "No pedology features found: pedology layer not written."
+      )
+    }
+    return(invisible(NULL))
   }
 
-  # Write pedology layer ----
+  # Add project identifier
+  id <- seq_field("identifiant")$name
+  pedo[[id]] <- f_id
+
+  # Write pedology layer
   pedo_path <- quiet(seq_write(
     pedo,
     "v.sol.pedo.poly",
@@ -197,27 +214,18 @@ seq_pedology <- function(
   ))
 
   if (verbose) {
-    if (is.null(pedo) || nrow(pedo) == 0) {
-      cli::cli_alert_info(
-        "Pedology layer written (empty layer)"
-      )
-    } else {
-      cli::cli_alert_success(
-        "Pedology layer written with {nrow(pedo)} feature{?s}"
-      )
-    }
-  }
-
-  # Download associated PDFs ----
-  if (!is.null(pedo) && nrow(pedo) > 0) {
-
-    get_pedology_pdf(
-      pedology  = pedo,
-      out_dir   = dirname,
-      overwrite = overwrite,
-      verbose   = verbose
+    cli::cli_alert_success(
+      "Pedology layer written with {nrow(pedo)} feature{?s}"
     )
   }
+
+  # Download associated PDFs
+  get_pedology_pdf(
+    pedology  = pedo,
+    out_dir   = dirname,
+    overwrite = overwrite,
+    verbose   = verbose
+  )
 
   invisible(pedo_path)
 }
