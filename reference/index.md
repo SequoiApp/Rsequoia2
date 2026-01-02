@@ -93,6 +93,12 @@
 - [`get_patrimony()`](https://mucau.github.io/Rsequoia2/reference/get_patrimony.md)
   : Download patrimony vector layer
 
+- [`get_pedology()`](https://mucau.github.io/Rsequoia2/reference/get_pedology.md)
+  : Retrieve pedology polygon features around an area
+
+- [`get_pedology_pdf()`](https://mucau.github.io/Rsequoia2/reference/get_pedology_pdf.md)
+  : Download pedology PDF reports from INRA soil maps
+
 - [`get_prsf()`](https://mucau.github.io/Rsequoia2/reference/get_prsf.md)
   : Retrieve PRSF point features around an area
 
@@ -179,6 +185,9 @@
 
 - [`seq_patrimony()`](https://mucau.github.io/Rsequoia2/reference/seq_patrimony.md)
   : Download patrimony vector layers for a Sequoia project
+
+- [`seq_pedology()`](https://mucau.github.io/Rsequoia2/reference/seq_pedology.md)
+  : Generate pedology polygon layer and associated PDF reports
 
 - [`seq_read()`](https://mucau.github.io/Rsequoia2/reference/seq_read.md)
   : Open file based on key name
