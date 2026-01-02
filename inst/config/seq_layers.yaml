@@ -35,9 +35,9 @@ v.com.graphic.line:   { name: "COM_GRAPHIC_line",   ext: "geojson" }
 v.com.graphic.point:  { name: "COM_GRAPHIC_point",  ext: "geojson" }
 
 # SOL
-v.sol.bdcharm50.poly:  { name: "SOL_BDCHARM50_poly", ext: "geojson" }
-v.sol.carhab.poly:  { name: "SOL_CARHAB_poly", ext: "geojson" }
-v.sol.pedo.poly:  { name: "SOL_PEDO_poly", ext: "geojson" }
+v.sol.bdcharm50.poly: { name: "SOL_BDCHARM50_poly", ext: "geojson" }
+v.sol.carhab.poly:    { name: "SOL_CARHAB_poly",    ext: "geojson" }
+v.sol.pedo.poly:      { name: "SOL_PEDO_poly",      ext: "geojson" }
 
 # PATRIMONIAUX
 v.pat.imdn.poly:   { name: "PAT_IMDN_poly", ext: "geojson" }
@@ -56,7 +56,7 @@ v.gpu.point: { name: "GPU_point", ext: "geojson" }
 v.gpu.line:  { name: "GPU_line",  ext: "geojson" }
 v.gpu.poly:  { name: "GPU_poly",  ext: "geojson" }
 
-# ARS - Done
+# ARS
 v.ars.perimetre.poly: { name: "ARS_PERIMETRES_poly", ext: "geojson" }
 v.ars.captage.point:  { name: "ARS_CAPTAGE_point", ext: "geojson" }
 
