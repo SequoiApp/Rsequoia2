@@ -155,6 +155,9 @@
 - [`seq_field()`](https://mucau.github.io/Rsequoia2/reference/seq_field.md)
   : Load field definitions from the Sequoia configuration
 
+- [`seq_gpu()`](https://mucau.github.io/Rsequoia2/reference/seq_gpu.md)
+  : Generate GPU layers for a Sequoia project
+
 - [`seq_hydro()`](https://mucau.github.io/Rsequoia2/reference/seq_hydro.md)
   : Generates hydrographic polygon, line and point layers for a Sequoia
   project.
