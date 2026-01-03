@@ -52,9 +52,16 @@ v.pat.lacr.poly:   { name: "PAT_LACR_poly", ext: "geojson" }
 v.pat.zppa.poly:   { name: "PAT_ZPPA_poly", ext: "geojson" }
 
 # GPU
-v.gpu.point: { name: "GPU_point", ext: "geojson" }
-v.gpu.line:  { name: "GPU_line",  ext: "geojson" }
-v.gpu.poly:  { name: "GPU_poly",  ext: "geojson" }
+v.gpu.municipality.poly:  { name: "GPU_MUNICIPALITY_poly",  ext: "geojson" }
+v.gpu.document.poly:      { name: "GPU_DOCUMENT_poly",      ext: "geojson" }
+v.gpu.zone.poly:          { name: "GPU_ZONE_poly",          ext: "geojson" }
+v.gpu.prescription.poly:  { name: "GPU_PRESCRIPTION_poly",  ext: "geojson" }
+v.gpu.prescription.line:  { name: "GPU_PRESCRIPTION_line",  ext: "geojson" }
+v.gpu.prescription.point: { name: "GPU_PRESCRIPTION_point", ext: "geojson" }
+v.gpu.supa.poly:          { name: "GPU_SUPA_poly",          ext: "geojson" }
+v.gpu.supg.poly:          { name: "GPU_SUPG_poly",          ext: "geojson" }
+v.gpu.supg.line:          { name: "GPU_SUPG_line",          ext: "geojson" }
+v.gpu.supg.point:         { name: "GPU_SUPG_point",         ext: "geojson" }
 
 # ARS
 v.ars.perimetre.poly: { name: "ARS_PERIMETRES_poly", ext: "geojson" }
