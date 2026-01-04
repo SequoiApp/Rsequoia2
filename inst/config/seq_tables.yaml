@@ -57,10 +57,10 @@ ua:
   - ug
   - parcelle
   - sous_parcelle
-  - peuplement
-  - richesse
-  - stade
-  - annee
+  - stand
+  - wealth
+  - stage
+  - year
   - structure
   - ess1
   - ess1_pct

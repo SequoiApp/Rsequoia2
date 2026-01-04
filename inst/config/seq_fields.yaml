@@ -133,32 +133,32 @@ sous_parcelle:
   class: "character"
   definition: "Sous-parcelle forestière"
 
-peuplement:
+stand:
   name: "PLT_PLMT"
   alias: ["PLT_TYPE"]
   class: "character"
-  definition: "Peuplement"
+  definition: "Forest stand type"
 
-richesse:
+wealth:
   name: "PLT_RICH"
   class: "character"
-  definition: "Richesse"
+  definition: "Stand wealth"
 
-stade:
+stage:
   name: "PLT_STAD"
   class: "character"
-  definition: "Stade"
+  definition: "Stand development stage"
 
-annee:
+year:
   name: "PLT_ANNE"
   class: "character"
-  definition: "Année d'origine"
+  definition: "Year of stand establishment"
 
 structure:
   name: "PLT_STRU"
   alias: ["PLT_STR", "REV_CA"]
   class: "character"
-  definition: "Structure des réserves"
+  definition: "Stand reserve structure"
 
 ess1:
   name: "ESS_1_NOM"
