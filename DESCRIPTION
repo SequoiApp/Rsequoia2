@@ -1,8 +1,8 @@
 Package: Rsequoia2
 Title: R package to help french forest manager
 Version: 0.0.0.9000
-Authors@R: c(person("Paul", "Carteron", email="carteronpaul@gmail.com", role=c("aut","cre")), 
-    person("Matthieu", "Chevereau", email="matthieu.chevereau@hotmail.com", role=c("aut","cre")))
+Authors@R: c(person("Matthieu", "Chevereau", email="matthieu.chevereau@hotmail.com", role=c("aut","cre")),
+    person("Paul", "Carteron", email="carteronpaul@gmail.com", role="aut"))
 Description: Provides tools to help French forest managers retrieve, 
     process, and create spatial datasets related to forestry management.
 License: GPL (>= 3)
