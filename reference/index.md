@@ -105,6 +105,9 @@
 - [`get_road()`](https://mucau.github.io/Rsequoia2/reference/get_road.md)
   : Retrieve road sections around an area
 
+- [`get_scan()`](https://mucau.github.io/Rsequoia2/reference/get_scan.md)
+  : Download IGN scanned maps (SCAN25, SCAN100, OACI or IGN maps)
+
 - [`get_slope()`](https://mucau.github.io/Rsequoia2/reference/get_slope.md)
   : Compute a Slope Raster from a DEM
 
@@ -200,6 +203,9 @@
 
 - [`seq_read()`](https://mucau.github.io/Rsequoia2/reference/seq_read.md)
   : Open file based on key name
+
+- [`seq_scan()`](https://mucau.github.io/Rsequoia2/reference/seq_scan.md)
+  : Download scanned IGN maps for a Sequoia project
 
 - [`seq_table()`](https://mucau.github.io/Rsequoia2/reference/seq_table.md)
   : Load table definitions from the Sequoia configuration

@@ -98,6 +98,8 @@ idus <- paste0("545400000C0", 101:109)
 etalab <- get_parca(idus, bdp_geom = FALSE)
 bdp <- get_parca(idus, bdp_geom = TRUE)
 #> ℹ Downloading BDP from IGN...
+#> ⠙ iterating 1 done (0.45/s) | 2.2s
+#> iterating ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 #> ✔ 9 of 9 ETALAB geom successfully replaced with BDP geom.
 
 tm_tiles("OpenStreetMap")+
@@ -185,7 +187,7 @@ sequoia_dir <- file.path(tempdir(), "MY_FOREST")
 dir.create(sequoia_dir)
 
 matrice_path <- create_matrice(sequoia_dir, id = "MY_FOREST")
-#> ✔ Excel file created at: /tmp/RtmpzH6MjE/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/RtmpX0Ebqw/MY_FOREST/MY_FOREST_matrice.xlsx
 ```
 
 You can then manually fill the Excel file.
