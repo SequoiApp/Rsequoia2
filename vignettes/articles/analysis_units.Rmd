@@ -25,17 +25,17 @@ tmap_options(scale = 0.75)
 ```
 
 ```{r definition, include = FALSE}
-idu <- seq_field("idu")$name
-surf_ca <- seq_field("surf_cad")$name
+idu <- Rsequoia2:::seq_field("idu")$name
+surf_ca <- Rsequoia2:::seq_field("surf_cad")$name
 
-stand <- seq_field("stand")$name
-wealth <- seq_field("wealth")$name
-stage <- seq_field("stage")$name
-year <- seq_field("year")$name
+stand <- Rsequoia2:::seq_field("stand")$name
+wealth <- Rsequoia2:::seq_field("wealth")$name
+stage <- Rsequoia2:::seq_field("stage")$name
+year <- Rsequoia2:::seq_field("year")$name
 
-ug <- seq_field("ug")$name
-parcelle <- seq_field("parcelle")$name
-sous_parcelle <- seq_field("sous_parcelle")$name
+ug <- Rsequoia2:::seq_field("ug")$name
+parcelle <- Rsequoia2:::seq_field("parcelle")$name
+sous_parcelle <- Rsequoia2:::seq_field("sous_parcelle")$name
 ```
 
 # What are we looking for?
