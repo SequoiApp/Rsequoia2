@@ -185,7 +185,7 @@ sequoia_dir <- file.path(tempdir(), "MY_FOREST")
 dir.create(sequoia_dir)
 
 matrice_path <- create_matrice(sequoia_dir, id = "MY_FOREST")
-#> ✔ Excel file created at: /tmp/RtmpXPe3MX/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/RtmpurBFmD/MY_FOREST/MY_FOREST_matrice.xlsx
 ```
 
 You can then manually fill the Excel file.
