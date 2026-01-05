@@ -25,15 +25,13 @@ tmap_options(scale = 0.75)
 ```
 
 ```{r definition, include = FALSE}
-idu <- Rsequoia2:::seq_field("idu")$name
-surf_ca <- Rsequoia2:::seq_field("surf_cad")$name
-
-stand <- Rsequoia2:::seq_field("stand")$name
-wealth <- Rsequoia2:::seq_field("wealth")$name
-stage <- Rsequoia2:::seq_field("stage")$name
-year <- Rsequoia2:::seq_field("year")$name
-
-ug <- Rsequoia2:::seq_field("ug")$name
+idu      <- Rsequoia2:::seq_field("idu")$name
+surf_ca  <- Rsequoia2:::seq_field("surf_cad")$name
+stand    <- Rsequoia2:::seq_field("stand")$name
+wealth   <- Rsequoia2:::seq_field("wealth")$name
+stage    <- Rsequoia2:::seq_field("stage")$name
+year     <- Rsequoia2:::seq_field("year")$name
+ug       <- Rsequoia2:::seq_field("ug")$name
 parcelle <- Rsequoia2:::seq_field("parcelle")$name
 sous_parcelle <- Rsequoia2:::seq_field("sous_parcelle")$name
 ```
@@ -82,7 +80,7 @@ In other words, each *AU* of a *MU* must have :
 
 ## Forest parcels
 
-**Forest parcels** (FP) division corresponds to **an arbitrary subdivision** of a forest, dicided by owner or last forest manager.
+**Forest parcels** (FP) division corresponds to **an arbitrary subdivision** of a forest, decided by owner or last forest manager.
 
 ***Rules to follow:***
 
@@ -104,7 +102,9 @@ As mentioned before, the *AU* layer must keep cadastral attribute. That's why th
 
 At the time of its creation, the analysis unit layer is nothing more than the cadastral parcel layer enriched with additional attribute fields.
 
-```{r seq_parca_to_ua, fig.height = 3.5}
+```{r seq_parca_to_ua, fig.height = 3.5, eval = FALSE}
+# remove eval = FALSE when data is available 
+
 ua_path <- seq_parca_to_ua(sequoia_dir)
 ua <- read_sf(ua_path)
 
@@ -138,7 +138,9 @@ When you have finish to segmentize the *AU* layer, you can get validate the *UA*
 
 **/!\\** *The AU* layer must be closed on your GIS software before running !
 
-```{r seq_ua, fig.height = 3.5}
+```{r seq_ua, fig.height = 3.5, eval = FALSE}
+# remove eval = FALSE when data is available
+
 ua_path <- seq_ua(sequoia_dir)
 ua <- read_sf(ua_path)
 
@@ -159,13 +161,21 @@ This function overwrite the *AU* layer: it's the same layer, but with:
 
 # 4. How can I use the updated *AU* layer after ?
 
+## Before, check topology
+
+Ensure that the layer does not contain any topological errors by checking it from your GIS software.
+
+## Run `seq_parcels()` and load layers
+
 When you have updated the *AU* layer, you can get new products:
 
 -   **PF (Parcelle)**: Rows of the *AU* are grouped using the `parcelle` field, and corrected surface areas (`surf_cor`) are summed. A polygon and border lines layer are created.
 
 -   **SSPF (Sous-parcelle)**: Rows of the *AU* are grouped using the `r parcelle` and `r sous_parcelle` field, and corrected surface areas (`surf_cor`) are summed. A polygon and border lines layer are created.
 
-```{r seq_parcels, fig.height = 3.5}
+```{r seq_parcels, fig.height = 3.5, eval = FALSE}
+# remove eval = FALSE when data is available 
+
 # generate new products by running
 paths <- seq_parcels(sequoia_dir)
 
