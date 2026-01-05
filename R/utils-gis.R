@@ -242,3 +242,126 @@ buffer_to_convex <- function(x, dist, crs = 2154) {
   # Wrap as sf (remove unnecessary attributes)
   sf::st_sf(geometry = convex)
 }
+
+#' Clean geometry topology using GRASS GIS (via QGIS)
+#'
+#' Cleans the topology of an `sf` object using the GRASS GIS
+#' algorithm `v.clean`, executed through QGIS via `qgisprocess`.
+#'
+#' This function is intended for expert use only. Some operations
+#' (e.g. removing small areas or snapping vertices) may alter
+#' geometries in a non-reversible way and should be applied with care,
+#' especially on cadastral data.
+#'
+#' @param sf_obj An `sf` object whose geometry topology must be cleaned.
+#' @param tool `character`, default `"snap"`. GRASS cleaning tool to use
+#'   (e.g. `"snap"`, `"rmdupl"`, `"break"`, `"rmdangle"`).
+#' @param snap_tolerance `numeric`, default `0.05`. Snapping tolerance
+#'   in map units (usually meters).
+#' @param min_area `numeric`, default `0.1`. Minimum area to preserve
+#'   (in square map units).
+#'
+#' @return An `sf` object with cleaned geometries.
+#'
+#' @importFrom qgisprocess qgis_run_algorithm qgis_providers
+#' @importFrom sf st_write st_read st_make_valid
+#' @importFrom cli cli_alert_info cli_alert_success cli_abort
+#'
+#' @noRd
+clean_topology <- function(sf_obj,
+                           tool = "snap",
+                           snap_tolerance = 0.05,
+                           min_area = 0.1) {
+
+  if (!inherits(sf_obj, "sf")) {
+    cli::cli_abort("`sf_obj` must be an sf object.")
+  }
+
+  # Check GRASS availability via QGIS
+  providers <- qgisprocess::qgis_providers()
+  if (!"GRASS" %in% providers$provider_title) {
+    cli::cli_abort("GRASS provider is not available in the current QGIS installation.")
+  }
+
+  # Temporary input / output files
+  input_path  <- tempfile(fileext = ".gpkg")
+  output_path <- tempfile(fileext = ".gpkg")
+
+  # Write input data
+  sf::st_write(sf_obj, input_path, quiet = TRUE)
+
+  # Run GRASS v.clean via QGIS
+  quiet(
+    qgisprocess::qgis_run_algorithm(
+      "grass:v.clean",
+      input  = input_path,
+      type   = "area",
+      tool   = tool,
+      output = output_path,
+      GRASS_SNAP_TOLERANCE_PARAMETER = snap_tolerance,
+      GRASS_MIN_AREA_PARAMETER       = min_area
+    )
+  )
+
+  # Read result and ensure validity
+  cleaned_sf <- sf::st_read(output_path, quiet = TRUE, stringsAsFactors = FALSE)
+  cleaned_sf <- cleaned_sf[, -1, drop = FALSE]
+  cleaned_sf <- sf::st_make_valid(cleaned_sf)
+  cleaned_sf
+}
+
+#' Extract Holes from Polygonal sf Layer
+#'
+#' This function extracts all interior rings (holes) from a polygonal sf object
+#' and returns them as a new sf object containing only the holes as separate polygons.
+#'
+#' @param sf_obj An `sf` object of type `POLYGON` or `MULTIPOLYGON`.
+#'
+#' @return An `sf` object containing all the holes from the input layer as
+#'   individual polygon geometries. If no holes are present, an empty `sf`
+#'   object with the same CRS as the input is returned.
+#'
+#' @details
+#' - Each polygon in `sf_obj` can contain multiple interior rings (holes).
+#'   The first ring of each polygon is considered the exterior boundary,
+#'   and all subsequent rings are considered holes.
+#' - The function supports both `POLYGON` and `MULTIPOLYGON` geometries.
+#' - Holes are extracted without any attributes from the parent polygons.
+#' - If the input sf object has no holes, the returned sf object is empty but
+#'   preserves the CRS of the input layer.
+#'
+#' @noRd
+extract_holes <- function(sf_obj) {
+
+  # Check geometry type
+  if (!all(sf::st_geometry_type(sf_obj) %in% c("POLYGON", "MULTIPOLYGON"))) {
+    cli::cli_abort("The layer must be of type POLYGON or MULTIPOLYGON")
+  }
+
+  hole_geoms <- list()
+
+  n_features <- nrow(sf_obj)
+
+  for (i in seq_len(n_features)) {
+    geom <- sf::st_geometry(sf_obj)[[i]]
+
+    # Convert to list of polygons
+    polys <- if (inherits(geom, "MULTIPOLYGON")) geom else list(geom)
+
+    for (p in polys) {
+      # All except first ring are holes
+      holes <- p[-1]
+      for (h in holes) {
+        hole_geoms <- c(hole_geoms, list(sf::st_polygon(list(h))))
+      }
+    }
+  }
+
+  # Create sf from hole geometries
+  if (length(hole_geoms) == 0) {
+    return(sf::st_sf(geometry = sf::st_sfc(), crs = sf::st_crs(sf_obj)))
+  } else {
+    res <- sf::st_sf(geometry = sf::st_sfc(hole_geoms, crs = sf::st_crs(sf_obj)))
+    return(sf::st_make_valid(res))
+  }
+}

@@ -32,6 +32,7 @@ parca:
   - dep_num
   - com_nom
   - com_num
+  - insee
   - prefix
   - section
   - numero
@@ -49,6 +50,7 @@ ua:
   - dep_num
   - com_nom
   - com_num
+  - insee
   - prefix
   - section
   - numero
