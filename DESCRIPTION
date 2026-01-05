@@ -17,6 +17,7 @@ Imports:
     happign,
     jsonlite,
     openxlsx2,
+    qgisprocess,
     sf,
     terra,
     units,
