@@ -12,6 +12,8 @@ knitr::opts_chunk$set(
 
 ``` r
 library(Rsequoia2)
+#> Attempting to load the package cache ... No cache found.
+#> Will try to reconfigure qgisprocess and build new cache ...
 library(tmap)
 library(openxlsx2)
 library(sf)
@@ -61,10 +63,11 @@ insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
 #> ℹ Downloading legal entity datasets...
-#> ⠙ 17 extracted | 756 MB (246 MB/s) | 3.1s
-#> ⠙ 14 extracted | 528 MB (232 MB/s) | 2.3s
-#> ⠹ 35 extracted | 1.4 GB (262 MB/s) | 5.2s
-#> ⠸ 57 extracted | 2.2 GB (271 MB/s) | 8.2s
+#> ⠙ 11 extracted | 550 MB (202 MB/s) | 2.7s
+#> ⠹ 29 extracted | 1.2 GB (218 MB/s) | 5.7s
+#> ⠙ 19 extracted | 702 MB (194 MB/s) | 3.6s
+#> ⠹ 35 extracted | 1.4 GB (213 MB/s) | 6.6s
+#> ⠸ 52 extracted | 2.1 GB (219 MB/s) | 9.6s
 #> ✔ Data available at: /home/runner/.cache/R/Rsequoia2
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
@@ -79,13 +82,20 @@ head(legal_entity_cp)
 #> 4                LES TERRES BLEUES <NA>    <NA>     <NA>    <NA>    <NA>
 #> 5             TI PORZH LES ROCHERS <NA>    <NA>     <NA>    <NA>    <NA>
 #> 6                     L ATELIER 89 <NA>    <NA>     <NA>    <NA>    <NA>
-#>   COM_NOM COM_CODE PREFIXE SECTION NUMERO              LIEU_DIT SURF_CA SOURCE
-#> 1    <NA>     <NA>     000      AB   0005          DES GOELANDS      NA   <NA>
-#> 2    <NA>     <NA>     000      AB   0006           DES EMBRUNS      NA   <NA>
-#> 3    <NA>     <NA>     000      AB   0007         SAINT GUENOLE      NA   <NA>
-#> 4    <NA>     <NA>     000      AB   0008          DES GOELANDS      NA   <NA>
-#> 5    <NA>     <NA>     000      AB   0011         ROGER QUINIOU      NA   <NA>
-#> 6    <NA>     <NA>     000      AB   0025 PIERRE ET JEAN DUPOUY      NA   <NA>
+#>   COM_NOM COM_CODE INSEE PREFIXE SECTION NUMERO              LIEU_DIT SURF_CA
+#> 1    <NA>     <NA> 29158     000      AB   0005          DES GOELANDS      NA
+#> 2    <NA>     <NA> 29158     000      AB   0006           DES EMBRUNS      NA
+#> 3    <NA>     <NA> 29158     000      AB   0007         SAINT GUENOLE      NA
+#> 4    <NA>     <NA> 29158     000      AB   0008          DES GOELANDS      NA
+#> 5    <NA>     <NA> 29158     000      AB   0011         ROGER QUINIOU      NA
+#> 6    <NA>     <NA> 29158     000      AB   0025 PIERRE ET JEAN DUPOUY      NA
+#>   SOURCE
+#> 1   <NA>
+#> 2   <NA>
+#> 3   <NA>
+#> 4   <NA>
+#> 5   <NA>
+#> 6   <NA>
 ```
 
 ### Search legal entity owner
@@ -129,5 +139,5 @@ seq_xlsx(
   x = list("MATRICE" = search_mat),
   filename = file.path(seq_dir, paste0(id, "_matrice.xlsx"))
 )
-#> ✔ Excel file created at: /tmp/RtmpFaaKDV/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/Rtmpzqp3Pf/MY_FOREST/MY_FOREST_matrice.xlsx
 ```

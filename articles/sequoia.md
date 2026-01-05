@@ -12,6 +12,8 @@ knitr::opts_chunk$set(
 
 ``` r
 library(Rsequoia2)
+#> Attempting to load the package cache ... No cache found.
+#> Will try to reconfigure qgisprocess and build new cache ...
 library(tmap)
 library(openxlsx2)
 library(sf)
