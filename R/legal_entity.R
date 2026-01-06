@@ -24,7 +24,7 @@
 #' @export
 download_legal_entity <- function(cache = NULL, verbose = TRUE) {
 
-    if (is.null(cache)){
+  if (is.null(cache)){
     cache <- tools::R_user_dir("Rsequoia2", which = "cache")
     dir.create(cache, recursive = TRUE, showWarnings = FALSE)
   }
@@ -33,10 +33,14 @@ download_legal_entity <- function(cache = NULL, verbose = TRUE) {
   dataset_id <- "605d268f4661cf23272817c3"
   resource <- dg_get_dataset(dataset_id)$resource
 
-  # Find lates year
-  years <- regmatches(resource$title, gregexpr("\\b\\d{4}\\b", resource$title))
-  latest_year <- max(as.numeric(unlist(years)), na.rm = TRUE)
+  # Find latest year
+  years <- regmatches(resource$title, gregexpr("\\d{4}", resource$title))
+  years <- as.numeric(unlist(years))
+  if (length(years) == 0) {
+    cli::cli_abort("No valid year found in dataset for legal entity parcels.")
+  }
 
+  latest_year <- max(years, na.rm = TRUE)
   parcelles_latest <- resource[grepl(paste0("parcelle.*", latest_year), resource$title, ignore.case = TRUE), ]
   zip <- parcelles_latest[parcelles_latest$format == "zip", ]
 
@@ -47,7 +51,7 @@ download_legal_entity <- function(cache = NULL, verbose = TRUE) {
   if (!is_download) {
     if (verbose) cli::cli_alert_info("Downloading legal entity datasets...")
     invisible(lapply(urls, \(x) archive::archive_extract(x, dir = cache)))
-    cli::cli_alert_success("Data available at: {.path {normalizePath(cache)}}")
+    if (verbose) cli::cli_alert_success("Data available at: {.path {normalizePath(cache)}}")
   }
 
   return(invisible(cache))
