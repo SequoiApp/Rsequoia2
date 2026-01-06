@@ -1,12 +1,8 @@
 #' Retrieve forest vegetation polygons around an area
 #'
-#' @param x An `sf` object used as the input area.
+#' @param x `sf` or `sfc`; Geometry located in France.
 #'
-#' @return An `sf` object containing forest vegetation polygons with
-#'   standardized fields, including:
-#'   * `TYPE` — Vegetation type
-#'     - `FOR` = Forest
-#'   * `ORIGIN` — Source of the data (`IGNF_MASQUE-FORET`)
+#' @return An `sf` object containing forest vegetation polygons
 #'
 #' @details
 #' The function retrieves the IGN forest mask layer within a 1000 m
@@ -19,49 +15,51 @@
 #' @export
 get_vege_poly <- function(x) {
 
-  # convex buffers
-  convex1000 <- buffer_to_convex(x, 1000)
-  convex1500 <- buffer_to_convex(x, 1500)
-
-  # empty sf
-  vege_poly <-  create_empty_sf("POLYGON") |>
-    seq_normalize("vct_poly")
+  crs <- 2154
+  layer <- "IGNF_MASQUE-FORET.2021-2023:masque_foret"
+  x <- sf::st_transform(x, crs)
 
   # standardized field names
   type <- seq_field("type")$name
   name <- seq_field("name")$name
-  source <-  seq_field("source")$name
+  source <- seq_field("source")$name
+
+  # Fetching data in 1000m distance, then crop to 1500m for large data
+  fetch_envelope   <- envelope(x, 1000)
+  control_envelope <- envelope(x, 1500)
 
   # forest mask
-  forest_mask <- get_topo(convex1000, "IGNF_MASQUE-FORET.2021-2023:masque_foret")
+  forest_mask <- quiet(happign::get_wfs(
+    x = fetch_envelope, layer = layer, spatial_filter = "intersects"
+    ))
 
-  if(!(is.null(forest_mask))){
-
-    forest_mask <- sf::st_intersection(forest_mask, convex1500) |>
-      sf::st_cast("POLYGON") |>
-      quiet()
-
-    forest_mask <- forest_mask[, setdiff(names(forest_mask), names(convex1500))] |>
-      seq_normalize("vct_poly")
-
-    forest_mask[[type]]   <- "FOR"
-    forest_mask[[source]] <- "IGNF_MASQUE-FORET"
-
-    vege_poly <- rbind(vege_poly, forest_mask)
+  if (is.null(forest_mask)) {
+    cli::cli_warn("No vegetation data found. Empty {.cls sf} is returned.")
+    empty_sf <- create_empty_sf("POLYGON") |> seq_normalize("vct_poly")
+    return(invisible(empty_sf))
   }
 
-  invisible(vege_poly)
+  forest_mask <- sf::st_transform(forest_mask, crs)
+  forest_intersect <- sf::st_intersection(forest_mask, control_envelope) |> suppressWarnings()
+
+  # Intersection create mixed geometry type (POLYGON, MULTIPOLYGON)
+  # Because st_cast cannot deal with mixed geometry, first is casted to multipoly, then poly
+  vege_poly <- sf::st_cast(forest_intersect, "MULTIPOLYGON") |>
+    st_cast("POLYGON", warn = FALSE) |>
+    seq_normalize("vct_poly")
+
+  vege_poly[[type]]   <- "FOR"
+  vege_poly[[source]] <- "ignf_masque_foret"
+
+  return(invisible(vege_poly))
+
 }
 
 #' Retrieve forest vegetation lines around an area
 #'
-#' @param x An `sf` object used as the input area.
+#' @inheritParams get_vege_poly
 #'
-#' @return An `sf` object containing forest vegetation line features
-#'   with standardized fields, including:
-#'   * `TYPE` — Vegetation type
-#'     - `FOR` = Forest
-#'   * `SOURCE` — Data source (`IGNF_MASQUE-FORET`)
+#' @return An `sf` object containing forest vegetation line features.
 #'
 #' @details
 #' The function derives forest vegetation linear features from
@@ -81,7 +79,7 @@ get_vege_poly <- function(x) {
 get_vege_line <- function(x) {
 
   # convex buffer
-  convex1499 <- buffer_to_convex(x, 1499)
+  convex1499 <- envelope(x, 1499)
 
   # empty sf
   vege_line <-  create_empty_sf("LINESTRING") |>
@@ -158,9 +156,9 @@ get_vege_line <- function(x) {
 get_vege_point <- function(x){
 
   # convex buffer
-  convex1000 <- buffer_to_convex(x, 1000)
-  convex1500 <- buffer_to_convex(x, 1500)
-  convex1499 <- buffer_to_convex(x, 1499)
+  convex1000 <- envelope(x, 1000)
+  convex1500 <- envelope(x, 1500)
+  convex1499 <- envelope(x, 1499)
 
   # empty sf
   vege_point <-  create_empty_sf("POINT") |>

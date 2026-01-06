@@ -204,41 +204,26 @@ dissolve <- function(
   return(x_dissolved)
 }
 
-#' Create convex polygons from buffer-expanded geometries
-#'
-#' This optimized version avoids unnecessary unions, ensures valid input data,
-#' handles multipolygons correctly, and reduces processing time on large layers.
+#' Create convex envelope
 #'
 #' @param x An `sf` object.
-#' @param dist Buffer distance (CRS units).
-#' @param crs EPSG code for output projection (default 4326).
+#' @param dist Buffer distance in `crs` units. Default to 2154 (meter).
+#' @param crs `numeric` or `character`. Defaults to EPSG:2154. See
+#' [sf::st_crs()] for more details.
 #'
 #' @return An `sf` object of convex polygons.
 #'
 #' @noRd
-buffer_to_convex <- function(x, dist, crs = 2154) {
+envelope <- function(x, dist, crs = 2154) {
 
-  # 1. Ensure valid input geometries
-  x <- sf::st_make_valid(x)
-
-  # 2. Buffer (always faster before union)
-  buf <- sf::st_buffer(x, dist)
-
-  # 3. Union only if multiple geometries (saves processing time)
-  if (nrow(buf) > 1) {
-    buf <- sf::st_union(buf)
-  }
-
-  # 4. Ensure polygons (split multipolygons if needed)
-  buf <- sf::st_cast(buf, "POLYGON")
-
-  # 5. Compute convex hull
-  convex <- sf::st_convex_hull(buf)
-
-  # 6. Final cleaning + reproject
-  convex <- sf::st_make_valid(convex)
-  convex <- sf::st_transform(convex, crs)
-
-  # Wrap as sf (remove unnecessary attributes)
-  sf::st_sf(geometry = convex)
+    sf::st_sf(
+      geometry =
+        x |>
+        sf::st_make_valid() |>
+        sf::st_buffer(dist) |>
+        sf::st_union() |>
+        sf::st_convex_hull() |>
+        sf::st_transform(crs)
+    )
 }
+

@@ -49,7 +49,7 @@ get_topo <- function(x, layer, crs = 2154, strict = TRUE) {
 get_hydro_poly <- function(x){
 
   # convex buffer
-  convex <- buffer_to_convex(x, 1000)
+  convex <- envelope(x, 1000)
 
   # empty sf
   hydro_poly <-  create_empty_sf("POLYGON") |>
@@ -112,7 +112,7 @@ get_hydro_poly <- function(x){
 get_hydro_line <- function(x){
 
   # convex buffer
-  convex <- buffer_to_convex(x, 1000)
+  convex <- envelope(x, 1000)
 
   # empty sf
   hydro_line <- create_empty_sf("LINESTRING") |>
@@ -164,7 +164,7 @@ get_hydro_line <- function(x){
 get_hydro_point <- function(x){
 
   # convex buffer
-  convex <- buffer_to_convex(x, 1000)
+  convex <- envelope(x, 1000)
 
   # empty sf
   hydro_point <- create_empty_sf("POINT") |>

@@ -28,7 +28,7 @@
 get_toponyme <- function(x) {
 
   # convex buffer
-  convex <- buffer_to_convex(x, 1000)
+  convex <- envelope(x, 1000)
 
   # retrieve toponymic point
   toponyme <- get_topo(convex, "BDTOPO_V3:toponymie")

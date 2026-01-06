@@ -15,7 +15,7 @@
 get_prsf <- function(x) {
 
   # convex buffer
-  convex <- buffer_to_convex(x, 5000)
+  convex <- envelope(x, 5000)
 
   # retrieve toponymic point
   prsf <- get_topo(convex, "PROTECTEDAREAS.PRSF:prsf")

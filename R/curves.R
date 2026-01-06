@@ -15,7 +15,7 @@
 get_curves <- function(x) {
 
   # convex buffer
-  convex <- buffer_to_convex(x, 1000)
+  convex <- envelope(x, 1000)
 
   # retrieve toponymic point
   curves <- get_topo(convex, "ELEVATION.CONTOUR.LINE:courbe")
