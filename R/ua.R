@@ -203,7 +203,7 @@ ua_generate_area <- function(ua, verbose = TRUE) {
   ua[[surf_sig]] <- as.numeric(sf::st_area(ua)) / 10000
 
   # Compute correction factor per cadastral ID
-  sum_sig <- stats::ave(ua[[surf_sig]], ua[[idu]], FUN = sum)
+  sum_sig <- stats::ave(ua[[surf_sig]], ua[[idu]], FUN = sum, na.rm = T)
   # Avoid edge case when sum_sig == 0
   sum_sig <- replace(sum_sig, sum_sig == 0, 1)
   coeff <- ua[[surf_sig]] / sum_sig

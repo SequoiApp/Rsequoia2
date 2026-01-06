@@ -1,6 +1,6 @@
 identifiant:
   name: "IDENTIFIANT"
-  alias: ["foret", "id"]
+  alias: ["foret"]
   class: "character"
   definition: "Identifiant de la forêt, génrélament identique au nom"
 
