@@ -1,4 +1,4 @@
-test_that("buffer_to_convex works with simple points", {
+test_that("envelope works with simple points", {
   skip_if_not_installed("sf")
 
   pts <- sf::st_sf(
@@ -11,7 +11,7 @@ test_that("buffer_to_convex works with simple points", {
     )
   )
 
-  result <- buffer_to_convex(pts, dist = 0.1)
+  result <- envelope(pts, dist = 0.1)
 
   expect_s3_class(result, "sf")
   expect_true(all(sf::st_is(result, "POLYGON")))
@@ -20,7 +20,7 @@ test_that("buffer_to_convex works with simple points", {
 })
 
 
-test_that("buffer_to_convex works with polygons", {
+test_that("envelope works with polygons", {
   skip_if_not_installed("sf")
 
   poly <- sf::st_sf(
@@ -33,7 +33,7 @@ test_that("buffer_to_convex works with polygons", {
     )
   )
 
-  result <- buffer_to_convex(poly, dist = 20, crs = 4326)
+  result <- envelope(poly, dist = 20, crs = 4326)
 
   expect_s3_class(result, "sf")
   expect_true(all(sf::st_is_valid(result)))
@@ -41,7 +41,7 @@ test_that("buffer_to_convex works with polygons", {
 })
 
 
-test_that("buffer_to_convex handles multipolygons", {
+test_that("envelope handles multipolygons", {
   skip_if_not_installed("sf")
 
   mp <- sf::st_multipolygon(list(
@@ -54,7 +54,7 @@ test_that("buffer_to_convex handles multipolygons", {
     geometry = sf::st_sfc(mp, crs = 3857)
   )
 
-  result <- buffer_to_convex(sf_mp, dist = 100)
+  result <- envelope(sf_mp, dist = 100)
 
   expect_s3_class(result, "sf")
   expect_true(all(sf::st_is(result, "POLYGON")))
@@ -62,7 +62,7 @@ test_that("buffer_to_convex handles multipolygons", {
 })
 
 
-test_that("buffer_to_convex returns valid geometry even with invalid inputs", {
+test_that("envelope returns valid geometry even with invalid inputs", {
   skip_if_not_installed("sf")
 
   # bowtie polygon (self-intersection)
@@ -76,18 +76,18 @@ test_that("buffer_to_convex returns valid geometry even with invalid inputs", {
 
   # ATTENTION : st_buffer échoue avec S2 si geometry invalide
   # On attend que la fonction échoue proprement
-  expect_error(buffer_to_convex(x, dist = 0.05))
+  expect_error(envelope(x, dist = 0.05))
 })
 
 
-test_that("buffer_to_convex supports zero buffer distance", {
+test_that("envelope supports zero buffer distance", {
   skip_if_not_installed("sf")
 
   pts <- sf::st_sf(
     geometry = sf::st_sfc(sf::st_point(c(1,1)), crs = 4326)
   )
 
-  result <- buffer_to_convex(pts, dist = 0)
+  result <- envelope(pts, dist = 0)
 
   # buffer(0) peut produire un GEOMETRYCOLLECTION → on teste juste validité
   expect_s3_class(result, "sf")
@@ -95,10 +95,10 @@ test_that("buffer_to_convex supports zero buffer distance", {
 })
 
 
-test_that("buffer_to_convex fails gracefully on wrong inputs", {
+test_that("envelope fails gracefully on wrong inputs", {
   skip_if_not_installed("sf")
 
-  expect_error(buffer_to_convex(123, dist = 10))
-  expect_error(buffer_to_convex(data.frame(a = 1), dist = 10))
-  expect_error(buffer_to_convex(sf::st_sf(geometry = NA), dist = 10))
+  expect_error(envelope(123, dist = 10))
+  expect_error(envelope(data.frame(a = 1), dist = 10))
+  expect_error(envelope(sf::st_sf(geometry = NA), dist = 10))
 })
