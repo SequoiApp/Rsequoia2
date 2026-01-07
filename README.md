@@ -1,5 +1,5 @@
 
-# Rsequoia2
+# Rsequoia2 <img src="man/figures/Rsequoia2_logo.png" align="right" height="138"/>
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
