@@ -1,9 +1,8 @@
 Package: Rsequoia2
 Title: R package to help french forest manager
 Version: 0.0.0.9000
-Authors@R: 
-    person("Paul", "Carteron", , "carteronpaul@gmail.com", role = c("aut", "cre"))
-    person("Matthieu", "Chevereau", , "matthieu.chevereau@hotmail.com", role = c("aut", "cre"))
+Authors@R: c(person("Matthieu", "Chevereau", email="matthieu.chevereau@hotmail.com", role=c("aut","cre")),
+    person("Paul", "Carteron", email="carteronpaul@gmail.com", role=c("aut")))
 Description: Provides tools to help French forest managers retrieve, 
     process, and create spatial datasets related to forestry management.
 License: GPL (>= 3)
@@ -18,12 +17,14 @@ Imports:
     happign,
     jsonlite,
     openxlsx2,
+    qgisprocess,
     sf,
     terra,
     units,
     yaml
 Remotes:
     github::mucau/frheritage
+    github::paul-carteron/happign
 Suggests: 
     testthat (>= 3.3.0),
     tmap

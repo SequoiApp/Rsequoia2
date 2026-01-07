@@ -28,11 +28,12 @@
 #' @export
 get_infra_poly <- function(x) {
 
-  # convex buffers
-  convex1000 <- envelope(x, 1000)
+  crs <- 2154
+  x <- sf::st_transform(x, crs)
+  fetch_envelope <- envelope(x, 1000)
 
   # empty sf
-  infra_poly <-  create_empty_sf("POLYGON") |>
+  infra_poly <- create_empty_sf("POLYGON") |>
     seq_normalize("vct_poly")
 
   # standardized field names
@@ -42,9 +43,10 @@ get_infra_poly <- function(x) {
   source <-  seq_field("source")$name
 
   # batiment
-  batiment <- get_topo(convex1000, "BDTOPO_V3:batiment")
+  batiment <- happign::get_wfs(fetch_envelope, "BDTOPO_V3:batiment", verbose = FALSE) |>
+    sf::st_transform(crs)
 
-  if(!(is.null(batiment))){
+  if(nrow(batiment)){
     batiment[[type]] <- "BAT"
     batiment[[source]] <- "IGNF_BDTOPO_V3"
 
@@ -54,9 +56,10 @@ get_infra_poly <- function(x) {
   }
 
   # cimetiere
-  cimetiere <- get_topo(convex1000, "BDTOPO_V3:cimetiere")
+  cimetiere <- happign::get_wfs(fetch_envelope, "BDTOPO_V3:cimetiere", verbose = FALSE) |>
+    sf::st_transform(crs)
 
-  if(!(is.null(cimetiere))){
+  if(nrow(cimetiere)){
     cimetiere[[type]] <- "CIM"
     cimetiere[[name]] <- cimetiere$toponyme
     cimetiere[[source]] <- "IGNF_BDTOPO_V3"
@@ -67,9 +70,10 @@ get_infra_poly <- function(x) {
   }
 
   # construction
-  construction <- get_topo(convex1000, "BDTOPO_V3:construction_surfacique")
+  construction <- happign::get_wfs(fetch_envelope, "BDTOPO_V3:construction_surfacique", verbose = FALSE) |>
+    sf::st_transform(crs)
 
-  if(!(is.null(construction))){
+  if(nrow(construction)){
     construction[[type]] <- "CST"
     construction[[name]] <- construction$toponyme
     construction[[source]] <- "IGNF_BDTOPO_V3"
@@ -80,9 +84,10 @@ get_infra_poly <- function(x) {
   }
 
   # piste d aerodrome
-  piste <- get_topo(convex1000, "BDTOPO_V3:piste_d_aerodrome")
+  piste <- happign::get_wfs(fetch_envelope, "BDTOPO_V3:piste_d_aerodrome", verbose = FALSE) |>
+    sf::st_transform(crs)
 
-  if(!(is.null(piste))){
+  if(nrow(piste)){
     piste[[type]] <- "AER"
     piste[[source]] <- "IGNF_BDTOPO_V3"
 
@@ -92,9 +97,10 @@ get_infra_poly <- function(x) {
   }
 
   # terrain de sport
-  terrain <- get_topo(convex1000, "BDTOPO_V3:terrain_de_sport")
+  terrain <- happign::get_wfs(fetch_envelope, "BDTOPO_V3:terrain_de_sport", verbose = FALSE) |>
+    sf::st_transform(crs)
 
-  if(!(is.null(terrain))){
+  if(nrow(terrain)){
     terrain[[type]] <- "SPO"
     terrain[[source]] <- "IGNF_BDTOPO_V3"
 
@@ -104,9 +110,10 @@ get_infra_poly <- function(x) {
   }
 
   # terrain de sport
-  terrain <- get_topo(convex1000, "BDTOPO_V3:terrain_de_sport")
+  terrain <- happign::get_wfs(fetch_envelope, "BDTOPO_V3:terrain_de_sport", verbose = FALSE) |>
+    sf::st_transform(crs)
 
-  if(!(is.null(terrain))){
+  if(nrow(terrain)){
     terrain[[type]] <- "SPO"
     terrain[[source]] <- "IGNF_BDTOPO_V3"
 
@@ -116,9 +123,10 @@ get_infra_poly <- function(x) {
   }
 
   # terrain de sport
-  habitation <- get_topo(convex1000, "BDTOPO_V3:zone_d_habitation")
+  habitation <- happign::get_wfs(fetch_envelope, "BDTOPO_V3:zone_d_habitation", verbose = FALSE) |>
+    sf::st_transform(crs)
 
-  if(!(is.null(habitation))){
+  if(nrow(habitation)){
     habitation[[type]] <- ifelse(habitation$importance  %in% c(1, 2), "VIL", "HAB")
     habitation[[name]] <- habitation$toponyme
     habitation[[source]] <- "IGNF_BDTOPO_V3"
@@ -128,7 +136,7 @@ get_infra_poly <- function(x) {
     infra_poly <- rbind(infra_poly, habitation)
   }
 
-  invisible(infra_poly)
+  return(invisible(infra_poly))
 }
 
 #' Retrieve linear infrastructure features around an area
@@ -160,10 +168,12 @@ get_infra_poly <- function(x) {
 get_infra_line <- function(x) {
 
   # convex buffers
-  convex1000 <- envelope(x, 1000)
+  crs <- 2154
+  x <- sf::st_transform(x, crs)
+  fetch_envelope <- envelope(x, 1000)
 
   # empty sf
-  infra_line <-  create_empty_sf("LINESTRING") |>
+  infra_line <- create_empty_sf("LINESTRING") |>
     seq_normalize("vct_line")
 
   # standardized field names
@@ -173,9 +183,11 @@ get_infra_line <- function(x) {
   source <-  seq_field("source")$name
 
   # construction lineaire
-  construction <- get_topo(convex1000, "BDTOPO_V3:construction_lineaire")
+  construction <- happign::get_wfs(
+    fetch_envelope, "BDTOPO_V3:construction_lineaire", verbose = FALSE
+  ) |> sf::st_transform(crs)
 
-  if(!(is.null(construction))){
+  if(nrow(construction)){
     construction[[type]] <- "CST"
     construction[[name]] <- construction$toponyme
     construction[[source]] <- "IGNF_BDTOPO_V3"
@@ -186,9 +198,11 @@ get_infra_line <- function(x) {
   }
 
   # ligne electrique
-  ligne <- get_topo(convex1000, "BDTOPO_V3:ligne_electrique")
+  ligne <- happign::get_wfs(
+    fetch_envelope, "BDTOPO_V3:ligne_electrique", verbose = FALSE
+  ) |> sf::st_transform(crs)
 
-  if(!(is.null(ligne))){
+  if(nrow(ligne)){
     ligne[[type]] <- "LEL"
     ligne[[nature]] <- ligne$voltage
     ligne[[source]] <- "IGNF_BDTOPO_V3"
@@ -199,9 +213,11 @@ get_infra_line <- function(x) {
   }
 
   # ligne orographique
-  oro <- get_topo(convex1000, "BDTOPO_V3:ligne_orographique")
+  oro <- happign::get_wfs(
+    fetch_envelope, "BDTOPO_V3:ligne_orographique", verbose = FALSE
+  ) |> sf::st_transform(crs)
 
-  if(!(is.null(oro))){
+  if(nrow(oro)){
     oro[[type]] <- "ORO"
     oro[[name]] <- oro$toponyme
     oro[[source]] <- "IGNF_BDTOPO_V3"
@@ -212,9 +228,11 @@ get_infra_line <- function(x) {
   }
 
   # voie ferree
-  vfe <- get_topo(convex1000, "BDTOPO_V3:troncon_de_voie_ferree")
+  vfe <- happign::get_wfs(
+    fetch_envelope, "BDTOPO_V3:troncon_de_voie_ferree", verbose = FALSE
+  ) |> sf::st_transform(crs)
 
-  if(!(is.null(vfe))){
+  if(nrow(vfe)){
     vfe[[type]] <- "VFE"
     vfe[[name]] <- vfe$cpx_toponyme
     vfe[[source]] <- "IGNF_BDTOPO_V3"
@@ -224,7 +242,7 @@ get_infra_line <- function(x) {
     infra_line <- rbind(infra_line, vfe)
   }
 
-  invisible(infra_line)
+  return(invisible(infra_line))
 }
 
 #' Retrieve point infrastructure features around an area
@@ -260,10 +278,12 @@ get_infra_line <- function(x) {
 get_infra_point <- function(x) {
 
   # convex buffers
-  convex1000 <- envelope(x, 1000)
+  crs <- 2154
+  x <- sf::st_transform(x, crs)
+  fetch_envelope <- envelope(x, 1000)
 
   # empty sf
-  infra_point <-  create_empty_sf("POINT") |>
+  infra_point <- create_empty_sf("POINT") |>
     seq_normalize("vct_point")
 
   # standardized field names
@@ -273,9 +293,11 @@ get_infra_point <- function(x) {
   source <-  seq_field("source")$name
 
   # construction ponctuelle
-  construction <- get_topo(convex1000, "BDTOPO_V3:construction_ponctuelle")
+  construction <- happign::get_wfs(
+    fetch_envelope, "BDTOPO_V3:construction_ponctuelle", verbose = FALSE
+  ) |> sf::st_transform(crs)
 
-  if(!(is.null(construction))){
+  if(nrow(construction)){
     construction[[type]] <- ifelse(construction$nature == "Antenne", "PYL",
                                    ifelse(construction$nature == "Clocher", "CLO",
                                           ifelse(construction$nature == "Croix", "CRX",
@@ -290,9 +312,11 @@ get_infra_point <- function(x) {
   }
 
   # detail orographique
-  oro <- get_topo(convex1000, "BDTOPO_V3:detail_orographique")
+  oro <- happign::get_wfs(
+    fetch_envelope, "BDTOPO_V3:detail_orographique", verbose = FALSE
+  ) |> sf::st_transform(crs)
 
-  if(!(is.null(oro))){
+  if(nrow(oro)){
     oro[[type]] <- ifelse(oro$nature == "Grotte", "GRO",
                           ifelse(oro$nature == "Gouffre", "GOU", "ORO"))
     oro[[name]] <- oro$toponyme
@@ -304,9 +328,11 @@ get_infra_point <- function(x) {
   }
 
   # pylone
-  pylone <- get_topo(convex1000, "BDTOPO_V3:pylone")
+  pylone <- happign::get_wfs(
+    fetch_envelope, "BDTOPO_V3:pylone", verbose = FALSE
+  ) |> sf::st_transform(crs)
 
-  if(!(is.null(pylone))){
+  if(nrow(pylone)){
     pylone[[type]] <- "PYL"
     pylone[[source]] <- "IGNF_BDTOPO_V3"
 
@@ -315,7 +341,7 @@ get_infra_point <- function(x) {
     infra_point <- rbind(infra_point, pylone)
   }
 
-  invisible(infra_point)
+  return(invisible(infra_point))
 }
 
 #' Generates infrastructure polygon, line and point layers for a Sequoia project.

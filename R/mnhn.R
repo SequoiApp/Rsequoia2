@@ -97,8 +97,9 @@ get_mnhn <- function(
   f <- happign::get_wfs(
     x_buff,
     layer = layer,
-    spatial_filter = "intersects"
-  ) |> suppressWarnings() |> suppressMessages()
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
   if (!(is.null(f))){
     f <- sf::st_transform(f, 2154)
@@ -159,7 +160,7 @@ seq_mnhn <- function(
     if (verbose) {cli::cli_progress_update(id = pb)}
 
     # f mean feature in this context
-    f <- quiet(get_mnhn(parca, k, buffer = buffer))
+    f <- get_mnhn(parca, k, buffer = buffer)
     if (!is.null(f)) {
       valid <- c(valid, k)
       seq_key <- sprintf("v.mnhn.%s.poly", k)

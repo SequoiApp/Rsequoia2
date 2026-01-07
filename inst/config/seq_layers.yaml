@@ -2,15 +2,18 @@
 x.seq.matrice: {name: "MATRICE", ext: "xlsx"}
 
 # RASTER
-r.alt.mnt:    { name: "MNT",    ext: "tif" }
-r.alt.mns:    { name: "MNS",    ext: "tif" }
-r.alt.mnh:    { name: "MNH",    ext: "tif" }
-r.alt.pente:  { name: "PENTE",  ext: "tif" }
-r.alt.expo:   { name: "EXPO",   ext: "tif" }
-r.ortho.irc:  { name: "IRC",    ext: "tif" }
-r.ortho.rgb:  { name: "RGB",    ext: "tif" }
-r.img.scan25: { name: "SCAN25", ext: "tif" }
-r.sol.geol:   { name: "GEOL",   ext: "tif" }
+r.alt.mnt:   { name: "MNT",     ext: "tif" }
+r.alt.mns:   { name: "MNS",     ext: "tif" }
+r.alt.mnh:   { name: "MNH",     ext: "tif" }
+r.alt.pente: { name: "PENTE",   ext: "tif" }
+r.alt.expo:  { name: "EXPO",    ext: "tif" }
+r.ortho.irc: { name: "IRC",     ext: "tif" }
+r.ortho.rgb: { name: "RGB",     ext: "tif" }
+r.scan.25:   { name: "SCAN25",  ext: "tif" }
+r.scan.100:  { name: "SCAN100", ext: "tif" }
+r.scan.oaci: { name: "OACI",    ext: "tif" }
+r.scan.ign:  { name: "IGN",     ext: "tif" }
+r.sol.geol:  { name: "GEOL",    ext: "tif" }
 
 # SEQUOIA
 v.seq.parca.poly:   { name: "SEQ_PARCA_poly",  ext: "geojson" }
@@ -27,17 +30,17 @@ v.seq.sspf.poly:    { name: "SEQ_SSPF_poly",   ext: "geojson" }
 v.seq.sspf.line:    { name: "SEQ_SSPF_line",   ext: "geojson" }
 v.seq.ame.poly:     { name: "SEQ_AME_poly",    ext: "geojson" }
 
-# COG - STAND-BY
-v.cog.com7500.point:  { name: "COM_point",  ext: "geojson" }
-v.cog.com7500.line:   { name: "COM_line",   ext: "geojson" }
-v.cog.com25000.point: { name: "COMS_point", ext: "geojson" }
-v.cog.com25000.line:  { name: "COMS_line",  ext: "geojson" }
-v.cog.com25000.poly:  { name: "COMS_poly",  ext: "geojson" }
+# COMMUNE
+v.com.topo.poly:      { name: "COMS_TOPO_poly",     ext: "geojson" }
+v.com.topo.line:      { name: "COMS_TOPO_line",     ext: "geojson" }
+v.com.topo.point:     { name: "COMS_TOPO_point",    ext: "geojson" }
+v.com.graphic.line:   { name: "COM_GRAPHIC_line",   ext: "geojson" }
+v.com.graphic.point:  { name: "COM_GRAPHIC_point",  ext: "geojson" }
 
 # SOL
-v.sol.bdcharm50.poly:  { name: "SOL_BDCHARM50_poly", ext: "geojson" }
-v.sol.carhab.poly:  { name: "SOL_CARHAB_poly", ext: "geojson" }
-v.sol.pedo.poly:  { name: "SOL_PEDO_poly", ext: "geojson" }
+v.sol.bdcharm50.poly: { name: "SOL_BDCHARM50_poly", ext: "geojson" }
+v.sol.carhab.poly:    { name: "SOL_CARHAB_poly",    ext: "geojson" }
+v.sol.pedo.poly:      { name: "SOL_PEDO_poly",      ext: "geojson" }
 
 # PATRIMONIAUX
 v.pat.imdn.poly:   { name: "PAT_IMDN_poly", ext: "geojson" }
@@ -52,11 +55,18 @@ v.pat.lacr.poly:   { name: "PAT_LACR_poly", ext: "geojson" }
 v.pat.zppa.poly:   { name: "PAT_ZPPA_poly", ext: "geojson" }
 
 # GPU
-v.gpu.point: { name: "GPU_point", ext: "geojson" }
-v.gpu.line:  { name: "GPU_line",  ext: "geojson" }
-v.gpu.poly:  { name: "GPU_poly",  ext: "geojson" }
+v.gpu.municipality.poly:  { name: "GPU_MUNICIPALITY_poly",  ext: "geojson" }
+v.gpu.document.poly:      { name: "GPU_DOCUMENT_poly",      ext: "geojson" }
+v.gpu.zone.poly:          { name: "GPU_ZONE_poly",          ext: "geojson" }
+v.gpu.prescription.poly:  { name: "GPU_PRESCRIPTION_poly",  ext: "geojson" }
+v.gpu.prescription.line:  { name: "GPU_PRESCRIPTION_line",  ext: "geojson" }
+v.gpu.prescription.point: { name: "GPU_PRESCRIPTION_point", ext: "geojson" }
+v.gpu.supa.poly:          { name: "GPU_SUPA_poly",          ext: "geojson" }
+v.gpu.supg.poly:          { name: "GPU_SUPG_poly",          ext: "geojson" }
+v.gpu.supg.line:          { name: "GPU_SUPG_line",          ext: "geojson" }
+v.gpu.supg.point:         { name: "GPU_SUPG_point",         ext: "geojson" }
 
-# ARS - Done
+# ARS
 v.ars.perimetre.poly: { name: "ARS_PERIMETRES_poly", ext: "geojson" }
 v.ars.captage.point:  { name: "ARS_CAPTAGE_point", ext: "geojson" }
 
@@ -120,24 +130,25 @@ v.prsf.point: { name: "PRSF_point", ext: "geojson" }
 v.curves.line: { name: "CURVES_line", ext: "geojson" }
 
 # ROAD
-v.tronroute.line: { name: "TRONROUTE_line", ext: "geojson" }
-v.road.line:      { name: "ROAD_line",      ext: "geojson" }
-v.road.poly:      { name: "ROAD_poly",      ext: "geojson" }
+v.road.topo.line:     { name: "ROAD_TOPO_line",    ext: "geojson" }
+v.road.topo.poly:     { name: "ROAD_TOPO_poly",    ext: "geojson" }
+v.road.graphic.line:  { name: "ROAD_GRAPH_line",   ext: "geojson" }
+v.road.graphic.poly:  { name: "ROAD_GRAPH_poly",   ext: "geojson" }
 
 # CADASTRE
-v.cad.vides.poly:       { name: "VIDES_poly",     ext: "geojson" }
-v.cad.batiment.poly:    { name: "BATIMENT_poly",  ext: "geojson" }
-v.cad.borne.point:      { name: "BORNE_point",    ext: "geojson" }
-v.cad.commune.poly:     { name: "COMMUNE_poly",   ext: "geojson" }
-v.cad.lieudit.point:    { name: "LIEUDIT_point",  ext: "geojson" }
-v.cad.numvoie.point:    { name: "NUMVOIE_point",  ext: "geojson" }
-v.cad.parcelle.poly:    { name: "PARCELLE_poly",  ext: "geojson" }
-v.cad.section.poly:     { name: "SECTION_poly",   ext: "geojson" }
-v.cad.subdfisc.poly:    { name: "SUBDFISC_poly",  ext: "geojson" }
-v.cad.symblim.point:    { name: "SYMBLIM_point",  ext: "geojson" }
-v.cad.tline.line:       { name: "TLINE_line",     ext: "geojson" }
-v.cad.tpoint.point:     { name: "TPOINT_point",   ext: "geojson" }
-v.cad.tronfluv.poly:    { name: "TRONFLUV_poly",  ext: "geojson" }
-v.cad.tronroute.poly:   { name: "TRONROUTE_poly", ext: "geojson" }
-v.cad.tsurf.point:      { name: "TSURF_point",    ext: "geojson" }
-v.cad.zoncommuni.line:  { name: "ZONCOMMUNI_line",ext: "geojson" }
+v.cad.vides.poly:       { name: "CAD_VIDES_poly",     ext: "geojson" }
+v.cad.batiment.poly:    { name: "CAD_BATIMENT_poly",  ext: "geojson" }
+v.cad.borne.point:      { name: "CAD_BORNE_point",    ext: "geojson" }
+v.cad.commune.poly:     { name: "CAD_COMMUNE_poly",   ext: "geojson" }
+v.cad.lieudit.point:    { name: "CAD_LIEUDIT_point",  ext: "geojson" }
+v.cad.numvoie.point:    { name: "CAD_NUMVOIE_point",  ext: "geojson" }
+v.cad.parcelle.poly:    { name: "CAD_PARCELLE_poly",  ext: "geojson" }
+v.cad.section.poly:     { name: "CAD_SECTION_poly",   ext: "geojson" }
+v.cad.subdfisc.poly:    { name: "CAD_SUBDFISC_poly",  ext: "geojson" }
+v.cad.symblim.point:    { name: "CAD_SYMBLIM_point",  ext: "geojson" }
+v.cad.tline.line:       { name: "CAD_TLINE_line",     ext: "geojson" }
+v.cad.tpoint.point:     { name: "CAD_TPOINT_point",   ext: "geojson" }
+v.cad.tronfluv.poly:    { name: "CAD_TRONFLUV_poly",  ext: "geojson" }
+v.cad.tronroute.poly:   { name: "CAD_TRONROUTE_poly", ext: "geojson" }
+v.cad.tsurf.point:      { name: "CAD_TSURF_point",    ext: "geojson" }
+v.cad.zoncommuni.line:  { name: "CAD_ZONCOMMUNI_line",ext: "geojson" }

@@ -44,3 +44,4 @@ test_that("create_matrice() overwrites when requested", {
 
   expect_silent(create_matrice(seq_cache, id = id, overwrite = TRUE, verbose = FALSE))
 })
+

@@ -1,6 +1,6 @@
 #' Retrieve and classify toponymic point features around an area
 #'
-#' Builds a convex buffer around the input geometry, retrieves toponymic
+#' Builds a fetch_envelope buffer around the input geometry, retrieves toponymic
 #' point features from the BDTOPO dataset, classifies them by thematic type
 #' (hydrographic, vegetation, or other), normalizes the result, and returns
 #' a standardized `sf` point layer.
@@ -18,7 +18,7 @@
 #'   * `SOURCE` — Data source identifier (`IGNF_BDTOPO_V3`)
 #'
 #' @details
-#' The function creates a 1000 m convex buffer around the input geometry `x`
+#' The function creates a 1000 m fetch_envelope buffer around the input geometry `x`
 #' and retrieves toponymic point features from the BDTOPO toponymy layer.
 #' Retrieved features are classified into thematic types based on their
 #' object class, attribute names are standardized, and geometries are
@@ -27,13 +27,17 @@
 #' @export
 get_toponyme <- function(x) {
 
-  # convex buffer
-  convex <- envelope(x, 1000)
+  # fetch_envelope buffer
+  crs <- 2154
+  x <- sf::st_transform(x, crs)
+  fetch_envelope <- envelope(x, 1000)
 
   # retrieve toponymic point
-  toponyme <- get_topo(convex, "BDTOPO_V3:toponymie")
+  toponyme <- happign::get_wfs(
+    fetch_envelope, "BDTOPO_V3:toponymie", verbose = FALSE
+  ) |> sf::st_transform(crs)
 
-  if (is.null(toponyme)) {
+  if (!nrow(toponyme)) {
     return(NULL)
   }
 
@@ -77,4 +81,79 @@ get_toponyme <- function(x) {
   toponyme <- seq_normalize(toponyme, "vct_point")
 
   invisible(toponyme)
+}
+
+#' Generate toponymic point layer for a Sequoia project
+#'
+#' Retrieves toponymic point features intersecting and surrounding
+#' the project area, classifies them by thematic type, and writes the
+#' resulting layer to disk.
+#'
+#' @param dirname `character` Path to the project directory.
+#'   Defaults to the current working directory.
+#' @param verbose `logical`; whether to display informational messages.
+#'   Defaults to `TRUE`.
+#' @param overwrite `logical`; whether to overwrite existing files.
+#'   Defaults to `FALSE`.
+#'
+#' @details
+#' Toponymic point features are retrieved using [get_toponyme()].
+#'
+#' If no toponymic features are found, the function returns `NULL`
+#' invisibly and no file is written.
+#'
+#' When features are present, the layer is written to disk using
+#' [seq_write()] with the key `"v.toponyme.point"`.
+#'
+#' @return
+#' Invisibly returns a named list of file paths written by [seq_write()].
+#' Returns `NULL` invisibly when no toponymic features are found.
+#'
+#' @seealso
+#' [get_toponyme()], [seq_write()]
+#'
+#' @export
+seq_toponyme <- function(
+    dirname   = ".",
+    verbose   = TRUE,
+    overwrite = FALSE
+) {
+
+  # Read project area (PARCA)
+  f_parca <- sf::read_sf(get_path("v.seq.parca.poly", dirname = dirname))
+  f_id    <- get_id(dirname)
+
+  # Retrieve toponyms
+  topo <- get_toponyme(f_parca)
+
+  # Exit early if nothing to write
+  if (!nrow(topo) || nrow(topo) == 0) {
+    if (verbose) {
+      cli::cli_alert_info(
+        "No toponymic features found: toponymy layer not written."
+      )
+    }
+    return(invisible(NULL))
+  }
+
+  # Add project identifier
+  id <- seq_field("identifiant")$name
+  topo[[id]] <- f_id
+
+  # Write layer
+  topo_path <- quiet(seq_write(
+    topo,
+    "v.toponyme.point",
+    dirname   = dirname,
+    verbose   = FALSE,
+    overwrite = overwrite
+  ))
+
+  if (verbose) {
+    cli::cli_alert_success(
+      "Toponymy layer written with {nrow(topo)} feature{?s}"
+    )
+  }
+
+  invisible(topo_path)
 }

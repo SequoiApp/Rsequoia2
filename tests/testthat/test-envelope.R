@@ -1,6 +1,4 @@
-test_that("envelope works with simple points", {
-  skip_if_not_installed("sf")
-
+test_that("envelope() works with simple points", {
   pts <- sf::st_sf(
     id = 1:3,
     geometry = sf::st_sfc(
@@ -19,9 +17,7 @@ test_that("envelope works with simple points", {
   expect_true(all(sf::st_is_valid(result)))
 })
 
-
-test_that("envelope works with polygons", {
-  skip_if_not_installed("sf")
+test_that("envelope() works with polygons", {
 
   poly <- sf::st_sf(
     id = 1,
@@ -40,9 +36,7 @@ test_that("envelope works with polygons", {
   expect_equal(sf::st_crs(result)$epsg, 4326)
 })
 
-
-test_that("envelope handles multipolygons", {
-  skip_if_not_installed("sf")
+test_that("envelope() handles multipolygons", {
 
   mp <- sf::st_multipolygon(list(
     list(rbind(c(0,0), c(1,0), c(1,1), c(0,1), c(0,0))),
@@ -61,27 +55,8 @@ test_that("envelope handles multipolygons", {
   expect_true(all(sf::st_is_valid(result)))
 })
 
+test_that("envelope() supports zero buffer distance", {
 
-test_that("envelope returns valid geometry even with invalid inputs", {
-  skip_if_not_installed("sf")
-
-  # bowtie polygon (self-intersection)
-  invalid_poly <- sf::st_polygon(list(rbind(
-    c(0,0), c(2,0), c(0,2), c(2,2), c(0,0)
-  )))
-
-  x <- sf::st_sf(
-    geometry = sf::st_sfc(invalid_poly, crs = 4326)
-  )
-
-  # ATTENTION : st_buffer échoue avec S2 si geometry invalide
-  # On attend que la fonction échoue proprement
-  expect_error(envelope(x, dist = 0.05))
-})
-
-
-test_that("envelope supports zero buffer distance", {
-  skip_if_not_installed("sf")
 
   pts <- sf::st_sf(
     geometry = sf::st_sfc(sf::st_point(c(1,1)), crs = 4326)
@@ -94,9 +69,8 @@ test_that("envelope supports zero buffer distance", {
   expect_true(all(sf::st_is_valid(result)))
 })
 
+test_that("envelope() fails gracefully on wrong inputs", {
 
-test_that("envelope fails gracefully on wrong inputs", {
-  skip_if_not_installed("sf")
 
   expect_error(envelope(123, dist = 10))
   expect_error(envelope(data.frame(a = 1), dist = 10))

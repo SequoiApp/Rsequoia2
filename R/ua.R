@@ -233,7 +233,7 @@ ua_generate_area <- function(ua, verbose = TRUE) {
 #' @noRd
 seq_desc_fields <- function() {
   keys <- c(
-    "peuplement","richesse","stade","annee","structure",
+    "stand","wealth","stage","year","structure",
     "ess1","ess1_pct","ess2","ess2_pct","ess3","ess3_pct",
     "taillis","regeneration","amenagement"
   )

@@ -32,6 +32,7 @@ parca:
   - dep_num
   - com_nom
   - com_num
+  - insee
   - prefix
   - section
   - numero
@@ -49,6 +50,7 @@ ua:
   - dep_num
   - com_nom
   - com_num
+  - insee
   - prefix
   - section
   - numero
@@ -57,10 +59,10 @@ ua:
   - ug
   - parcelle
   - sous_parcelle
-  - peuplement
-  - richesse
-  - stade
-  - annee
+  - stand
+  - wealth
+  - stage
+  - year
   - structure
   - ess1
   - ess1_pct
@@ -100,3 +102,22 @@ vct_point:
   - name
   - source
   - rotation
+
+road_line:
+  - identifiant
+  - type
+  - nature
+  - importance
+  - private
+  - restriction
+  - name
+  - source
+  - offset
+
+com_poly:
+  - identifiant
+  - reg_num
+  - dep_num
+  - insee
+  - postal
+  - com_nom

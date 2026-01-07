@@ -1,50 +1,143 @@
-fake_legal_entity_csv <- function(dir, dep = "29", com = "158") {
-  f <- file.path(dir, paste0(dep, com, "_legal.csv"))
-  writeLines(
-    c(
-      "DEP;COM;PREFIX;SECTION;NUMERO;LIEU_DIT;SURF_TOT;NATURE;CONTENANCE;TYPE;PROP",
-      "29;158;;ZR;0001;TEST;10;;;;P;OWNER_A",
-      "29;158;;ZR;0001;TEST;10;;;;P;OWNER_B",
-      "29;158;;ZR;0002;;5;;;;X;IGNORED"
-    ),
-    f
+fake_data <- function() {
+  # fake data should have 24 col but not all are read
+  # col_classes <- replace(rep("NULL", 24), c(1, 3, 5, 6, 7, 13, 14, 16, 17, 18, 24), NA)
+  data.frame(
+    "dep" = c("1", "29", "29"),
+    "2_null" = NA,
+    "com" = c("1", "123", "123"),
+    "4_null" = NA,
+    "prefix" = c("", "123", "123"),
+    "section" = c("A", "AB", "AB"),
+    "numero" = c("0001", "1", "1"),
+    "8_null" = NA,
+    "9_null" = NA,
+    "10_null" = NA,
+    "11_null" = NA,
+    "12_null" = NA,
+    "lieu_dit" = c("LIEU1", "LIEU2", "LIEU3"),
+    "surf_tot" = c("1", "1", "1"),
+    "15_null" = NA,
+    "nature" = c("L - Landes", "T - Terre", "T - Terre"),
+    "contenance" = c("1", "1", "1"),
+    "type" = c("P - Propriétaire", "P - Propriétaire", "P - Propriétaire"),
+    "19_null" = NA,
+    "20_null" = NA,
+    "21_null" = NA,
+    "22_null" = NA,
+    "23_null" = NA,
+    "prop" = c("PROP1", "PROP2", "PROP3")
   )
-  f
 }
 
-test_that("get_legal_entity() errors on invalid input", {
+test_that("get_legal_entity() rejects invalid INSEE and department codes", {
 
-  expect_error(
-    get_legal_entity("99999", verbose = FALSE),
-    regexp = "Invalid INSEE"
-  )
-
-  expect_error(
-    get_legal_entity("99", verbose = FALSE),
-    regexp = "Invalid department"
-  )
+  expect_error(get_legal_entity("99999"), "Invalid INSEE")
+  expect_error(get_legal_entity("99"), "Invalid department")
 
 })
 
-test_that("get_legal_entity() works with valid INSEE code", {
+test_that("get_legal_entity() warns on department-level queries", {
 
-  cache <- file.path(tempdir(), "legal_entity")
-  dir.create(cache)
-  on.exit(unlink(cache, recursive = TRUE), add = TRUE)
+  le_cache <- file.path(tempdir(), "legal_entity")
+  dir.create(le_cache)
+  on.exit(unlink(le_cache, recursive = TRUE, force = TRUE), add = TRUE)
 
-  write_fake_legal_csv(cache, dep = "29", com = "158") |> invisible()
+  x <- "01"
+  path <- file.path(le_cache, paste0(x, ".csv"))
+  write.csv2(fake_data(), row.names = FALSE, path, fileEncoding = "UTF-8")
 
-  local_mocked_bindings(
-    download_legal_entity = function(cache, verbose) cache
+  testthat::local_mocked_bindings(
+    download_legal_entity = function(cache, verbose) le_cache
   )
 
-  res <- get_legal_entity("29158", cache = cache, verbose = FALSE)
+  expect_message(
+    res <- get_legal_entity(x, cache = le_cache, verbose = TRUE),
+    "Department-level queries may be slower"
+  ) |> suppressMessages()
 
   expect_s3_class(res, "data.frame")
-  expect_true(nrow(res) == 1)
-
-  expect_equal(res$insee, "29158")
-  expect_equal(res$section, "ZR")
-  expect_equal(res$numero, "0001")
-  expect_equal(res$proprietaire, "OWNER_A \\ OWNER_B")
 })
+
+test_that("get_legal_entity() reads CSV files from cache", {
+
+  le_cache <- file.path(tempdir(), "legal_entity")
+  dir.create(le_cache)
+  on.exit(unlink(le_cache, recursive = TRUE, force = TRUE), add = TRUE)
+
+  x <- "01"
+  path <- file.path(le_cache, paste0(x, ".csv"))
+  write.csv2(fake_data(), row.names = FALSE, path, fileEncoding = "UTF-8")
+
+  testthat::local_mocked_bindings(
+    download_legal_entity = function(cache, verbose) le_cache
+  )
+
+  res <- get_legal_entity("01", cache = le_cache, verbose = FALSE)
+
+  expect_shape(res, dim = c(2, 16))
+})
+
+test_that("get_legal_entity() reads CSV files from cache", {
+
+  le_cache <- file.path(tempdir(), "legal_entity")
+  dir.create(le_cache)
+  on.exit(unlink(le_cache, recursive = TRUE, force = TRUE), add = TRUE)
+
+  x <- "01"
+  path <- file.path(le_cache, paste0(x, ".csv"))
+  write.csv2(fake_data(), row.names = FALSE, path, fileEncoding = "UTF-8")
+
+  testthat::local_mocked_bindings(
+    download_legal_entity = function(cache, verbose) le_cache
+  )
+
+  res <- get_legal_entity("01001", cache = le_cache, verbose = FALSE)
+
+  expect_shape(res, dim = c(1, 16))
+})
+
+test_that("get_legal_entity() keeps only proprietaire entries", {
+
+  le_cache <- file.path(tempdir(), "legal_entity")
+  dir.create(le_cache)
+  on.exit(unlink(le_cache, recursive = TRUE, force = TRUE), add = TRUE)
+
+  df <- fake_data()
+  df$type[1] <- "L - Locataire"
+
+  x <- "01"
+  path <- file.path(le_cache, paste0(x, ".csv"))
+  write.csv2(df, row.names = FALSE, path, fileEncoding = "UTF-8")
+
+  testthat::local_mocked_bindings(
+    download_legal_entity = function(cache, verbose) le_cache
+  )
+
+  res <- get_legal_entity("01", cache = le_cache, verbose = FALSE)
+
+  expect_shape(res, dim = c(1, 16))
+})
+
+test_that("get_legal_entity() aggregates prop and lieu_dit per IDU", {
+
+  le_cache <- file.path(tempdir(), "legal_entity_agg")
+  dir.create(le_cache)
+  on.exit(unlink(le_cache, recursive = TRUE, force = TRUE), add = TRUE)
+
+  x <- "01"
+  path <- file.path(le_cache, paste0(x, ".csv"))
+  write.csv2(fake_data(), row.names = FALSE, path, fileEncoding = "UTF-8")
+
+  testthat::local_mocked_bindings(
+    download_legal_entity = function(cache, verbose) le_cache
+  )
+
+  res <- get_legal_entity("01", cache = le_cache, verbose = FALSE)
+
+  prop_field <- seq_field("proprietaire")$name
+  lieu_dit_field <- seq_field("lieu_dit")$name
+
+  expect_true(any(grepl("PROP2 \\ PROP3", res[[prop_field]], fixed = TRUE)))
+  expect_true(any(grepl("LIEU2 \\ LIEU3", res[[lieu_dit_field]], fixed = TRUE)))
+})
+

@@ -15,6 +15,21 @@
 #' @export
 get_vege_poly <- function(x) {
 
+  if (!inherits(x, c("sf", "sfc"))) {
+    cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
+  }
+
+  remove_interior_ring <- function(x) {
+    sf::st_sf(
+      geometry = sf::st_sfc(
+        lapply(sf::st_geometry(sf::st_cast(x, "POLYGON")), function(p) {
+          sf::st_polygon(list(p[[1]]))  # keep only outer ring
+        }),
+        crs = sf::st_crs(x)
+      )
+    )
+  }
+
   crs <- 2154
   layer <- "IGNF_MASQUE-FORET.2021-2023:masque_foret"
   x <- sf::st_transform(x, crs)
@@ -25,13 +40,13 @@ get_vege_poly <- function(x) {
   source <- seq_field("source")$name
 
   # Fetching data in 1000m distance, then crop to 1500m for large data
-  fetch_envelope   <- envelope(x, 1000)
+  fetch_envelope <- envelope(x, 1000)
   control_envelope <- envelope(x, 1500)
 
   # forest mask
-  forest_mask <- quiet(happign::get_wfs(
-    x = fetch_envelope, layer = layer, spatial_filter = "intersects"
-    ))
+  forest_mask <- happign::get_wfs(
+    x = fetch_envelope, layer = layer, predicate = happign::intersects()
+  )
 
   if (is.null(forest_mask)) {
     cli::cli_warn("No vegetation data found. Empty {.cls sf} is returned.")
@@ -45,10 +60,10 @@ get_vege_poly <- function(x) {
   # Intersection create mixed geometry type (POLYGON, MULTIPOLYGON)
   # Because st_cast cannot deal with mixed geometry, first is casted to multipoly, then poly
   vege_poly <- sf::st_cast(forest_intersect, "MULTIPOLYGON") |>
-    st_cast("POLYGON", warn = FALSE) |>
-    seq_normalize("vct_poly")
+    sf::st_cast("POLYGON", warn = FALSE) |>
+    remove_interior_ring()
 
-  vege_poly[[type]]   <- "FOR"
+  vege_poly[[type]] <- "FOR"
   vege_poly[[source]] <- "ignf_masque_foret"
 
   return(invisible(vege_poly))
@@ -63,12 +78,13 @@ get_vege_poly <- function(x) {
 #'
 #' @details
 #' The function derives forest vegetation linear features from
-#' vegetation polygons obtained with `get_vege_poly()`.
+#' vegetation polygons obtained with [get_vege_poly()].
 #'
-#' Polygons are dissolved with a tolerance of 5 meters, converted
-#' to linear geometries, and intersected with a 1499 m convex buffer
-#' around `x`. Resulting geometries are cast to `LINESTRING` and
-#' normalized.
+#' GIS workflow :
+#' - Polygon are intersected to a 1500m buffer;
+#' - Polygon are cast to `LINESTRING`;
+#' - Line are intersected with a 1500 buffer to remove intersection line
+#' from first step
 #'
 #' If no vegetation polygons are available, the function returns
 #' an empty standardized `sf` object.
@@ -78,39 +94,40 @@ get_vege_poly <- function(x) {
 #' @export
 get_vege_line <- function(x) {
 
-  # convex buffer
-  convex1499 <- envelope(x, 1499)
+  if (!inherits(x, c("sf", "sfc"))) {
+    cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
+  }
 
-  # empty sf
-  vege_line <-  create_empty_sf("LINESTRING") |>
-    seq_normalize("vct_line")
+  crs <- 2154
+  x <- sf::st_transform(x, crs)
+
+  # Used to remove straight line due to buffer
+  cleaning_envelope <- envelope(x, 1500 - 1)
 
   # standardized field names
   type <- seq_field("type")$name
   name <- seq_field("name")$name
-  source <-  seq_field("source")$name
+  source <- seq_field("source")$name
 
   # retrieve vegetation polygons
   vege_poly <- get_vege_poly(x)
 
-  if (!is.null(vege_poly) && nrow(vege_poly) > 0) {
-
-    line <- dissolve(vege_poly, tol = 5) |>
-      poly_to_line() |>
-      sf::st_intersection(convex1499)|>
-      sf::st_cast("LINESTRING") |>
-      quiet()
-
-    line <- line[, setdiff(names(line), names(convex1499))] |>
-      seq_normalize("vct_line")
-
-    line[[type]]   <- "FOR"
-    line[[source]] <- "IGNF_MASQUE-FORET"
-
-    vege_line <- rbind(vege_line, line)
+  if (nrow(vege_poly) == 0) {
+    cli::cli_warn("No vegetation data found. Empty {.cls sf} is returned.")
+    empty_sf <- create_empty_sf("LINE") |> seq_normalize("vct_line")
+    return(invisible(empty_sf))
   }
 
-  invisible(vege_line)
+  vege_line <- vege_poly |>
+    poly_to_line() |>
+    sf::st_intersection(cleaning_envelope) |>
+    sf::st_cast("LINESTRING") |> suppressWarnings() |>
+    seq_normalize("vct_line")
+
+  vege_line[[type]] <- "FOR"
+  vege_line[[source]] <- "ignf_masque_foret"
+
+  return(invisible(vege_line))
 }
 
 #' Generate vegetation point features around an area
@@ -119,103 +136,102 @@ get_vege_line <- function(x) {
 #'
 #' @return An `sf` object of type `POINT` containing vegetation point
 #'   features with standardized Sequoia fields, including:
-#'   * `TYPE` — Vegetation type code derived from BDTOPO nature values:
-#'     - `FFF` = Closed deciduous forest
-#'     - `FFM` = Closed mixed forest
-#'     - `FFC` = Closed coniferous forest
-#'     - `FOI` = Open forest
-#'     - `PEU` = Poplar plantation
-#'     - `BOI` = Woodland
-#'     - `LAN` = Woody heath
-#'     - `HAI` = Hedge
-#'     - `VER` = Orchard
-#'     - `VEG` = Other vegetation types
-#'   * `SOURCE` — Data source (`IGNF_BDTOPO_V3`)
 #'
 #' @details
-#' The function retrieves BDTOPO vegetation areas (`zone_de_vegetation`)
-#' within a 1000 m convex buffer around `x`. Each polygon is classified
-#' into a standardized vegetation type based on its original
-#' `nature` attribute.
+#' The function retrieves BD Forêt V2 vegetation areas within a 1000 m convex
+#' buffer around `x`. Each polygon is classified into a standardized vegetation
+#' type based on its original `nature` attribute.
 #'
-#' Vegetation polygons are then intersected with a 1500 m convex buffer,
-#' cast to polygons, normalized, and filtered to exclude woody heath (`LAN`)
-#' and hedges (`HAI`).
+#' `TYPE`: Vegetation type code derived from BDTOPO nature values:
+#'     - `Feuillus`: Deciduous forest
+#'     - `Résineux`: Coniferous forest
+#'     - `Peupleraie`: Poplar plantation
+#'     - `Lande`: Woody heath
+#'
 #'
 #' Vegetation points are generated by spatial sampling using a hexagonal
-#' pattern, with one point per 4 hectares of vegetation area. Sampled
-#' points are spatially joined to vegetation attributes and clipped to
-#' a 1499 m convex buffer.
+#' pattern, with one point per 4 hectares of vegetation area.
 #'
 #' If no vegetation areas are found, the function returns an empty
 #' standardized `sf` object of type `POINT`.
 #'
-#' @seealso get_vege_poly, get_veg_line
+#' @seealso [get_vege_poly()], [get_veg_line()]
 #'
 #' @export
 get_vege_point <- function(x){
 
-  # convex buffer
-  convex1000 <- envelope(x, 1000)
-  convex1500 <- envelope(x, 1500)
-  convex1499 <- envelope(x, 1499)
+  if (!inherits(x, c("sf", "sfc"))) {
+    cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
+  }
 
-  # empty sf
-  vege_point <-  create_empty_sf("POINT") |>
-    seq_normalize("vct_point")
+  crs <- 2154
+  layer <- "LANDCOVER.FORESTINVENTORY.V2:formation_vegetale"
 
   # standardized field names
   type <- seq_field("type")$name
   name <- seq_field("name")$name
   source <-  seq_field("source")$name
 
-  # vege
-  zone_vege <- get_topo(convex1000, "BDTOPO_V3:zone_de_vegetation")
+  # Fetching data in 1000m distance, then crop to 1500m for large data
+  fetch_envelope   <- envelope(x, 1000)
+  control_envelope <- envelope(x, 1500)
 
-  if(!(is.null(zone_vege))){
+  raw_fv <- happign::get_wfs(
+    x = fetch_envelope,
+    layer = "LANDCOVER.FORESTINVENTORY.V2:formation_vegetale",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
-    # type table
-    nature_vals <- c("For\u00eat ferm\u00e9e de feuillus",
-                     "For\u00eat ferm\u00e9e mixte",
-                     "For\u00eat ferm\u00e9e de conif\u00e8res",
-                     "For\u00eat ouverte",
-                     "Peupleraie",
-                     "Bois",
-                     "Lande ligneuse",
-                     "Haie",
-                     "Verger")
-
-    type_vals   <- c("FFF", "FFM", "FFC", "FOI", "PEU", "BOI", "LAN", "HAI", "VER")
-
-    i <- match(zone_vege$nature, nature_vals)
-
-    # type
-    zone_vege[[type]] <- ifelse(is.na(i), "VEG", type_vals[i])
-    zone_vege[[source]] <- "IGNF_BDTOPO_V3"
-
-    # geometry processing
-    zone_vege <- sf::st_intersection(zone_vege, convex1500) |>
-      sf::st_cast("POLYGON") |>
-      quiet() |>
-      subset(!get(type) %in% c("LAN", "HAI"))
-
-    # point
-    n_points <- sum(round(as.numeric(sf::st_area(zone_vege)) / 40000))
-    if (n_points > 0) {
-      point <- sf::st_sf(sf::st_sample(zone_vege, n_points, type = "hexagonal")) |>
-        sf::st_join(zone_vege, join = sf::st_intersects) |>
-        sf::st_intersection(convex1499) |>
-        quiet()
-    }
-    sf::st_geometry(point) <- "geometry"
-
-    point <- point[, setdiff(names(point), names(convex1500))] |>
-      seq_normalize("vct_point")
-
-    vege_point <- rbind(vege_point, point)
+  if (is.null(raw_fv)) {
+    cli::cli_warn("No vegetation data found. Empty {.cls sf} is returned.")
+    empty_sf <- create_empty_sf("POINT") |> seq_normalize("vct_point")
+    return(invisible(empty_sf))
   }
 
-  invisible(vege_point)
+  fv <- sf::st_transform(raw_fv, crs)
+  fv <- sf::st_intersection(fv, control_envelope) |> suppressWarnings()
+
+  # https://geoservices.ign.fr/sites/default/files/2021-06/DC_BDForet_2-0.pdf
+  map <- c(
+    "FF1" = "Feuillus", "FO1" = "Feuillus",
+    "FF2" = "Résineux", "FO2" = "Résineux",
+    "FF3" = "Mixte", "FO3" = "Mixte",
+    "FP"  = "Peupleraie",
+    "LA" = "Lande"
+    )
+  keys <- substr(fv$code_tfv, 1, 3)
+  fv[[type]] <- unname(map[keys])
+
+  fv <- fv[!is.na(fv[[type]]), ]
+
+  if (nrow(fv) == 0) {
+    cli::cli_warn("No vegetation data found. Empty {.cls sf} is returned.")
+    empty_sf <- create_empty_sf("POINT") |> seq_normalize("vct_point")
+    return(invisible(empty_sf))
+  }
+
+  fv <- seq_normalize(fv, "vct_point")
+  fv[[source]] <- "ignf_bd_foretv2"
+
+  area_tot <- sum(st_area(fv)) |> units::set_units("ha")
+  ha_per_point <- units::set_units(4, "ha")
+  n_points <- max(0L, round(area_tot / ha_per_point) |> as.integer())
+
+  if (n_points == 0) {
+    cli::cli_warn("No vegetation data found. Empty {.cls sf} is returned.")
+    empty_sf <- create_empty_sf("POINT") |> seq_normalize("vct_point")
+    return(invisible(empty_sf))
+  }
+
+  point <- sf::st_sample(fv, n_points, type = "hexagonal") |>
+    sf::st_as_sf(crs = sf::st_crs(fv)) |>
+    sf::st_set_geometry("geometry") # rename sf column to geometry instead of x
+
+  vege_point <- sf::st_join(point, fv, join = sf::st_intersects)
+
+  return(invisible(vege_point))
+
 }
 
 #' Generates vegetation polygon, line and point layers for a Sequoia project.
@@ -225,16 +241,11 @@ get_vege_point <- function(x){
 #' all products in one call and automatically write them to the project
 #' directory using [seq_write()].
 #'
-#' @param dirname `character` Path to the directory. Defaults to the current
-#' working directory.
 #' @inheritParams seq_write
 #'
 #' @details
 #' Each vegetation layer is always written to disk using [seq_write()],
 #' even when it contains no features (`nrow == 0`).
-#'
-#' Informational messages are displayed to indicate whether a layer
-#' contains features or is empty.
 #'
 #' @return A named list of file paths written by [seq_write()],
 #' one per vegetation layer.
@@ -249,56 +260,27 @@ seq_vege <- function(
     overwrite = FALSE
 ) {
 
-  # read PARCA
-  f_parca <- read_sf(get_path("v.seq.parca.poly", dirname = dirname))
-  f_id <- get_id(dirname)
-
-  id <- seq_field("identifiant")$name
-
-  # create empty path list
-  path <- list()
-
-  # hydro layer specifications
-  layers <- list(
-    poly  = list(fun = get_vege_poly,  key = "v.vege.poly", geom = "POLYGON"),
-    line  = list(fun = get_vege_line,  key = "v.vege.line", geom = "LINESTRING"),
-    point = list(fun = get_vege_point, key = "v.vege.point", geom = "POINT")
-  )
-
-  for (k in names(layers)) {
-
-    f <- layers[[k]]$fun(f_parca)
-
-    if (nrow(f)>0){
-      f[[id]]<- f_id
-
-      geom_union <- sf::st_union(f_parca)
-      f <- quiet(sf::st_difference(f, geom_union))
-      f <- quiet(sf::st_cast(f, layers[[k]]$geom))
-    }
-
-    f_path <- quiet(seq_write(
-      f,
-      layers[[k]]$key,
-      dirname = dirname,
-      verbose = FALSE,
-      overwrite = overwrite
-    ))
-
-    path <- c(path, f_path)
-
-    if (verbose) {
-      if (nrow(f) == 0) {
-        cli::cli_alert_info(
-          c("i" = "Vege {.field {k}} layer written (empty layer)")
-        )
-      } else {
-        cli::cli_alert_success(
-          "Vege {.field {k}} layer written with {nrow(f)} feature{?s}"
-        )
-      }
-    }
+  # tiny helper : avoid repeating all arg eacvh time
+  seq_write2 <- function(x, key) {
+    seq_write(x, key, dirname = dirname, verbose = verbose, overwrite = overwrite)
   }
 
-  return(invisible(path))
+  # read PARCA
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  id_field <- seq_field("identifiant")$name
+  id <- unique(parca[[id_field]])
+
+  vege_poly <- get_vege_poly(x)
+  vege_poly[[id_field]] <- id
+  seq_write2(vege_poly, "v.vege.poly")
+
+  vege_line <- get_vege_line(x)
+  vege_line[[id_field]] <- id
+  seq_write2(vege_line, "v.vege.line")
+
+  vege_point <- get_vege_point(x)
+  vege_point[[id_field]] <- id
+  seq_write2(vege_point, "v.vege.point")
+
+  return(c(vege_poly, vege_line, vege_point) |> as.list())
 }

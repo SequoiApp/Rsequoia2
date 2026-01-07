@@ -94,9 +94,6 @@ get_legal_entity <- function(
   x <- as.character(x)
   code_insee <- pad_left(x[nchar(x) > 3], 5)
   code_dep <- pad_left(x[nchar(x) <= 3], 2)
-  if (verbose && length(code_dep)) {
-    cli::cli_alert_warning("Department-level queries may be slower. For better performance, use {.field code_insee} instead.")
-  }
 
   if (length(code_insee)) {
     all_insee <- happign::com_2025$COM
@@ -116,6 +113,10 @@ get_legal_entity <- function(
     }
   }
 
+  if (verbose && length(code_dep)) {
+    cli::cli_alert_warning("Department-level queries may be slower. For better performance, use {.field code_insee} instead.")
+  }
+
   deps <- c(code_dep, substr(code_insee, 1, 2)) |> unique()
   cache <- download_legal_entity(cache = cache, verbose = verbose)
 
@@ -130,7 +131,11 @@ get_legal_entity <- function(
     "surf_tot", "nature", "contenance", "type", "prop"
   )
 
-  if (length(code_insee)) raw <- raw[paste0(raw$dep, raw$com) %in% code_insee, ] # Keep insee code
+  if (length(code_insee)){
+    raw_insee <- paste0(pad_left(raw$dep, 2), pad_left(raw$com, 3))
+    raw <- raw[raw_insee %in% code_insee, ] # Keep insee code
+  }
+
   raw <- raw[startsWith(raw$type, "P"), ] # Keep proprietaire only
 
   if (verbose) cli_alert_info("Preparing CSV files...")
@@ -149,26 +154,33 @@ get_legal_entity <- function(
   legal_entity_lieu_dit <- aggregate(lieu_dit ~ idu, data = legal_entity, FUN = \(x) paste(unique(x), collapse = " \\ "))
 
   if (verbose) cli_alert_info("Generating matrice...")
+
   legal_entity_clean <- legal_entity |>
     subset(select = c("idu", "surf_tot")) |>
     unique() |>
     merge(legal_entity_prop, all.x = TRUE) |>
     merge(legal_entity_lieu_dit, all.x = TRUE)
 
-  matrice_legal_entity <- data.frame(
-    "identifiant" = "",
-    "proprietaire" = legal_entity_clean$prop,
-    "insee" = substr(legal_entity_clean$idu, 1, 5),
-    "prefix" = substr(legal_entity_clean$idu, 6, 8),
-    "section" = substr(legal_entity_clean$idu, 9, 10),
-    "numero" = substr(legal_entity_clean$idu, 11, 14),
-    "lieu_dit" = legal_entity_clean$lieu_dit
-  ) |>
+  matrice_legal_entity <- legal_entity_clean |>
+    transform(
+      "idu" = legal_entity_clean$idu,
+      "insee" = substr(idu, 1, 5),
+      "com" = substr(idu, 2, 3),
+      "prefix" = substr(idu, 6, 8),
+      "section" = substr(idu, 9, 10),
+      "numero" = substr(idu, 11, 14),
+      "contenance" = legal_entity_clean$surf_tot,
+      "source" = "https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales"
+    ) |>
+    merge(happign::com_2025[, c("COM", "NCC_COM", "DEP")], by.x = "insee", by.y = "COM") |>
+    merge(happign::dep_2025[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
+    merge(happign::reg_2025[, c("REG", "NCC_REG")], all.x = TRUE) |>
     seq_normalize("parca")
 
   if (verbose) {
     cli::cli_alert_success("Matrix successfully generated ({.val {nrow(legal_entity_clean)}} rows).")
   }
+
   return(matrice_legal_entity)
 }
 
@@ -213,8 +225,11 @@ search_legal_entity <- function(x, prop = NULL, lieu_dit = NULL) {
     trimws(x)
   }
 
-  x$prop_norm <- normalize_txt(x$PROPRIETAIRE)
-  x$lieu_dit_norm <- normalize_txt(x$LIEU_DIT)
+  prop_field <- seq_field("proprietaire")$name
+  lieu_dit_field <- seq_field("lieu_dit")$name
+
+  x$prop_norm <- normalize_txt(x[[prop_field]])
+  x$lieu_dit_norm <- normalize_txt(x[[lieu_dit_field]])
 
   res <- x
   if (!is.null(prop)) {

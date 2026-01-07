@@ -1,33 +1,3 @@
-#' Retrieve and normalize a WFS layer with happign
-#'
-#' Downloads a WFS layer with happign, transforms it to the specified CRS and
-#' removes Z/M coordinates.
-#'
-#' @param x An `sf` object used as spatial filter.
-#' @param layer `character`. Name of the WFS layer to request.
-#' @param crs `integer`. Target EPSG code for the output. Defaults to `2154`.
-#'
-#' @return An `sf` object transformed to the target CRS, `NULL` if the request fails.
-#'
-#' @noRd
-get_topo <- function(x, layer, crs = 2154, strict = TRUE) {
-
-  f <- happign::get_wfs(
-    x = x,
-    layer = layer,
-    filename = NULL,
-    spatial_filter = "intersects") |>
-    quiet()
-
-  if (!(is.null(f))){
-    f <- sf::st_transform(f, crs) |>
-      sf::st_zm() |>  # Security if there Z dim in the dataset (common case in bd topo)
-      quiet()
-  }
-
-  return(invisible(f))
-}
-
 #' Retrieve hydrographic polygons around an area
 #'
 #' @param x An `sf` object used as the input area.
@@ -49,10 +19,12 @@ get_topo <- function(x, layer, crs = 2154, strict = TRUE) {
 get_hydro_poly <- function(x){
 
   # convex buffer
-  convex <- envelope(x, 1000)
+  crs <- 2154
+  x <- sf::st_transform(x, crs)
+  fetch_envelope <- envelope(x, 1000)
 
   # empty sf
-  hydro_poly <-  create_empty_sf("POLYGON") |>
+  hydro_poly <- create_empty_sf("POLYGON") |>
     seq_normalize("vct_poly")
 
   # standardized field names
@@ -61,9 +33,11 @@ get_hydro_poly <- function(x){
   source <-  seq_field("source")$name
 
   # retrieve rso
-  rso <- get_topo(convex, "BDTOPO_V3:reservoir")
+  rso <- happign::get_wfs(
+    fetch_envelope, "BDTOPO_V3:reservoir", verbose = FALSE
+  ) |> sf::st_transform(crs)
 
-  if(!(is.null(rso))){
+  if(nrow(rso)){
     rso[[type]] <- "RSO"
     rso[[source]] <- "IGNF_BDTOPO_V3"
 
@@ -72,9 +46,11 @@ get_hydro_poly <- function(x){
   }
 
   # surface
-  sfo <- get_topo(convex, "BDTOPO_V3:surface_hydrographique")
+  sfo <- happign::get_wfs(
+    fetch_envelope, "BDTOPO_V3:surface_hydrographique", verbose = FALSE
+  ) |> sf::st_transform(crs)
 
-  if(!(is.null(sfo))){
+  if(nrow(sfo)){
     sfo[[type]] <- ifelse(sfo$persistance == "Permanent", "SFO", "SFI")
     sfo[[name]] <- sfo$cpx_toponyme_de_plan_d_eau
     sfo[[source]] <- "IGNF_BDTOPO_V3"
@@ -83,7 +59,7 @@ get_hydro_poly <- function(x){
     hydro_poly <- rbind(hydro_poly, sfo)
   }
 
-  invisible(hydro_poly)
+  return(invisible(hydro_poly))
 }
 
 #' Retrieve and assemble hydrographic lines around an area
@@ -112,7 +88,9 @@ get_hydro_poly <- function(x){
 get_hydro_line <- function(x){
 
   # convex buffer
-  convex <- envelope(x, 1000)
+  crs <- 2154
+  x <- sf::st_transform(x, crs)
+  fetch_envelope <- envelope(x, 1000)
 
   # empty sf
   hydro_line <- create_empty_sf("LINESTRING") |>
@@ -124,9 +102,11 @@ get_hydro_line <- function(x){
   source <-  seq_field("source")$name
 
   # troncon
-  rui <- get_topo(convex, "BDTOPO_V3:troncon_hydrographique")
+  rui <- happign::get_wfs(
+    fetch_envelope, "BDTOPO_V3:troncon_hydrographique", verbose = FALSE
+  ) |> sf::st_transform(crs)
 
-  if(!(is.null(rui))){
+  if(nrow(rui)){
     rui[[type]] = ifelse(rui$persistance == "Permanent", "RUI", "RIN")
     rui[[name]] = rui$cpx_toponyme_de_cours_d_eau
     rui[[source]] <- "IGNF_BDTOPO_V3"
@@ -135,7 +115,7 @@ get_hydro_line <- function(x){
     hydro_line <- rbind(hydro_line, rui)
   }
 
-  invisible(hydro_line)
+  return(invisible(hydro_line))
 }
 
 #' Retrieve and assemble hydrographic points around an area
@@ -164,7 +144,9 @@ get_hydro_line <- function(x){
 get_hydro_point <- function(x){
 
   # convex buffer
-  convex <- envelope(x, 1000)
+  crs <- 2154
+  x <- sf::st_transform(x, crs)
+  fetch_envelope <- envelope(x, 1000)
 
   # empty sf
   hydro_point <- create_empty_sf("POINT") |>
@@ -176,9 +158,11 @@ get_hydro_point <- function(x){
   source <-  seq_field("source")$name
 
   # mare
-  mar <- get_topo(convex, "BDTOPO_V3:detail_hydrographique")
+  mar <- happign::get_wfs(
+    fetch_envelope, "BDTOPO_V3:detail_hydrographique", verbose = FALSE
+  ) |> sf::st_transform(crs)
 
-  if(!(is.null(mar))){
+  if(nrow(mar)){
     mar[[type]] <- "MAR"
     mar[[name]] <- mar$toponyme
     mar[[source]] <- "IGNF_BDTOPO_V3"
@@ -187,7 +171,7 @@ get_hydro_point <- function(x){
     hydro_point <- rbind(hydro_point, mar)
   }
 
-  invisible(hydro_point)
+  return(invisible(hydro_point))
 }
 
 #' Generates hydrographic polygon, line and point layers for a Sequoia project.

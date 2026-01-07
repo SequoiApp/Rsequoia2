@@ -31,7 +31,7 @@ test_that("get_mnhn() works with mocked WFS", {
   x <- sf::st_as_sf(sf::st_sfc(sf::st_point(c(5, 5)), crs = 2154))
 
   local_mocked_bindings(
-    get_wfs = function(x, layer, overwrites, spatial_filter) x,
+    get_wfs = function(...) x,
     .package = "happign"
   )
 

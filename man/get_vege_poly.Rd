@@ -7,18 +7,10 @@
 get_vege_poly(x)
 }
 \arguments{
-\item{x}{An \code{sf} object used as the input area.}
+\item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
 }
 \value{
-An \code{sf} object containing forest vegetation polygons with
-standardized fields, including:
-\itemize{
-\item \code{TYPE} — Vegetation type
-\itemize{
-\item \code{FOR} = Forest
-}
-\item \code{ORIGIN} — Source of the data (\code{IGNF_MASQUE-FORET})
-}
+An \code{sf} object containing forest vegetation polygons
 }
 \description{
 Retrieve forest vegetation polygons around an area

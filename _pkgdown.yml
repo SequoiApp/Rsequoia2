@@ -1,4 +1,6 @@
 url: https://mucau.github.io/Rsequoia2/
 template:
   bootstrap: 5
-
+  footer:
+    left: "Developed collaboratively by the Rsequoia2 team"
+    right: "© 2026 Rsequoia2"

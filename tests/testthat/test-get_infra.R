@@ -104,3 +104,4 @@ test_that("get_infra_point() returns empty sf on area with no point infrastructu
   expect_true(all(c(type, nature, source, name) %in% names(infra_point_empty)))
   expect_true(all(sf::st_geometry_type(infra_point_empty) == "POINT"))
 })
+

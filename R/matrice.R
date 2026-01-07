@@ -21,7 +21,7 @@
 create_matrice <- function(dirname = ".", id = "MY_FOREST", overwrite = FALSE, verbose = TRUE){
 
   matrice <- data.frame(
-    "id" = id,
+    "identifiant" = id,
     "prop" = "NAME OF THE OWNER",
     "insee" = "33103",
     "prefixe" = "000",
