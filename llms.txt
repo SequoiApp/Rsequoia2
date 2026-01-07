@@ -1,4 +1,4 @@
-# Rsequoia2
+# Rsequoia2 ![](reference/figures/Rsequoia2_logo.png)
 
 The goal of Rsequoia2 is to help french forest manager by retrieving and
 creating spatial data

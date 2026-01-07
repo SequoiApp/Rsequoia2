@@ -187,7 +187,7 @@ sequoia_dir <- file.path(tempdir(), "MY_FOREST")
 dir.create(sequoia_dir)
 
 matrice_path <- create_matrice(sequoia_dir, id = "MY_FOREST")
-#> ✔ Excel file created at: /tmp/Rtmpfojr73/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/Rtmp3RyFyn/MY_FOREST/MY_FOREST_matrice.xlsx
 ```
 
 You can then manually fill the Excel file.
@@ -226,8 +226,6 @@ write_xlsx(matrice, file.path(sequoia_dir, "ECKMUHL_matrice.xlsx"))
 ``` r
 parca_path <- seq_parca(sequoia_dir)
 #> ℹ Downloading BDP from IGN...
-#> ⠙ iterating 1 done (0.34/s) | 2.9s
-#> iterating ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 #> ✔ 9 of 9 ETALAB geom successfully replaced with BDP geom.
 #> ✔ Vector layer "v.seq.parca.poly" saved to ECKMUHL_SEQ_PARCA_poly.geojson.
 parca <- read_sf(parca_path)
