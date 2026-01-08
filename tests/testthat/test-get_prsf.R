@@ -1,31 +1,44 @@
-test_that("get_prsf() returns sf with expected fields and values", {
-  skip_on_cran()
-  skip_on_ci()
+test_that("get_prsf() returns null when no data", {
+  x <- sf::st_as_sf(sf::st_sfc(sf::st_point(c(5, 5)), crs = 2154))
 
-  # area_sf
-  bbox_vals <- c(xmin = 844053.0, ymin = 6831061.6, xmax = 847714.2, ymax = 6833748.3 )
-  poly <- sf::st_as_sfc(sf::st_bbox(bbox_vals, crs = 2154))
-  area_sf <- sf::st_sf(id = 1, geometry = poly)
+  testthat::local_mocked_bindings(
+    get_wfs = function(...) create_empty_sf("POINT"),
+    .package = "happign"
+  )
 
-  # get_toponyme()
-  prsf <- get_prsf(area_sf)
+  prsf <- get_prsf(x)
 
   # tests
-  expect_s3_class(prsf, "sf")
-  expect_true(all(sf::st_geometry_type(prsf) == "POINT"))
-  expect_true(sf::st_crs(prsf)$epsg == 2154)
+  expect_null(prsf, "sf")
 })
 
-test_that("get_prsf() returns NULL on area with no forest", {
-  skip_on_cran()
-  skip_on_ci()
+test_that("get_prsf() works", {
 
-  # empty_area_sf
-  empty_bbox <- c(xmin = 0, ymin = 0, xmax = 1, ymax = 1)
-  empty_poly <- sf::st_as_sfc(sf::st_bbox(empty_bbox, crs = 2154))
-  empty_area_sf <- sf::st_sf(id = 1, geometry = empty_poly)
+  x <- sf::st_as_sf(sf::st_sfc(sf::st_point(c(5, 5)), crs = 2154))
+  point <- sf::st_as_sf(sf::st_sfc(sf::st_point(c(5, 5)), crs = 2154))
 
-  prsf <- get_prsf(empty_area_sf)
+  testthat::local_mocked_bindings(
+    get_wfs = function(...) point,
+    .package = "happign"
+  )
 
-  expect_null(prsf)
+  prsf <- get_prsf(x)
+
+  expect_s3_class(prsf, "sf")
+})
+
+test_that("get_prsf() force crs to 2154", {
+
+  x <- sf::st_as_sf(sf::st_sfc(sf::st_point(c(5, 5)), crs = 4326))
+  point <- sf::st_as_sf(sf::st_sfc(sf::st_point(c(5, 5)), crs = 4326))
+
+  testthat::local_mocked_bindings(
+    get_wfs = function(...) point,
+    .package = "happign"
+  )
+
+  prsf <- get_prsf(x)
+
+  expect_s3_class(prsf, "sf")
+  expect_equal(st_crs(prsf)$srid, "EPSG:2154")
 })

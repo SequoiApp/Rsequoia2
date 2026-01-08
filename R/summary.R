@@ -2,7 +2,7 @@ seq_summary <- function(dirname = ".", overwrite = FALSE, verbose = TRUE){
 
   ua <- seq_read("v.seq.ua.poly", dirname = dirname)
   ua_path <- "C:\\Users\\PaulCarteron\\Desktop\\temp\\sequoia_test\\ESTREMONT_UA_polygon.shp"
-  ua <- read_sf(ua_path) |> seq_normalize("ua") |> st_drop_geometry()
+  ua <- sf::read_sf(ua_path) |> seq_normalize("ua") |> sf::st_drop_geometry()
 
   sum_surf_by <- function(ua, ...){
     surf_cor <- seq_field("surf_cor")$name
@@ -11,11 +11,11 @@ seq_summary <- function(dirname = ".", overwrite = FALSE, verbose = TRUE){
     by_formula <- paste(by, collapse = " + ")
 
     aggregate(
-      as.formula(paste(surf_cor, "~", by_formula)),
+      stats::as.formula(paste(surf_cor, "~", by_formula)),
       data = ua,
       FUN = sum,
       na.rm = TRUE,
-      na.action = na.pass
+      na.action = stats::na.pass
     )
   }
   order_by <- function(to_order, ..., decreasing = FALSE) {
@@ -31,7 +31,7 @@ seq_summary <- function(dirname = ".", overwrite = FALSE, verbose = TRUE){
     to_order[o, , drop = FALSE]
   }
   pivot <- function(to_pivot, row, col, ...){
-    pivoted <- reshape(to_pivot,
+    pivoted <- stats::reshape(to_pivot,
             idvar = seq_field(row)$name,
             timevar = seq_field(col)$name,
             sep = "___",

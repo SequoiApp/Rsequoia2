@@ -17,12 +17,15 @@ Retrieve forest vegetation lines around an area
 }
 \details{
 The function derives forest vegetation linear features from
-vegetation polygons obtained with \code{get_vege_poly()}.
+vegetation polygons obtained with \code{\link[=get_vege_poly]{get_vege_poly()}}.
 
-Polygons are dissolved with a tolerance of 5 meters, converted
-to linear geometries, and intersected with a 1499 m convex buffer
-around \code{x}. Resulting geometries are cast to \code{LINESTRING} and
-normalized.
+GIS workflow :
+\itemize{
+\item Polygon are intersected to a 1500m buffer;
+\item Polygon are cast to \code{LINESTRING};
+\item Line are intersected with a 1500 buffer to remove intersection line
+from first step
+}
 
 If no vegetation polygons are available, the function returns
 an empty standardized \code{sf} object.

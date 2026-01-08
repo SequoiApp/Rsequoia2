@@ -155,7 +155,7 @@ get_vege_line <- function(x) {
 #' If no vegetation areas are found, the function returns an empty
 #' standardized `sf` object of type `POINT`.
 #'
-#' @seealso [get_vege_poly()], [get_veg_line()]
+#' @seealso [get_vege_poly()], [get_vege_line()]
 #'
 #' @export
 get_vege_point <- function(x){

@@ -25,13 +25,13 @@ attribute fields:
 }
 }
 \description{
-Builds a convex buffer around the input geometry, retrieves toponymic
+Builds a fetch_envelope buffer around the input geometry, retrieves toponymic
 point features from the BDTOPO dataset, classifies them by thematic type
 (hydrographic, vegetation, or other), normalizes the result, and returns
 a standardized \code{sf} point layer.
 }
 \details{
-The function creates a 1000 m convex buffer around the input geometry \code{x}
+The function creates a 1000 m fetch_envelope buffer around the input geometry \code{x}
 and retrieves toponymic point features from the BDTOPO toponymy layer.
 Retrieved features are classified into thematic types based on their
 object class, attribute names are standardized, and geometries are

@@ -59,7 +59,7 @@ download_legal_entity <- function(cache = NULL, verbose = TRUE) {
 
 globalVariables(c(
   "dep", "com", "prefix", "section", "numero", "nature", "surf_tot",
-  "contenance", "prop_norm", "lieu_dit_norm"
+  "contenance", "prop_norm", "lieu_dit_norm", "idu"
 ))
 #' Create a forest matrice for legal entity from insee code
 #'

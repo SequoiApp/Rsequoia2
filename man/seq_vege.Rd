@@ -7,8 +7,8 @@
 seq_vege(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Path to the directory. Defaults to the current
-working directory.}
+\item{dirname}{\code{character} Directory where the matrice file is located.
+Defaults to the current working directory.}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
@@ -27,9 +27,6 @@ directory using \code{\link[=seq_write]{seq_write()}}.
 \details{
 Each vegetation layer is always written to disk using \code{\link[=seq_write]{seq_write()}},
 even when it contains no features (\code{nrow == 0}).
-
-Informational messages are displayed to indicate whether a layer
-contains features or is empty.
 }
 \seealso{
 \code{\link[=get_vege_poly]{get_vege_poly()}}, \code{\link[=get_vege_line]{get_vege_line()}}, \code{\link[=get_vege_point]{get_vege_point()}},

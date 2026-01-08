@@ -31,7 +31,7 @@ sequoia <- function(path = NULL) {
   message("Your project folder path is: ", path)
 
   choose_option <- function(options, title) {
-    res <- select.list(
+    res <- utils::select.list(
       options,
       multiple = FALSE,
       title = title,
