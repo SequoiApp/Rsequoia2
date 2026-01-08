@@ -9,18 +9,22 @@ You can install the development version of Rsequoia2 from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-pak::pak("mucau/Rsequoia2")
+install.packages("devtools")
+devtools::install_github("SequoiApp/Rsequoia2")
 ```
 
-## Example
+## Quick execution
 
-This is a basic example which shows you how to solve a common problem:
+For a quick package execution, try:
 
 ``` r
 library(Rsequoia2)
-## basic example code
+path <- sequoia()
 ```
+
+The
+[`sequoia()`](https://mucau.github.io/Rsequoia2/reference/sequoia.md)
+function launches the main interactive workflow for `Rsequoia2`.
 
 # Package index
 
@@ -161,16 +165,6 @@ library(Rsequoia2)
 - [`read_matrice()`](https://mucau.github.io/Rsequoia2/reference/read_matrice.md)
   : Read matrice and format for Rsequoia2
 
-- [`remove_holes()`](https://mucau.github.io/Rsequoia2/reference/remove_holes.md)
-  :
-
-  Remove Holes in a *PARCA* Layer
-
-- [`remove_overlaps()`](https://mucau.github.io/Rsequoia2/reference/remove_overlaps.md)
-  :
-
-  Remove Overlaps in a *PARCA* Layer
-
 - [`search_legal_entity()`](https://mucau.github.io/Rsequoia2/reference/search_legal_entity.md)
   : Helpers to search within a forest matrix
 
@@ -259,6 +253,9 @@ library(Rsequoia2)
 
 - [`seq_xlsx()`](https://mucau.github.io/Rsequoia2/reference/seq_xlsx.md)
   : Save Multiple Data Frames to an Excel Workbook with Styling
+
+- [`sequoia()`](https://mucau.github.io/Rsequoia2/reference/sequoia.md)
+  : Rsequoia2 Main Interactive Workflow
 
 - [`style_table()`](https://mucau.github.io/Rsequoia2/reference/style_table.md)
   : Style a Data Frame Table in an openxlsx2 Workbook

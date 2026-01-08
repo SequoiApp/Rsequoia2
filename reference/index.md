@@ -137,16 +137,6 @@
 - [`read_matrice()`](https://mucau.github.io/Rsequoia2/reference/read_matrice.md)
   : Read matrice and format for Rsequoia2
 
-- [`remove_holes()`](https://mucau.github.io/Rsequoia2/reference/remove_holes.md)
-  :
-
-  Remove Holes in a *PARCA* Layer
-
-- [`remove_overlaps()`](https://mucau.github.io/Rsequoia2/reference/remove_overlaps.md)
-  :
-
-  Remove Overlaps in a *PARCA* Layer
-
 - [`search_legal_entity()`](https://mucau.github.io/Rsequoia2/reference/search_legal_entity.md)
   : Helpers to search within a forest matrix
 
@@ -235,6 +225,9 @@
 
 - [`seq_xlsx()`](https://mucau.github.io/Rsequoia2/reference/seq_xlsx.md)
   : Save Multiple Data Frames to an Excel Workbook with Styling
+
+- [`sequoia()`](https://mucau.github.io/Rsequoia2/reference/sequoia.md)
+  : Rsequoia2 Main Interactive Workflow
 
 - [`style_table()`](https://mucau.github.io/Rsequoia2/reference/style_table.md)
   : Style a Data Frame Table in an openxlsx2 Workbook

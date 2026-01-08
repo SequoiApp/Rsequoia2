@@ -9,15 +9,19 @@ You can install the development version of Rsequoia2 from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-pak::pak("mucau/Rsequoia2")
+install.packages("devtools")
+devtools::install_github("SequoiApp/Rsequoia2")
 ```
 
-## Example
+## Quick execution
 
-This is a basic example which shows you how to solve a common problem:
+For a quick package execution, try:
 
 ``` r
 library(Rsequoia2)
-## basic example code
+path <- sequoia()
 ```
+
+The
+[`sequoia()`](https://mucau.github.io/Rsequoia2/reference/sequoia.md)
+function launches the main interactive workflow for `Rsequoia2`.
