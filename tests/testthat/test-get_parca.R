@@ -18,6 +18,11 @@ test_that("get_parca() works (local only)", {
   expect_s3_class(out, "sf")
   expect_snapshot(str(sf::st_drop_geometry(out)))
 
+  f <- \(x) seq_field((x))$name
+  expect_false(anyNA(out[[f("section")]]))
+  expect_false(anyNA(out[[f("prefix")]]))
+  expect_false(anyNA(out[[f("numero")]]))
+
 })
 
 test_that("get_parca() abort when idu are invalid", {
