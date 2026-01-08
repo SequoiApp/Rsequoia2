@@ -20,6 +20,47 @@ test_that("get_parca() works (local only)", {
 
 })
 
+test_that("get_parca() abort when idu are invalid", {
+
+  idu <- c("352890000A0145", "352890000A0147")
+  local_mocked_bindings(
+    read_sf = function(...) data.frame(
+      id = "other_idu",
+      prefixe = "000",
+      section = "0A",
+      numero = "0001"
+    )
+  )
+
+  expect_error(get_parca(idu), "Invalid idu detected:")
+
+})
+
+test_that("get_parca() add bdp geom when possible", {
+
+  fake_etalab <- sf::st_sf(
+    idu = 1:2,
+    commune = "29158",
+    geometry = sf::st_sfc(replicate(2, sf::st_point(c(1, 1)), FALSE))
+  )
+
+  geom_bdp <- sf::st_sfc(sf::st_point(c(2, 2)))
+  replaced_idu <- 2
+  fake_bdp <- sf::st_sf(
+    idu = replaced_idu,
+    geometry = geom_bdp
+  )
+
+  local_mocked_bindings(
+    get_parca_etalab = function(idu) fake_etalab ,
+    get_parca_bdp = function(idu) fake_bdp
+  )
+
+  res <- get_parca(idu = 1:2, bdp_geom = TRUE, verbose = FALSE)
+  expect_identical(res$geometry[replaced_idu,], geom_bdp)
+})
+
+
 test_that("get_parca() add bdp geom when possible", {
 
   fake_etalab <- sf::st_sf(

@@ -32,6 +32,7 @@ get_parca_bdp <- function(idu){
 #' @export
 get_parca_etalab <- function(idu){
   url <- "https://cadastre.data.gouv.fr/bundler/cadastre-etalab/communes/%s/geojson/parcelles"
+  idu <- unique(idu)
   idu_parts <- idu_split(idu)
 
   urls <- sprintf(url, unique(idu_parts$insee))
@@ -41,6 +42,12 @@ get_parca_etalab <- function(idu){
   etalab$prefixe <- pad_left(etalab$prefixe, 3)
   etalab$section <- pad_left(etalab$section, 2)
   etalab$numero <- pad_left(etalab$numero, 4)
+
+  invalid_idu <- !idu %in% etalab$id
+  has_invalid_idu <- sum(invalid_idu) > 0
+  if (has_invalid_idu){
+    cli::cli_abort("Invalid idu detected: {.vals {idu[invalid_idu]}}")
+  }
 
   etalab <- etalab[etalab$id %in% idu,]
 
