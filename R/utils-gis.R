@@ -260,6 +260,7 @@ buffer_to_convex <- function(x, dist, crs = 2154) {
 #'   in map units (usually meters).
 #' @param min_area `numeric`, default `0.1`. Minimum area to preserve
 #'   (in square map units).
+#' @param verbose `logical` If `TRUE`, display progress messages.
 #'
 #' @return An `sf` object with cleaned geometries.
 #'
@@ -271,7 +272,8 @@ buffer_to_convex <- function(x, dist, crs = 2154) {
 clean_topology <- function(sf_obj,
                            tool = "snap",
                            snap_tolerance = 0.05,
-                           min_area = 0.1) {
+                           min_area = 0.1,
+                           verbose = TRUE) {
 
   if (!inherits(sf_obj, "sf")) {
     cli::cli_abort("`sf_obj` must be an sf object.")
@@ -307,5 +309,6 @@ clean_topology <- function(sf_obj,
   cleaned_sf <- sf::st_read(output_path, quiet = TRUE, stringsAsFactors = FALSE)
   cleaned_sf <- cleaned_sf[, -1, drop = FALSE]
   cleaned_sf <- sf::st_make_valid(cleaned_sf)
+  if (verbose) cli::cli_alert_success("All UG are consistent.")
   cleaned_sf
 }
