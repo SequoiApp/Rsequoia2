@@ -23,7 +23,7 @@ Imports:
     units,
     yaml
 Remotes:
-    github::mucau/frheritage
+    github::mucau/frheritage,
     github::paul-carteron/happign
 Suggests: 
     testthat (>= 3.3.0),
