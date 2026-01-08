@@ -204,7 +204,7 @@ seq_parca <- function(
     pad_left(m[[prefix]], 3),
     pad_left(m[[section]], 2),
     pad_left(m[[numero]], 4)
-    )
+  )
 
   # check empty lieudit in matrice
   have_empty_lieu_dit <- any(is.na(m[[lieu_dit]]))
@@ -220,7 +220,7 @@ seq_parca <- function(
   names(raw_parca)[names(raw_parca) == lieu_dit] <- "RAW_LIEU_DIT"
 
   # merge raw_parca with matrice
-  seq_parca <- merge(m, raw_parca, by = "IDU", all.x = TRUE) |>
+  seq_parca <- merge(m, raw_parca, by = idu, all.x = TRUE, suffixes = c("", ".raw_parca")) |>
     sf::st_as_sf() |>
     sf::st_transform(2154)
 
@@ -265,10 +265,11 @@ seq_parca <- function(
 #' @importFrom sf st_area
 #'
 #' @export
-parca_check_area <- function(parca,
-                             atol = 500,
-                             rtol = 0.05,
-                             verbose = TRUE) {
+parca_check_area <- function(
+    parca,
+    atol = 500,
+    rtol = 0.05,
+    verbose = TRUE){
 
   surf_cad <- seq_field("surf_cad")$name
 
