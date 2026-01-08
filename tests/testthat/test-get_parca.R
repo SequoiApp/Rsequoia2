@@ -60,31 +60,6 @@ test_that("get_parca() add bdp geom when possible", {
   expect_identical(res$geometry[replaced_idu,], geom_bdp)
 })
 
-
-test_that("get_parca() add bdp geom when possible", {
-
-  fake_etalab <- sf::st_sf(
-    idu = 1:2,
-    commune = "29158",
-    geometry = sf::st_sfc(replicate(2, sf::st_point(c(1, 1)), FALSE))
-  )
-
-  geom_bdp <- sf::st_sfc(sf::st_point(c(2, 2)))
-  replaced_idu <- 2
-  fake_bdp <- sf::st_sf(
-    idu = replaced_idu,
-    geometry = geom_bdp
-  )
-
-  local_mocked_bindings(
-    get_parca_etalab = function(idu) fake_etalab ,
-    get_parca_bdp = function(idu) fake_bdp
-  )
-
-  res <- get_parca(idu = 1:2, bdp_geom = TRUE, verbose = FALSE)
-  expect_identical(res$geometry[replaced_idu,], geom_bdp)
-})
-
 test_that("get_parca() does not replace geometry when BDP has no matching IDU", {
 
   fake_etalab <- sf::st_sf(

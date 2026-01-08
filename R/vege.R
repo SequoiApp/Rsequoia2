@@ -138,13 +138,13 @@ get_vege_line <- function(x) {
 #'   features with standardized Sequoia fields, including:
 #'
 #' @details
-#' The function retrieves BD Forêt V2 vegetation areas within a 1000 m convex
+#' The function retrieves BD Foret V2 vegetation areas within a 1000 m convex
 #' buffer around `x`. Each polygon is classified into a standardized vegetation
 #' type based on its original `nature` attribute.
 #'
 #' `TYPE`: Vegetation type code derived from BDTOPO nature values:
 #'     - `Feuillus`: Deciduous forest
-#'     - `Résineux`: Coniferous forest
+#'     - `Resineux`: Coniferous forest
 #'     - `Peupleraie`: Poplar plantation
 #'     - `Lande`: Woody heath
 #'
@@ -195,7 +195,7 @@ get_vege_point <- function(x){
   # https://geoservices.ign.fr/sites/default/files/2021-06/DC_BDForet_2-0.pdf
   map <- c(
     "FF1" = "Feuillus", "FO1" = "Feuillus",
-    "FF2" = "Résineux", "FO2" = "Résineux",
+    "FF2" = "Resineux", "FO2" = "Resineux",
     "FF3" = "Mixte", "FO3" = "Mixte",
     "FP"  = "Peupleraie",
     "LA" = "Lande"
