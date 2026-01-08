@@ -15,7 +15,8 @@
 #' The user must make selections at each step; cancelling or leaving a selection
 #' empty will stop the function.
 #'
-#' @return Invisibly returns NULL. The function primarily calls other Rsequoia2 functions.
+#' @return Invisibly returns `path`.
+#' The function primarily calls other Rsequoia2 functions.
 #'
 #' @export
 sequoia <- function(path = NULL) {
@@ -69,4 +70,6 @@ sequoia <- function(path = NULL) {
   if (choice == "Cartographic tools") {
     message("Not ready yet")
   }
+
+  return(invisible(path))
 }
