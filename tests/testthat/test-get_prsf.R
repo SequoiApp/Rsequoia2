@@ -40,5 +40,5 @@ test_that("get_prsf() force crs to 2154", {
   prsf <- get_prsf(x)
 
   expect_s3_class(prsf, "sf")
-  expect_equal(st_crs(prsf)$srid, "EPSG:2154")
+  expect_equal(sf::st_crs(prsf)$srid, "EPSG:2154")
 })
