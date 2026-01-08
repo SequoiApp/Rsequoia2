@@ -12,18 +12,11 @@ get_vege_poly(x)
 
 - x:
 
-  An `sf` object used as the input area.
+  `sf` or `sfc`; Geometry located in France.
 
 ## Value
 
-An `sf` object containing forest vegetation polygons with standardized
-fields, including:
-
-- `TYPE` — Vegetation type
-
-  - `FOR` = Forest
-
-- `ORIGIN` — Source of the data (`IGNF_MASQUE-FORET`)
+An `sf` object containing forest vegetation polygons
 
 ## Details
 

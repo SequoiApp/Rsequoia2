@@ -12,18 +12,11 @@ get_vege_line(x)
 
 - x:
 
-  An `sf` object used as the input area.
+  `sf` or `sfc`; Geometry located in France.
 
 ## Value
 
-An `sf` object containing forest vegetation line features with
-standardized fields, including:
-
-- `TYPE` — Vegetation type
-
-  - `FOR` = Forest
-
-- `SOURCE` — Data source (`IGNF_MASQUE-FORET`)
+An `sf` object containing forest vegetation line features.
 
 ## Details
 
@@ -31,9 +24,14 @@ The function derives forest vegetation linear features from vegetation
 polygons obtained with
 [`get_vege_poly()`](https://mucau.github.io/Rsequoia2/reference/get_vege_poly.md).
 
-Polygons are dissolved with a tolerance of 5 meters, converted to linear
-geometries, and intersected with a 1499 m convex buffer around `x`.
-Resulting geometries are cast to `LINESTRING` and normalized.
+GIS workflow :
+
+- Polygon are intersected to a 1500m buffer;
+
+- Polygon are cast to `LINESTRING`;
+
+- Line are intersected with a 1500 buffer to remove intersection line
+  from first step
 
 If no vegetation polygons are available, the function returns an empty
 standardized `sf` object.

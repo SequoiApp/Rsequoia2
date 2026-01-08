@@ -61,8 +61,8 @@ directory using <code><a href="seq_write.html">seq_write()</a></code>.</p>
 
 
 <dl><dt id="arg-dirname">dirname<a class="anchor" aria-label="anchor" href="#arg-dirname"></a></dt>
-<dd><p><code>character</code> Path to the directory. Defaults to the current
-working directory.</p></dd>
+<dd><p><code>character</code> Directory where the matrice file is located.
+Defaults to the current working directory.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
@@ -82,8 +82,6 @@ one per vegetation layer.</p>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Each vegetation layer is always written to disk using <code><a href="seq_write.html">seq_write()</a></code>,
 even when it contains no features (<code>nrow == 0</code>).</p>
-<p>Informational messages are displayed to indicate whether a layer
-contains features or is empty.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

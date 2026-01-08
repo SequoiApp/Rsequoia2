@@ -52,25 +52,22 @@
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>An <code>sf</code> object used as the input area.</p></dd>
+<dd><p><code>sf</code> or <code>sfc</code>; Geometry located in France.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An <code>sf</code> object containing forest vegetation line features
-with standardized fields, including:</p><ul><li><p><code>TYPE</code> — Vegetation type</p><ul><li><p><code>FOR</code> = Forest</p></li>
-</ul></li>
-<li><p><code>SOURCE</code> — Data source (<code>IGNF_MASQUE-FORET</code>)</p></li>
-</ul></div>
+    <p>An <code>sf</code> object containing forest vegetation line features.</p>
+    </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The function derives forest vegetation linear features from
 vegetation polygons obtained with <code><a href="get_vege_poly.html">get_vege_poly()</a></code>.</p>
-<p>Polygons are dissolved with a tolerance of 5 meters, converted
-to linear geometries, and intersected with a 1499 m convex buffer
-around <code>x</code>. Resulting geometries are cast to <code>LINESTRING</code> and
-normalized.</p>
-<p>If no vegetation polygons are available, the function returns
+<p>GIS workflow :</p><ul><li><p>Polygon are intersected to a 1500m buffer;</p></li>
+<li><p>Polygon are cast to <code>LINESTRING</code>;</p></li>
+<li><p>Line are intersected with a 1500 buffer to remove intersection line
+from first step</p></li>
+</ul><p>If no vegetation polygons are available, the function returns
 an empty standardized <code>sf</code> object.</p>
     </div>
     <div class="section level2">

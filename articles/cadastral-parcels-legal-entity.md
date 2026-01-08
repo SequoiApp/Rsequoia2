@@ -63,9 +63,12 @@ insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
 #> ℹ Downloading legal entity datasets...
-#> ⠙ 21 extracted | 960 MB (320 MB/s) | 3s
-#> ⠙ 28 extracted | 1.0 GB (300 MB/s) | 3.5s
-#> ⠹ 51 extracted | 2.0 GB (317 MB/s) | 6.5s
+#> ⠙ 11 extracted | 482 MB (166 MB/s) | 2.9s
+#> ⠹ 17 extracted | 773 MB (131 MB/s) | 5.9s
+#> ⠙ 15 extracted | 544 MB (232 MB/s) | 2.3s
+#> ⠹ 17 extracted | 631 MB ( 100 MB/s) | 6.3s
+#> ⠸ 23 extracted | 841 MB (100 MB/s) | 8.4s
+#> ⠼ 42 extracted | 1.7 GB (150 MB/s) | 11.3s
 #> ✔ Data available at: /home/runner/.cache/R/Rsequoia2
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
@@ -73,27 +76,34 @@ legal_entity_cp <- get_legal_entity(insee)
 #> ✔ Matrix successfully generated (2329 rows).
 
 head(legal_entity_cp)
-#>   IDENTIFIANT         PROPRIETAIRE  IDU REG_NOM REG_CODE DEP_NOM DEP_NUM
-#> 1                LES TERRES BLEUES <NA>    <NA>     <NA>    <NA>    <NA>
-#> 2                LES TERRES BLEUES <NA>    <NA>     <NA>    <NA>    <NA>
-#> 3                LES TERRES BLEUES <NA>    <NA>     <NA>    <NA>    <NA>
-#> 4                LES TERRES BLEUES <NA>    <NA>     <NA>    <NA>    <NA>
-#> 5             TI PORZH LES ROCHERS <NA>    <NA>     <NA>    <NA>    <NA>
-#> 6                     L ATELIER 89 <NA>    <NA>     <NA>    <NA>    <NA>
-#>   COM_NOM COM_CODE INSEE PREFIXE SECTION NUMERO              LIEU_DIT SURF_CA
-#> 1    <NA>     <NA> 29158     000      AB   0005          DES GOELANDS      NA
-#> 2    <NA>     <NA> 29158     000      AB   0006           DES EMBRUNS      NA
-#> 3    <NA>     <NA> 29158     000      AB   0007         SAINT GUENOLE      NA
-#> 4    <NA>     <NA> 29158     000      AB   0008          DES GOELANDS      NA
-#> 5    <NA>     <NA> 29158     000      AB   0011         ROGER QUINIOU      NA
-#> 6    <NA>     <NA> 29158     000      AB   0025 PIERRE ET JEAN DUPOUY      NA
-#>   SOURCE
-#> 1   <NA>
-#> 2   <NA>
-#> 3   <NA>
-#> 4   <NA>
-#> 5   <NA>
-#> 6   <NA>
+#>   IDENTIFIANT         PROPRIETAIRE            IDU  REG_NOM REG_CODE   DEP_NOM
+#> 1        <NA>    LES TERRES BLEUES 29158000AB0005 BRETAGNE       53 FINISTERE
+#> 2        <NA>    LES TERRES BLEUES 29158000AB0006 BRETAGNE       53 FINISTERE
+#> 3        <NA>    LES TERRES BLEUES 29158000AB0007 BRETAGNE       53 FINISTERE
+#> 4        <NA>    LES TERRES BLEUES 29158000AB0008 BRETAGNE       53 FINISTERE
+#> 5        <NA> TI PORZH LES ROCHERS 29158000AB0011 BRETAGNE       53 FINISTERE
+#> 6        <NA>         L ATELIER 89 29158000AB0025 BRETAGNE       53 FINISTERE
+#>   DEP_NUM  COM_NOM COM_CODE INSEE PREFIXE SECTION NUMERO              LIEU_DIT
+#> 1      29 PENMARCH       91 29158     000      AB   0005          DES GOELANDS
+#> 2      29 PENMARCH       91 29158     000      AB   0006           DES EMBRUNS
+#> 3      29 PENMARCH       91 29158     000      AB   0007         SAINT GUENOLE
+#> 4      29 PENMARCH       91 29158     000      AB   0008          DES GOELANDS
+#> 5      29 PENMARCH       91 29158     000      AB   0011         ROGER QUINIOU
+#> 6      29 PENMARCH       91 29158     000      AB   0025 PIERRE ET JEAN DUPOUY
+#>   SURF_CA
+#> 1     370
+#> 2   12358
+#> 3      97
+#> 4     765
+#> 5     339
+#> 6     237
+#>                                                                                                             SOURCE
+#> 1 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales
+#> 2 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales
+#> 3 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales
+#> 4 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales
+#> 5 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales
+#> 6 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales
 ```
 
 ### Search legal entity owner
@@ -137,5 +147,5 @@ seq_xlsx(
   x = list("MATRICE" = search_mat),
   filename = file.path(seq_dir, paste0(id, "_matrice.xlsx"))
 )
-#> ✔ Excel file created at: /tmp/RtmppXKceJ/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/RtmpYexpCa/MY_FOREST/MY_FOREST_matrice.xlsx
 ```

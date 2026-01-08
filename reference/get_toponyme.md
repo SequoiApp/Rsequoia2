@@ -1,9 +1,9 @@
 # Retrieve and classify toponymic point features around an area
 
-Builds a convex buffer around the input geometry, retrieves toponymic
-point features from the BDTOPO dataset, classifies them by thematic type
-(hydrographic, vegetation, or other), normalizes the result, and returns
-a standardized `sf` point layer.
+Builds a fetch_envelope buffer around the input geometry, retrieves
+toponymic point features from the BDTOPO dataset, classifies them by
+thematic type (hydrographic, vegetation, or other), normalizes the
+result, and returns a standardized `sf` point layer.
 
 ## Usage
 
@@ -38,8 +38,9 @@ attribute fields:
 
 ## Details
 
-The function creates a 1000 m convex buffer around the input geometry
-`x` and retrieves toponymic point features from the BDTOPO toponymy
-layer. Retrieved features are classified into thematic types based on
-their object class, attribute names are standardized, and geometries are
-normalized before being returned as a single `sf` point layer.
+The function creates a 1000 m fetch_envelope buffer around the input
+geometry `x` and retrieves toponymic point features from the BDTOPO
+toponymy layer. Retrieved features are classified into thematic types
+based on their object class, attribute names are standardized, and
+geometries are normalized before being returned as a single `sf` point
+layer.

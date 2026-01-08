@@ -19,8 +19,8 @@ seq_vege(dirname = ".", verbose = TRUE, overwrite = FALSE)
 
 - dirname:
 
-  `character` Path to the directory. Defaults to the current working
-  directory.
+  `character` Directory where the matrice file is located. Defaults to
+  the current working directory.
 
 - verbose:
 
@@ -41,9 +41,6 @@ one per vegetation layer.
 Each vegetation layer is always written to disk using
 [`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md),
 even when it contains no features (`nrow == 0`).
-
-Informational messages are displayed to indicate whether a layer
-contains features or is empty.
 
 ## See also
 

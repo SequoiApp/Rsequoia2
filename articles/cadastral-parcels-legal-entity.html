@@ -119,9 +119,12 @@ dep if owner have cadastral parcels accros multiple commune.</p>
 <span></span>
 <span><span class="va">legal_entity_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_legal_entity.html">get_legal_entity</a></span><span class="op">(</span><span class="va">insee</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading legal entity datasets...</span></span>
-<span><span class="co">#&gt; ⠙ 21 extracted | 960 MB (320 MB/s) | 3s</span></span>
-<span><span class="co">#&gt; ⠙ 28 extracted | 1.0 GB (300 MB/s) | 3.5s</span></span>
-<span><span class="co">#&gt; ⠹ 51 extracted | 2.0 GB (317 MB/s) | 6.5s</span></span>
+<span><span class="co">#&gt; ⠙ 11 extracted | 482 MB (166 MB/s) | 2.9s</span></span>
+<span><span class="co">#&gt; ⠹ 17 extracted | 773 MB (131 MB/s) | 5.9s</span></span>
+<span><span class="co">#&gt; ⠙ 15 extracted | 544 MB (232 MB/s) | 2.3s</span></span>
+<span><span class="co">#&gt; ⠹ 17 extracted | 631 MB ( 100 MB/s) | 6.3s</span></span>
+<span><span class="co">#&gt; ⠸ 23 extracted | 841 MB (100 MB/s) | 8.4s</span></span>
+<span><span class="co">#&gt; ⠼ 42 extracted | 1.7 GB (150 MB/s) | 11.3s</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Data available at: <span style="color: #0000BB;">/home/runner/.cache/R/Rsequoia2</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Reading CSV files...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Preparing CSV files...</span></span>
@@ -129,27 +132,34 @@ dep if owner have cadastral parcels accros multiple commune.</p>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Matrix successfully generated (<span style="color: #0000BB;">2329</span> rows).</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">legal_entity_cp</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   IDENTIFIANT         PROPRIETAIRE  IDU REG_NOM REG_CODE DEP_NOM DEP_NUM</span></span>
-<span><span class="co">#&gt; 1                LES TERRES BLEUES &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2                LES TERRES BLEUES &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3                LES TERRES BLEUES &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4                LES TERRES BLEUES &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5             TI PORZH LES ROCHERS &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 6                     L ATELIER 89 &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;   COM_NOM COM_CODE INSEE PREFIXE SECTION NUMERO              LIEU_DIT SURF_CA</span></span>
-<span><span class="co">#&gt; 1    &lt;NA&gt;     &lt;NA&gt; 29158     000      AB   0005          DES GOELANDS      NA</span></span>
-<span><span class="co">#&gt; 2    &lt;NA&gt;     &lt;NA&gt; 29158     000      AB   0006           DES EMBRUNS      NA</span></span>
-<span><span class="co">#&gt; 3    &lt;NA&gt;     &lt;NA&gt; 29158     000      AB   0007         SAINT GUENOLE      NA</span></span>
-<span><span class="co">#&gt; 4    &lt;NA&gt;     &lt;NA&gt; 29158     000      AB   0008          DES GOELANDS      NA</span></span>
-<span><span class="co">#&gt; 5    &lt;NA&gt;     &lt;NA&gt; 29158     000      AB   0011         ROGER QUINIOU      NA</span></span>
-<span><span class="co">#&gt; 6    &lt;NA&gt;     &lt;NA&gt; 29158     000      AB   0025 PIERRE ET JEAN DUPOUY      NA</span></span>
-<span><span class="co">#&gt;   SOURCE</span></span>
-<span><span class="co">#&gt; 1   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 6   &lt;NA&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt;   IDENTIFIANT         PROPRIETAIRE            IDU  REG_NOM REG_CODE   DEP_NOM</span></span>
+<span><span class="co">#&gt; 1        &lt;NA&gt;    LES TERRES BLEUES 29158000AB0005 BRETAGNE       53 FINISTERE</span></span>
+<span><span class="co">#&gt; 2        &lt;NA&gt;    LES TERRES BLEUES 29158000AB0006 BRETAGNE       53 FINISTERE</span></span>
+<span><span class="co">#&gt; 3        &lt;NA&gt;    LES TERRES BLEUES 29158000AB0007 BRETAGNE       53 FINISTERE</span></span>
+<span><span class="co">#&gt; 4        &lt;NA&gt;    LES TERRES BLEUES 29158000AB0008 BRETAGNE       53 FINISTERE</span></span>
+<span><span class="co">#&gt; 5        &lt;NA&gt; TI PORZH LES ROCHERS 29158000AB0011 BRETAGNE       53 FINISTERE</span></span>
+<span><span class="co">#&gt; 6        &lt;NA&gt;         L ATELIER 89 29158000AB0025 BRETAGNE       53 FINISTERE</span></span>
+<span><span class="co">#&gt;   DEP_NUM  COM_NOM COM_CODE INSEE PREFIXE SECTION NUMERO              LIEU_DIT</span></span>
+<span><span class="co">#&gt; 1      29 PENMARCH       91 29158     000      AB   0005          DES GOELANDS</span></span>
+<span><span class="co">#&gt; 2      29 PENMARCH       91 29158     000      AB   0006           DES EMBRUNS</span></span>
+<span><span class="co">#&gt; 3      29 PENMARCH       91 29158     000      AB   0007         SAINT GUENOLE</span></span>
+<span><span class="co">#&gt; 4      29 PENMARCH       91 29158     000      AB   0008          DES GOELANDS</span></span>
+<span><span class="co">#&gt; 5      29 PENMARCH       91 29158     000      AB   0011         ROGER QUINIOU</span></span>
+<span><span class="co">#&gt; 6      29 PENMARCH       91 29158     000      AB   0025 PIERRE ET JEAN DUPOUY</span></span>
+<span><span class="co">#&gt;   SURF_CA</span></span>
+<span><span class="co">#&gt; 1     370</span></span>
+<span><span class="co">#&gt; 2   12358</span></span>
+<span><span class="co">#&gt; 3      97</span></span>
+<span><span class="co">#&gt; 4     765</span></span>
+<span><span class="co">#&gt; 5     339</span></span>
+<span><span class="co">#&gt; 6     237</span></span>
+<span><span class="co">#&gt;                                                                                                             SOURCE</span></span>
+<span><span class="co">#&gt; 1 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales</span></span>
+<span><span class="co">#&gt; 2 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales</span></span>
+<span><span class="co">#&gt; 3 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales</span></span>
+<span><span class="co">#&gt; 4 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales</span></span>
+<span><span class="co">#&gt; 5 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales</span></span>
+<span><span class="co">#&gt; 6 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="search-legal-entity-owner">Search legal entity owner<a class="anchor" aria-label="anchor" href="#search-legal-entity-owner"></a>
@@ -186,7 +196,7 @@ filling it in excel, we encouraged you to do it before saving.</p>
 <span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"MATRICE"</span> <span class="op">=</span> <span class="va">search_mat</span><span class="op">)</span>,</span>
 <span>  filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">seq_dir</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">id</span>, <span class="st">"_matrice.xlsx"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Excel file created at: <span style="color: #0000BB;">/tmp/RtmppXKceJ/MY_FOREST/MY_FOREST_matrice.xlsx</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Excel file created at: <span style="color: #0000BB;">/tmp/RtmpYexpCa/MY_FOREST/MY_FOREST_matrice.xlsx</span></span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
