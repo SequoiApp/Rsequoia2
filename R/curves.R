@@ -32,8 +32,6 @@ get_curves <- function(x) {
     st_cast("LINESTRING") |>
     suppressWarnings()
 
-  curves <- curves[, setdiff(names(curves), names(fetch_envelope))]
-
   return(invisible(curves))
 }
 
@@ -81,11 +79,7 @@ seq_curves <- function(
 
   # Exit early if nothing to write
   if (is.null(curves) || nrow(curves) == 0) {
-    if (verbose) {
-      cli::cli_alert_info(
-        "No hypsometric curves features found: curves layer not written."
-      )
-    }
+    cli::cli_warn("No hypsometric curves features found: curves layer not written.")
     return(invisible(NULL))
   }
 

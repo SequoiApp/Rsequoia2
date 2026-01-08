@@ -1,31 +1,44 @@
-test_that("get_curves() returns sf with expected fields and values", {
-  skip_on_cran()
-  skip_on_ci()
+test_that("get_curves() returns null when no data", {
+  x <- sf::st_as_sf(sf::st_sfc(sf::st_point(c(5, 5)), crs = 2154))
 
-  # area_sf
-  bbox_vals <- c(xmin = 844053.0, ymin = 6831061.6, xmax = 847714.2, ymax = 6833748.3 )
-  poly <- sf::st_as_sfc(sf::st_bbox(bbox_vals, crs = 2154))
-  area_sf <- sf::st_sf(id = 1, geometry = poly)
+  testthat::local_mocked_bindings(
+    get_wfs = function(...) create_empty_sf("POINT"),
+    .package = "happign"
+  )
 
-  # get_toponyme()
-  curves <- get_curves(area_sf)
+  curves <- get_curves(x)
 
   # tests
-  expect_s3_class(curves, "sf")
-  expect_true(all(sf::st_geometry_type(curves) == "LINESTRING"))
-  expect_true(sf::st_crs(curves)$epsg == 2154)
+  expect_null(curves, "sf")
 })
 
-test_that("get_curves() returns NULL on area with no forest", {
-  skip_on_cran()
-  skip_on_ci()
+test_that("get_curves() works", {
 
-  # empty_area_sf
-  empty_bbox <- c(xmin = 0, ymin = 0, xmax = 1, ymax = 1)
-  empty_poly <- sf::st_as_sfc(sf::st_bbox(empty_bbox, crs = 2154))
-  empty_area_sf <- sf::st_sf(id = 1, geometry = empty_poly)
+  x <- sf::st_as_sf(sf::st_sfc(sf::st_point(c(5, 5)), crs = 2154))
+  line <- sf::st_as_sf(sf::st_sfc(sf::st_linestring(matrix(1:10, , 2)), crs = 2154))
 
-  curves <- get_curves(empty_area_sf)
+  testthat::local_mocked_bindings(
+    get_wfs = function(...) line,
+    .package = "happign"
+  )
 
-  expect_null(curves)
+  curves <- get_curves(x)
+
+  expect_s3_class(curves, "sf")
+  expect_all_true(sf::st_geometry_type(curves) == "LINESTRING")
+})
+
+test_that("get_curves() force crs to 2154", {
+
+  x <- sf::st_as_sf(sf::st_sfc(sf::st_point(c(5, 5)), crs = 4326))
+  line <- sf::st_as_sf(sf::st_sfc(sf::st_linestring(matrix(1:10, , 2)), crs = 2154))
+
+  testthat::local_mocked_bindings(
+    get_wfs = function(...) line,
+    .package = "happign"
+  )
+
+  curves <- get_curves(x)
+
+  expect_equal(sf::st_crs(curves)$srid, "EPSG:2154")
 })
