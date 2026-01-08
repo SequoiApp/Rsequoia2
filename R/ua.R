@@ -376,7 +376,8 @@ ua_to_ua <- function(ua, parca, verbose = TRUE){
   ua <- ua_check_area(ua, parca, verbose = verbose) |>
     ua_generate_ug(verbose = verbose) |>
     ua_generate_area(verbose = verbose) |>
-    ua_clean_ug()
+    ua_clean_ug() |>
+    clean_topology()
 
   is_valid <- ua_check_ug(ua, verbose = verbose)
   if (!is_valid) {
