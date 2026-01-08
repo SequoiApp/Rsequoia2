@@ -49,7 +49,7 @@ test_that("ua_to_ua() runs full workflow for valid inputs", {
     )
   )
 
-  res <- ua_to_ua(ua, parca, verbose = FALSE)
+  res <- ua_to_ua(ua, parca, verbose = FALSE) |> quiet()
 
   expect_s3_class(res, "sf")
   expect_equal(nrow(res), 3)

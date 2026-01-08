@@ -29,7 +29,8 @@ test_that("clean_topology() runs GRASS v.clean on simple geometry", {
     sf_obj,
     tool = "snap",
     snap_tolerance = 0.2,
-    min_area = 0.01
+    min_area = 0.01,
+    verbose = FALSE
   )
 
   expect_s3_class(result, "sf")
