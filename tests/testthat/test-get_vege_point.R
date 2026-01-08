@@ -81,7 +81,7 @@ test_that("get_vege_point() sets type and source fields", {
       crs = 2154
     )
   )
-  fv$code_tfv <- "FO2"  # Résineux
+  fv$code_tfv <- "FO2"  # Resineux
 
   testthat::local_mocked_bindings(
     get_wfs = function(...) fv,
@@ -96,7 +96,7 @@ test_that("get_vege_point() sets type and source fields", {
   expect_true(type %in% names(res))
   expect_true(source %in% names(res))
 
-  expect_true(all(res[[type]] == "Résineux"))
+  expect_true(all(res[[type]] == "Resineux"))
   expect_true(all(res[[source]] == "ignf_bd_foretv2"))
 })
 
