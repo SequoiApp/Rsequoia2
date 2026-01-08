@@ -30,7 +30,7 @@ reg_nom:
   definition: "Nom de la région selon l'INSEE"
 
 dep_num:
-  name: "DEP_NUM"
+  name: "DEP_CODE"
   alias: ["dep", "dep_code", "code_insee_du_departement"]
   class: "character"
   definition: "Code du département selon l'INSEE"

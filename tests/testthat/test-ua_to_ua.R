@@ -25,6 +25,10 @@ test_that("ua_to_ua() abort when IDU are invalid", {
 
 test_that("ua_to_ua() runs full workflow for valid inputs", {
 
+  if (!qgisprocess::has_qgis()) {
+    testthat::skip("QGIS not available")
+  }
+
   square <- function(x, y, size = 1) {
     sf::st_polygon(list(rbind(
       c(x, y),

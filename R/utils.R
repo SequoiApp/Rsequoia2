@@ -10,6 +10,8 @@
 #' @keywords internal
 #'
 pad_left <- function(x, width, fill = "0") {
+  x <- trimws(x)
+  x <- ifelse(is.na(x), "", x)
   gsub(" ", fill, sprintf(paste0("%", width, "s"), as.character(x)))
 }
 

@@ -115,9 +115,11 @@ read_matrice <- function(dirname = "."){
 
   m[[f("identifiant")]] <- id
   m[[f("insee")]] <- pad_left(m[[f("insee")]], 5)
-  m[[f("prefix")]] <- pad_left(m[[f("prefix")]], "0")
-  m[[f("section")]] <- pad_left(m[[f("section")]], "0")
-  m[[f("numero")]] <- pad_left(m[[f("numero")]], "0")
+  m[[f("prefix")]] <- pad_left(m[[f("prefix")]], 3)
+  m[[f("section")]] <- pad_left(m[[f("section")]], 2)
+  m[[f("numero")]] <- pad_left(m[[f("numero")]], 4)
+
+  m <- seq_normalize(m, "matrice")
 
   return(m)
 

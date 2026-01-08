@@ -36,7 +36,6 @@ test_that("read_matrice() errors when column(s) missing", {
 
 })
 
-
 test_that("read_matrice() errors when IDENTIFIANT is empty", {
 
   seq_cache <- file.path(tempdir(), "seq")
