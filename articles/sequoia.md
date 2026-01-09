@@ -66,7 +66,6 @@ uses the configuration to read any layer using its key (vector or
 raster).
 
 ``` r
-
 parca <- seq_read("parca")
 dem <- seq_read("dem")
 ```
