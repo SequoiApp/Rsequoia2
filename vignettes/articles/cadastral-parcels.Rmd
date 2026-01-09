@@ -161,9 +161,9 @@ To avoid formatting mistakes, you can generate an empty matrix with:
   
 ```{r create_matrice}
 my_forest_dir <- file.path(tempdir(), "MY_FOREST")
-dir.create(sequoia_dir)
+dir.create(my_forest_dir)
 
-matrice_path <- create_matrice(sequoia_dir, id = "MY_FOREST")
+matrice_path <- create_matrice(my_forest_dir, id = "MY_FOREST")
 ```
 
 You can then manually fill the Excel file.
