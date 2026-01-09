@@ -45,7 +45,7 @@ sequoia <- function(path = NULL) {
     "Correct UA" = function() seq_ua(path)
   )
 
-  choice <- menu(names(actions))
+  choice <- utils::menu(names(actions))
   actions[[choice]]()
 
   return(invisible(path))
@@ -80,7 +80,7 @@ menu_legal_entity <- function(path){
     "{length(p)} owners : {paste(p, collapse = ', ')}"
   ))
 
-  switch(menu(c("Confirm and continue", "Cancel")),
+  switch(utils::menu(c("Confirm and continue", "Cancel")),
          {
            identifiant <- readline("Choose the forest identifiant: ")
            create_matrice(dirname = path, id = identifiant, overwrite = TRUE)

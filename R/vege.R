@@ -270,15 +270,15 @@ seq_vege <- function(
   id_field <- seq_field("identifiant")$name
   id <- unique(parca[[id_field]])
 
-  vege_poly <- get_vege_poly(x)
+  vege_poly <- get_vege_poly(parca)
   vege_poly[[id_field]] <- id
   seq_write2(vege_poly, "v.vege.poly")
 
-  vege_line <- get_vege_line(x)
+  vege_line <- get_vege_line(parca)
   vege_line[[id_field]] <- id
   seq_write2(vege_line, "v.vege.line")
 
-  vege_point <- get_vege_point(x)
+  vege_point <- get_vege_point(parca)
   vege_point[[id_field]] <- id
   seq_write2(vege_point, "v.vege.point")
 
