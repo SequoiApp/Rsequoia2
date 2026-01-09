@@ -1,4 +1,4 @@
-# analysis_units
+# Analysis units
 
 ## What are we looking for?
 

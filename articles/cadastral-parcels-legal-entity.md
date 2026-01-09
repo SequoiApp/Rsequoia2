@@ -31,13 +31,13 @@ dir.create(seq_dir)
 
 In France, legal entity is known as “Personne morale”. Unlike a physical
 person, a legal entity has its own juridical existence and is identified
-by national codes such as SIREN (9 digits) or SIRET. In Forestry,
-typical entities include “groupements forestiers” or companies.
+by national codes such as SIREN or SIRET. In Forestry, typical entities
+include “groupements forestiers” or companies.
 
-France provides open datasets that describe cadastral parcels owned by
-legal entities. These files, published by the Direction Générale des
-Finances Publiques (DGFiP), allow users to retrieve cadastral parcels
-for a given owner.
+France provides open datasets that describe all cadastral parcels owned
+by legal entities. These files, published by the \***Direction Générale
+des Finances Publiques** (DGFiP), allow users to retrieve cadastral
+parcels for a given owner.
 
 `Rsequoia2` give acces to this dataset and helpers to search specific
 owner.
@@ -48,27 +48,29 @@ owner.
 function download and prepare data as a Sequoia matrice.
 
 There is a cache system to this function to avoid downloading each time.
-By default `cache = NULL`whic downlaod dtata in a dedicated cache dir
+By default `cache = NULL` which downlaod data in a dedicated cache dir
 (see [`tools::R_user_dir()`](https://rdrr.io/r/tools/userdir.html)).
 
 You should keep this directory but if for any reason you need raw data
-elswhere use `cache`.
+elsewhere use `cache` arg.
 
 Be aware that you can load data from a department code or an insee code.
-The first can be a bit time-consuming but you can then search all dep if
-owner have cadastral parcels accros multiple commune.
+The first can be a bit time-consuming but you can then search all
+selected dep(s) if owner have cadastral parcels accros multiple commune.
 
 ``` r
+# cp: cadastrals parcels
 insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
 #> ℹ Downloading legal entity datasets...
-#> ⠙ 11 extracted | 482 MB (166 MB/s) | 2.9s
-#> ⠹ 17 extracted | 773 MB (131 MB/s) | 5.9s
-#> ⠙ 15 extracted | 544 MB (232 MB/s) | 2.3s
-#> ⠹ 17 extracted | 631 MB ( 100 MB/s) | 6.3s
-#> ⠸ 23 extracted | 841 MB (100 MB/s) | 8.4s
-#> ⠼ 42 extracted | 1.7 GB (150 MB/s) | 11.3s
+#> ⠙ 1 extracted |  47 MB ( 16 MB/s) | 2.9s
+#> ⠹ 3 extracted | 112 MB ( 19 MB/s) | 5.9s
+#> ⠸ 4 extracted | 232 MB ( 26 MB/s) | 8.9s
+#> ⠼ 11 extracted | 492 MB ( 41 MB/s) | 11.9s
+#> ⠴ 21 extracted | 991 MB ( 66 MB/s) | 14.9s
+#> ⠙ 26 extracted | 974 MB (320 MB/s) | 3s
+#> ⠹ 50 extracted | 2.0 GB (335 MB/s) | 6s
 #> ✔ Data available at: /home/runner/.cache/R/Rsequoia2
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
@@ -83,13 +85,13 @@ head(legal_entity_cp)
 #> 4        <NA>    LES TERRES BLEUES 29158000AB0008 BRETAGNE       53 FINISTERE
 #> 5        <NA> TI PORZH LES ROCHERS 29158000AB0011 BRETAGNE       53 FINISTERE
 #> 6        <NA>         L ATELIER 89 29158000AB0025 BRETAGNE       53 FINISTERE
-#>   DEP_NUM  COM_NOM COM_CODE INSEE PREFIXE SECTION NUMERO              LIEU_DIT
-#> 1      29 PENMARCH       91 29158     000      AB   0005          DES GOELANDS
-#> 2      29 PENMARCH       91 29158     000      AB   0006           DES EMBRUNS
-#> 3      29 PENMARCH       91 29158     000      AB   0007         SAINT GUENOLE
-#> 4      29 PENMARCH       91 29158     000      AB   0008          DES GOELANDS
-#> 5      29 PENMARCH       91 29158     000      AB   0011         ROGER QUINIOU
-#> 6      29 PENMARCH       91 29158     000      AB   0025 PIERRE ET JEAN DUPOUY
+#>   DEP_CODE  COM_NOM COM_CODE INSEE PREFIXE SECTION NUMERO              LIEU_DIT
+#> 1       29 PENMARCH       91 29158     000      AB   0005          DES GOELANDS
+#> 2       29 PENMARCH       91 29158     000      AB   0006           DES EMBRUNS
+#> 3       29 PENMARCH       91 29158     000      AB   0007         SAINT GUENOLE
+#> 4       29 PENMARCH       91 29158     000      AB   0008          DES GOELANDS
+#> 5       29 PENMARCH       91 29158     000      AB   0011         ROGER QUINIOU
+#> 6       29 PENMARCH       91 29158     000      AB   0025 PIERRE ET JEAN DUPOUY
 #>   SURF_CA
 #> 1     370
 #> 2   12358
@@ -125,12 +127,43 @@ unique(search_mat$PROPRIETAIRE)
 #> [1] "GFA DE LA TORCHE" "GFA ADPF"
 ```
 
+[`search_legal_entity()`](https://mucau.github.io/Rsequoia2/reference/search_legal_entity.md)
+can also support multiple search pattern:
+
+``` r
+search_mat <- search_legal_entity(legal_entity_cp, prop = c("conservatoire", "espace", "naturel"))
+
+unique(search_mat$PROPRIETAIRE)
+#> [1] "CONSERVATOIRE DE L ESPACE LITTORAL ET DES RIVAGES LACUSTRES"
+#> [2] "CONSERVATOIRE DE L'ESPACE LITTORAL ET DES RIVAGES LACUSTRES"
+#> [3] "SCI ESPACE INTERIEUR"
+```
+
+Finally, `lieu_dit` can also be seached:
+
+``` r
+search_mat <- search_legal_entity(legal_entity_cp, lieu_dit = "phare")
+
+unique(search_mat[,c("PROPRIETAIRE", "LIEU_DIT")])
+#>                                     PROPRIETAIRE LIEU_DIT
+#> 692                                  LA VOILERIE DU PHARE
+#> 696                   379 RUE DU PHARE -PENMARCH DU PHARE
+#> 707 ETAT PAR DIRECTION DE L IMMOBILIER DE L ETAT DU PHARE
+#> 710                          COMMUNE DE PENMARCH DU PHARE
+#> 715                                       ECKMUL DU PHARE
+#> 720                                     VINCEAUR DU PHARE
+#> 745                     SCI BOULANGERIE COAT PIN DU PHARE
+#> 749                               BRISE DU LARGE DU PHARE
+#> 768                               SCI PLOUGONVEN DU PHARE
+```
+
 ### Save to start Sequoia process
 
-As you can see in article …, starting a Sequoia process need a excel
-matrice. To generate this one you can use
+Note that *the legal entity dataset doesn’t provide geometry !* It’s
+used to generate an excel matrice (“\*\_matrice.xlsx”) to start a
+Sequoia process.
 [`seq_xlsx()`](https://mucau.github.io/Rsequoia2/reference/seq_xlsx.md)
-function.
+function can be used to generate it.
 
 Notice that the `data.frame` generated with
 [`get_legal_entity()`](https://mucau.github.io/Rsequoia2/reference/get_legal_entity.md)
@@ -147,5 +180,17 @@ seq_xlsx(
   x = list("MATRICE" = search_mat),
   filename = file.path(seq_dir, paste0(id, "_matrice.xlsx"))
 )
-#> ✔ Excel file created at: /tmp/RtmpYexpCa/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/RtmpmfnzJF/MY_FOREST/MY_FOREST_matrice.xlsx
+
+seq_parca(seq_dir)
+#> ℹ Downloading BDP from IGN...
+#> ✔ 12 of 13 ETALAB geom successfully replaced with BDP geom.
+#> ✔ Vector layer "v.seq.parca.poly" saved to MY_FOREST_SEQ_PARCA_poly.geojson.
+parca <- seq_read("parca", seq_dir)
+
+tm_tiles("OpenStreetMap")+
+tm_shape(parca)+
+  tm_borders(col = "firebrick", lwd = 2)
 ```
+
+![](cadastral-parcels-legal-entity_files/figure-html/save_legal_entity-1.png)

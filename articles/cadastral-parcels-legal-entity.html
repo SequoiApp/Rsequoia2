@@ -33,7 +33,7 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/analysis_units.html">analysis_units</a></li>
+<li><a class="dropdown-item" href="../articles/analysis_units.html">Analysis units</a></li>
     <li><a class="dropdown-item" href="../articles/cadastral-parcels-legal-entity.html">Cadastral parcels - legal entity</a></li>
     <li><a class="dropdown-item" href="../articles/cadastral-parcels.html">Cadastral parcels</a></li>
     <li><a class="dropdown-item" href="../articles/sequoia.html">Sequoia</a></li>
@@ -92,13 +92,12 @@ case)</p>
 </h2>
 <p>In France, legal entity is known as “Personne morale”. Unlike a
 physical person, a legal entity has its own juridical existence and is
-identified by national codes such as SIREN (9 digits) or SIRET. In
-Forestry, typical entities include “groupements forestiers” or
-companies.</p>
-<p>France provides open datasets that describe cadastral parcels owned
-by legal entities. These files, published by the Direction Générale des
-Finances Publiques (DGFiP), allow users to retrieve cadastral parcels
-for a given owner.</p>
+identified by national codes such as SIREN or SIRET. In Forestry,
+typical entities include “groupements forestiers” or companies.</p>
+<p>France provides open datasets that describe all cadastral parcels
+owned by legal entities. These files, published by the
+*<strong>Direction Générale des Finances Publiques</strong> (DGFiP),
+allow users to retrieve cadastral parcels for a given owner.</p>
 <p><code>Rsequoia2</code> give acces to this dataset and helpers to
 search specific owner.</p>
 <div class="section level3">
@@ -107,24 +106,27 @@ search specific owner.</p>
 <p><code><a href="../reference/get_legal_entity.html">get_legal_entity()</a></code> function download and prepare data as
 a Sequoia matrice.</p>
 <p>There is a cache system to this function to avoid downloading each
-time. By default <code>cache = NULL</code>whic downlaod dtata in a
+time. By default <code>cache = NULL</code> which downlaod data in a
 dedicated cache dir (see <code><a href="https://rdrr.io/r/tools/userdir.html" class="external-link">tools::R_user_dir()</a></code>).</p>
 <p>You should keep this directory but if for any reason you need raw
-data elswhere use <code>cache</code>.</p>
+data elsewhere use <code>cache</code> arg.</p>
 <p>Be aware that you can load data from a department code or an insee
 code. The first can be a bit time-consuming but you can then search all
-dep if owner have cadastral parcels accros multiple commune.</p>
+selected dep(s) if owner have cadastral parcels accros multiple
+commune.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">insee</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"29158"</span>, <span class="st">"29165"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># cp: cadastrals parcels</span></span>
+<span><span class="va">insee</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"29158"</span>, <span class="st">"29165"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">legal_entity_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_legal_entity.html">get_legal_entity</a></span><span class="op">(</span><span class="va">insee</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading legal entity datasets...</span></span>
-<span><span class="co">#&gt; ⠙ 11 extracted | 482 MB (166 MB/s) | 2.9s</span></span>
-<span><span class="co">#&gt; ⠹ 17 extracted | 773 MB (131 MB/s) | 5.9s</span></span>
-<span><span class="co">#&gt; ⠙ 15 extracted | 544 MB (232 MB/s) | 2.3s</span></span>
-<span><span class="co">#&gt; ⠹ 17 extracted | 631 MB ( 100 MB/s) | 6.3s</span></span>
-<span><span class="co">#&gt; ⠸ 23 extracted | 841 MB (100 MB/s) | 8.4s</span></span>
-<span><span class="co">#&gt; ⠼ 42 extracted | 1.7 GB (150 MB/s) | 11.3s</span></span>
+<span><span class="co">#&gt; ⠙ 1 extracted |  47 MB ( 16 MB/s) | 2.9s</span></span>
+<span><span class="co">#&gt; ⠹ 3 extracted | 112 MB ( 19 MB/s) | 5.9s</span></span>
+<span><span class="co">#&gt; ⠸ 4 extracted | 232 MB ( 26 MB/s) | 8.9s</span></span>
+<span><span class="co">#&gt; ⠼ 11 extracted | 492 MB ( 41 MB/s) | 11.9s</span></span>
+<span><span class="co">#&gt; ⠴ 21 extracted | 991 MB ( 66 MB/s) | 14.9s</span></span>
+<span><span class="co">#&gt; ⠙ 26 extracted | 974 MB (320 MB/s) | 3s</span></span>
+<span><span class="co">#&gt; ⠹ 50 extracted | 2.0 GB (335 MB/s) | 6s</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Data available at: <span style="color: #0000BB;">/home/runner/.cache/R/Rsequoia2</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Reading CSV files...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Preparing CSV files...</span></span>
@@ -139,13 +141,13 @@ dep if owner have cadastral parcels accros multiple commune.</p>
 <span><span class="co">#&gt; 4        &lt;NA&gt;    LES TERRES BLEUES 29158000AB0008 BRETAGNE       53 FINISTERE</span></span>
 <span><span class="co">#&gt; 5        &lt;NA&gt; TI PORZH LES ROCHERS 29158000AB0011 BRETAGNE       53 FINISTERE</span></span>
 <span><span class="co">#&gt; 6        &lt;NA&gt;         L ATELIER 89 29158000AB0025 BRETAGNE       53 FINISTERE</span></span>
-<span><span class="co">#&gt;   DEP_NUM  COM_NOM COM_CODE INSEE PREFIXE SECTION NUMERO              LIEU_DIT</span></span>
-<span><span class="co">#&gt; 1      29 PENMARCH       91 29158     000      AB   0005          DES GOELANDS</span></span>
-<span><span class="co">#&gt; 2      29 PENMARCH       91 29158     000      AB   0006           DES EMBRUNS</span></span>
-<span><span class="co">#&gt; 3      29 PENMARCH       91 29158     000      AB   0007         SAINT GUENOLE</span></span>
-<span><span class="co">#&gt; 4      29 PENMARCH       91 29158     000      AB   0008          DES GOELANDS</span></span>
-<span><span class="co">#&gt; 5      29 PENMARCH       91 29158     000      AB   0011         ROGER QUINIOU</span></span>
-<span><span class="co">#&gt; 6      29 PENMARCH       91 29158     000      AB   0025 PIERRE ET JEAN DUPOUY</span></span>
+<span><span class="co">#&gt;   DEP_CODE  COM_NOM COM_CODE INSEE PREFIXE SECTION NUMERO              LIEU_DIT</span></span>
+<span><span class="co">#&gt; 1       29 PENMARCH       91 29158     000      AB   0005          DES GOELANDS</span></span>
+<span><span class="co">#&gt; 2       29 PENMARCH       91 29158     000      AB   0006           DES EMBRUNS</span></span>
+<span><span class="co">#&gt; 3       29 PENMARCH       91 29158     000      AB   0007         SAINT GUENOLE</span></span>
+<span><span class="co">#&gt; 4       29 PENMARCH       91 29158     000      AB   0008          DES GOELANDS</span></span>
+<span><span class="co">#&gt; 5       29 PENMARCH       91 29158     000      AB   0011         ROGER QUINIOU</span></span>
+<span><span class="co">#&gt; 6       29 PENMARCH       91 29158     000      AB   0025 PIERRE ET JEAN DUPOUY</span></span>
 <span><span class="co">#&gt;   SURF_CA</span></span>
 <span><span class="co">#&gt; 1     370</span></span>
 <span><span class="co">#&gt; 2   12358</span></span>
@@ -176,18 +178,43 @@ differences.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">search_mat</span><span class="op">$</span><span class="va">PROPRIETAIRE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "GFA DE LA TORCHE" "GFA ADPF"</span></span></code></pre></div>
+<p><code><a href="../reference/search_legal_entity.html">search_legal_entity()</a></code> can also support multiple search
+pattern:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">search_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_legal_entity.html">search_legal_entity</a></span><span class="op">(</span><span class="va">legal_entity_cp</span>, prop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"conservatoire"</span>, <span class="st">"espace"</span>, <span class="st">"naturel"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">search_mat</span><span class="op">$</span><span class="va">PROPRIETAIRE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "CONSERVATOIRE DE L ESPACE LITTORAL ET DES RIVAGES LACUSTRES"</span></span>
+<span><span class="co">#&gt; [2] "CONSERVATOIRE DE L'ESPACE LITTORAL ET DES RIVAGES LACUSTRES"</span></span>
+<span><span class="co">#&gt; [3] "SCI ESPACE INTERIEUR"</span></span></code></pre></div>
+<p>Finally, <code>lieu_dit</code> can also be seached:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">search_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_legal_entity.html">search_legal_entity</a></span><span class="op">(</span><span class="va">legal_entity_cp</span>, lieu_dit <span class="op">=</span> <span class="st">"phare"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">search_mat</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PROPRIETAIRE"</span>, <span class="st">"LIEU_DIT"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                     PROPRIETAIRE LIEU_DIT</span></span>
+<span><span class="co">#&gt; 692                                  LA VOILERIE DU PHARE</span></span>
+<span><span class="co">#&gt; 696                   379 RUE DU PHARE -PENMARCH DU PHARE</span></span>
+<span><span class="co">#&gt; 707 ETAT PAR DIRECTION DE L IMMOBILIER DE L ETAT DU PHARE</span></span>
+<span><span class="co">#&gt; 710                          COMMUNE DE PENMARCH DU PHARE</span></span>
+<span><span class="co">#&gt; 715                                       ECKMUL DU PHARE</span></span>
+<span><span class="co">#&gt; 720                                     VINCEAUR DU PHARE</span></span>
+<span><span class="co">#&gt; 745                     SCI BOULANGERIE COAT PIN DU PHARE</span></span>
+<span><span class="co">#&gt; 749                               BRISE DU LARGE DU PHARE</span></span>
+<span><span class="co">#&gt; 768                               SCI PLOUGONVEN DU PHARE</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="save-to-start-sequoia-process">Save to start Sequoia process<a class="anchor" aria-label="anchor" href="#save-to-start-sequoia-process"></a>
 </h3>
-<p>As you can see in article …, starting a Sequoia process need a excel
-matrice. To generate this one you can use <code><a href="../reference/seq_xlsx.html">seq_xlsx()</a></code>
-function.</p>
+<p>Note that <em>the legal entity dataset doesn’t provide geometry
+!</em> It’s used to generate an excel matrice (“*_matrice.xlsx”) to
+start a Sequoia process. <code><a href="../reference/seq_xlsx.html">seq_xlsx()</a></code> function can be used to
+generate it.</p>
 <p>Notice that the <code>data.frame</code> generated with
 <code><a href="../reference/get_legal_entity.html">get_legal_entity()</a></code> is already formated for Sequoia process.
 This mean you have the <code>"IDENTIFIANT"</code> columns. To avoid
 filling it in excel, we encouraged you to do it before saving.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">id</span> <span class="op">&lt;-</span> <span class="st">"MY_FOREST"</span></span>
 <span><span class="va">search_mat</span><span class="op">$</span><span class="va">IDENTIFIANT</span> <span class="op">&lt;-</span> <span class="va">id</span></span>
 <span></span>
@@ -196,7 +223,18 @@ filling it in excel, we encouraged you to do it before saving.</p>
 <span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"MATRICE"</span> <span class="op">=</span> <span class="va">search_mat</span><span class="op">)</span>,</span>
 <span>  filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">seq_dir</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">id</span>, <span class="st">"_matrice.xlsx"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Excel file created at: <span style="color: #0000BB;">/tmp/RtmpYexpCa/MY_FOREST/MY_FOREST_matrice.xlsx</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Excel file created at: <span style="color: #0000BB;">/tmp/RtmpmfnzJF/MY_FOREST/MY_FOREST_matrice.xlsx</span></span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/seq_parca.html">seq_parca</a></span><span class="op">(</span><span class="va">seq_dir</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading BDP from IGN...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> 12 of 13 ETALAB geom successfully replaced with BDP geom.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Vector layer <span style="color: #0000BB;">"v.seq.parca.poly"</span> saved to <span style="color: #0000BB;">MY_FOREST_SEQ_PARCA_poly.geojson</span>.</span></span>
+<span><span class="va">parca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/seq_read.html">seq_read</a></span><span class="op">(</span><span class="st">"parca"</span>, <span class="va">seq_dir</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_basemap.html" class="external-link">tm_tiles</a></span><span class="op">(</span><span class="st">"OpenStreetMap"</span><span class="op">)</span><span class="op">+</span></span>
+<span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">parca</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"firebrick"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cadastral-parcels-legal-entity_files/figure-html/save_legal_entity-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

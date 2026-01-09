@@ -33,7 +33,7 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/analysis_units.html">analysis_units</a></li>
+<li><a class="dropdown-item" href="../articles/analysis_units.html">Analysis units</a></li>
     <li><a class="dropdown-item" href="../articles/cadastral-parcels-legal-entity.html">Cadastral parcels - legal entity</a></li>
     <li><a class="dropdown-item" href="../articles/cadastral-parcels.html">Cadastral parcels</a></li>
     <li><a class="dropdown-item" href="../articles/sequoia.html">Sequoia</a></li>
@@ -96,54 +96,97 @@ goal is to :</p>
 <div class="section level2">
 <h2 id="how-it-works">How it works<a class="anchor" aria-label="anchor" href="#how-it-works"></a>
 </h2>
-<p>Sequoia always have those step :</p>
+<div class="section level3">
+<h3 id="internal-configuration">Internal configuration<a class="anchor" aria-label="anchor" href="#internal-configuration"></a>
+</h3>
+<p><code>Rsequoia2</code> relies on an internal configuration that maps
+keys to data layers and their metadata. For example, the key
+<code>"r.sol.geol"</code> refers to the geological raster layer named
+<code>GEOL.tif</code>.</p>
+<p>All available keys can be listed with <code><a href="../reference/seq_layer.html">seq_layer()</a></code>. To
+access metadata for a specific layer, use
+<code>seq_layer("r.sol.geol")</code>.</p>
+<p>Note that full keys are not always required:
+<code>seq_layer("geol")</code> also works.</p>
+<p>##<code>seq_*</code> functions</p>
+<p>All main functions in <code>Rsequoia2</code> start with
+<code>seq_*</code> (e.g. seq_geol(), seq_prsf(), …).</p>
+<p>These functions: - Read the project cadastral parcels to defined area
+of interest ; - Download the required data ; - Save them according to
+the configuration (name and extension) ; - Return path(s) where the data
+are stored.</p>
+<p><em>Note: for advanced users, each <code>seq_*</code> function has an
+equivalent <code>get_*</code> function (e.g. <code>get_geol()</code>,
+<code><a href="../reference/get_prsf.html">get_prsf()</a></code>, …). These can be used independently of the
+Sequoia workflow.</em></p>
+</div>
+<div class="section level3">
+<h3 id="reading-data">Reading data<a class="anchor" aria-label="anchor" href="#reading-data"></a>
+</h3>
+<p><code><a href="../reference/seq_read.html">seq_read()</a></code> uses the configuration to read any layer
+using its key (vector or raster).</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">parca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/seq_read.html">seq_read</a></span><span class="op">(</span><span class="st">"parca"</span><span class="op">)</span></span>
+<span><span class="va">dem</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/seq_read.html">seq_read</a></span><span class="op">(</span><span class="st">"dem"</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="what-is-a-sequoia-process">What is a Sequoia process<a class="anchor" aria-label="anchor" href="#what-is-a-sequoia-process"></a>
+</h2>
+<p>Sequoia process always have those step :</p>
 <ul>
 <li>Setting a directory ;</li>
-<li>Creating an excel matrice ;</li>
-<li>Downloading data based on this matrice ;</li>
-<li>GIS part to create gestion unit ;</li>
-<li>Generating final layer</li>
+<li>Creating parca matrice (excel with cadastrals parcels info);</li>
+<li>Downloading parca geometry;</li>
+<li>Downloading data based on parca;</li>
+<li>GIS part to create analysis units ;</li>
+<li>Generating final layer from analysis units</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="setting-a-directory">Setting a directory<a class="anchor" aria-label="anchor" href="#setting-a-directory"></a>
 </h2>
 <p>All <code>seq_*</code> function have <code>dirname = "."</code>
-argument which mean by default it will use the current directory. The
-best practice is to create directory and make it the default one for
-this R session.</p>
-<p>For the example, will used a fictif forest named
-<code>"ECKMUHL"</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># tempdir is used for the exampl</span></span>
-<span><span class="va">sequoia_dir</span> <span class="op">&lt;-</span> <span class="st">"ECKMUHL"</span></span>
+argument, meaning they use the current working directory by default.
+Best practice is to create a dedicated directory and set it as the
+working directory for the R session.</p>
+<p>For the example, a forest named <code>"ECKMUHL"</code> is used:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sequoia_dir</span> <span class="op">&lt;-</span> <span class="st">"ECKMUHL"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">sequoia_dir</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># setting current dir to our sequoia dir</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="va">sequoia_dir</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="creating-an-excel-matrice">Creating an excel matrice<a class="anchor" aria-label="anchor" href="#creating-an-excel-matrice"></a>
+<h2 id="creating-parca-matrice">Creating parca matrice<a class="anchor" aria-label="anchor" href="#creating-parca-matrice"></a>
 </h2>
-<p>Sequoia offer mulitple ways of generating this fondamental file :</p>
+<p><code>Rsequoia2</code> provides several ways to generate this
+fundamental file:</p>
 <ul>
-<li>Empty excel manually filled : see Cadastral Parcels article ;</li>
-<li>Using legal entity open data : see Cadastral Parcels - Legal entity
-article ;</li>
-<li>Generating file from pdf matrice of DGFIP</li>
+<li>A manually filled empty Excel file (see Cadastral Parcels
+article)</li>
+<li>Using legal-entity open data (see Cadastral Parcels – Legal Entity
+article)</li>
+<li>Generating the file from DGFiP PDF matrices</li>
 </ul>
-<p>For the example, internal dataset is used</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">matrice</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://janmarvin.github.io/openxlsx2/reference/wb_to_df.html" class="external-link">read_xlsx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/ECKMUHL_matrice.xlsx"</span>, package <span class="op">=</span> <span class="st">"Rsequoia2"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://janmarvin.github.io/openxlsx2/reference/write_xlsx.html" class="external-link">write_xlsx</a></span><span class="op">(</span><span class="va">matrice</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">sequoia_dir</span>, <span class="st">"ECKMUHL_matrice.xlsx"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="downloading-parca-geometry">Downloading parca geometry<a class="anchor" aria-label="anchor" href="#downloading-parca-geometry"></a>
+</h2>
+<p>All data downloaded by <code>Rsequoia2</code> are based on cadastral
+parcels (parca). The first mandatory step is therefore to download them
+using <code><a href="../reference/seq_parca.html">seq_parca()</a></code>.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/seq_parca.html">seq_parca</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="downloading-data">Downloading data<a class="anchor" aria-label="anchor" href="#downloading-data"></a>
 </h2>
-<p>Sequoia offer many datasets :</p>
+<p><code>Rsequoia2</code> offer many datasets, which can be downloaded
+using <code>seq_*</code> functions:</p>
 <ul>
-<li>Cadastral data from DGFIP ;</li>
 <li>Environnemental data from MNHN ;</li>
 <li>Elevation data from IGN ;</li>
 <li>Orthophoto data from IGN ;</li>
@@ -152,11 +195,14 @@ article ;</li>
 <li>Patrimony data from Atlas du Patrimoine ;</li>
 <li>…</li>
 </ul>
-<p>To facilitate the downloading process, <code>seq_</code> function
-should be used. Those function use spatialized cadastral parcels as base
-area.</p>
-<p>If you want to customize folder structure, you can do it here</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mnhn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/seq_mnhn.html">seq_mnhn</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>As explained above, all data are saved in the current directory by
+default. If you need a more structured folder layout, you can provide a
+custom <code>dirname</code>.</p>
+<p>In the example below, raster and vector data are stored in separate
+directories:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">vdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">sequoia_dir</span>, <span class="st">"VECTOR"</span><span class="op">)</span></span>
 <span><span class="va">rdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">sequoia_dir</span>, <span class="st">"RASTER"</span><span class="op">)</span></span>
 <span></span>
@@ -167,26 +213,6 @@ area.</p>
 <span><span class="fu"><a href="../reference/seq_geol.html">seq_geol</a></span><span class="op">(</span><span class="va">vdir</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/seq_hydro.html">seq_hydro</a></span><span class="op">(</span><span class="va">vfdir</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/seq_patrimony.html">seq_patrimony</a></span><span class="op">(</span><span class="va">vdir</span><span class="op">)</span></span></code></pre></div>
-<p>All this process can be done be the wrapper <code>seq_data()</code>
-:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">seq_data</span><span class="op">(</span><span class="va">sequoia_dir</span><span class="op">)</span></span></code></pre></div>
-<p>Be aware that <code>seq_dir()</code> as a <code>config</code> arg
-that allow any user to create customize directory. This config file as a
-.yaml that can be generate with <code>seq_config()</code>.</p>
-<p>For the exemple a fake yaml is used.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">folder_str</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  <span class="st">"seq_parca"</span> <span class="op">=</span> <span class="st">"PARCA"</span>,</span>
-<span>  <span class="st">"seq_mnhn"</span> <span class="op">=</span> <span class="st">"ENVIRONNEMENT"</span>,</span>
-<span>  <span class="st">"seq_elevation"</span> <span class="op">=</span> <span class="st">"RASTER"</span>,</span>
-<span>  <span class="st">"seq_ortho"</span> <span class="op">=</span> <span class="st">"RASTER"</span>,</span>
-<span>  <span class="st">"seq_geol"</span> <span class="op">=</span> <span class="st">"GEOL"</span>,</span>
-<span>  <span class="st">"seq_hydro"</span> <span class="op">=</span> <span class="st">"TOPO"</span>,</span>
-<span>  <span class="st">"seq_patrimony"</span> <span class="op">=</span> <span class="st">"PATRIMOINE"</span></span>
-<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">as.yaml</span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">seq_data</span><span class="op">(</span><span class="va">forest</span>, config <span class="op">=</span> <span class="va">folder_str</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="gis-part">GIS part<a class="anchor" aria-label="anchor" href="#gis-part"></a>

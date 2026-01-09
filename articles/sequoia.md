@@ -31,24 +31,67 @@ is to :
 
 ## How it works
 
-Sequoia always have those step :
+### Internal configuration
+
+`Rsequoia2` relies on an internal configuration that maps keys to data
+layers and their metadata. For example, the key `"r.sol.geol"` refers to
+the geological raster layer named `GEOL.tif`.
+
+All available keys can be listed with
+[`seq_layer()`](https://mucau.github.io/Rsequoia2/reference/seq_layer.md).
+To access metadata for a specific layer, use `seq_layer("r.sol.geol")`.
+
+Note that full keys are not always required: `seq_layer("geol")` also
+works.
+
+\##`seq_*` functions
+
+All main functions in `Rsequoia2` start with `seq_*` (e.g. seq_geol(),
+seq_prsf(), …).
+
+These functions: - Read the project cadastral parcels to defined area of
+interest ; - Download the required data ; - Save them according to the
+configuration (name and extension) ; - Return path(s) where the data are
+stored.
+
+*Note: for advanced users, each `seq_*` function has an equivalent
+`get_*` function (e.g. `get_geol()`,
+[`get_prsf()`](https://mucau.github.io/Rsequoia2/reference/get_prsf.md),
+…). These can be used independently of the Sequoia workflow.*
+
+### Reading data
+
+[`seq_read()`](https://mucau.github.io/Rsequoia2/reference/seq_read.md)
+uses the configuration to read any layer using its key (vector or
+raster).
+
+``` r
+
+parca <- seq_read("parca")
+dem <- seq_read("dem")
+```
+
+## What is a Sequoia process
+
+Sequoia process always have those step :
 
 - Setting a directory ;
-- Creating an excel matrice ;
-- Downloading data based on this matrice ;
-- GIS part to create gestion unit ;
-- Generating final layer
+- Creating parca matrice (excel with cadastrals parcels info);
+- Downloading parca geometry;
+- Downloading data based on parca;
+- GIS part to create analysis units ;
+- Generating final layer from analysis units
 
 ## Setting a directory
 
-All `seq_*` function have `dirname = "."` argument which mean by default
-it will use the current directory. The best practice is to create
-directory and make it the default one for this R session.
+All `seq_*` function have `dirname = "."` argument, meaning they use the
+current working directory by default. Best practice is to create a
+dedicated directory and set it as the working directory for the R
+session.
 
-For the example, will used a fictif forest named `"ECKMUHL"`.
+For the example, a forest named `"ECKMUHL"` is used:
 
 ``` r
-# tempdir is used for the exampl
 sequoia_dir <- "ECKMUHL"
 dir.create(sequoia_dir)
 
@@ -56,28 +99,30 @@ dir.create(sequoia_dir)
 setwd(sequoia_dir)
 ```
 
-## Creating an excel matrice
+## Creating parca matrice
 
-Sequoia offer mulitple ways of generating this fondamental file :
+`Rsequoia2` provides several ways to generate this fundamental file:
 
-- Empty excel manually filled : see Cadastral Parcels article ;
-- Using legal entity open data : see Cadastral Parcels - Legal entity
-  article ;
-- Generating file from pdf matrice of DGFIP
+- A manually filled empty Excel file (see Cadastral Parcels article)
+- Using legal-entity open data (see Cadastral Parcels – Legal Entity
+  article)
+- Generating the file from DGFiP PDF matrices
 
-For the example, internal dataset is used
+## Downloading parca geometry
+
+All data downloaded by `Rsequoia2` are based on cadastral parcels
+(parca). The first mandatory step is therefore to download them using
+[`seq_parca()`](https://mucau.github.io/Rsequoia2/reference/seq_parca.md).
 
 ``` r
-matrice <- read_xlsx(system.file("extdata/ECKMUHL_matrice.xlsx", package = "Rsequoia2"))
-
-write_xlsx(matrice, file.path(sequoia_dir, "ECKMUHL_matrice.xlsx"))
+seq_parca()
 ```
 
 ## Downloading data
 
-Sequoia offer many datasets :
+`Rsequoia2` offer many datasets, which can be downloaded using `seq_*`
+functions:
 
-- Cadastral data from DGFIP ;
 - Environnemental data from MNHN ;
 - Elevation data from IGN ;
 - Orthophoto data from IGN ;
@@ -86,10 +131,16 @@ Sequoia offer many datasets :
 - Patrimony data from Atlas du Patrimoine ;
 - …
 
-To facilitate the downloading process, `seq_` function should be used.
-Those function use spatialized cadastral parcels as base area.
+``` r
+mnhn <- seq_mnhn()
+```
 
-If you want to customize folder structure, you can do it here
+As explained above, all data are saved in the current directory by
+default. If you need a more structured folder layout, you can provide a
+custom `dirname`.
+
+In the example below, raster and vector data are stored in separate
+directories:
 
 ``` r
 vdir <- file.path(sequoia_dir, "VECTOR")
@@ -102,32 +153,6 @@ seq_ortho(rdir)
 seq_geol(vdir)
 seq_hydro(vfdir)
 seq_patrimony(vdir)
-```
-
-All this process can be done be the wrapper `seq_data()` :
-
-``` r
-seq_data(sequoia_dir)
-```
-
-Be aware that `seq_dir()` as a `config` arg that allow any user to
-create customize directory. This config file as a .yaml that can be
-generate with `seq_config()`.
-
-For the exemple a fake yaml is used.
-
-``` r
-folder_str <- list(
-  "seq_parca" = "PARCA",
-  "seq_mnhn" = "ENVIRONNEMENT",
-  "seq_elevation" = "RASTER",
-  "seq_ortho" = "RASTER",
-  "seq_geol" = "GEOL",
-  "seq_hydro" = "TOPO",
-  "seq_patrimony" = "PATRIMOINE"
-) |> as.yaml()
-
-seq_data(forest, config = folder_str)
 ```
 
 ## GIS part
