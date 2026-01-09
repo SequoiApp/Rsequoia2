@@ -115,7 +115,7 @@ However, a separate dataset exists, and retrieving lieu-dit requires performing 
 */!\* Note that this spatial join may be time-consuming for large numbers of parcels.
 
 ```{r lieu_dit, fig.height = 3.5}
-idus <- paste0("29158000BD00", 10:60)
+idus <- paste0("29158000BD00", c(10:12, 14:19, 21:25, 29, 31:36, 38, 39, 41, 43:60))
 
 with_lieu_dit <- get_parca(idus, lieu_dit = TRUE)
 
@@ -134,8 +134,8 @@ However, listing all IDUs manually inside R is often impractical and Sequoia use
 Instead, cadastral parcels are provided through a Sequoia Excel matrix (*_matrice.xlsx), and the function `seq_parca()` automatically retrieves all parcels based on this matrix.
 
 A typical workflow is therefore:
-- Create or fill an Excel matrix
-- Call seq_parca()
+- Create or fill an Excel matrix ;
+- Call `seq_parca()` ;
 - Let Sequoia handle everything else
 
 The following sections explain how to prepare the matrix and how Sequoia processes it.
@@ -160,7 +160,7 @@ The Excel matrix must contain the following columns:
 To avoid formatting mistakes, you can generate an empty matrix with:
   
 ```{r create_matrice}
-sequoia_dir <- file.path(tempdir(), "MY_FOREST")
+my_forest_dir <- file.path(tempdir(), "MY_FOREST")
 dir.create(sequoia_dir)
 
 matrice_path <- create_matrice(sequoia_dir, id = "MY_FOREST")
@@ -173,15 +173,15 @@ You can then manually fill the Excel file.
 Once the matrix is prepared, the entire cadastral workflow is handled by `seq_parca()`.
 
 This function:
-- Reads the Excel matrix
-- Builds IDUs from matrix fields
-- Downloads cadastral parcels : BDP geometry is used  when available (`bdp_geom = TRUE`)
-- Retrieves missing lieu-dit values (`lieu_dit = TRUE`)
+- Reads the Excel matrix;
+- Builds IDUs from matrix;
+- Downloads cadastral parcels : BDP geometry is used when available (`bdp_geom = TRUE`);
+- Retrieves missing lieu-dit values (`lieu_dit = TRUE`);
 - Writes the result into the Sequoia directory
 
 To illustrate this workflow, we use an internal example matrix shipped with the package.
 
-This mirrors what a user would do in practice: place a correctly formatted **_matrice.xlsx* file inside a Sequoia directory, then let `seq_parca()` process it.
+This mirrors what a user would do in practice: place a correctly formatted "*_matrice.xlsx" file inside a Sequoia directory, then let `seq_parca()` process it.
 
 ### Step 1 — Set up a Sequoia directory and copy the example matrix into it
 
@@ -198,11 +198,22 @@ write_xlsx(matrice, file.path(sequoia_dir, "ECKMUHL_matrice.xlsx"))
 
 ```{r seq_parca, fig.height = 3.5}
 parca_path <- seq_parca(sequoia_dir)
+
+# directly read parca form parca path
 parca <- read_sf(parca_path)
+
+# or leverage seq_read with custom dirname
+parca <- seq_read("parca", dirname = sequoia_dir)
 
 tm_tiles("OpenStreetMap")+
 tm_shape(parca)+
   tm_borders(col = "firebrick", lwd = 2)
+
+```
+
+```{r clean_sequoie_dir, include=FALSE}
+unlink(sequoia_dir, recursive = TRUE, force = TRUE)
+unlink(my_forest_dir, recursive = TRUE, force = TRUE)
 
 ```
 

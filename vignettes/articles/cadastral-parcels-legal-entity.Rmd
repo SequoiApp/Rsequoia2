@@ -39,9 +39,9 @@ dir.create(seq_dir)
 
 # What is Legal Entity.
 
-In France, legal entity is known as "Personne morale". Unlike a physical person, a legal entity has its own juridical existence and is identified by national codes such as SIREN (9 digits) or SIRET. In Forestry, typical entities include "groupements forestiers" or companies.
+In France, legal entity is known as "Personne morale". Unlike a physical person, a legal entity has its own juridical existence and is identified by national codes such as SIREN or SIRET. In Forestry, typical entities include "groupements forestiers" or companies.
 
-France provides open datasets that describe cadastral parcels owned by legal entities. These files, published by the Direction Générale des Finances Publiques (DGFiP), allow users to retrieve cadastral parcels for a given owner.
+France provides open datasets that describe all cadastral parcels owned by legal entities. These files, published by the ***Direction Générale des Finances Publiques** (DGFiP), allow users to retrieve cadastral parcels for a given owner.
 
 `Rsequoia2` give acces to this dataset and helpers to search specific owner.
 
@@ -49,13 +49,14 @@ France provides open datasets that describe cadastral parcels owned by legal ent
 
 `get_legal_entity()` function download and prepare data as a Sequoia matrice. 
 
-There is a cache system to this function to avoid downloading each time. By default `cache = NULL`whic downlaod dtata in a dedicated cache dir (see `tools::R_user_dir()`).
+There is a cache system to this function to avoid downloading each time. By default `cache = NULL` which downlaod data in a dedicated cache dir (see `tools::R_user_dir()`).
 
-You should keep this directory but if for any reason you need raw data elswhere use `cache`.
+You should keep this directory but if for any reason you need raw data elsewhere use `cache` arg.
 
-Be aware that you can load data from a department code or an insee code. The first can be a bit time-consuming but you can then search all dep if owner have cadastral parcels accros multiple commune.
+Be aware that you can load data from a department code or an insee code. The first can be a bit time-consuming but you can then search all selected dep(s) if owner have cadastral parcels accros multiple commune.
 
 ```{r get_legal_entity}
+# cp: cadastrals parcels
 insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
@@ -76,9 +77,25 @@ search_mat <- search_legal_entity(legal_entity_cp, prop = "gfa")
 unique(search_mat$PROPRIETAIRE)
 ```
 
+`search_legal_entity()` can also support multiple search pattern:
+
+```{r search_legal_entity_multiple}
+search_mat <- search_legal_entity(legal_entity_cp, prop = c("conservatoire", "espace", "naturel"))
+
+unique(search_mat$PROPRIETAIRE)
+```
+
+Finally, `lieu_dit` can also be seached:
+
+```{r search_legal_entity_lieu_dit}
+search_mat <- search_legal_entity(legal_entity_cp, lieu_dit = "phare")
+
+unique(search_mat[,c("PROPRIETAIRE", "LIEU_DIT")])
+```
+
 ## Save to start Sequoia process
 
-As you can see in article ..., starting a Sequoia process need a excel matrice. To generate this one you can use `seq_xlsx()` function.
+Note that *the legal entity dataset doesn't provide geometry !* It's used to generate an excel matrice ("*_matrice.xlsx") to start a Sequoia process. `seq_xlsx()` function can be used to generate it.
 
 Notice that the `data.frame` generated with `get_legal_entity()` is already formated for Sequoia process. This mean you have the `"IDENTIFIANT"` columns. To avoid filling it in excel, we encouraged you to do it before saving.
 
@@ -92,7 +109,11 @@ seq_xlsx(
   filename = file.path(seq_dir, paste0(id, "_matrice.xlsx"))
 )
 
+seq_parca(seq_dir)
+parca <- seq_read("parca", seq_dir)
+
+tm_tiles("OpenStreetMap")+
+tm_shape(parca)+
+  tm_borders(col = "firebrick", lwd = 2)
 ```
-
-
 
