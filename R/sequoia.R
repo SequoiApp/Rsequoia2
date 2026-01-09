@@ -21,55 +21,72 @@
 #' @export
 sequoia <- function(path = NULL) {
 
-  if (is.null(path)) {
-    path <- readline("Choose the project folder: ")
+  if (is.null(path)){
+    path <- if (rstudioapi::isAvailable()) {
+      rstudioapi::selectDirectory()
+    } else {
+      readline("Enter directory path: ")
+    }
   }
 
-  if (path == "") stop("No selection.", call. = FALSE)
+  if (is.null(path) | path == "") cli_abort("No selection.")
 
-  path <- normalizePath(path, winslash = "/", mustWork = FALSE)
-  message("Your project folder path is: ", path)
+  cli_alert_info("You choose folder: {.path {normalizePath(path)}}")
 
-  choose_option <- function(options, title) {
-    res <- utils::select.list(
-      options,
-      multiple = FALSE,
-      title = title,
-      graphics = TRUE
-    )
-    if (length(res) == 0 || res == "") stop("No selection.", call. = FALSE)
-    res
-  }
+  # MAIN MENU ---
+  actions <- list(
+    "Create MATRICE" = function() {
+      identifiant <- readline("Choose the forest identifiant: ")
+      create_matrice(dirname = path, id = identifiant)
+    },
+    "Create MATRICE (legal entity)" = function() menu_legal_entity(path),
+    "Download PARCA" = function() seq_parca(path),
+    "Create UA" = function() seq_parca_to_ua(path),
+    "Correct UA" = function() seq_ua(path)
+  )
 
-  main_menu <- c("Creating map layers", "Cartographic tools")
-  choice <- choose_option(main_menu, "Rsequoia2")
-  message("You chose: ", choice)
-
-  if (choice == "Creating map layers") {
-    sub_menu <- c(
-      "1 MATRICE creation",
-      "2 PARCA creation",
-      "3 UA creation",
-      "4 UA finalization"
-    )
-
-    sub_choice <- choose_option(sub_menu, "Creating map layers")
-    message("You chose: ", sub_choice)
-
-    switch(sub_choice,
-           "1 MATRICE creation" = {
-             identifiant <- readline("Choose the forest project name: ")
-             create_matrice(path, identifiant)
-           },
-           "2 PARCA creation" = seq_parca(path),
-           "3 UA creation" = seq_parca_to_ua(path),
-           "4 UA finalization" = seq_ua(path)
-    )
-  }
-
-  if (choice == "Cartographic tools") {
-    message("Not ready yet")
-  }
+  choice <- menu(names(actions))
+  actions[[choice]]()
 
   return(invisible(path))
+}
+
+#' Interactive legal-entity menu
+#'
+#' Prompts the user for INSEE codes and owner name patterns, retrieves matching
+#' legal-entity parcels, displays a short summary (area, owners, number of
+#' parcels), and asks for confirmation before creating the matrice.
+#'
+#' @details
+#' This function is interactive and intended for manual use only.
+#'
+#' @noRd
+menu_legal_entity <- function(path){
+  x <- readline("Enter DEP/INSEE codes (comma-separated): ")
+  y <- readline("Enter proprietaire search pattern (comma-separated): ")
+  insee <- trimws(strsplit(x, ",")[[1]])
+  prop <- trimws(strsplit(y, ",")[[1]])
+
+  m <- get_legal_entity(insee)
+  ms <- search_legal_entity(m, prop = prop)
+
+  s <- sum(ms$SURF_CA / 10000)
+  p <- unique(ms$PROPRIETAIRE)
+
+  cli::cli_h2("Summary")
+  cli::cli_bullets(c(
+    "Number of parcels: {nrow(ms)}",
+    "Total area: {format(round(s, 2), nsmall = 2)} ha",
+    "{length(p)} owners : {paste(p, collapse = ', ')}"
+  ))
+
+  switch(menu(c("Confirm and continue", "Cancel")),
+         {
+           identifiant <- readline("Choose the forest identifiant: ")
+           create_matrice(dirname = path, id = identifiant, overwrite = TRUE)
+         }
+  )
+
+  return(NULL)
+
 }

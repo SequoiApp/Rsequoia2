@@ -65,10 +65,8 @@ _Note: for advanced users, each `seq_*` function has an equivalent `get_*` funct
 `seq_read()` uses the configuration to read any layer using its key (vector or raster).
 
 ```{r read_data, eval=FALSE}
-
 parca <- seq_read("parca")
 dem <- seq_read("dem")
-
 ```
 
 # What is a Sequoia process

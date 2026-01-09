@@ -23,10 +23,10 @@ create_matrice <- function(dirname = ".", id = "MY_FOREST", overwrite = FALSE, v
   matrice <- data.frame(
     "identifiant" = id,
     "prop" = "NAME OF THE OWNER",
-    "insee" = "33103",
-    "prefixe" = "000",
-    "section" = "AB",
-    "numero" = "60",
+    "insee" = "99999",
+    "prefixe" = "",
+    "section" = "ZZ",
+    "numero" = "999",
     "lieu_dit" = "NAME OF LIEU DIT"
   ) |> seq_normalize("matrice")
 
