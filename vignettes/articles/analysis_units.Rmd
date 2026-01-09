@@ -1,8 +1,8 @@
 ---
-title: "analysis_units"
+title: "Analysis units"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{analysis_units}
+  %\VignetteIndexEntry{Analysis units}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
