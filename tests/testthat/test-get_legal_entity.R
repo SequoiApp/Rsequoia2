@@ -141,3 +141,36 @@ test_that("get_legal_entity() aggregates prop and lieu_dit per IDU", {
   expect_true(any(grepl("LIEU2 \\ LIEU3", res[[lieu_dit_field]], fixed = TRUE)))
 })
 
+test_that("get_legal_entity() return right cog info", {
+
+  le_cache <- file.path(tempdir(), "legal_entity_agg")
+  dir.create(le_cache)
+  on.exit(unlink(le_cache, recursive = TRUE, force = TRUE), add = TRUE)
+
+  x <- "01"
+  path <- file.path(le_cache, paste0(x, ".csv"))
+  write.csv2(fake_data(), row.names = FALSE, path, fileEncoding = "UTF-8")
+
+  testthat::local_mocked_bindings(
+    download_legal_entity = function(cache, verbose) le_cache
+  )
+
+  res <- get_legal_entity("01", cache = le_cache, verbose = FALSE)
+
+  reg_num <- seq_field("reg_num")$name
+  dep_num <- seq_field("dep_num")$name
+  insee <- seq_field("insee")$name
+  com_num <- seq_field("com_num")$name
+  prefix <- seq_field("prefix")$name
+  section <- seq_field("section")$name
+  numero <- seq_field("numero")$name
+
+  expect_all_true(grepl("^[0-9]{2}$", res[[reg_num]]))
+  expect_all_true(grepl("^([0-9]{2}|2A|2B)$", res[[dep_num]]))
+  expect_all_true(grepl("^[0-9]{5}$", res[[insee]]))
+  expect_all_true(grepl("^[0-9]{3}$", res[[com_num]]))
+  expect_all_true(grepl("^[0-9]{1,3}$", res[[prefix]]))
+  expect_all_true(grepl("^[0-9A-Z]{2}$", res[[section]]))
+  expect_all_true(grepl("^[0-9]{1,4}$", res[[numero]]))
+
+})

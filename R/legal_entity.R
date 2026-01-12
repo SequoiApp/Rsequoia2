@@ -165,7 +165,7 @@ get_legal_entity <- function(
     transform(
       "idu" = legal_entity_clean$idu,
       "insee" = substr(idu, 1, 5),
-      "com" = substr(idu, 2, 3),
+      "com" = substr(idu, 3, 5),
       "prefix" = substr(idu, 6, 8),
       "section" = substr(idu, 9, 10),
       "numero" = substr(idu, 11, 14),
