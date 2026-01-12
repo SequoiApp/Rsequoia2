@@ -64,13 +64,11 @@ insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
 #> ℹ Downloading legal entity datasets...
-#> ⠙ 1 extracted |  41 MB ( 15 MB/s) | 2.6s
-#> ⠹ 2 extracted |  97 MB ( 17 MB/s) | 5.7s
-#> ⠸ 4 extracted | 200 MB ( 23 MB/s) | 8.6s
-#> ⠼ 10 extracted | 434 MB ( 37 MB/s) | 11.6s
-#> ⠴ 18 extracted | 887 MB ( 61 MB/s) | 14.6s
-#> ⠙ 20 extracted | 736 MB (298 MB/s) | 2.5s
-#> ⠹ 43 extracted | 1.8 GB (322 MB/s) | 5.5s
+#> ⠙ 13 extracted | 613 MB (236 MB/s) | 2.6s
+#> ⠹ 37 extracted | 1.5 GB (263 MB/s) | 5.6s
+#> ⠙ 20 extracted | 756 MB (143 MB/s) | 5.3s
+#> ⠹ 34 extracted | 1.3 GB (170 MB/s) | 7.9s
+#> ⠸ 54 extracted | 2.1 GB (196 MB/s) | 10.9s
 #> ✔ Data available at: /home/runner/.cache/R/Rsequoia2
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
@@ -180,7 +178,7 @@ seq_xlsx(
   x = list("MATRICE" = search_mat),
   filename = file.path(seq_dir, paste0(id, "_matrice.xlsx"))
 )
-#> ✔ Excel file created at: /tmp/RtmpLfKNQC/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/Rtmpci9Zlr/MY_FOREST/MY_FOREST_matrice.xlsx
 
 seq_parca(seq_dir)
 #> ℹ Downloading BDP from IGN...
