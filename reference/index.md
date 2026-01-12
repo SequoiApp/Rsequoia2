@@ -54,6 +54,9 @@
 - [`get_id()`](https://mucau.github.io/Rsequoia2/reference/get_id.md) :
   Extract forest ID from a matrice.xlsx file
 
+- [`get_ifn()`](https://mucau.github.io/Rsequoia2/reference/get_ifn.md)
+  : Retrieve IFN regional layers by intersecting an area
+
 - [`get_infra_line()`](https://mucau.github.io/Rsequoia2/reference/get_infra_line.md)
   : Retrieve linear infrastructure features around an area
 
@@ -101,9 +104,6 @@
 
 - [`get_prsf()`](https://mucau.github.io/Rsequoia2/reference/get_prsf.md)
   : Retrieve PRSF point features around an area
-
-- [`get_region()`](https://mucau.github.io/Rsequoia2/reference/get_region.md)
-  : Retrieve administrative or forest regions intersecting an area
 
 - [`get_road()`](https://mucau.github.io/Rsequoia2/reference/get_road.md)
   : Retrieve road sections around an area
@@ -168,6 +168,9 @@
   : Generates hydrographic polygon, line and point layers for a Sequoia
   project.
 
+- [`seq_ifn()`](https://mucau.github.io/Rsequoia2/reference/seq_ifn.md)
+  : Generate regional layers for a Sequoia project
+
 - [`seq_infra()`](https://mucau.github.io/Rsequoia2/reference/seq_infra.md)
   : Generates infrastructure polygon, line and point layers for a
   Sequoia project.
@@ -206,9 +209,6 @@
 
 - [`seq_read()`](https://mucau.github.io/Rsequoia2/reference/seq_read.md)
   : Open file based on key name
-
-- [`seq_region()`](https://mucau.github.io/Rsequoia2/reference/seq_region.md)
-  : Generate regional layers for a Sequoia project
 
 - [`seq_scan()`](https://mucau.github.io/Rsequoia2/reference/seq_scan.md)
   : Download scanned IGN maps for a Sequoia project

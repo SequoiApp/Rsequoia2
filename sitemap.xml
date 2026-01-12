@@ -26,6 +26,7 @@
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_hydro_point.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_hydro_poly.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_id.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/get_ifn.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_infra_line.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_infra_point.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_infra_poly.html</loc></url>
@@ -42,7 +43,6 @@
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_pedology.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_pedology_pdf.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_prsf.html</loc></url>
-<url><loc>https://mucau.github.io/Rsequoia2/reference/get_region.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_road.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_scan.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_slope.html</loc></url>
@@ -68,6 +68,7 @@
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_geol.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_gpu.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_hydro.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/seq_ifn.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_infra.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_layer.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_mnhn.html</loc></url>
@@ -80,7 +81,6 @@
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_pedology.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_prsf.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_read.html</loc></url>
-<url><loc>https://mucau.github.io/Rsequoia2/reference/seq_region.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_scan.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_table.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_toponyme.html</loc></url>

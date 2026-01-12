@@ -8,7 +8,7 @@ result, and returns a standardized `sf` point layer.
 ## Usage
 
 ``` r
-get_toponyme(x)
+get_toponyme(x, verbose = verbose)
 ```
 
 ## Arguments
@@ -16,6 +16,10 @@ get_toponyme(x)
 - x:
 
   An `sf` object defining the input area of interest.
+
+- verbose:
+
+  `logical` If `TRUE`, display messages.
 
 ## Value
 

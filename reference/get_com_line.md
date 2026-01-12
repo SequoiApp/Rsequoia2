@@ -6,7 +6,7 @@ clipped for cartographic display.
 ## Usage
 
 ``` r
-get_com_line(x, graphic = FALSE)
+get_com_line(x, graphic = FALSE, verbose = TRUE)
 ```
 
 ## Arguments
@@ -19,6 +19,10 @@ get_com_line(x, graphic = FALSE)
 
   Logical. If `TRUE`, line geometries are clipped to a 500 m convex
   buffer around `x` for graphical purposes.
+
+- verbose:
+
+  `logical` If `TRUE`, display messages.
 
 ## Value
 

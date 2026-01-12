@@ -6,7 +6,7 @@ restricted to a graphical extent.
 ## Usage
 
 ``` r
-get_com_point(x, graphic = FALSE)
+get_com_point(x, graphic = FALSE, verbose = TRUE)
 ```
 
 ## Arguments
@@ -20,6 +20,10 @@ get_com_point(x, graphic = FALSE)
   Logical. If `TRUE`, centroids are computed only on the intersection
   between commune polygons and a 500 m convex buffer around `x`, for
   cartographic display.
+
+- verbose:
+
+  `logical` If `TRUE`, display messages.
 
 ## Value
 
