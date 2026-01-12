@@ -20,18 +20,13 @@ ua_to_pf <- function(ua){
   ua <- seq_normalize(ua, "ua")
 
   pf <- seq_field("parcelle")$name
-  pf_alias <- seq_field("parcelle")$alias
   s <- seq_field("surf_cor")$name
 
-  # Because of seq_normalize, pf field will always exist
-  # If ua[[pf]] == NA, it means the input UA doesn't contain the PF column.
-  # This usually means the field alias is missing in the configuration.
-  bad_pf_name <- all(is.na(ua[[pf]]))
-  if (bad_pf_name) {
+  if (all(is.na(ua[[pf]]))) {
     cli::cli_abort(c(
-      "x" = "Field used to group by parcels is missing in the input layer.",
-      "i" = "Available aliases for this field: {.val {pf_alias}}.",
-      "i" = "Check or fix the field names in the input layer."
+      "x" = "Failed to generate PF layers from UA.",
+      "!" = "Field {.field {pf}} in UA contains only missing values.",
+      "i" = "Please populate this field before running this step."
     ))
   }
 
@@ -71,21 +66,7 @@ ua_to_sspf <- function(ua){
   ua <- seq_normalize(ua, "ua")
 
   ug <- seq_field("ug")$name
-  ug_alias <- seq_field("ug")$alias
-
   s <- seq_field("surf_cor")$name
-
-  # Because of seq_normalize, ug field will always exist
-  # If ua[[ug]] == NA, it means the input UA doesn't contain the SSPF column.
-  # This usually means the field alias is missing in the configuration.
-  bad_ug_name <- all(is.na(ua[[ug]]))
-  if (bad_ug_name) {
-    cli::cli_abort(c(
-      "x" = "Field used to group by UG is missing in the input layer.",
-      "i" = "Available aliases for this field: {.val {ug_alias}}.",
-      "i" = "Check or fix the field names in the input layer."
-    ))
-  }
 
   # Generate sspf ----
   by_ug <- list(ua[[ug]]) |> setNames(ug)
@@ -147,19 +128,18 @@ seq_parcels <- function(dirname = ".", verbose = FALSE, overwrite = FALSE){
   # Resolve field and layer ----
   ua <- seq_read("v.seq.ua.poly", dirname = dirname)
 
+  paths <- list()
+
   pf_poly <- ua_to_pf(ua)
   pf_line <- poly_to_line(pf_poly)
-  path_pf_poly <- seq_write2(pf_poly, "v.seq.pf.poly")
-  path_pf_line <- seq_write2(pf_line, "v.seq.pf.line")
+  paths$pf_poly <- seq_write2(pf_poly, "v.seq.pf.poly")
+  paths$pf_line <- seq_write2(pf_line, "v.seq.pf.line")
 
   sspf_poly <- ua_to_sspf(ua)
   sspf_line <- poly_to_line(sspf_poly)
-  path_sspf_poly <- seq_write2(sspf_poly, "v.seq.sspf.poly")
-  path_sspf_line <- seq_write2(sspf_line, "v.seq.sspf.line")
+  paths$sspf_poly <- seq_write2(sspf_poly, "v.seq.sspf.poly")
+  paths$sspf_line <- seq_write2(sspf_line, "v.seq.sspf.line")
 
-  return(
-    invisible(
-      c(path_pf_poly, path_pf_line, path_sspf_poly, path_sspf_line) |> as.list())
-  )
+  return(invisible(paths))
 
 }

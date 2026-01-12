@@ -98,7 +98,7 @@ seq_write <- function(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE)
 
     if (verbose) {
       cli::cli_alert_success(
-        "Vector layer {.val {key}} with {nrow(x)} feature{?s} saved to {.file {basename(path)}}."
+        "Layer {.val {key}} with {nrow(x)} feature{?s} saved to {.file {basename(path)}}."
       )
     }
 
@@ -118,7 +118,7 @@ seq_write <- function(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE)
 
     if (verbose) {
       cli::cli_alert_success(
-        "Raster layer {.val {key}} saved to {.file {basename(path)}}."
+        "Layer {.val {key}} saved to {.file {basename(path)}}."
       )
     }
 

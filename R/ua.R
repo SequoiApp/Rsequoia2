@@ -410,8 +410,8 @@ seq_ua <- function(
     overwrite = FALSE){
 
   # read
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname, verbose = verbose)
-  ua <- seq_read("v.seq.ua.poly", dirname = dirname, verbose = verbose)
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname, verbose = FALSE)
+  ua <- seq_read("v.seq.ua.poly", dirname = dirname, verbose = FALSE)
 
   # ua treatment
   seq_ua <- ua_to_ua(ua, parca, verbose = verbose)
@@ -435,7 +435,7 @@ seq_ua <- function(
       tools::file_ext(ua_path)
     )
 
-    sf::write_sf(seq_ua, ua_path, secure_ua_path)
+    sf::write_sf(seq_ua, secure_ua_path)
 
     if (verbose) {
       cli::cli_alert_success(

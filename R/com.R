@@ -4,6 +4,7 @@
 #' boundaries from BDTOPO, normalizes them, and returns a polygon layer.
 #'
 #' @param x An `sf` object used as the input area.
+#' @param verbose `logical` If `TRUE`, display messages.
 #'
 #' @return An `sf` object of type `POLYGON` containing commune boundaries,
 #'   with standardized fields as defined by `seq_normalize("com_poly")`.
@@ -15,10 +16,14 @@
 #' and normalizes the resulting geometries and attributes.
 #'
 #' @export
-get_com_poly <- function(x) {
+get_com_poly <- function(x, verbose = TRUE) {
 
   crs <- 2154
   convex <- envelope(x, 2000)
+
+  if (verbose){
+    cli::cli_alert_info("Downloading communes dataset...")
+  }
 
   com <- happign::get_wfs(
     convex,
@@ -42,6 +47,7 @@ get_com_poly <- function(x) {
 #' clipped for cartographic display.
 #'
 #' @param x An `sf` object used as the input area.
+#' @param verbose `logical` If `TRUE`, display messages.
 #' @param graphic Logical. If `TRUE`, line geometries are clipped to a
 #'   500 m convex buffer around `x` for graphical purposes.
 #'
@@ -57,9 +63,9 @@ get_com_poly <- function(x) {
 #' @seealso [get_com_poly()]
 #'
 #' @export
-get_com_line <- function(x, graphic = FALSE) {
+get_com_line <- function(x, graphic = FALSE, verbose = TRUE) {
 
-  poly <- get_com_poly(x)
+  poly <- get_com_poly(x, verbose = verbose)
 
   if (is.null(poly)) {
     return(NULL)
@@ -81,6 +87,7 @@ get_com_line <- function(x, graphic = FALSE) {
 #' restricted to a graphical extent.
 #'
 #' @param x An `sf` object used as the input area.
+#' @param verbose `logical` If `TRUE`, display messages.
 #' @param graphic Logical. If `TRUE`, centroids are computed only on the
 #'   intersection between commune polygons and a 500 m convex buffer
 #'   around `x`, for cartographic display.
@@ -97,9 +104,9 @@ get_com_line <- function(x, graphic = FALSE) {
 #' @seealso [get_com_poly()]
 #'
 #' @export
-get_com_point <- function(x, graphic = FALSE) {
+get_com_point <- function(x, graphic = FALSE, verbose = TRUE) {
 
-  poly <- get_com_poly(x)
+  poly <- get_com_poly(x, verbose = verbose)
 
   if (is.null(poly)) {
     return(NULL)
@@ -156,68 +163,44 @@ get_com_point <- function(x, graphic = FALSE) {
 #'
 #' @export
 seq_com <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
-
-  # read PARCA
-  f_parca <- read_sf(get_path("v.seq.parca.poly", dirname = dirname))
-  f_id <- get_id(dirname)
-  id <- seq_field("identifiant")$name
-
-  # create empty path list
-  path <- list()
-
-  # commune layer specifications
-  layers <- list(
-    topo_poly     = list(fun = get_com_poly,  key = "v.com.topo.poly",   graphic = FALSE),
-    topo_line     = list(fun = get_com_line,  key = "v.com.topo.line",   graphic = FALSE),
-    topo_point    = list(fun = get_com_point, key = "v.com.topo.point",  graphic = FALSE),
-    graphic_line  = list(fun = get_com_line,  key = "v.com.graphic.line",  graphic = TRUE),
-    graphic_point = list(fun = get_com_point, key = "v.com.graphic.point", graphic = TRUE)
-  )
-
-  for (k in names(layers)) {
-
-    if (layers[[k]]$graphic) {
-      f <- layers[[k]]$fun(f_parca, graphic = TRUE)
-    } else {
-      f <- layers[[k]]$fun(f_parca)
-    }
-
-    # NULL = not write
-    if (is.null(f)) {
-
-      path[[k]] <- NULL
-
-      if (verbose) {
-        cli::cli_alert_info(
-          "Com {.field {k}} layer not written (no intersecting feature)"
-        )
-      }
-
-      next
-    }
-
-    # id
-    if (nrow(f)>0){
-      f[[id]]<- f_id
-    }
-
-    # write
-    f_path <- quiet(seq_write(
-      f,
-      layers[[k]]$key,
-      dirname = dirname,
-      verbose = FALSE,
-      overwrite = overwrite
-    ))
-
-    path[[k]] <- f_path
-
-    if (verbose) {
-      cli::cli_alert_success(
-        "Com {.field {k}} layer written with {nrow(f)} feature{?s}"
-      )
-    }
+  # tiny helper ----
+  seq_write2 <- function(x, key, id) {
+    x[[id_field]] <- id
+    seq_write(x, key, dirname = dirname, verbose = verbose, overwrite = overwrite)
   }
 
-  invisible(path)
+  # read PARCA
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  id_field <- seq_field("identifiant")$name
+  id <- unique(parca[[id_field]])
+
+  # create empty path list
+  paths <- list()
+
+  topo_poly <- get_com_poly(parca, verbose = verbose)
+  if (!is.null(topo_poly)){
+    paths$topo_poly <- seq_write2(topo_poly, "v.com.topo.poly", id)
+  }
+
+  topo_line <- get_com_line(parca, verbose = verbose)
+  if (!is.null(topo_line)){
+    paths$topo_line <- seq_write2(topo_line, "v.com.topo.line", id)
+  }
+
+  topo_point <- get_com_point(parca, verbose = verbose)
+  if (!is.null(topo_point)){
+    paths$topo_point <- seq_write2(topo_point, "v.com.topo.point", id)
+  }
+
+  graphic_line <- get_com_line(parca, graphic = TRUE, verbose = verbose)
+  if (!is.null(graphic_line)){
+    paths$graphic_line <- seq_write2(graphic_line, "v.com.graphic.line", id)
+  }
+
+  graphic_point <- get_com_point(parca, graphic = TRUE, verbose = verbose)
+  if (!is.null(graphic_point)){
+    paths$graphic_point <- seq_write2(graphic_point, "v.com.graphic.point", id)
+  }
+
+  return(invisible(paths))
 }

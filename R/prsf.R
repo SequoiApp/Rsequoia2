@@ -71,12 +71,13 @@ seq_prsf <- function(
     overwrite = FALSE
 ) {
 
-  # Read project area (PARCA)
-  f_parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  f_id <- get_id(dirname)
+  # read PARCA
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  id_field <- seq_field("identifiant")$name
+  id <- unique(parca[[id_field]])
 
   # Retrieve toponyms
-  prsf <- get_prsf(f_parca, verbose = verbose)
+  prsf <- get_prsf(parca, verbose = verbose)
 
   # Exit early if nothing to write
   if (is.null(prsf) || nrow(prsf) == 0) {
@@ -88,9 +89,7 @@ seq_prsf <- function(
     return(invisible(NULL))
   }
 
-  # Add project identifier
-  id <- seq_field("identifiant")$name
-  prsf[[id]] <- f_id
+  prsf[[id_field]] <- id
 
   # Write layer
   prsf_path <- seq_write(

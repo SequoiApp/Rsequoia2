@@ -54,8 +54,8 @@ get_id <- function(dirname = ".", verbose = FALSE) {
 #'
 get_path <- function(key, dirname = ".", verbose = FALSE){
 
-  cfg_path <- system.file("config/seq_layers.yaml", package = "Rsequoia2")
-  cfg <- yaml::read_yaml(cfg_path)
+  cfg_layer <- system.file("config/seq_layers.yaml", package = "Rsequoia2")
+  cfg <- yaml::read_yaml(cfg_layer)
 
   all_key <- names(cfg)
   match_key <- grep(key, all_key, value = TRUE)
@@ -81,7 +81,17 @@ get_path <- function(key, dirname = ".", verbose = FALSE){
   entry <- cfg[[match_key]]
   id <- get_id(dirname)
   filename <- sprintf("%s_%s.%s", id, entry$name, entry$ext)
-  path <- file.path(dirname, filename)
+
+  cfg_path <- system.file("config/seq_path.yaml", package = "Rsequoia2")
+  cfg <- yaml::read_yaml(cfg_path)
+  ns <- cfg$namespace
+  idx <- startsWith(match_key, names(ns))
+  family <- ns[idx][[1]]
+  path <- cfg$path[[family]]
+  dir <- file.path(dirname, path)
+  dir.create(dir, showWarnings = FALSE)
+  path <- file.path(dir, filename)
+
   names(path) <- match_key
 
   if (verbose) {

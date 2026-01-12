@@ -41,9 +41,14 @@ sequoia <- function(path = NULL, overwrite = FALSE) {
     },
     "Create MATRICE (legal entity)" = function() menu_legal_entity(path, overwrite),
     "Download PARCA" = function() seq_parca(path, overwrite = overwrite),
-    "Create BOUNDARIES" = function() seq_boundaries(path, overwrite = overwrite),
-    "Create UA" = function() seq_parca_to_ua(path, overwrite = overwrite),
-    "Correct UA" = function() seq_ua(path, overwrite = overwrite),
+    "Create UA & BOUNDARIES" = function() {
+      seq_parca_to_ua(path, overwrite = overwrite)
+      seq_boundaries(path, overwrite = overwrite)
+    },
+    "Correct UA & PARCELS" = function() {
+      seq_ua(path, overwrite = TRUE)
+      seq_parcels(path, overwrite = TRUE)
+    },
     "Download DATA" = function() menu_data(path, overwrite = overwrite)
   )
 
@@ -105,23 +110,21 @@ menu_legal_entity <- function(path, overwrite){
 }
 
 menu_data <- function(path, overwrite){
-  vdir <- file.path(path)
-  rdir <- file.path(path)
 
   seq_functions <- list(
-    "Communes"      = function() seq_com(vdir, overwrite = overwrite),
-    "MNHN"          = function() seq_mnhn(vdir, overwrite = overwrite),
-    "Geology"       = function() seq_geol(vdir, overwrite = overwrite),
-    "Pedology"      = function() seq_pedology(vdir, overwrite = overwrite),
-    "Infra"         = function() seq_infra(vdir, overwrite = overwrite),
-    "PRSF"          = function() seq_prsf(vdir, overwrite = overwrite),
-    "Hydrology"     = function() seq_hydro(vdir, overwrite = overwrite),
-    "Vegetation"    = function() seq_vege(vdir, overwrite = overwrite),
-    "Contour lines" = function() seq_curves(vdir, overwrite = overwrite),
-    "GPU"           = function() seq_gpu(vdir, overwrite = overwrite),
-    "Patrimony"     = function() seq_patrimony(vdir, overwrite = overwrite),
-    "Elevation"     = function() seq_elevation(rdir, overwrite = overwrite),
-    "Orthophoto"    = function() seq_ortho(rdir, overwrite = overwrite),
+    "Communes"      = function() seq_com(path, overwrite = overwrite),
+    "MNHN"          = function() seq_mnhn(path, overwrite = overwrite),
+    "Geology"       = function() seq_geol(path, overwrite = overwrite),
+    "Pedology"      = function() seq_pedology(path, overwrite = overwrite),
+    "Infra"         = function() seq_infra(path, overwrite = overwrite),
+    "PRSF"          = function() seq_prsf(path, overwrite = overwrite),
+    "Hydrology"     = function() seq_hydro(path, overwrite = overwrite),
+    "Vegetation"    = function() seq_vege(path, overwrite = overwrite),
+    "Contour lines" = function() seq_curves(path, overwrite = overwrite),
+    "GPU"           = function() seq_gpu(path, overwrite = overwrite),
+    "Patrimony"     = function() seq_patrimony(path, overwrite = overwrite),
+    "Elevation"     = function() seq_elevation(path, overwrite = overwrite),
+    "Orthophoto"    = function() seq_ortho(path, overwrite = overwrite),
     "Scan"          = function() seq_scan(rdir, overwrite = overwrite)
   )
 
