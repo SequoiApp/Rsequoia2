@@ -54,6 +54,7 @@ get_patrimony <- function(
     verbose = FALSE
   )
 
+
   if (is.null(f) || !nrow(f)) {
     if (verbose){
       cli::cli_alert_warning("Layer {.field {key}}: no intersecting features")

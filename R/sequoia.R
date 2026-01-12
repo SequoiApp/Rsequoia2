@@ -129,27 +129,18 @@ menu_data <- function(path, overwrite){
     "Scan"          = function() seq_scan(path, overwrite = overwrite)
   )
 
-  items <- c("All", names(seq_functions))
-  for (i in seq_along(items)) {
-    cat(sprintf("%2d: %s\n", i, items[[i]]))
-  }
+  # 2. Actions reuse seq_functions
+  actions <- c(
+    list(
+      "All" = function() {
+        lapply(seq_functions, function(f) f())
+      }
+    ),
+    seq_functions
+  )
 
-  sel <- readline("\nSelect actions (comma-separated numbers): ")
-  idx <- suppressWarnings(as.integer(strsplit(sel, ",")[[1]]))
-  idx <- idx[!is.na(idx)]
+  # 3. Menu + execution
+  choice <- utils::menu(names(actions))
+  actions[[choice]]()
 
-  if (length(idx) == 0 || any(idx < 1 | idx > length(items))) {
-    cli::cli_abort("Invalid selection.")
-  }
-
-  # choice 1 = All
-  if (1 %in% idx) {
-    lapply(seq_functions, function(f) f())
-    return(invisible(NULL))
-  }
-
-  # otherwise map 2..N → seq_functions
-  chosen <- seq_functions[idx - 1]
-  lapply(chosen, function(f) f())
-  return(invisible(NULL))
 }
