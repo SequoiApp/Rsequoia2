@@ -17,13 +17,13 @@ features with standardized Sequoia fields, including:
 Generate vegetation point features around an area
 }
 \details{
-The function retrieves BD Forêt V2 vegetation areas within a 1000 m convex
+The function retrieves BD Foret V2 vegetation areas within a 1000 m convex
 buffer around \code{x}. Each polygon is classified into a standardized vegetation
 type based on its original \code{nature} attribute.
 
 \code{TYPE}: Vegetation type code derived from BDTOPO nature values:
 - \code{Feuillus}: Deciduous forest
-- \code{Résineux}: Coniferous forest
+- \code{Resineux}: Coniferous forest
 - \code{Peupleraie}: Poplar plantation
 - \code{Lande}: Woody heath
 

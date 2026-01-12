@@ -4,10 +4,12 @@
 \alias{get_prsf}
 \title{Retrieve PRSF point features around an area}
 \usage{
-get_prsf(x)
+get_prsf(x, verbose = TRUE)
 }
 \arguments{
 \item{x}{An \code{sf} object defining the input area of interest.}
+
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
 An \code{sf} object containing PRSF point features.

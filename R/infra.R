@@ -341,7 +341,7 @@ get_infra_point <- function(x) {
     infra_point <- rbind(infra_point, pylone)
   }
 
-  return(invisible(infra_point))
+  return(invisible(infra_point |> sf::st_zm(drop = TRUE, what = "ZM")))
 }
 
 #' Generates infrastructure polygon, line and point layers for a Sequoia project.
@@ -376,7 +376,7 @@ seq_infra <- function(
 ) {
 
   # read PARCA
-  f_parca <- read_sf(get_path("v.seq.parca.poly", dirname = dirname))
+  f_parca <- seq_read("v.seq.parca.poly", dirname = dirname)
   f_id <- get_id(dirname)
 
   id <- seq_field("identifiant")$name
@@ -395,8 +395,8 @@ seq_infra <- function(
 
     f <- layers[[k]]$fun(f_parca)
 
-    if (nrow(f)>0){
-      f[[id]]<- f_id
+    if (nrow(f) > 0){
+      f[[id]] <- f_id
     }
 
     f_path <- seq_write(

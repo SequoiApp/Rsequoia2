@@ -10,11 +10,7 @@ seq_curves(dirname = ".", verbose = TRUE, overwrite = FALSE)
 \item{dirname}{\code{character} Path to the project directory.
 Defaults to the current working directory.}
 
-\item{verbose}{\code{logical}; whether to display informational messages.
-Defaults to \code{TRUE}.}
-
-\item{overwrite}{\code{logical}; whether to overwrite existing files.
-Defaults to \code{FALSE}.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
 Invisibly returns a named list of file paths written by \code{\link[=seq_write]{seq_write()}}.

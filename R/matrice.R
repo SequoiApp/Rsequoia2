@@ -49,7 +49,12 @@ create_matrice <- function(dirname = ".", id = "MY_FOREST", overwrite = FALSE, v
 #'
 read_matrice <- function(dirname = "."){
 
-  m_path <- list.files(dirname, pattern = "_matrice\\.xlsx$", full.names = TRUE)
+  m_path <- list.files(
+    dirname,
+    pattern = "_matrice\\.xlsx$",
+    full.names = TRUE,
+    recursive = TRUE
+  )
 
   # No file
   if (length(m_path) == 0) {

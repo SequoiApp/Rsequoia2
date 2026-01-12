@@ -4,7 +4,7 @@
 \alias{sequoia}
 \title{Rsequoia2 Main Interactive Workflow}
 \usage{
-sequoia(path = NULL)
+sequoia(path = NULL, overwrite = FALSE)
 }
 \arguments{
 \item{path}{Character. Optional. Path to the project folder. If not provided,

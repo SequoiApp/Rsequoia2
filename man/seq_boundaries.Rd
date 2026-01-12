@@ -4,7 +4,7 @@
 \alias{seq_boundaries}
 \title{Create \emph{FOREST} and \emph{OWNER} object from \emph{PARCA} for a Sequoia project}
 \usage{
-seq_boundaries(dirname = ".", tol = 10, verbose = FALSE, overwrite = FALSE)
+seq_boundaries(dirname = ".", tol = 10, verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
 \item{dirname}{\code{character} Directory where the matrice file is located.

@@ -23,8 +23,7 @@ Imports:
     units,
     yaml
 Remotes:
-    github::mucau/frheritage,
-    github::paul-carteron/happign
+    github::mucau/frheritage
 Suggests: 
     rstudioapi,
     testthat (>= 3.3.0),

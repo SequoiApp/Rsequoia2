@@ -35,7 +35,7 @@ seq_parca_to_ua <- function(
 
   # write ua
   ua_path <- seq_write(
-    seq_ua,
+    ua,
     "v.seq.ua.poly",
     dirname = dirname,
     verbose = verbose,

@@ -36,7 +36,7 @@
 seq_boundaries <- function(
     dirname = ".",
     tol = 10,
-    verbose = FALSE,
+    verbose = TRUE,
     overwrite = FALSE){
 
   # tiny helper ----
@@ -46,7 +46,7 @@ seq_boundaries <- function(
 
   # Resolve field and layer ----
   identifiant <- seq_field("identifiant")$name
-  owner <- seq_field("owner")$name
+  owner <- seq_field("proprietaire")$name
   surf_cad <- seq_field("surf_cad")$name
 
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)

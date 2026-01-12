@@ -73,6 +73,10 @@ get_ortho <- function(
     "rgb" = "ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO"
   )
 
+  if (verbose){
+    cli::cli_alert_info("Downloading {toupper(type)} raster dataset...")
+  }
+
   r <- happign::get_wmts(
     x_buff,
     layer = layer,
@@ -132,7 +136,7 @@ seq_ortho <- function(
 
     path <- seq_write(
       r,
-      key = switch(type, "irc" = "r.ortho.irc", "rgb" = "r.rgb"),
+      key = switch(type, "irc" = "r.ortho.irc", "rgb" = "r.ortho.rgb"),
       dirname = dirname,
       overwrite = overwrite,
       verbose = verbose

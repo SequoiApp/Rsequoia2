@@ -4,6 +4,7 @@
 #' point features and returns an `sf` point layer.
 #'
 #' @param x An `sf` object defining the input area of interest.
+#' @param verbose `logical` If `TRUE`, display messages.
 #'
 #' @return An `sf` object containing PRSF point features.
 #'
@@ -12,12 +13,16 @@
 #' and retrieves PRSF point features before returns as a single `sf` point layer.
 #'
 #' @export
-get_prsf <- function(x) {
+get_prsf <- function(x, verbose = TRUE) {
 
   # convex buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
   fetch_envelope <- envelope(x, 5000)
+
+  if (verbose){
+    cli::cli_alert_info("Downloading PRSF dataset...")
+  }
 
   # retrieve toponymic point
   prsf <- happign::get_wfs(
@@ -61,17 +66,17 @@ get_prsf <- function(x) {
 #'
 #' @export
 seq_prsf <- function(
-    dirname   = ".",
-    verbose   = TRUE,
+    dirname = ".",
+    verbose = TRUE,
     overwrite = FALSE
 ) {
 
   # Read project area (PARCA)
-  f_parca <- sf::read_sf(get_path("v.seq.parca.poly", dirname = dirname))
-  f_id    <- get_id(dirname)
+  f_parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  f_id <- get_id(dirname)
 
   # Retrieve toponyms
-  prsf <- get_prsf(f_parca)
+  prsf <- get_prsf(f_parca, verbose = verbose)
 
   # Exit early if nothing to write
   if (is.null(prsf) || nrow(prsf) == 0) {
@@ -88,19 +93,13 @@ seq_prsf <- function(
   prsf[[id]] <- f_id
 
   # Write layer
-  prsf_path <- quiet(seq_write(
+  prsf_path <- seq_write(
     prsf,
     "v.prsf.point",
-    dirname   = dirname,
-    verbose   = FALSE,
+    dirname = dirname,
+    verbose = verbose,
     overwrite = overwrite
-  ))
+  )
 
-  if (verbose) {
-    cli::cli_alert_success(
-      "PRSF layer written with {nrow(topo)} feature{?s}"
-    )
-  }
-
-  invisible(prsf_path)
+  return(invisible(prsf_path))
 }

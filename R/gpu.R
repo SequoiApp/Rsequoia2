@@ -38,9 +38,8 @@
 seq_gpu <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
 
   # area of interest
-  geom <- sf::st_union(
-    sf::read_sf(get_path("v.seq.parca.poly", dirname = dirname))
-  )
+  geom <- seq_read("v.seq.parca.poly", dirname = dirname) |>
+    sf::st_union()
 
   id_field <- seq_field("identifiant")$name
   id_value <- get_id(dirname)
@@ -75,9 +74,7 @@ seq_gpu <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
     # GPU retrieval (single vs multiple layers)
     if (length(layerspec) > 1) {
 
-      res <- lapply(layerspec, function(lay) {
-        quiet(happign::get_apicarto_gpu(geom, lay))
-      })
+      res <- lapply(layerspec, \(x) {quiet(happign::get_apicarto_gpu(geom, x))})
 
       res <- res[!vapply(res, is.null, logical(1))]
       f <- if (length(res)) do.call(rbind, res) else NULL
@@ -104,15 +101,10 @@ seq_gpu <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
       x         = sf::st_transform(f, 2154),
       key       = spec[[1]],
       dirname   = dirname,
-      verbose   = FALSE,
+      verbose   = verbose,
       overwrite = overwrite
     )
 
-    if (verbose) {
-      cli::cli_alert_success(
-        "GPU {.field {k}} written"
-      )
-    }
   }
 
   # drop empty entries

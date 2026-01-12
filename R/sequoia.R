@@ -19,7 +19,7 @@
 #' The function primarily calls other Rsequoia2 functions.
 #'
 #' @export
-sequoia <- function(path = NULL) {
+sequoia <- function(path = NULL, overwrite = FALSE) {
 
   if (is.null(path)){
     path <- if (rstudioapi::isAvailable()) {
@@ -37,12 +37,14 @@ sequoia <- function(path = NULL) {
   actions <- list(
     "Create MATRICE" = function() {
       identifiant <- readline("Choose the forest identifiant: ")
-      create_matrice(dirname = path, id = identifiant)
+      create_matrice(dirname = path, id = identifiant, overwrite = overwrite)
     },
-    "Create MATRICE (legal entity)" = function() menu_legal_entity(path),
-    "Download PARCA" = function() seq_parca(path),
-    "Create UA" = function() seq_parca_to_ua(path),
-    "Correct UA" = function() seq_ua(path)
+    "Create MATRICE (legal entity)" = function() menu_legal_entity(path, overwrite),
+    "Download PARCA" = function() seq_parca(path, overwrite = overwrite),
+    "Create BOUNDARIES" = function() seq_boundaries(path, overwrite = overwrite),
+    "Create UA" = function() seq_parca_to_ua(path, overwrite = overwrite),
+    "Correct UA" = function() seq_ua(path, overwrite = overwrite),
+    "Download DATA" = function() menu_data(path, overwrite = overwrite)
   )
 
   choice <- utils::menu(names(actions))
@@ -61,7 +63,7 @@ sequoia <- function(path = NULL) {
 #' This function is interactive and intended for manual use only.
 #'
 #' @noRd
-menu_legal_entity <- function(path){
+menu_legal_entity <- function(path, overwrite){
   x <- readline("Enter DEP/INSEE codes (comma-separated): ")
   y <- readline("Enter proprietaire search pattern (comma-separated): ")
   insee <- trimws(strsplit(x, ",")[[1]])
@@ -80,13 +82,61 @@ menu_legal_entity <- function(path){
     "{length(p)} owners : {paste(p, collapse = ', ')}"
   ))
 
+  parca_geom <- get_parca(ms$IDU, verbose = TRUE)
+  parca <- merge(parca_geom[ , "IDU"], ms) |> seq_normalize("parca")
+
+  tmap::tmap_mode("view")
+  print(tmap::qtm(parca))
+
   switch(utils::menu(c("Confirm and continue", "Cancel")),
          {
            identifiant <- readline("Choose the forest identifiant: ")
-           create_matrice(dirname = path, id = identifiant, overwrite = TRUE)
+           ms$IDENTIFIANT <- identifiant
+           seq_xlsx(
+             x = list("MATRICE" = ms),
+             filename = file.path(path, paste0(identifiant, "_matrice.xlsx")),
+             overwrite = overwrite
+           )
          }
   )
 
   return(NULL)
+
+}
+
+menu_data <- function(path, overwrite){
+  vdir <- file.path(path)
+  rdir <- file.path(path)
+
+  seq_functions <- list(
+    "Communes"      = function() seq_com(vdir, overwrite = overwrite),
+    "MNHN"          = function() seq_mnhn(vdir, overwrite = overwrite),
+    "Geology"       = function() seq_geol(vdir, overwrite = overwrite),
+    "Pedology"      = function() seq_pedology(vdir, overwrite = overwrite),
+    "Infra"         = function() seq_infra(vdir, overwrite = overwrite),
+    "PRSF"          = function() seq_prsf(vdir, overwrite = overwrite),
+    "Hydrology"     = function() seq_hydro(vdir, overwrite = overwrite),
+    "Vegetation"    = function() seq_vege(vdir, overwrite = overwrite),
+    "Contour lines" = function() seq_curves(vdir, overwrite = overwrite),
+    "GPU"           = function() seq_gpu(vdir, overwrite = overwrite),
+    "Patrimony"     = function() seq_patrimony(vdir, overwrite = overwrite),
+    "Elevation"     = function() seq_elevation(rdir, overwrite = overwrite),
+    "Orthophoto"    = function() seq_ortho(rdir, overwrite = overwrite),
+    "Scan"          = function() seq_scan(rdir, overwrite = overwrite)
+  )
+
+  # 2. Actions reuse seq_functions
+  actions <- c(
+    list(
+      "All" = function() {
+        lapply(seq_functions, function(f) f())
+      }
+    ),
+    seq_functions
+  )
+
+  # 3. Menu + execution
+  choice <- utils::menu(names(actions))
+  actions[[choice]]()
 
 }

@@ -45,12 +45,14 @@ get_patrimony <- function(
 
   data_code <- toupper(key)
 
-  f <- frheritage::get_heritage(x,
-                                data_code,
-                                buffer = buffer,
-                                crs = 2154,
-                                spatial_filter = "intersects",
-                                verbose = FALSE)
+  f <- frheritage::get_heritage(
+    x,
+    data_code,
+    buffer = buffer,
+    crs = 2154,
+    spatial_filter = "intersects",
+    verbose = FALSE
+  )
 
   return(invisible(f))
 }
@@ -92,7 +94,7 @@ seq_patrimony <- function(
     overwrite = FALSE){
 
   # read matrice
-  parca <- read_sf(get_path("v.seq.parca.poly", dirname = dirname))
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
 
   pb <- cli::cli_progress_bar(
     format = "{cli::pb_spin} Querying MNHN layer: {.val {k}} | [{cli::pb_current}/{cli::pb_total}]",

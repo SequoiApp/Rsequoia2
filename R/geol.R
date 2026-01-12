@@ -160,7 +160,7 @@ get_brgm <- function(deps, source = "carhab", cache = NULL, verbose = FALSE, ove
 #'
 #' @keywords internal
 #' @export
-seq_geol <- function(dirname = ".", cache = NULL, verbose = FALSE, overwrite = FALSE){
+seq_geol <- function(dirname = ".", cache = NULL, verbose = TRUE, overwrite = FALSE){
   seq_write2 <- function(x, key) {
     seq_write(x, key, dirname = dirname, verbose = verbose, overwrite = overwrite)
   }
@@ -181,6 +181,11 @@ seq_geol <- function(dirname = ".", cache = NULL, verbose = FALSE, overwrite = F
   bdcharm50_path <- seq_write2(bdcharm50_mask, "v.sol.bdcharm50.poly")
 
   # BDCHARM50 QML ----
+  if (is.null(cache)){
+    cache <- tools::R_user_dir("Rsequoia2", which = "cache")
+    dir.create(cache, recursive = TRUE, showWarnings = FALSE)
+  }
+
   zip_name <- sprintf("GEO050K_HARM_%s.zip", pad_left(dep[1], 3))
   zip_path <- file.path(cache, zip_name)
   qml_zip <- grep("S_FGEOL.*qml", archive::archive(zip_path[[1]])$path, value = TRUE)

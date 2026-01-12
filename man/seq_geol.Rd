@@ -4,7 +4,7 @@
 \alias{seq_geol}
 \title{Create a geology layer for a Sequoia project from BRGM data}
 \usage{
-seq_geol(dirname = ".", cache = NULL, verbose = FALSE, overwrite = FALSE)
+seq_geol(dirname = ".", cache = NULL, verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
 \item{dirname}{\code{character} Directory where the matrice file is located.

@@ -28,6 +28,10 @@ get_dem <- function(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE) {
   x <- sf::st_transform(x, 2154)
   x_buff <- sf::st_buffer(x, buffer)
 
+  if (verbose){
+    cli::cli_alert_info("Downloading DEM raster dataset...")
+  }
+
   r <- happign::get_wms_raster(
     x_buff,
     layer = "ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES",
@@ -64,6 +68,10 @@ get_dsm <- function(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE) {
 
   x <- sf::st_transform(x, crs)
   x_buff <- sf::st_buffer(x, buffer)
+
+  if (verbose){
+    cli::cli_alert_info("Downloading DSM raster dataset...")
+  }
 
   r <- happign::get_wms_raster(
     x_buff,
@@ -338,6 +346,7 @@ seq_elevation <- function(
 
     x <- compute_fn()
     path <- seq_write(x, key, dirname = dirname, verbose = verbose, overwrite = overwrite)
+
     return(list(path = path, data = x))
   }
 

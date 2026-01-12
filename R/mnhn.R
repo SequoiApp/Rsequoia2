@@ -161,7 +161,7 @@ seq_mnhn <- function(
 
     # f mean feature in this context
     f <- get_mnhn(parca, k, buffer = buffer)
-    if (!is.null(f)) {
+    if (nrow(f) > 0) {
       valid <- c(valid, k)
       seq_key <- sprintf("v.mnhn.%s.poly", k)
       f_path <- seq_write(f, seq_key, dirname, verbose = FALSE, overwrite = overwrite)

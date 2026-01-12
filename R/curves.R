@@ -4,6 +4,7 @@
 #' curves and returns an `sf` line layer.
 #'
 #' @param x An `sf` object defining the input area of interest.
+#' @param verbose `logical` If `TRUE`, display messages.
 #'
 #' @return An `sf` object containing hypsometric curves.
 #'
@@ -12,14 +13,17 @@
 #' and retrieves hypsometric curves before returns as a single `sf` point layer.
 #'
 #' @export
-get_curves <- function(x) {
+get_curves <- function(x, verbose = TRUE) {
 
   # convex buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
   fetch_envelope <- envelope(x, 1000)
 
-  # retrieve toponymic point
+  if (verbose){
+    cli::cli_alert_info("Downloading contour lines dataset...")
+  }
+
   curves <- happign::get_wfs(
     fetch_envelope, "ELEVATION.CONTOUR.LINE:courbe", verbose = FALSE
   ) |> sf::st_transform(crs)
@@ -44,8 +48,7 @@ get_curves <- function(x) {
 #'   Defaults to the current working directory.
 #' @param verbose `logical`; whether to display informational messages.
 #'   Defaults to `TRUE`.
-#' @param overwrite `logical`; whether to overwrite existing files.
-#'   Defaults to `FALSE`.
+#' @param verbose `logical` If `TRUE`, display messages.
 #'
 #' @details
 #' Hypsometric curves line features are retrieved using [get_curves()].
@@ -65,21 +68,21 @@ get_curves <- function(x) {
 #'
 #' @export
 seq_curves <- function(
-    dirname   = ".",
-    verbose   = TRUE,
+    dirname = ".",
+    verbose = TRUE,
     overwrite = FALSE
 ) {
 
   # Read project area (PARCA)
-  f_parca <- sf::read_sf(get_path("v.seq.parca.poly", dirname = dirname))
-  f_id    <- get_id(dirname)
+  f_parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  f_id <- get_id(dirname)
 
   # Retrieve toponyms
-  curves <- get_curves(f_parca)
+  curves <- get_curves(f_parca, verbose = verbose)
 
   # Exit early if nothing to write
   if (is.null(curves) || nrow(curves) == 0) {
-    cli::cli_warn("No hypsometric curves features found: curves layer not written.")
+    cli::cli_warn("No contour lines found: curves layer not written.")
     return(invisible(NULL))
   }
 
@@ -88,19 +91,13 @@ seq_curves <- function(
   curves[[id]] <- f_id
 
   # Write layer
-  curves_path <- quiet(seq_write(
+  curves_path <- seq_write(
     curves,
     "v.curves.line",
-    dirname   = dirname,
-    verbose   = FALSE,
+    dirname = dirname,
+    verbose = verbose,
     overwrite = overwrite
-  ))
+  )
 
-  if (verbose) {
-    cli::cli_alert_success(
-      "Hypsometric curves layer written with {nrow(topo)} feature{?s}"
-    )
-  }
-
-  invisible(curves_path)
+  return(invisible(curves_path))
 }

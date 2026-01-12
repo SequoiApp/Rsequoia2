@@ -6,6 +6,7 @@
 #' a standardized `sf` point layer.
 #'
 #' @param x An `sf` object defining the input area of interest.
+#' @param verbose `logical` If `TRUE`, display messages.
 #'
 #' @return An `sf` object containing toponymic point features with standardized
 #' attribute fields:
@@ -25,12 +26,16 @@
 #' normalized before being returned as a single `sf` point layer.
 #'
 #' @export
-get_toponyme <- function(x) {
+get_toponyme <- function(x, verbose = verbose) {
 
   # fetch_envelope buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
   fetch_envelope <- envelope(x, 1000)
+
+  if (verbose){
+    cli::cli_alert_info("Downloading toponyme dataset...")
+  }
 
   # retrieve toponymic point
   toponyme <- happign::get_wfs(
@@ -42,8 +47,8 @@ get_toponyme <- function(x) {
   }
 
   # normalise field
-  type   <- seq_field("type")$name
-  name   <- seq_field("name")$name
+  type <- seq_field("type")$name
+  name <- seq_field("name")$name
   nature <- seq_field("nature")$name
   source <- seq_field("source")$name
 
@@ -114,17 +119,17 @@ get_toponyme <- function(x) {
 #'
 #' @export
 seq_toponyme <- function(
-    dirname   = ".",
-    verbose   = TRUE,
+    dirname = ".",
+    verbose = TRUE,
     overwrite = FALSE
 ) {
 
   # Read project area (PARCA)
-  f_parca <- sf::read_sf(get_path("v.seq.parca.poly", dirname = dirname))
-  f_id    <- get_id(dirname)
+  f_parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  f_id <- get_id(dirname)
 
   # Retrieve toponyms
-  topo <- get_toponyme(f_parca)
+  topo <- get_toponyme(f_parca, verbose = verbose)
 
   # Exit early if nothing to write
   if (!nrow(topo) || nrow(topo) == 0) {
@@ -141,19 +146,13 @@ seq_toponyme <- function(
   topo[[id]] <- f_id
 
   # Write layer
-  topo_path <- quiet(seq_write(
+  topo_path <- seq_write(
     topo,
     "v.toponyme.point",
-    dirname   = dirname,
-    verbose   = FALSE,
+    dirname = dirname,
+    verbose = verbose,
     overwrite = overwrite
-  ))
+  )
 
-  if (verbose) {
-    cli::cli_alert_success(
-      "Toponymy layer written with {nrow(topo)} feature{?s}"
-    )
-  }
-
-  invisible(topo_path)
+  return(invisible(topo_path))
 }

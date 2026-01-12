@@ -5,6 +5,11 @@
 #' @return An `sf` object containing the parcel geometry.
 #' @export
 get_parca_bdp <- function(idu){
+
+  if (is.null(idu) || length(idu) == 0) {
+    cli::cli_abort("{.arg idu} must be a non-empty character vector.")
+  }
+
   idu_parts <- idu_split(idu)
 
   bdp <- happign::get_apicarto_cadastre(
@@ -31,6 +36,11 @@ get_parca_bdp <- function(idu){
 #' @return An `sf` object containing the parcel geometry.
 #' @export
 get_parca_etalab <- function(idu){
+
+  if (is.null(idu) || length(idu) == 0) {
+    cli::cli_abort("{.arg idu} must be a non-empty character vector.")
+  }
+
   url <- "https://cadastre.data.gouv.fr/bundler/cadastre-etalab/communes/%s/geojson/parcelles"
   idu <- unique(idu)
   idu_parts <- idu_split(idu)
@@ -151,7 +161,7 @@ get_parca <- function(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE){
     merge(happign::dep_2025[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
     merge(happign::reg_2025[, c("REG", "NCC_REG")], all.x = TRUE)
 
-  raw_parca <- seq_normalize(raw_parca, "raw_parca")
+  raw_parca <- seq_normalize(raw_parca, "parca")
 
   return(invisible(raw_parca))
 }
