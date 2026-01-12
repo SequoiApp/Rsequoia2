@@ -7,7 +7,7 @@ a single geology layer for the project.
 ## Usage
 
 ``` r
-seq_geol(dirname = ".", cache = NULL, verbose = FALSE, overwrite = FALSE)
+seq_geol(dirname = ".", cache = NULL, verbose = TRUE, overwrite = FALSE)
 ```
 
 ## Arguments

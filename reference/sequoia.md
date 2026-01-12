@@ -7,7 +7,7 @@ cartographic tools.
 ## Usage
 
 ``` r
-sequoia(path = NULL)
+sequoia(path = NULL, overwrite = FALSE)
 ```
 
 ## Arguments

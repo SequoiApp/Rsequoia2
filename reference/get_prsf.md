@@ -6,7 +6,7 @@ features and returns an `sf` point layer.
 ## Usage
 
 ``` r
-get_prsf(x)
+get_prsf(x, verbose = TRUE)
 ```
 
 ## Arguments
@@ -14,6 +14,10 @@ get_prsf(x)
 - x:
 
   An `sf` object defining the input area of interest.
+
+- verbose:
+
+  `logical` If `TRUE`, display messages.
 
 ## Value
 

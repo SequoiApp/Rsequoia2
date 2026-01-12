@@ -64,11 +64,11 @@ insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
 #> ℹ Downloading legal entity datasets...
-#> ⠙ 17 extracted | 810 MB (235 MB/s) | 3.5s
-#> ⠹ 44 extracted | 1.6 GB (245 MB/s) | 6.4s
-#> ⠙ 12 extracted | 443 MB (208 MB/s) | 2.1s
-#> ⠹ 32 extracted | 1.2 GB (241 MB/s) | 5.1s
-#> ⠸ 50 extracted | 2.0 GB (245 MB/s) | 8.1s
+#> ⠙ 17 extracted | 823 MB (165 MB/s) | 5s
+#> ⠹ 33 extracted | 1.4 GB (177 MB/s) | 8s
+#> ⠙ 18 extracted | 661 MB (161 MB/s) | 4.1s
+#> ⠹ 34 extracted | 1.3 GB (177 MB/s) | 7.1s
+#> ⠸ 46 extracted | 1.9 GB (185 MB/s) | 10.1s
 #> ✔ Data available at: /home/runner/.cache/R/Rsequoia2
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
@@ -178,12 +178,12 @@ seq_xlsx(
   x = list("MATRICE" = search_mat),
   filename = file.path(seq_dir, paste0(id, "_matrice.xlsx"))
 )
-#> ✔ Excel file created at: /tmp/RtmpeaE3Rw/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/RtmptkjU2X/MY_FOREST/MY_FOREST_matrice.xlsx
 
 seq_parca(seq_dir)
 #> ℹ Downloading BDP from IGN...
 #> ✔ 12 of 13 ETALAB geom successfully replaced with BDP geom.
-#> ✔ Vector layer "v.seq.parca.poly" saved to MY_FOREST_SEQ_PARCA_poly.geojson.
+#> ✔ Vector layer "v.seq.parca.poly" with 13 features saved to MY_FOREST_SEQ_PARCA_poly.geojson.
 parca <- seq_read("parca", seq_dir)
 
 tm_tiles("OpenStreetMap")+

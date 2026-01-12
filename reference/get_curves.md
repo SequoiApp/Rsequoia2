@@ -6,7 +6,7 @@ curves and returns an `sf` line layer.
 ## Usage
 
 ``` r
-get_curves(x)
+get_curves(x, verbose = TRUE)
 ```
 
 ## Arguments
@@ -14,6 +14,10 @@ get_curves(x)
 - x:
 
   An `sf` object defining the input area of interest.
+
+- verbose:
+
+  `logical` If `TRUE`, display messages.
 
 ## Value
 

@@ -18,12 +18,7 @@ seq_curves(dirname = ".", verbose = TRUE, overwrite = FALSE)
 
 - verbose:
 
-  `logical`; whether to display informational messages. Defaults to
-  `TRUE`.
-
-- overwrite:
-
-  `logical`; whether to overwrite existing files. Defaults to `FALSE`.
+  `logical` If `TRUE`, display messages.
 
 ## Value
 

@@ -5,7 +5,7 @@ Aggregates parcel geometries to build forest and owner boundaries.
 ## Usage
 
 ``` r
-seq_boundaries(dirname = ".", tol = 10, verbose = FALSE, overwrite = FALSE)
+seq_boundaries(dirname = ".", tol = 10, verbose = TRUE, overwrite = FALSE)
 ```
 
 ## Arguments
