@@ -120,10 +120,13 @@ commune.</p>
 <span></span>
 <span><span class="va">legal_entity_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_legal_entity.html">get_legal_entity</a></span><span class="op">(</span><span class="va">insee</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading legal entity datasets...</span></span>
-<span><span class="co">#&gt; ⠙ 10 extracted | 437 MB (101 MB/s) | 4.3s</span></span>
-<span><span class="co">#&gt; ⠹ 18 extracted | 888 MB (143 MB/s) | 6.2s</span></span>
-<span><span class="co">#&gt; ⠙ 23 extracted | 862 MB (292 MB/s) | 3s</span></span>
-<span><span class="co">#&gt; ⠹ 46 extracted | 1.9 GB (313 MB/s) | 6s</span></span>
+<span><span class="co">#&gt; ⠙ 1 extracted |  41 MB ( 15 MB/s) | 2.6s</span></span>
+<span><span class="co">#&gt; ⠹ 2 extracted |  97 MB ( 17 MB/s) | 5.7s</span></span>
+<span><span class="co">#&gt; ⠸ 4 extracted | 200 MB ( 23 MB/s) | 8.6s</span></span>
+<span><span class="co">#&gt; ⠼ 10 extracted | 434 MB ( 37 MB/s) | 11.6s</span></span>
+<span><span class="co">#&gt; ⠴ 18 extracted | 887 MB ( 61 MB/s) | 14.6s</span></span>
+<span><span class="co">#&gt; ⠙ 20 extracted | 736 MB (298 MB/s) | 2.5s</span></span>
+<span><span class="co">#&gt; ⠹ 43 extracted | 1.8 GB (322 MB/s) | 5.5s</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Data available at: <span style="color: #0000BB;">/home/runner/.cache/R/Rsequoia2</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Reading CSV files...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Preparing CSV files...</span></span>
@@ -220,12 +223,10 @@ filling it in excel, we encouraged you to do it before saving.</p>
 <span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"MATRICE"</span> <span class="op">=</span> <span class="va">search_mat</span><span class="op">)</span>,</span>
 <span>  filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">seq_dir</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">id</span>, <span class="st">"_matrice.xlsx"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Excel file created at: <span style="color: #0000BB;">/tmp/Rtmpa0wJCx/MY_FOREST/MY_FOREST_matrice.xlsx</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Excel file created at: <span style="color: #0000BB;">/tmp/RtmpLfKNQC/MY_FOREST/MY_FOREST_matrice.xlsx</span></span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/seq_parca.html">seq_parca</a></span><span class="op">(</span><span class="va">seq_dir</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading BDP from IGN...</span></span>
-<span><span class="co">#&gt; ⠙ iterating 1 done (0.46/s) | 2.2s</span></span>
-<span><span class="co">#&gt; iterating <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> 12 of 13 ETALAB geom successfully replaced with BDP geom.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Layer <span style="color: #0000BB;">"v.seq.parca.poly"</span> with 13 features saved to <span style="color: #0000BB;">MY_FOREST_SEQ_PARCA_poly.geojson</span>.</span></span>
 <span><span class="va">parca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/seq_read.html">seq_read</a></span><span class="op">(</span><span class="st">"parca"</span>, <span class="va">seq_dir</span><span class="op">)</span></span>
