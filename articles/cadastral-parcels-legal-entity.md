@@ -64,10 +64,11 @@ insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
 #> ℹ Downloading legal entity datasets...
-#> ⠙ 18 extracted | 852 MB (306 MB/s) | 2.8s
-#> ⠙ 20 extracted | 767 MB (154 MB/s) | 5s
-#> ⠹ 21 extracted | 804 MB (101 MB/s) | 8s
-#> ⠸ 43 extracted | 1.7 GB (160 MB/s) | 10.9s
+#> ⠙ 17 extracted | 810 MB (235 MB/s) | 3.5s
+#> ⠹ 44 extracted | 1.6 GB (245 MB/s) | 6.4s
+#> ⠙ 12 extracted | 443 MB (208 MB/s) | 2.1s
+#> ⠹ 32 extracted | 1.2 GB (241 MB/s) | 5.1s
+#> ⠸ 50 extracted | 2.0 GB (245 MB/s) | 8.1s
 #> ✔ Data available at: /home/runner/.cache/R/Rsequoia2
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
@@ -83,12 +84,12 @@ head(legal_entity_cp)
 #> 5        <NA> TI PORZH LES ROCHERS 29158000AB0011 BRETAGNE       53 FINISTERE
 #> 6        <NA>         L ATELIER 89 29158000AB0025 BRETAGNE       53 FINISTERE
 #>   DEP_CODE  COM_NOM COM_CODE INSEE PREFIXE SECTION NUMERO              LIEU_DIT
-#> 1       29 PENMARCH       91 29158     000      AB   0005          DES GOELANDS
-#> 2       29 PENMARCH       91 29158     000      AB   0006           DES EMBRUNS
-#> 3       29 PENMARCH       91 29158     000      AB   0007         SAINT GUENOLE
-#> 4       29 PENMARCH       91 29158     000      AB   0008          DES GOELANDS
-#> 5       29 PENMARCH       91 29158     000      AB   0011         ROGER QUINIOU
-#> 6       29 PENMARCH       91 29158     000      AB   0025 PIERRE ET JEAN DUPOUY
+#> 1       29 PENMARCH      158 29158     000      AB   0005          DES GOELANDS
+#> 2       29 PENMARCH      158 29158     000      AB   0006           DES EMBRUNS
+#> 3       29 PENMARCH      158 29158     000      AB   0007         SAINT GUENOLE
+#> 4       29 PENMARCH      158 29158     000      AB   0008          DES GOELANDS
+#> 5       29 PENMARCH      158 29158     000      AB   0011         ROGER QUINIOU
+#> 6       29 PENMARCH      158 29158     000      AB   0025 PIERRE ET JEAN DUPOUY
 #>   SURF_CA
 #> 1     370
 #> 2   12358
@@ -177,7 +178,7 @@ seq_xlsx(
   x = list("MATRICE" = search_mat),
   filename = file.path(seq_dir, paste0(id, "_matrice.xlsx"))
 )
-#> ✔ Excel file created at: /tmp/RtmpB7bhQY/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/RtmpeaE3Rw/MY_FOREST/MY_FOREST_matrice.xlsx
 
 seq_parca(seq_dir)
 #> ℹ Downloading BDP from IGN...
