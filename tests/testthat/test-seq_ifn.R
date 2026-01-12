@@ -1,4 +1,4 @@
-test_that("seq_region() writes valid polygon layer", {
+test_that("seq_ifn() writes valid polygon layer", {
   skip_on_cran()
   skip_on_ci()
 
@@ -15,8 +15,8 @@ test_that("seq_region() writes valid polygon layer", {
   # parca
   p <- seq_parca(seq_cache, verbose = FALSE)
 
-  # call seq_region
-  paths <- seq_region(
+  # call seq_ifn
+  paths <- seq_ifn(
     dirname = seq_cache,
     types = c("ser", "rfn"),
     verbose = FALSE,
@@ -37,7 +37,7 @@ test_that("seq_region() writes valid polygon layer", {
   }
 })
 
-test_that("seq_region() returns NULL when no features exist", {
+test_that("seq_ifn() returns NULL when no features exist", {
   skip_on_cran()
   skip_on_ci()
 
@@ -55,8 +55,8 @@ test_that("seq_region() returns NULL when no features exist", {
   p <- fake_parca()
   parca_path <- seq_write(p, "parca", dirname = seq_cache)
 
-  # seq_region
-  path <- seq_region(seq_cache, verbose = FALSE)
+  # seq_ifn
+  path <- seq_ifn(seq_cache, verbose = FALSE)
 
   expect_null(path)
 })

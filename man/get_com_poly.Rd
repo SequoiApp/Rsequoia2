@@ -4,10 +4,12 @@
 \alias{get_com_poly}
 \title{Retrieve administrative boundary polygons around an area}
 \usage{
-get_com_poly(x)
+get_com_poly(x, verbose = TRUE)
 }
 \arguments{
 \item{x}{An \code{sf} object used as the input area.}
+
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
 An \code{sf} object of type \code{POLYGON} containing commune boundaries,

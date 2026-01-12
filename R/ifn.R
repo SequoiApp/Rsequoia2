@@ -1,10 +1,10 @@
-#' Retrieve administrative or forest regions intersecting an area
+#' Retrieve IFN regional layers by intersecting an area
 #'
-#' Downloads (if necessary), caches and extracts IGN regional layers
+#' Downloads (if necessary), caches and extracts IFN regional layers
 #' intersecting a given area of interest.
 #'
 #' @param x An `sf` object defining the input area of interest.
-#' @param type A character string specifying the regional dataset to use.
+#' @param type A character string specifying the IFN regional dataset to use.
 #'   Must be one of:
 #'   \itemize{
 #'     \item `"ser"`: sylvo-écorégions
@@ -34,11 +34,11 @@
 #' geometry modification (e.g. clipping) is applied.
 #'
 #' @export
-get_region <- function(x,
-                       type = c("ser", "ser_ar", "rfn", "rfd", "zp"),
-                       cache = NULL) {
+get_ifn <- function(x,
+                    type = c("ser", "ser_ar", "rfn", "rfd", "zp"),
+                    cache = NULL) {
 
-  # yype check
+  # type check
   if (length(type) != 1 || !type %in% c("ser", "ser_ar", "rfn", "rfd", "zp")) {
     cli::cli_abort(c(
       "x" = "{.arg type} is equal to {.val {format(type)}}.",
@@ -82,26 +82,28 @@ get_region <- function(x,
     cli::cli_abort("No shapefile found in {.file {unzip_dir}}.")
   }
 
-  region <- sf::st_read(shp[1], quiet = TRUE)
+  ifn <- sf::st_read(shp[1], quiet = TRUE)
 
-  # assign CRS if na
-  if (is.na(sf::st_crs(region))) {
-    sf::st_crs(region) <- sf::st_crs(x)
+  # CRS handling
+  if (is.na(sf::st_crs(ifn))) {
+    sf::st_crs(ifn) <- sf::st_crs(x)
   }
-  if (!sf::st_crs(region) == sf::st_crs(x)) {
-    region <- sf::st_transform(region, sf::st_crs(x))
+
+  if (!sf::st_crs(ifn) == sf::st_crs(x)) {
+    ifn <- sf::st_transform(ifn, sf::st_crs(x))
   }
 
   # spatial intersection
-  idx <- sf::st_intersects(region, x, sparse = FALSE)
+  idx <- sf::st_intersects(ifn, x, sparse = FALSE)
 
   if (!any(idx)) {
     return(NULL)
   }
 
-  region <- region[rowSums(idx) > 0, , drop = FALSE] |>
-    sf::st_transform(2154)
-  region
+  # subset only — no reprojection here
+  ifn <- ifn[rowSums(idx) > 0, , drop = FALSE]
+
+  ifn
 }
 
 #' Generate regional layers for a Sequoia project
@@ -120,7 +122,7 @@ get_region <- function(x,
 #'   Defaults to `FALSE`.
 #'
 #' @details
-#' Regional datasets are retrieved using [get_region()] based on the
+#' Regional datasets are retrieved using [get_ifn()] based on the
 #' project area defined by the PARCA polygon.
 #'
 #' Each regional layer is written to disk using [seq_write()] with a
@@ -134,10 +136,10 @@ get_region <- function(x,
 #' Returns `NULL` invisibly if no regional layer is written.
 #'
 #' @seealso
-#' [get_region()], [seq_write()]
+#' [get_ifn()], [seq_write()]
 #'
 #' @export
-seq_region <- function(
+seq_ifn <- function(
     dirname   = ".",
     types     = c("ser", "ser_ar", "rfn", "rfd", "zp"),
     verbose   = TRUE,
@@ -170,7 +172,7 @@ seq_region <- function(
   # main loop
   for (type in types) {
 
-    region <- get_region(parca, type = type)
+    region <- get_ifn(parca, type = type)
 
     if (is.null(region) || nrow(region) == 0) {
       if (verbose) {

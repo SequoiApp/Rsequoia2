@@ -4,13 +4,15 @@
 \alias{get_com_line}
 \title{Retrieve and assemble commune boundary lines around an area}
 \usage{
-get_com_line(x, graphic = FALSE)
+get_com_line(x, graphic = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{x}{An \code{sf} object used as the input area.}
 
 \item{graphic}{Logical. If \code{TRUE}, line geometries are clipped to a
 500 m convex buffer around \code{x} for graphical purposes.}
+
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
 An \code{sf} object of type \code{LINESTRING} representing commune boundaries.

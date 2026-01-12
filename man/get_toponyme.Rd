@@ -4,10 +4,12 @@
 \alias{get_toponyme}
 \title{Retrieve and classify toponymic point features around an area}
 \usage{
-get_toponyme(x)
+get_toponyme(x, verbose = verbose)
 }
 \arguments{
 \item{x}{An \code{sf} object defining the input area of interest.}
+
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
 An \code{sf} object containing toponymic point features with standardized

@@ -4,7 +4,7 @@
 \alias{get_com_point}
 \title{Retrieve commune representative points around an area}
 \usage{
-get_com_point(x, graphic = FALSE)
+get_com_point(x, graphic = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{x}{An \code{sf} object used as the input area.}
@@ -12,6 +12,8 @@ get_com_point(x, graphic = FALSE)
 \item{graphic}{Logical. If \code{TRUE}, centroids are computed only on the
 intersection between commune polygons and a 500 m convex buffer
 around \code{x}, for cartographic display.}
+
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
 An \code{sf} object of type \code{POINT} representing commune centroids.
