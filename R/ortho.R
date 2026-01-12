@@ -123,6 +123,10 @@ seq_ortho <- function(
 
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
 
+  if (verbose){
+    cli::cli_h1("IMAGERY")
+  }
+
   path <- lapply(type, function(type) {
     r <- get_ortho(
       parca,

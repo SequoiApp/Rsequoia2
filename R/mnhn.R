@@ -147,6 +147,10 @@ seq_mnhn <- function(
   # read matrice
   parca <- read_sf(get_path("v.seq.parca.poly", dirname = dirname))
 
+  if (verbose){
+    cli::cli_h1("MNHN")
+  }
+
   pb <- cli::cli_progress_bar(
     format = "{cli::pb_spin} Querying MNHN layer: {.val {k}} | [{cli::pb_current}/{cli::pb_total}]",
     total = length(key)

@@ -189,11 +189,16 @@ seq_pedology <- function(
 ) {
 
   # Read project area (PARCA) ----
-  f_parca <- sf::read_sf(get_path("v.seq.parca.poly", dirname = dirname))
-  f_id    <- get_id(dirname)
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  id_field <- seq_field("identifiant")$name
+  id <- unique(parca[[id_field]])
+
+  if (verbose){
+    cli::cli_h1("PEDOLOGY")
+  }
 
   # Retrieve pedology ----
-  pedo <- get_pedology(f_parca)
+  pedo <- get_pedology(parca)
 
   # Exit early if nothing to write
   if (is.null(pedo) || nrow(pedo) == 0) {
@@ -206,23 +211,16 @@ seq_pedology <- function(
   }
 
   # Add project identifier
-  id <- seq_field("identifiant")$name
-  pedo[[id]] <- f_id
+  pedo[[id_field]] <- id
 
   # Write pedology layer
   pedo_path <- quiet(seq_write(
     pedo,
     "v.sol.pedo.poly",
-    dirname   = dirname,
-    verbose   = FALSE,
+    dirname = dirname,
+    verbose = verbose,
     overwrite = overwrite
   ))
-
-  if (verbose) {
-    cli::cli_alert_success(
-      "Pedology layer written with {nrow(pedo)} feature{?s}"
-    )
-  }
 
   # Download associated PDFs
   get_pedology_pdf(
@@ -232,5 +230,5 @@ seq_pedology <- function(
     verbose   = verbose
   )
 
-  invisible(pedo_path)
+  return(invisible(pedo_path))
 }

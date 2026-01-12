@@ -174,6 +174,10 @@ seq_com <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
   id_field <- seq_field("identifiant")$name
   id <- unique(parca[[id_field]])
 
+  if (verbose){
+    cli::cli_h1("COMMUNES")
+  }
+
   # create empty path list
   paths <- list()
 

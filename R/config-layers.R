@@ -89,7 +89,7 @@ get_path <- function(key, dirname = ".", verbose = FALSE){
   family <- ns[idx][[1]]
   path <- cfg$path[[family]]
   dir <- file.path(dirname, path)
-  dir.create(dir, showWarnings = FALSE)
+  dir.create(dir, showWarnings = FALSE, recursive = TRUE)
   path <- file.path(dir, filename)
 
   names(path) <- match_key

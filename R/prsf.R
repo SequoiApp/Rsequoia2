@@ -76,6 +76,10 @@ seq_prsf <- function(
   id_field <- seq_field("identifiant")$name
   id <- unique(parca[[id_field]])
 
+  if (verbose){
+    cli::cli_h1("PRSF")
+  }
+
   # Retrieve toponyms
   prsf <- get_prsf(parca, verbose = verbose)
 

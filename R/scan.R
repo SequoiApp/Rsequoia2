@@ -185,6 +185,10 @@ seq_scan <- function(
   # read project geometry
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
 
+  if (verbose){
+    cli::cli_h1("SCAN")
+  }
+
   paths <- lapply(type, function(type) {
 
     r <- get_scan(

@@ -118,6 +118,7 @@ menu_data <- function(path, overwrite){
     "Pedology"      = function() seq_pedology(path, overwrite = overwrite),
     "Infra"         = function() seq_infra(path, overwrite = overwrite),
     "PRSF"          = function() seq_prsf(path, overwrite = overwrite),
+    "Toponyme"      = function() seq_toponyme(path, overwrite = overwrite),
     "Hydrology"     = function() seq_hydro(path, overwrite = overwrite),
     "Vegetation"    = function() seq_vege(path, overwrite = overwrite),
     "Contour lines" = function() seq_curves(path, overwrite = overwrite),
@@ -125,21 +126,30 @@ menu_data <- function(path, overwrite){
     "Patrimony"     = function() seq_patrimony(path, overwrite = overwrite),
     "Elevation"     = function() seq_elevation(path, overwrite = overwrite),
     "Orthophoto"    = function() seq_ortho(path, overwrite = overwrite),
-    "Scan"          = function() seq_scan(rdir, overwrite = overwrite)
+    "Scan"          = function() seq_scan(path, overwrite = overwrite)
   )
 
-  # 2. Actions reuse seq_functions
-  actions <- c(
-    list(
-      "All" = function() {
-        lapply(seq_functions, function(f) f())
-      }
-    ),
-    seq_functions
-  )
+  items <- c("All", names(seq_functions))
+  for (i in seq_along(items)) {
+    cat(sprintf("%2d: %s\n", i, items[[i]]))
+  }
 
-  # 3. Menu + execution
-  choice <- utils::menu(names(actions))
-  actions[[choice]]()
+  sel <- readline("\nSelect actions (comma-separated numbers): ")
+  idx <- suppressWarnings(as.integer(strsplit(sel, ",")[[1]]))
+  idx <- idx[!is.na(idx)]
 
+  if (length(idx) == 0 || any(idx < 1 | idx > length(items))) {
+    cli::cli_abort("Invalid selection.")
+  }
+
+  # choice 1 = All
+  if (1 %in% idx) {
+    lapply(seq_functions, function(f) f())
+    return(invisible(NULL))
+  }
+
+  # otherwise map 2..N → seq_functions
+  chosen <- seq_functions[idx - 1]
+  lapply(chosen, function(f) f())
+  return(invisible(NULL))
 }

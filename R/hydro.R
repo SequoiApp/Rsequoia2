@@ -206,10 +206,13 @@ seq_hydro <- function(
 ) {
 
   # read PARCA
-  f_parca <- read_sf(get_path("v.seq.parca.poly", dirname = dirname))
-  f_id <- get_id(dirname)
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  id_field <- seq_field("identifiant")$name
+  id <- unique(parca[[id_field]])
 
-  id <- seq_field("identifiant")$name
+  if (verbose){
+    cli::cli_h1("HYDROLOGY")
+  }
 
   # create empty path list
   path <- list()
@@ -223,17 +226,17 @@ seq_hydro <- function(
 
   for (k in names(layers)) {
 
-    f <- layers[[k]]$fun(f_parca)
+    f <- layers[[k]]$fun(parca)
 
     if (nrow(f)>0){
-      f[[id]]<- f_id
+      f[[id_field]] <- id
     }
 
     f_path <- seq_write(
       f,
       layers[[k]]$key,
       dirname = dirname,
-      verbose = FALSE,
+      verbose = verbose,
       overwrite = overwrite
     )
 
@@ -243,10 +246,6 @@ seq_hydro <- function(
       if (nrow(f) == 0) {
         cli::cli_alert_info(
           c("i" = "Hydro {.field {k}} layer written (empty layer)")
-        )
-      } else {
-        cli::cli_alert_success(
-          "Hydro {.field {k}} layer written with {nrow(f)} feature{?s}"
         )
       }
     }

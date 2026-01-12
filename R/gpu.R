@@ -41,6 +41,10 @@ seq_gpu <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
   geom <- seq_read("v.seq.parca.poly", dirname = dirname) |>
     sf::st_union()
 
+  if (verbose){
+    cli::cli_h1("GPU")
+  }
+
   id_field <- seq_field("identifiant")$name
   id_value <- get_id(dirname)
 

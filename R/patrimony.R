@@ -54,6 +54,13 @@ get_patrimony <- function(
     verbose = FALSE
   )
 
+  if (is.null(f) || !nrow(f)) {
+    if (verbose){
+      cli::cli_alert_warning("Layer {.field {key}}: no intersecting features")
+    }
+    return(invisible(NULL))
+  }
+
   return(invisible(f))
 }
 
@@ -95,6 +102,12 @@ seq_patrimony <- function(
 
   # read matrice
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  id_field <- seq_field("identifiant")$name
+  id <- unique(parca[[id_field]])
+
+  if (verbose){
+    cli::cli_h1("PATRIMONY")
+  }
 
   pb <- cli::cli_progress_bar(
     format = "{cli::pb_spin} Querying MNHN layer: {.val {k}} | [{cli::pb_current}/{cli::pb_total}]",
@@ -109,10 +122,11 @@ seq_patrimony <- function(
     if (verbose) {cli::cli_progress_update(id = pb)}
 
     # f mean feature in this context
-    f <- get_patrimony(parca, k, buffer = buffer)
+    f <- get_patrimony(parca, k, buffer = buffer, verbose = FALSE)
     if (!is.null(f)) {
       valid <- c(valid, k)
       seq_key <- sprintf("v.pat.%s.poly", k)
+      f[[id_field]] <- id
       f_path <- seq_write(f, seq_key, dirname, verbose = FALSE, overwrite = overwrite)
       path <- c(path, f_path)
     } else {
@@ -131,5 +145,5 @@ seq_patrimony <- function(
     }
   }
 
-  return(path)
+  return(invisible(path))
 }

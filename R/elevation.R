@@ -352,6 +352,10 @@ seq_elevation <- function(
 
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
 
+  if (verbose){
+    cli::cli_h1("ELEVATION")
+  }
+
   # DEM ----
   dem <- seq_get_or_read("r.alt.mnt", function() {
     get_dem(parca, buffer = buffer, res = res, crs = crs, verbose = verbose)

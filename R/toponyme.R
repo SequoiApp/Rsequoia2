@@ -124,12 +124,16 @@ seq_toponyme <- function(
     overwrite = FALSE
 ) {
 
-  # Read project area (PARCA)
-  f_parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  f_id <- get_id(dirname)
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  id_field <- seq_field("identifiant")$name
+  id <- unique(parca[[id_field]])
+
+  if (verbose){
+    cli::cli_h1("TOPONYME")
+  }
 
   # Retrieve toponyms
-  topo <- get_toponyme(f_parca, verbose = verbose)
+  topo <- get_toponyme(parca, verbose = verbose)
 
   # Exit early if nothing to write
   if (!nrow(topo) || nrow(topo) == 0) {
@@ -142,8 +146,7 @@ seq_toponyme <- function(
   }
 
   # Add project identifier
-  id <- seq_field("identifiant")$name
-  topo[[id]] <- f_id
+  topo[[id_field]] <- id
 
   # Write layer
   topo_path <- seq_write(

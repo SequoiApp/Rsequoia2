@@ -74,11 +74,16 @@ seq_curves <- function(
 ) {
 
   # Read project area (PARCA)
-  f_parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  f_id <- get_id(dirname)
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  id_field <- seq_field("identifiant")$name
+  id <- unique(parca[[id_field]])
+
+  if (verbose){
+    cli::cli_h1("CONTOUR LINES")
+  }
 
   # Retrieve toponyms
-  curves <- get_curves(f_parca, verbose = verbose)
+  curves <- get_curves(parca, verbose = verbose)
 
   # Exit early if nothing to write
   if (is.null(curves) || nrow(curves) == 0) {
@@ -87,8 +92,7 @@ seq_curves <- function(
   }
 
   # Add project identifier
-  id <- seq_field("identifiant")$name
-  curves[[id]] <- f_id
+  curves[[id_field]] <- id
 
   # Write layer
   curves_path <- seq_write(

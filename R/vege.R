@@ -270,6 +270,10 @@ seq_vege <- function(
   id_field <- seq_field("identifiant")$name
   id <- unique(parca[[id_field]])
 
+  if (verbose){
+    cli::cli_h1("VEGETATION")
+  }
+
   vege_poly <- get_vege_poly(parca)
   vege_poly[[id_field]] <- id
   seq_write2(vege_poly, "v.vege.poly")

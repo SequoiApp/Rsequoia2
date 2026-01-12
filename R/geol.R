@@ -168,6 +168,10 @@ seq_geol <- function(dirname = ".", cache = NULL, verbose = TRUE, overwrite = FA
   parca <- seq_read("v.seq.parca.poly", dirname = dirname, verbose = FALSE)
   parca_buff <- sf::st_buffer(sf::st_as_sfc(sf::st_bbox(parca)), 5000)
 
+  if (verbose){
+    cli::cli_h1("GEOLOGY")
+  }
+
   dep <- unique(parca[[seq_field("dep_num")$name]])
 
   # CARHAB ----

@@ -376,10 +376,13 @@ seq_infra <- function(
 ) {
 
   # read PARCA
-  f_parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  f_id <- get_id(dirname)
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  id_field <- seq_field("identifiant")$name
+  id <- unique(parca[[id_field]])
 
-  id <- seq_field("identifiant")$name
+  if (verbose){
+    cli::cli_h1("INFRA")
+  }
 
   # create empty path list
   path <- list()
@@ -393,17 +396,17 @@ seq_infra <- function(
 
   for (k in names(layers)) {
 
-    f <- layers[[k]]$fun(f_parca)
+    f <- layers[[k]]$fun(parca)
 
     if (nrow(f) > 0){
-      f[[id]] <- f_id
+      f[[id_field]] <- id
     }
 
     f_path <- seq_write(
       f,
       layers[[k]]$key,
       dirname = dirname,
-      verbose = FALSE,
+      verbose = verbose,
       overwrite = overwrite
     )
 
@@ -413,10 +416,6 @@ seq_infra <- function(
       if (nrow(f) == 0) {
         cli::cli_alert_info(
           c("i" = "Infra {.field {k}} layer written (empty layer)")
-        )
-      } else {
-        cli::cli_alert_success(
-          "Infra {.field {k}} layer written with {nrow(f)} feature{?s}"
         )
       }
     }
