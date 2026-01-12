@@ -54,6 +54,12 @@ get_patrimony <- function(
     verbose = FALSE
   )
 
+  if (verbose && (is.null(f) || nrow(f) == 0)) {
+    cli::cli_alert_warning(
+      "{.arg key} {.val {key}} returned empty."
+    )
+  }
+
   return(invisible(f))
 }
 
@@ -109,8 +115,9 @@ seq_patrimony <- function(
     if (verbose) {cli::cli_progress_update(id = pb)}
 
     # f mean feature in this context
-    f <- get_patrimony(parca, k, buffer = buffer)
-    if (!is.null(f)) {
+    f <- get_patrimony(parca, k, buffer = buffer, verbose = verbose)
+
+    if (!is.null(f) && inherits(f, "sf") && nrow(f) > 0) {
       valid <- c(valid, k)
       seq_key <- sprintf("v.pat.%s.poly", k)
       f_path <- seq_write(f, seq_key, dirname, verbose = FALSE, overwrite = overwrite)
