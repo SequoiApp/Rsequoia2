@@ -127,14 +127,17 @@ seq_ortho <- function(
     cli::cli_h1("IMAGERY")
   }
 
-  path <- lapply(type, function(type) {
-    r <- get_ortho(
-      parca,
-      type = type,
-      zoom = zoom,
-      crs = crs,
-      buffer = buffer,
-      overwrite = overwrite,
+  paths <- lapply(type, function(type) {
+    r <- seq_retry(
+      get_ortho(
+        parca,
+        type = type,
+        zoom = zoom,
+        crs = crs,
+        buffer = buffer,
+        overwrite = overwrite,
+        verbose = verbose
+      ),
       verbose = verbose
     )
 
@@ -147,6 +150,6 @@ seq_ortho <- function(
     )
   })
 
-  return(path)
+  return(paths)
 
 }

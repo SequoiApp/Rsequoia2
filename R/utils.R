@@ -74,3 +74,51 @@ quiet <- function(expr) {
   utils::capture.output(result <- suppressMessages(suppressWarnings(expr)))
   result
 }
+
+#' Add retry capability to seq_* function
+#'
+#' Internal helper used to retry download when failing
+#'
+#' @param expr Code to capture
+#' @param times Number of retry
+#' @param wait Time to wait between retry
+#' @param verbose `logical` If `TRUE`, display messages.
+#'
+#' @keywords internal
+#'
+seq_retry <- function(expr, times = 3, wait = 0.5, verbose = TRUE) {
+
+  last_error <- NULL
+
+  suppressWarnings({
+
+    for (i in seq_len(times)) {
+      res <- try(expr, silent = TRUE)
+
+      not_an_error <- !inherits(res, "try-error")
+      if (not_an_error) {
+        return(res)
+      }
+
+      last_error <- res
+      if (verbose) {
+        cli::cli_alert_info(
+          "Attempt {i}/{times} failed, retrying..."
+        )
+      }
+
+      if (i < times) {
+        Sys.sleep(wait)
+      }
+    }
+
+  })
+
+  cli::cli_warn(c(
+    "!" = "Operation failed after {times} attempt{?s}.",
+    "x" = conditionMessage(attr(last_error, "condition"))
+  ))
+
+  return(invisible(NULL))
+
+}
