@@ -45,16 +45,16 @@ seq_boundaries <- function(
   }
 
   # Resolve field and layer ----
-  identifiant <- seq_field("identifiant")$name
-  owner <- seq_field("proprietaire")$name
-  surf_cad <- seq_field("surf_cad")$name
+  identifier <- seq_field("identifier")$name
+  owner <- seq_field("owner")$name
+  cad_area <- seq_field("cad_area")$name
 
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
 
   # Forest boudaries ----
   forest <- aggregate(
-    parca[surf_cad],
-    by = list(parca[[identifiant]]) |> setNames(identifiant),
+    parca[cad_area],
+    by = list(parca[[identifier]]) |> setNames(identifier),
     FUN = sum,
     do_union = TRUE
   )
@@ -73,11 +73,11 @@ seq_boundaries <- function(
   f_point <- seq_write2(forest, "v.seq.forest.point")
 
   # Owner boudaries ----
-  by_id_owner <- list(parca[[identifiant]], parca[[owner]]) |>
-    setNames(c(identifiant, owner))
+  by_id_owner <- list(parca[[identifier]], parca[[owner]]) |>
+    setNames(c(identifier, owner))
 
   owner <- aggregate(
-    parca[surf_cad],
+    parca[cad_area],
     by = by_id_owner,
     FUN = sum,
     do_union = TRUE

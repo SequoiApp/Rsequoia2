@@ -22,7 +22,7 @@
 #' names(seq_field())
 #'
 #' # Return the definition of a specific field
-#' seq_field("identifiant")
+#' seq_field("identifier")
 #' }
 #'
 seq_field <- function(field = NULL, filepath = NULL){

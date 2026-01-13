@@ -205,8 +205,8 @@ seq_parca <- function(
   insee <- seq_field("insee")$name
   prefix <- seq_field("prefix")$name
   section <- seq_field("section")$name
-  numero <- seq_field("numero")$name
-  lieu_dit <- seq_field("lieu_dit")$name
+  numero <- seq_field("number")$name
+  lieu_dit <- seq_field("locality")$name
 
   # create idu
   m[[idu]] <- paste0(
@@ -257,7 +257,7 @@ seq_parca <- function(
 
 #' Check inconsistencies between cadastral and cartographic areas
 #'
-#' This function compares cadastral areas (`CONTENANCE`, in m²) with
+#' This function compares cadastral areas (in m²) with
 #' cartographic areas computed from geometry ([sf::st_area()]).
 #'
 #' @param parca `sf` Object from [Rsequoia2::seq_parca()] representing cadastral
@@ -281,11 +281,11 @@ parca_check_area <- function(
     rtol = 0.05,
     verbose = TRUE){
 
-  surf_cad <- seq_field("surf_cad")$name
+  cad_area <- seq_field("cad_area")$name
 
-  parca$AREA_SIG <- as.numeric(sf::st_area(parca)) / 10000
-  parca$AREA_ATOL <- abs(parca[[surf_cad]] - parca$AREA_SIG * 10000)
-  parca$AREA_RTOL <- parca$AREA_ATOL / parca[[surf_cad]]
+  parca$AREA_GIS <- as.numeric(sf::st_area(parca)) / 10000
+  parca$AREA_ATOL <- abs(parca[[cad_area]] - parca$AREA_GIS * 10000)
+  parca$AREA_RTOL <- parca$AREA_ATOL / parca[[cad_area]]
   parca$AREA_CHECK <- (parca$AREA_ATOL >= atol & parca$AREA_RTOL >= rtol)
 
   bad_idu <- parca$IDU[parca$AREA_CHECK]

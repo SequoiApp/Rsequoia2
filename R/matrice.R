@@ -21,13 +21,13 @@
 create_matrice <- function(dirname = ".", id = "MY_FOREST", overwrite = FALSE, verbose = TRUE){
 
   matrice <- data.frame(
-    "identifiant" = id,
-    "prop" = "NAME OF THE OWNER",
-    "insee" = "99999",
-    "prefixe" = "",
-    "section" = "ZZ",
-    "numero" = "999",
-    "lieu_dit" = "NAME OF LIEU DIT"
+    "IDENTIFIANT" = id,
+    "PROPRIETAIRE" = "NAME OF THE OWNER",
+    "INSEE" = "99999",
+    "PREFIX" = "",
+    "SECTION" = "ZZ",
+    "NUMERO" = "999",
+    "LIEU_DIT" = "NAME OF LIEU DIT"
   ) |> seq_normalize("matrice")
 
   seq_xlsx(
@@ -83,8 +83,8 @@ read_matrice <- function(dirname = "."){
 
   # name_check
   matrice_keys <- c(
-    "identifiant", "proprietaire", "insee", "prefix",
-    "section", "numero", "lieu_dit"
+    "identifier", "owner", "insee", "prefix",
+    "section", "number", "locality"
   )
 
   required <- sapply(matrice_keys, \(x) seq_field(x)$name)
@@ -95,8 +95,8 @@ read_matrice <- function(dirname = "."){
   }
 
   # Extract ID
-  identifiant <- seq_field("identifiant")$name
-  id <- unique(m[[identifiant]])
+  identifier <- seq_field("identifier")$name
+  id <- unique(m[[identifier]])
   id <- id[!is.na(id) & nzchar(trimws(id))]   # remove NA + empty + spaces-only
 
   # Empty IDs
@@ -118,11 +118,11 @@ read_matrice <- function(dirname = "."){
   # Resolve field names once
   f <- function(x) seq_field(x)$name
 
-  m[[f("identifiant")]] <- id
+  m[[f("identifier")]] <- id
   m[[f("insee")]] <- pad_left(m[[f("insee")]], 5)
   m[[f("prefix")]] <- pad_left(m[[f("prefix")]], 3)
   m[[f("section")]] <- pad_left(m[[f("section")]], 2)
-  m[[f("numero")]] <- pad_left(m[[f("numero")]], 4)
+  m[[f("number")]] <- pad_left(m[[f("number")]], 4)
 
   m <- seq_normalize(m, "matrice")
 

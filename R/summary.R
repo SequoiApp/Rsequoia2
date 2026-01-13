@@ -5,13 +5,13 @@ seq_summary <- function(dirname = ".", overwrite = FALSE, verbose = TRUE){
   ua <- sf::read_sf(ua_path) |> seq_normalize("ua") |> sf::st_drop_geometry()
 
   sum_surf_by <- function(ua, ...){
-    surf_cor <- seq_field("surf_cor")$name
+    cor_area <- seq_field("cor_area")$name
 
     by <- list(...) |> lapply(\(x) seq_field(x)$name)
     by_formula <- paste(by, collapse = " + ")
 
     aggregate(
-      stats::as.formula(paste(surf_cor, "~", by_formula)),
+      stats::as.formula(paste(cor_area, "~", by_formula)),
       data = ua,
       FUN = sum,
       na.rm = TRUE,
@@ -42,7 +42,7 @@ seq_summary <- function(dirname = ".", overwrite = FALSE, verbose = TRUE){
     return(pivoted)
   }
 
-  surf_cor <- seq_field("surf_cor")$name
+  cor_area <- seq_field("cor_area")$name
 
   ocs <- sum_surf_by(ua, "land_use")
 
@@ -58,7 +58,7 @@ seq_summary <- function(dirname = ".", overwrite = FALSE, verbose = TRUE){
 
   plt <- sum_surf_by(ua, "peuplement")
   plt <- order_by(plt, "surf_cor", decreasing = TRUE)
-  plt$PROPORTION <- plt[[surf_cor]]/sum(plt[[surf_cor]])
+  plt$PROPORTION <- plt[[cor_area]]/sum(plt[[cor_area]])
 
   station <- sum_surf_by(ua, "sol")
 
@@ -79,7 +79,7 @@ seq_summary <- function(dirname = ".", overwrite = FALSE, verbose = TRUE){
 
   ame <- sum_surf_by(ua, "amenagement")
   ame <- order_by(ame, "amenagement")
-  ame$PROPORTION <- ame[[surf_cor]]/sum(ame[[surf_cor]])
+  ame$PROPORTION <- ame[[cor_area]]/sum(ame[[cor_area]])
 
 
 }

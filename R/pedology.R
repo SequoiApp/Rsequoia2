@@ -38,14 +38,14 @@ get_pedology <- function(x) {
 
   # Field names from configuration
   idu <- seq_field("idu")$name
-  surf_cad <- seq_field("surf_cad")$name
-  surf_sig <- seq_field("surf_sig")$name
-  surf_cor <- seq_field("surf_cor")$name
-  required_fields <- c(idu, surf_cad, surf_sig, surf_cor)
+  cad_area <- seq_field("cad_area")$name
+  gis_area <- seq_field("gis_area")$name
+  cor_area <- seq_field("cor_area")$name
+  required_fields <- c(idu, cad_area, gis_area, cor_area)
 
   if (all(required_fields %in% names(intersect))) {
     pedology <- ua_generate_area(intersect, verbose = FALSE)
-    pedology <- intersect[, c(names(pedology), idu, surf_cad, surf_sig, surf_cor)]
+    pedology <- intersect[, c(names(pedology), idu, cad_area, gis_area, cor_area)]
   } else  {
     pedology <- intersect[, c(names(pedology))]
   }
@@ -190,7 +190,7 @@ seq_pedology <- function(
 
   # Read project area (PARCA) ----
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id_field <- seq_field("identifiant")$name
+  id_field <- seq_field("identifier")$name
   id <- unique(parca[[id_field]])
 
   if (verbose){

@@ -14,8 +14,8 @@ ua_to_pf(ua)
 corrected surfaces.
 }
 \description{
-Aggregates corrected surface areas (\code{surf_cor}) from a \emph{UA} layer by
-grouping rows according to the \code{parcelle} field, as defined by the
+Aggregates corrected surface areas from a \emph{UA} layer by
+grouping rows according to the parcel unit field, as defined by the
 configuration returned by \code{\link[=seq_field]{seq_field()}}.
 }
 \details{

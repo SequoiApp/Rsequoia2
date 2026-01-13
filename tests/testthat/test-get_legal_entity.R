@@ -157,18 +157,18 @@ test_that("get_legal_entity() return right cog info", {
 
   res <- get_legal_entity("01", cache = le_cache, verbose = FALSE)
 
-  reg_num <- seq_field("reg_num")$name
-  dep_num <- seq_field("dep_num")$name
+  reg_code <- seq_field("reg_code")$name
+  dep_code <- seq_field("dep_code")$name
   insee <- seq_field("insee")$name
-  com_num <- seq_field("com_num")$name
+  com_code <- seq_field("com_code")$name
   prefix <- seq_field("prefix")$name
   section <- seq_field("section")$name
   numero <- seq_field("numero")$name
 
-  expect_all_true(grepl("^[0-9]{2}$", res[[reg_num]]))
-  expect_all_true(grepl("^([0-9]{2}|2A|2B)$", res[[dep_num]]))
+  expect_all_true(grepl("^[0-9]{2}$", res[[reg_code]]))
+  expect_all_true(grepl("^([0-9]{2}|2A|2B)$", res[[dep_code]]))
   expect_all_true(grepl("^[0-9]{5}$", res[[insee]]))
-  expect_all_true(grepl("^[0-9]{3}$", res[[com_num]]))
+  expect_all_true(grepl("^[0-9]{3}$", res[[com_code]]))
   expect_all_true(grepl("^[0-9]{1,3}$", res[[prefix]]))
   expect_all_true(grepl("^[0-9A-Z]{2}$", res[[section]]))
   expect_all_true(grepl("^[0-9]{1,4}$", res[[numero]]))

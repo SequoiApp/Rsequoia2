@@ -172,7 +172,7 @@ seq_geol <- function(dirname = ".", cache = NULL, verbose = TRUE, overwrite = FA
     cli::cli_h1("GEOLOGY")
   }
 
-  dep <- unique(parca[[seq_field("dep_num")$name]])
+  dep <- unique(parca[[seq_field("dep_code")$name]])
 
   # CARHAB ----
   carhab <- get_brgm(dep, source = "carhab", cache = cache, verbose = verbose, overwrite = FALSE)

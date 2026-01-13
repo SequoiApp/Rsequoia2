@@ -45,7 +45,7 @@ seq_gpu <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
     cli::cli_h1("GPU")
   }
 
-  id_field <- seq_field("identifiant")$name
+  id_field <- seq_field("identifier")$name
   id_value <- get_id(dirname)
 
   # GPU layers specification

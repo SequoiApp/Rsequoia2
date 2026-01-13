@@ -171,7 +171,7 @@ seq_com <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
 
   # read PARCA
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id_field <- seq_field("identifiant")$name
+  id_field <- seq_field("identifier")$name
   id <- unique(parca[[id_field]])
 
   if (verbose){

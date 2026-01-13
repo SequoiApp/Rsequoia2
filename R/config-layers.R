@@ -1,7 +1,7 @@
 #' Extract forest ID from a matrice.xlsx file
 #'
 #' Searches for a single Excel file matching `*_matrice.xlsx` in a directory,
-#' reads its `IDENTIFIANT` column, and returns the unique forest ID.
+#' reads its identifier column, and returns the unique forest ID.
 #'
 #' @param dirname `character` Directory where the matrice file is located.
 #' Defaults to the current working directory.
@@ -13,7 +13,9 @@
 get_id <- function(dirname = ".", verbose = FALSE) {
 
   m <- read_matrice(dirname)
-  id <- unique(m$IDENTIFIANT)
+  identifier <- seq_field("identifier")$name
+
+  id <- unique(m[[identifier]])
 
   # Success
   if (verbose){

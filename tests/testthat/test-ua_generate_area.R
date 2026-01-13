@@ -12,14 +12,14 @@ test_that("ua_generate_ug() calculates corrected surfaces correctly", {
   ) |> seq_normalize("ua")
 
   res <- ua_generate_area(ua, verbose = FALSE)
-  surf_cor <- seq_field("surf_cor")$name
-  surf_cad <- seq_field("surf_cad")$name
+  cor_area <- seq_field("cor_area")$name
+  cad_area <- seq_field("cad_area")$name
 
   # Check that the new field exists
-  expect_true(surf_cor %in% names(res))
+  expect_true(cor_area %in% names(res))
 
   # Check that total per IDU matches SURF_CA
-  expect_equal(ave(res[[surf_cor]], res[[surf_cad]], FUN = sum), res[[surf_cad]])
+  expect_equal(ave(res[[cor_area]], res[[cad_area]], FUN = sum), res[[cad_area]])
 
 })
 

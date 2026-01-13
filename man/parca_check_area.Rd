@@ -24,6 +24,6 @@ The input \code{parca} with four additional fields:
 \code{AREA_CHECK} (logical flag).
 }
 \description{
-This function compares cadastral areas (\code{CONTENANCE}, in m²) with
+This function compares cadastral areas (in m²) with
 cartographic areas computed from geometry (\code{\link[sf:geos_measures]{sf::st_area()}}).
 }

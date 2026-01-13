@@ -1,11 +1,11 @@
-ug   <- seq_field("ug")$name
-surf <- seq_field("surf_cor")$name
+management   <- seq_field("management")$name
+surf <- seq_field("cor_area")$name
 
 test_that("ua_to_sspf() aggregates surfaces by UG correctly", {
 
   # Minimal UA with 2 SSPF groups: A and B
   ua <- sf::st_sf(
-    "ug"   = c("A", "A", "B"),
+    "management"   = c("A", "A", "B"),
     "surf" = c(10, 20, 5),
     geometry = sf::st_sfc(
       sf::st_point(c(0, 0)),
@@ -15,19 +15,19 @@ test_that("ua_to_sspf() aggregates surfaces by UG correctly", {
   )
 
   # rename to match real canonical names
-  names(ua) <- c(ug, surf, "geometry")
+  names(ua) <- c(management, surf, "geometry")
 
   sspf <- ua_to_sspf(ua)
 
-  expect_setequal(sspf[[ug]], c("A", "B"))
-  expect_equal(sspf[[surf]][sspf[[ug]] == "A"], 30)
-  expect_equal(sspf[[surf]][sspf[[ug]] == "B"], 5)
+  expect_setequal(sspf[[management]], c("A", "B"))
+  expect_equal(sspf[[surf]][sspf[[management]] == "A"], 30)
+  expect_equal(sspf[[surf]][sspf[[management]] == "B"], 5)
 })
 
-test_that("ua_to_sspf() ignores NA surf_cor values", {
+test_that("ua_to_sspf() ignores NA cor_area values", {
 
   ua <- sf::st_sf(
-    "ug"   = c("A", "A"),
+    "management"   = c("A", "A"),
     "surf" = c(10, NA),
     geometry = sf::st_sfc(
       sf::st_point(c(0, 0)),
@@ -35,7 +35,7 @@ test_that("ua_to_sspf() ignores NA surf_cor values", {
     )
   )
 
-  names(ua) <- c(ug, surf, "geometry")
+  names(ua) <- c(management, surf, "geometry")
 
   sspf <- ua_to_sspf(ua)
 
@@ -45,14 +45,14 @@ test_that("ua_to_sspf() ignores NA surf_cor values", {
 test_that("ua_to_sspf() errors when UG field is all NA", {
 
   ua <- sf::st_sf(
-    "ug"   = c(NA, NA),
+    "management"   = c(NA, NA),
     "surf" = c(1, 2),
     geometry = sf::st_sfc(
       sf::st_point(c(0, 0)),
       sf::st_point(c(1, 1))
     )
   )
-  names(ua) <- c(ug, surf, "geometry")
+  names(ua) <- c(management, surf, "geometry")
 
   expect_error(
     ua_to_sspf(ua),
@@ -86,7 +86,7 @@ test_that("ua_to_sspf() preserves descriptive fields correctly", {
   desc <- seq_desc_fields()[1:2]
 
   ua <- sf::st_sf(
-    "ug"   = c("A", "A"),
+    "management"   = c("A", "A"),
     "surf" = c(10, 20),
     "desc1" = "desc1",
     "desc2" = "desc2",
@@ -95,7 +95,7 @@ test_that("ua_to_sspf() preserves descriptive fields correctly", {
       sf::st_point(c(1, 1))
     )
   )
-  names(ua) <- c(ug, surf, desc, "geometry")  # Align canonical UG & surf_cor
+  names(ua) <- c(management, surf, desc, "geometry")  # Align canonical UG & cor_area
 
   sspf <- ua_to_sspf(ua)
 
