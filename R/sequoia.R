@@ -122,6 +122,7 @@ menu_data <- function(path, overwrite){
     "Hydrology"     = function() seq_hydro(path, overwrite = overwrite),
     "Vegetation"    = function() seq_vege(path, overwrite = overwrite),
     "Contour lines" = function() seq_curves(path, overwrite = overwrite),
+    "IFN"           = function() seq_ifn(path, overwrite = overwrite),
     "GPU"           = function() seq_gpu(path, overwrite = overwrite),
     "Patrimony"     = function() seq_patrimony(path, overwrite = overwrite),
     "Elevation"     = function() seq_elevation(path, overwrite = overwrite),

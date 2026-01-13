@@ -7,7 +7,7 @@ namespace:
   v.gpu: "urbanisme"
   v.mnhn: "environnement"
   v.road: "vectoriel"
-  v.region: "ifn"
+  v.ifn: "ifn"
   v.infra: "vectoriel"
   v.vege: "vectoriel"
   v.hydro: "vectoriel"

@@ -148,11 +148,11 @@ seq_ifn <- function(
 
   # valid types + output keys
   type_key <- c(
-    ser    = "v.region.ser.poly",
-    ser_ar = "v.region.ser_ar.poly",
-    rfn    = "v.region.rfn.poly",
-    rfd    = "v.region.rfd.poly",
-    zp     = "v.region.zp.poly"
+    ser    = "v.ifn.ser.poly",
+    ser_ar = "v.ifn.ser_ar.poly",
+    rfn    = "v.ifn.rfn.poly",
+    rfd    = "v.ifn.rfd.poly",
+    zp     = "v.ifn.zp.poly"
   )
 
   if (!all(types %in% names(type_key))) {

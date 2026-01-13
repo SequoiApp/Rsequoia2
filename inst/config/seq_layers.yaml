@@ -136,11 +136,11 @@ v.road.graphic.line:  { name: "ROAD_GRAPH_line",   ext: "geojson" }
 v.road.graphic.poly:  { name: "ROAD_GRAPH_poly",   ext: "geojson" }
 
 # REGION
-v.region.ser.poly:    { name: "REGION_SER_poly",    ext: "geojson" }
-v.region.ser_ar.poly: { name: "REGION_SERAR_poly",  ext: "geojson" }
-v.region.rfn.poly:    { name: "REGION_RFN_poly",    ext: "geojson" }
-v.region.rfd.poly:    { name: "REGION_RFD_poly",    ext: "geojson" }
-v.region.zp.poly:     { name: "REGION_ZP_poly",     ext: "geojson" }
+v.ifn.ser.poly:    { name: "REGION_SER_poly",    ext: "geojson" }
+v.ifn.ser_ar.poly: { name: "REGION_SERAR_poly",  ext: "geojson" }
+v.ifn.rfn.poly:    { name: "REGION_RFN_poly",    ext: "geojson" }
+v.ifn.rfd.poly:    { name: "REGION_RFD_poly",    ext: "geojson" }
+v.ifn.zp.poly:     { name: "REGION_ZP_poly",     ext: "geojson" }
 
 # CADASTRE
 v.cad.vides.poly:       { name: "CAD_VIDES_poly",     ext: "geojson" }
