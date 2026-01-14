@@ -75,7 +75,7 @@ seq_curves <- function(
 
   # Read project area (PARCA)
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id_field <- seq_field("identifiant")$name
+  id_field <- seq_field("identifier")$name
   id <- unique(parca[[id_field]])
 
   if (verbose){
@@ -86,22 +86,18 @@ seq_curves <- function(
   curves <- get_curves(parca, verbose = verbose)
 
   # Exit early if nothing to write
-  if (is.null(curves) || nrow(curves) == 0) {
-    cli::cli_warn("No contour lines found: curves layer not written.")
-    return(invisible(NULL))
+  if (!is.null(curves) ) {
+    curves[[id_field]] <- id
+
+    curves <- seq_write(
+      curves,
+      "v.curves.line",
+      dirname = dirname,
+      verbose = verbose,
+      overwrite = overwrite
+    )
   }
 
-  # Add project identifier
-  curves[[id_field]] <- id
-
-  # Write layer
-  curves_path <- seq_write(
-    curves,
-    "v.curves.line",
-    dirname = dirname,
-    verbose = verbose,
-    overwrite = overwrite
-  )
-
-  return(invisible(curves_path))
+  return(invisible(c(curves) |> as.list()))
 }
+

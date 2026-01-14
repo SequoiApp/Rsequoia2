@@ -1,10 +1,5 @@
 fake_brgm_zip <- function(dep, source, cache){
 
-  fake_sf <- sf::st_sf(
-    data.frame(ID = 1),
-    geometry = sf::st_sfc(sf::st_point(c(0, 0)), crs = 2154)
-  )
-
   # Write shapefile to temporary directory
   sf_path <- tempfile()
   on.exit(unlink(sf_path, recursive = T))
@@ -14,10 +9,10 @@ fake_brgm_zip <- function(dep, source, cache){
     all_dep <- happign::dep_2025
     dep_name <- all_dep[all_dep$DEP == dep, c("DEP", "NCC_DEP")]
     zip_name <- sprintf("CARHAB_%s.zip", paste(dep_name, collapse = "_"))
-    sf::write_sf(fake_sf, file.path(sf_path, "CarHab.shp"), quiet = TRUE)
+    sf::write_sf(Rsequoia2:::seq_poly, file.path(sf_path, "CarHab.shp"), quiet = TRUE)
   }else{
     zip_name <- sprintf("GEO050K_HARM_%s.zip", pad_left(dep, 3))
-    sf::write_sf(fake_sf, file.path(sf_path, "S_FGEOL.shp"), quiet = TRUE)
+    sf::write_sf(Rsequoia2:::seq_poly, file.path(sf_path, "S_FGEOL.shp"), quiet = TRUE)
     base::writeLines("", file.path(sf_path, "S_FGEOL.qml"))
   }
 
@@ -32,27 +27,32 @@ fake_brgm_zip <- function(dep, source, cache){
 }
 
 test_that("seq_geol() works for one dep", {
-  seq_cache <- file.path(tempdir(), "seq")
-  dir.create(seq_cache)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
 
-  brgm_cache <- file.path(tempdir(), "brgm")
-  dir.create(brgm_cache)
-  on.exit(unlink(brgm_cache, recursive = TRUE, force = TRUE), add = TRUE)
+  with_seq_cache({
+    brgm_cache <- file.path(tempdir(), "brgm")
+    dir.create(brgm_cache)
+    on.exit(unlink(brgm_cache, recursive = TRUE, force = TRUE), add = TRUE)
 
-  m <- fake_matrice(id = "TEST")
-  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
-  openxlsx2::write_xlsx(m, m_path)
+    bdcharm50_29 <- fake_brgm_zip(29, source = "bdcharm50", cache = brgm_cache)
+    carhab_29 <- fake_brgm_zip(29, source = "carhab", cache = brgm_cache)
 
-  p <- fake_parca(dep = 29)
-  p_path <- seq_write(p, "parca", dirname = seq_cache)
+    local_mocked_bindings(
+      st_intersects = function(...) TRUE,
+      .package = "sf"
+    )
 
-  bdcharm50_29 <- fake_brgm_zip(29, source = "bdcharm50", cache = brgm_cache)
-  carhab_29 <- fake_brgm_zip(29, source = "carhab", cache = brgm_cache)
-  geol <- seq_geol(dirname = seq_cache, cache = brgm_cache, verbose = FALSE)
+    paths <- seq_geol(dirname = seq_cache, cache = brgm_cache, verbose = FALSE, overwrite = TRUE)
 
-  expect_length(geol, 2)
-  expect_length(list.files(seq_cache, pattern = "\\.qml$"), 1)
+    brgm <- lapply(paths, read_sf)
+
+    identifier <- seq_field("identifier")$name
+    expect_all_true(vapply(brgm, \(x) identifier %in% names(x), TRUE))
+
+    expect_length(paths, 2)
+
+    brgm_dir <- get_path("v.sol.carhab.poly") |> dirname()
+    expect_length(list.files(file.path(seq_cache, brgm_dir), pattern = "\\.qml$"), 1)
+  })
 })
 
 

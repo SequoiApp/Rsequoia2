@@ -125,7 +125,7 @@ seq_toponyme <- function(
 ) {
 
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id_field <- seq_field("identifiant")$name
+  id_field <- seq_field("identifier")$name
   id <- unique(parca[[id_field]])
 
   if (verbose){
@@ -136,26 +136,17 @@ seq_toponyme <- function(
   topo <- get_toponyme(parca, verbose = verbose)
 
   # Exit early if nothing to write
-  if (!nrow(topo) || nrow(topo) == 0) {
-    if (verbose) {
-      cli::cli_alert_info(
-        "No toponymic features found: toponymy layer not written."
-      )
-    }
-    return(invisible(NULL))
+  if (!is.null(topo)){
+    topo[[id_field]] <- id
+
+    topo <- seq_write(
+      topo,
+      "v.toponyme.point",
+      dirname = dirname,
+      verbose = verbose,
+      overwrite = overwrite
+    )
   }
 
-  # Add project identifier
-  topo[[id_field]] <- id
-
-  # Write layer
-  topo_path <- seq_write(
-    topo,
-    "v.toponyme.point",
-    dirname = dirname,
-    verbose = verbose,
-    overwrite = overwrite
-  )
-
-  return(invisible(topo_path))
+  return(invisible(c(topo) |> as.list()))
 }

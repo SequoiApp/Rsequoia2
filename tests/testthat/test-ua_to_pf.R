@@ -1,5 +1,5 @@
-pf <- seq_field("parcelle")$name
-surf <- seq_field("surf_cor")$name
+pf <- seq_field("parcel_code")$name
+surf <- seq_field("cor_area")$name
 
 test_that("ua_to_pf() aggregates surfaces correctly", {
 
@@ -22,7 +22,7 @@ test_that("ua_to_pf() aggregates surfaces correctly", {
   expect_equal(pf_poly[[surf]][pf_poly[[pf]] == "B"], 5)
 })
 
-test_that("ua_to_pf() ignores NA surf_cor values", {
+test_that("ua_to_pf() ignores NA cor_area values", {
 
   ua <- sf::st_sf(
     "pf" = c("X", "X"),

@@ -6,7 +6,7 @@
 \usage{
 ua_generate_ug(
   ua,
-  ug_keys = c("parcelle", "sous_parcelle"),
+  ug_keys = c("pcl_code", "sub_code"),
   separator = ".",
   verbose = TRUE
 )
@@ -15,7 +15,7 @@ ua_generate_ug(
 \item{ua}{\code{sf} object containing analysis units;
 must contain fields used by \code{ug_keys}.}
 
-\item{ug_keys}{\code{character} vector, default \code{c("parcelle", "sous_parcelle")}.
+\item{ug_keys}{\code{character} vector, default \code{c("pcl_code", "sub_code")}.
 Keys used to build the UG identifier.}
 
 \item{separator}{\code{character}, default \code{"."}. Separator between keys.}

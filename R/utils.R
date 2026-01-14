@@ -122,3 +122,21 @@ seq_retry <- function(expr, times = 3, wait = 0.5, verbose = TRUE) {
   return(invisible(NULL))
 
 }
+
+#' Check if a file already exist
+#'
+#' Internal helper used to check if a file already exist
+#'
+#' @param key key
+#' @param dirname dirname
+#'
+#' @keywords internal
+#'
+seq_file_exist <- function(key, dirname){
+  rel_path <- get_path(key, verbose = FALSE)
+  key <- names(rel_path)
+
+  path <- file.path(dirname, rel_path)
+
+  return(file.exists(path))
+}

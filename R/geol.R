@@ -165,23 +165,28 @@ seq_geol <- function(dirname = ".", cache = NULL, verbose = TRUE, overwrite = FA
     seq_write(x, key, dirname = dirname, verbose = verbose, overwrite = overwrite)
   }
 
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname, verbose = FALSE)
-  parca_buff <- sf::st_buffer(sf::st_as_sfc(sf::st_bbox(parca)), 5000)
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  identifier <- seq_field("identifier")$name
+  id <- unique(parca[[identifier]])
+
+  fetch_envelope <- envelope(parca, 5000)
 
   if (verbose){
     cli::cli_h1("GEOLOGY")
   }
 
-  dep <- unique(parca[[seq_field("dep_num")$name]])
+  dep <- unique(parca[[seq_field("dep_code")$name]])
 
   # CARHAB ----
   carhab <- get_brgm(dep, source = "carhab", cache = cache, verbose = verbose, overwrite = FALSE)
-  carhab_mask <- carhab[sf::st_intersects(carhab, parca_buff, sparse = FALSE), ]
+  carhab_mask <- carhab[sf::st_intersects(carhab, fetch_envelope, sparse = FALSE), ]
+  carhab_mask[[identifier]] <- id
   carhab_path <- seq_write2(carhab_mask, "v.sol.carhab.poly")
 
   # BDCHARM50 ----
   bdcharm50 <- get_brgm(dep, source = "bdcharm50", cache = cache, verbose = verbose, overwrite = FALSE)
-  bdcharm50_mask <- bdcharm50[sf::st_intersects(bdcharm50, parca_buff, sparse = FALSE), ]
+  bdcharm50_mask <- bdcharm50[sf::st_intersects(bdcharm50, fetch_envelope, sparse = FALSE), ]
+  bdcharm50_mask[[identifier]] <- id
   bdcharm50_path <- seq_write2(bdcharm50_mask, "v.sol.bdcharm50.poly")
 
   # BDCHARM50 QML ----

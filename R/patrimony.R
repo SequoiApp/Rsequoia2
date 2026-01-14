@@ -103,8 +103,8 @@ seq_patrimony <- function(
 
   # read matrice
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id_field <- seq_field("identifiant")$name
-  id <- unique(parca[[id_field]])
+  identifier <- seq_field("identifier")$name
+  id <- unique(parca[[identifier]])
 
   if (verbose){
     cli::cli_h1("PATRIMONY")
@@ -127,7 +127,7 @@ seq_patrimony <- function(
     if (!is.null(f)) {
       valid <- c(valid, k)
       seq_key <- sprintf("v.pat.%s.poly", k)
-      f[[id_field]] <- id
+      f[[identifier]] <- id
       f_path <- seq_write(f, seq_key, dirname, verbose = FALSE, overwrite = overwrite)
       path <- c(path, f_path)
     } else {

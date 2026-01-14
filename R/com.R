@@ -171,40 +171,42 @@ seq_com <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
 
   # read PARCA
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id_field <- seq_field("identifiant")$name
+  id_field <- seq_field("identifier")$name
   id <- unique(parca[[id_field]])
 
   if (verbose){
     cli::cli_h1("COMMUNES")
   }
 
-  # create empty path list
-  paths <- list()
-
   topo_poly <- get_com_poly(parca, verbose = verbose)
   if (!is.null(topo_poly)){
-    paths$topo_poly <- seq_write2(topo_poly, "v.com.topo.poly", id)
+    topo_poly <- seq_write2(topo_poly, "v.com.topo.poly", id)
   }
 
   topo_line <- get_com_line(parca, verbose = verbose)
   if (!is.null(topo_line)){
-    paths$topo_line <- seq_write2(topo_line, "v.com.topo.line", id)
+    topo_line <- seq_write2(topo_line, "v.com.topo.line", id)
   }
 
   topo_point <- get_com_point(parca, verbose = verbose)
   if (!is.null(topo_point)){
-    paths$topo_point <- seq_write2(topo_point, "v.com.topo.point", id)
+    topo_point <- seq_write2(topo_point, "v.com.topo.point", id)
   }
 
   graphic_line <- get_com_line(parca, graphic = TRUE, verbose = verbose)
   if (!is.null(graphic_line)){
-    paths$graphic_line <- seq_write2(graphic_line, "v.com.graphic.line", id)
+    graphic_line <- seq_write2(graphic_line, "v.com.graphic.line", id)
   }
 
   graphic_point <- get_com_point(parca, graphic = TRUE, verbose = verbose)
   if (!is.null(graphic_point)){
-    paths$graphic_point <- seq_write2(graphic_point, "v.com.graphic.point", id)
+    graphic_point <- seq_write2(graphic_point, "v.com.graphic.point", id)
   }
 
-  return(invisible(paths))
+  return(
+    invisible(
+      c(topo_poly, topo_line, topo_point, graphic_line, graphic_point) |> as.list()
+      )
+    )
 }
+

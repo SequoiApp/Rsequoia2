@@ -15,9 +15,6 @@ seq_ortho(
 )
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
-Defaults to the current working directory.}
-
 \item{type}{\code{character} One or several orthophoto types to download.
 Must be one or both of:
 \itemize{

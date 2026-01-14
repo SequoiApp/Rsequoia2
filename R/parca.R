@@ -161,7 +161,8 @@ get_parca <- function(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE){
     merge(happign::dep_2025[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
     merge(happign::reg_2025[, c("REG", "NCC_REG")], all.x = TRUE)
 
-  raw_parca <- seq_normalize(raw_parca, "parca")
+  raw_parca <- seq_normalize(raw_parca, "parca") |>
+    sf::st_transform(2154)
 
   return(invisible(raw_parca))
 }
@@ -198,15 +199,27 @@ seq_parca <- function(
     verbose = TRUE,
     overwrite = FALSE){
 
+  rel_path <- get_path("parca", verbose = FALSE)
+  path <- file.path(dirname, rel_path)
+  names(path) <- names(rel_path)
+
+  if (file.exists(path) && !overwrite) {
+    cli::cli_warn(
+      "{.file {basename(path)}} already exists. Use {.arg overwrite = TRUE} to replace it."
+      )
+    return(invisible(path))
+  }
+
   # read matrice
   m <- read_matrice(dirname)
 
+  id <- seq_field("identifier")$name
   idu <- seq_field("idu")$name
   insee <- seq_field("insee")$name
   prefix <- seq_field("prefix")$name
   section <- seq_field("section")$name
-  numero <- seq_field("numero")$name
-  lieu_dit <- seq_field("lieu_dit")$name
+  numero <- seq_field("number")$name
+  lieu_dit <- seq_field("locality")$name
 
   # create idu
   m[[idu]] <- paste0(
@@ -241,7 +254,10 @@ seq_parca <- function(
   )
 
   # format parca
-  seq_parca <- seq_normalize(seq_parca, "parca")
+  seq_parca <- seq_normalize(seq_parca, "parca") |>
+    parca_check_area(verbose = verbose)
+
+  seq_parca[[id]] <- unique(m[[id]])
 
   # write parca
   parca_path <- seq_write(
@@ -257,7 +273,7 @@ seq_parca <- function(
 
 #' Check inconsistencies between cadastral and cartographic areas
 #'
-#' This function compares cadastral areas (`CONTENANCE`, in m²) with
+#' This function compares cadastral areas (in m²) with
 #' cartographic areas computed from geometry ([sf::st_area()]).
 #'
 #' @param parca `sf` Object from [Rsequoia2::seq_parca()] representing cadastral
@@ -281,24 +297,27 @@ parca_check_area <- function(
     rtol = 0.05,
     verbose = TRUE){
 
-  surf_cad <- seq_field("surf_cad")$name
+  cad_area <- seq_field("cad_area")$name
 
-  parca$AREA_SIG <- as.numeric(sf::st_area(parca)) / 10000
-  parca$AREA_ATOL <- abs(parca[[surf_cad]] - parca$AREA_SIG * 10000)
-  parca$AREA_RTOL <- parca$AREA_ATOL / parca[[surf_cad]]
+  parca$AREA_GIS <- as.numeric(sf::st_area(parca)) / 10000
+  parca$AREA_ATOL <- abs(parca[[cad_area]] - parca$AREA_GIS * 10000)
+  parca$AREA_RTOL <- parca$AREA_ATOL / parca[[cad_area]]
   parca$AREA_CHECK <- (parca$AREA_ATOL >= atol & parca$AREA_RTOL >= rtol)
 
   bad_idu <- parca$IDU[parca$AREA_CHECK]
   n_bad_idu <- length(bad_idu)
   if (n_bad_idu > 0) {
-    cli::cli_warn("Detected {n_bad_idu} inconsistent IDU{?s}: {.val {bad_idu}}")
+    cli::cli_warn(
+      "Detected {n_bad_idu} IDU{?s} with area inconsistencies (cadastre vs GIS): {.val {bad_idu}}"
+    )
   }
 
   if (verbose){
     if (n_bad_idu == 0){
-      cli::cli_alert_success("No inconsistencies detected.")
+      cli::cli_alert_success("No area inconsistencies (cadastre vs GIS) detected.")
     }
   }
 
   return(invisible(parca))
 }
+

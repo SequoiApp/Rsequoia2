@@ -42,7 +42,7 @@ seq_parca_to_ua <- function(
     overwrite = overwrite
   )
 
-  return(invisible(ua_path |> as.list()))
+  return(invisible(ua_path) |> as.list())
 }
 
 #' Check cadastral IDU consistency between _UA_ and _PARCA_ sf objects
@@ -102,21 +102,21 @@ ua_check_area <- function(ua, parca, verbose = FALSE) {
 
   # Field names from YAML structure
   idu <- seq_field("idu")$name            # e.g. "IDU"
-  surf_cad <- seq_field("surf_cad")$name  # e.g. "SURF_CA"
+  cad_area <- seq_field("cad_area")$name  # e.g. "SURF_CA"
 
   # Drop geometry and keep only needed PARCA fields
   parca_tab <- parca |>
     sf::st_drop_geometry() |>
-    subset(select = c(idu, surf_cad))
+    subset(select = c(idu, cad_area))
 
   # Match UA rows to PARCA rows
   m <- match(ua[[idu]], parca_tab[[idu]])
 
   # Extract PARCA area values aligned on UA order
-  parca_vals <- parca_tab[[surf_cad]][m]
+  parca_vals <- parca_tab[[cad_area]][m]
 
   # Detect differences
-  diff_idx <- which(!is.na(parca_vals) & ua[[surf_cad]] != parca_vals)
+  diff_idx <- which(!is.na(parca_vals) & ua[[cad_area]] != parca_vals)
   nb_diff <- length(diff_idx)
 
   # Apply corrections (vectorized)
@@ -126,7 +126,7 @@ ua_check_area <- function(ua, parca, verbose = FALSE) {
         "{nb_diff} cadastral area value{?s} corrected in UA. Affected Idu{?s}: {.val {bad_idu}}"
       )
 
-    ua[[surf_cad]][diff_idx] <- parca_vals[diff_idx]
+    ua[[cad_area]][diff_idx] <- parca_vals[diff_idx]
   }
 
   if (verbose & nb_diff == 0) {
@@ -143,7 +143,7 @@ ua_check_area <- function(ua, parca, verbose = FALSE) {
 #'
 #' @param ua `sf` object containing analysis units;
 #' must contain fields used by `ug_keys`.
-#' @param ug_keys `character` vector, default `c("parcelle", "sous_parcelle")`.
+#' @param ug_keys `character` vector, default `c("pcl_code", "sub_code")`.
 #' Keys used to build the UG identifier.
 #' @param separator `character`, default `"."`. Separator between keys.
 #' @param verbose `logical` If `TRUE`, display progress messages.
@@ -155,12 +155,12 @@ ua_check_area <- function(ua, parca, verbose = FALSE) {
 #' @export
 ua_generate_ug <- function(
     ua,
-    ug_keys = c("parcelle", "sous_parcelle"),
+    ug_keys = c("pcl_code", "sub_code"),
     separator = ".",
     verbose = TRUE
     ){
 
-  ug_ua <- seq_field("ug")$name
+  ug <- seq_field("mgmt_code")$name
   fields <- vapply(ug_keys, function(k) seq_field(k)$name, character(1))
 
   # RMQ: Used to avoid bad filtering (ex : 1, 10, 2, 3 VS 01, 02, 03, 10)
@@ -174,7 +174,7 @@ ua_generate_ug <- function(
   })
 
   # Concatenate columns to create UG
-  ua[[ug_ua]] <- do.call(paste, c(cleaned, sep = separator))
+  ua[[ug]] <- do.call(paste, c(cleaned, sep = separator))
 
   if (verbose) cli::cli_alert_success(paste0("UG field '", ug_ua, "' created."))
 
@@ -195,28 +195,28 @@ ua_generate_ug <- function(
 ua_generate_area <- function(ua, verbose = TRUE) {
   # Field names from configuration
   idu <- seq_field("idu")$name
-  surf_cad <- seq_field("surf_cad")$name
-  surf_sig <- seq_field("surf_sig")$name
-  surf_cor <- seq_field("surf_cor")$name
+  cad_area <- seq_field("cad_area")$name
+  gis_area <- seq_field("gis_area")$name
+  cor_area <- seq_field("cor_area")$name
 
   # Calculate mapped surface in hectares
-  ua[[surf_sig]] <- as.numeric(sf::st_area(ua)) / 10000
+  ua[[gis_area]] <- as.numeric(sf::st_area(ua)) / 10000
 
   # Compute correction factor per cadastral ID
-  sum_sig <- stats::ave(ua[[surf_sig]], ua[[idu]], FUN = sum, na.rm = T)
+  sum_sig <- stats::ave(ua[[gis_area]], ua[[idu]], FUN = sum, na.rm = T)
   # Avoid edge case when sum_sig == 0
   sum_sig <- replace(sum_sig, sum_sig == 0, 1)
-  coeff <- ua[[surf_sig]] / sum_sig
+  coeff <- ua[[gis_area]] / sum_sig
 
   # Compute provisional corrected surfaces
-  surf_temp <- round(ua[[surf_cad]] * coeff, 4)
-  resid <- ua[[surf_cad]] - stats::ave(surf_temp, ua[[idu]], FUN = sum)
+  surf_temp <- round(ua[[cad_area]] * coeff, 4)
+  resid <- ua[[cad_area]] - stats::ave(surf_temp, ua[[idu]], FUN = sum)
 
   # Identify pivot feature to absorb residual
   is_pivot <- surf_temp == stats::ave(surf_temp, ua[[idu]], FUN = max)
 
   # Assign corrected surface
-  ua[[surf_cor]] <- ifelse(is_pivot, round(surf_temp + resid, 4), surf_temp)
+  ua[[cor_area]] <- ifelse(is_pivot, round(surf_temp + resid, 4), surf_temp)
 
   if (verbose) cli_alert_success("Corrected cadastral areas calculated.")
 
@@ -234,8 +234,8 @@ ua_generate_area <- function(ua, verbose = TRUE) {
 seq_desc_fields <- function() {
   keys <- c(
     "stand","wealth","stage","year","structure",
-    "ess1","ess1_pct","ess2","ess2_pct","ess3","ess3_pct",
-    "taillis","regeneration","amenagement"
+    "spe1","spe1_pct","spe2","spe2_pct","spe3","spe3_pct",
+    "copice","regeneration","treatment"
   )
   vapply(keys, function(k) seq_field(k)$name, character(1))
 }
@@ -260,12 +260,11 @@ seq_desc_fields <- function() {
 #' `ug_valid` indicating if each row is consistent with the dominant UG description.
 #'
 #' @export
-ua_check_ug <- function(ua,
-                        verbose = TRUE) {
+ua_check_ug <- function(ua, verbose = TRUE) {
 
   # Resolve field name
   # desc : descriptive fields
-  ug <- seq_field("ug")$name
+  ug <- seq_field("mgmt_code")$name
   desc <- intersect(seq_desc_fields(), names(ua))
 
   ua_no_geom <- sf::st_drop_geometry(ua)
@@ -281,7 +280,9 @@ ua_check_ug <- function(ua,
     return(invisible(FALSE))
   }
 
-  if (verbose) cli::cli_alert_success("All UG are consistent.")
+  if (verbose){
+    cli::cli_alert_success("All UG are consistent.")
+  }
 
   return(invisible(TRUE))
 }
@@ -315,8 +316,8 @@ ua_clean_ug <- function(
     atol = 0.50,
     rtol = 0.10){
 
-  ug <- seq_field("ug")$name
-  surf <- seq_field("surf_cor")$name
+  ug <- seq_field("mgmt_code")$name
+  surf <- seq_field("cor_area")$name
   desc <- intersect(seq_desc_fields(), names(ua))
 
   cleaned <- by(ua, ua[[ug]], function(df) {

@@ -298,6 +298,5 @@ clean_topology <- function(sf_obj,
   cleaned_sf <- sf::st_read(output_path, quiet = TRUE, stringsAsFactors = FALSE)
   cleaned_sf <- cleaned_sf[, -1, drop = FALSE]
   cleaned_sf <- sf::st_make_valid(cleaned_sf)
-  if (verbose) cli::cli_alert_success("All UG are consistent.")
   cleaned_sf
 }

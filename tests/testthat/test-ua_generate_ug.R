@@ -9,15 +9,15 @@ test_that("ua_generate_ug() creates UG field correctly", {
   local_mocked_bindings(
     seq_field = function(x){
       switch(x,
-        "parcelle" = list(name = "N_PARFOR"),
-        "sous_parcelle" = list(name = "N_SSPARFOR"),
-        "ug" = list(name = ug_field)
+        "parcel_code" = list(name = "N_PARFOR"),
+        "sub_code" = list(name = "N_SSPARFOR"),
+        "management_code" = list(name = ug_field)
       )
     }
   )
 
   res <- ua_generate_ug(
-    ua, ug_keys = c("parcelle", "sous_parcelle"), separator = ".", verbose = FALSE
+    ua, ug_keys = c("parcel_code", "sub_code"), separator = ".", verbose = FALSE
   )
 
   expect_true(ug_field %in% names(res))
@@ -37,7 +37,7 @@ test_that("ua_generate_ug() throw expected message when verbose = TRUE", {
       switch(x,
              "parcelle" = list(name = "N_PARFOR"),
              "sous_parcelle" = list(name = "N_SSPARFOR"),
-             "ug" = list(name = ug_field)
+             "management_code" = list(name = ug_field)
       )
     }
   )
@@ -62,7 +62,7 @@ test_that("ua_generate_ug() separator arg is working", {
       switch(x,
              "parcelle" = list(name = "N_PARFOR"),
              "sous_parcelle" = list(name = "N_SSPARFOR"),
-             "ug" = list(name = ug_field)
+             "management_code" = list(name = ug_field)
       )
     }
   )
@@ -89,7 +89,7 @@ test_that("ua_generate_ug() empty separator is working", {
       switch(x,
              "parcelle" = list(name = "N_PARFOR"),
              "sous_parcelle" = list(name = "N_SSPARFOR"),
-             "ug" = list(name = ug_field)
+             "management_code" = list(name = ug_field)
       )
     }
   )

@@ -145,7 +145,9 @@ seq_mnhn <- function(
     overwrite = FALSE){
 
   # read matrice
-  parca <- read_sf(get_path("v.seq.parca.poly", dirname = dirname))
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  identifier <- seq_field("identifier")$name
+  id <- unique(parca[[identifier]])
 
   if (verbose){
     cli::cli_h1("MNHN")
@@ -166,6 +168,7 @@ seq_mnhn <- function(
     # f mean feature in this context
     f <- get_mnhn(parca, k, buffer = buffer)
     if (nrow(f) > 0) {
+      f[[identifier]] <- id
       valid <- c(valid, k)
       seq_key <- sprintf("v.mnhn.%s.poly", k)
       f_path <- seq_write(f, seq_key, dirname, verbose = FALSE, overwrite = overwrite)

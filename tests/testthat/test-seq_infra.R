@@ -1,130 +1,77 @@
-test_that("seq_infra() returns a named list of three paths", {
-  skip_on_cran()
-  skip_on_ci()
+test_that("seq_infra() returned expected path", {
+  with_seq_cache({
 
-  # cache dir
-  seq_cache <- file.path(tempdir(), "seq")
-  dir.create(seq_cache, recursive = TRUE, showWarnings = FALSE)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
+    local_mocked_bindings(
+      get_infra_poly = function(...) Rsequoia2:::seq_poly,
+      get_infra_line = function(...) Rsequoia2:::seq_line,
+      get_infra_point = function(...) Rsequoia2:::seq_point,
+    )
 
-  # matrice
-  m <- fake_matrice(insee = "71279", section = "0C", numero = "0380")
-  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
-  openxlsx2::write_xlsx(m, m_path)
-
-  # parca
-  p <- seq_parca(seq_cache, verbose = FALSE)
-
-  # seq_infra
-  paths <- seq_infra(seq_cache, verbose = FALSE)
-
-  # tests
-  expect_type(paths, "list")
-  expect_length(paths, 3)
-
-  expect_true(all(nzchar(unlist(paths))))
-  expect_true(all(file.exists(unlist(paths))))
+    paths <- seq_infra(seq_cache, verbose = FALSE, overwrite = TRUE)
+    expect_length(paths, 3)
+    expect_all_true(file.exists(unlist(paths)))
+  })
 })
 
-test_that("infra layers have correct geometry types and CRS", {
-  skip_on_cran()
-  skip_on_ci()
+test_that("seq_infra() returned correct geometry", {
+  with_seq_cache({
 
-  # cache dir
-  seq_cache <- file.path(tempdir(), "seq")
-  dir.create(seq_cache, recursive = TRUE, showWarnings = FALSE)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
+    local_mocked_bindings(
+      get_infra_poly = function(...) Rsequoia2:::seq_poly,
+      get_infra_line = function(...) Rsequoia2:::seq_line,
+      get_infra_point = function(...) Rsequoia2:::seq_point,
+    )
 
-  # matrice
-  m <- fake_matrice(insee = "71279", section = "0C", numero = "0380")
-  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
-  openxlsx2::write_xlsx(m, m_path)
+    paths <- seq_infra(seq_cache, verbose = FALSE, overwrite = TRUE)
+    infra <- lapply(paths, read_sf)
 
-  # parca
-  p <- seq_parca(seq_cache, verbose = FALSE)
+    poly <- infra[grepl("poly", names(infra))][[1]]
+    expect_all_true(all(sf::st_geometry_type(poly) %in% c("POLYGON", "MULTIPOLYGON")))
+    expect_true(sf::st_crs(poly) == sf::st_crs(2154))
 
-  # seq_infra
-  paths <- seq_infra(seq_cache, verbose = FALSE)
+    line <- infra[grepl("line", names(infra))][[1]]
+    expect_all_true(all(sf::st_geometry_type(line) %in% c("LINESTRING", "MULTILINESTRING")))
+    expect_true(sf::st_crs(line) == sf::st_crs(2154))
 
-  # tests
-  poly  <- sf::read_sf(paths[[1]])
-  line  <- sf::read_sf(paths[[2]])
-  point <- sf::read_sf(paths[[3]])
+    point <- infra[grepl("point", names(infra))][[1]]
+    expect_all_true(all(sf::st_geometry_type(point) %in% c("POINT", "MULTIPOINT")))
+    expect_true(sf::st_crs(line) == sf::st_crs(2154))
 
-  expect_true(sf::st_crs(poly)$epsg == 2154)
-  expect_true(sf::st_crs(line)$epsg == 2154)
-  expect_true(sf::st_crs(point)$epsg == 2154)
-
-  expect_true(all(sf::st_geometry_type(poly)  %in% c("POLYGON", "MULTIPOLYGON")))
-  expect_true(all(sf::st_geometry_type(line)  == "LINESTRING"))
-  expect_true(all(sf::st_geometry_type(point) == "POINT"))
+  })
 })
 
-test_that("seq_infra() writes valid layers when features exist", {
-  skip_on_cran()
-  skip_on_ci()
+test_that("seq_infra() layers contain id", {
+  with_seq_cache({
 
-  # cache dir
-  seq_cache <- file.path(tempdir(), "seq")
-  dir.create(seq_cache, recursive = TRUE, showWarnings = FALSE)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
+    local_mocked_bindings(
+      get_infra_poly = function(...) Rsequoia2:::seq_poly,
+      get_infra_line = function(...) Rsequoia2:::seq_line,
+      get_infra_point = function(...) Rsequoia2:::seq_point,
+    )
 
-  # matrice
-  m <- fake_matrice(insee = "71279", section = "0C", numero = "0380")
-  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
-  openxlsx2::write_xlsx(m, m_path)
+    paths <- seq_infra(seq_cache, verbose = FALSE, overwrite = TRUE)
+    infra <- lapply(paths, read_sf)
 
-  # parca
-  p <- seq_parca(seq_cache, verbose = FALSE)
-
-  # seq_infra
-  paths <- seq_infra(seq_cache, verbose = FALSE)
-
-  # tests
-  poly  <- sf::read_sf(paths[[1]])
-  line  <- sf::read_sf(paths[[2]])
-  point <- sf::read_sf(paths[[3]])
-
-  expect_true(nrow(poly) > 0)
-  expect_true(nrow(line) > 0)
-  expect_true(nrow(point) > 0)
-
-  expect_s3_class(poly, "sf")
-  expect_s3_class(line, "sf")
-  expect_s3_class(point, "sf")
+    identifier <- seq_field("identifier")$name
+    expect_all_true(vapply(infra, \(x) identifier %in% names(x), TRUE))
+  })
 })
 
-test_that("seq_infra() writes valid empty layers when no features exist", {
-  skip_on_cran()
-  skip_on_ci()
+test_that("seq_infra() write layer even if there no data", {
+  with_seq_cache({
 
-  # cache dir
-  seq_cache <- file.path(tempdir(), "seq")
-  dir.create(seq_cache, recursive = TRUE, showWarnings = FALSE)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
+    local_mocked_bindings(
+      get_infra_poly = function(...) Rsequoia2:::seq_empty,
+      get_infra_line = function(...) Rsequoia2:::seq_empty,
+      get_infra_point = function(...) Rsequoia2:::seq_empty,
+    )
 
-  # matrice
-  m <- fake_matrice(id = "TEST")
-  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
-  openxlsx2::write_xlsx(m, m_path)
+    paths <- seq_infra(seq_cache, verbose = FALSE, overwrite = TRUE)
+    expect_length(paths, 3)
+    expect_all_true(file.exists(unlist(paths)))
 
-  # parca
-  p <- fake_parca()
-  parca_path <- seq_write(p, "parca", dirname = seq_cache)
+    infra <- lapply(paths, read_sf)
+    expect_all_true(vapply(infra, \(x) nrow(x) == 0, logical(1)))
 
-  # seq_infra
-  paths <- seq_infra(seq_cache, verbose = FALSE)
-
-  # tests
-  poly  <- sf::read_sf(paths[[1]])
-  line  <- sf::read_sf(paths[[2]])
-  point <- sf::read_sf(paths[[3]])
-
-  expect_equal(nrow(poly), 0)
-  expect_equal(nrow(line), 0)
-  expect_equal(nrow(point), 0)
-
-  expect_s3_class(poly, "sf")
-  expect_s3_class(line, "sf")
-  expect_s3_class(point, "sf")
+  })
 })

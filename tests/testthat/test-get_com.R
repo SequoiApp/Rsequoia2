@@ -1,10 +1,10 @@
 # Standard field names ----
 identifiant <- seq_field("identifiant")$name
-reg_num     <- seq_field("reg_num")$name
-dep_num     <- seq_field("dep_num")$name
+reg_code    <- seq_field("reg_code")$name
+dep_code    <- seq_field("dep_code")$name
 insee       <- seq_field("insee")$name
 postal      <- seq_field("postal")$name
-com_nom     <- seq_field("com_nom")$name
+com_name    <- seq_field("com_name")$name
 
 # area_sf ----
 bbox_vals <- c(xmin = 547226.9, ymin = 6794383.2, xmax = 549263.2, ymax = 6795983.8)
@@ -24,7 +24,7 @@ test_that("get_com_poly() returns sf with expected fields and values", {
   com_poly <- get_com_poly(area_sf)
 
   expect_s3_class(com_poly, "sf")
-  expect_true(all(c(identifiant, reg_num, dep_num, insee, postal, com_nom) %in% names(com_poly)))
+  expect_true(all(c(identifiant, reg_code, dep_code, insee, postal, com_name) %in% names(com_poly)))
   expect_true(sf::st_crs(com_poly)$epsg == 2154)
   expect_true(nrow(com_poly) > 0)
   expect_true(all(sf::st_geometry_type(com_poly) %in% c("POLYGON", "MULTIPOLYGON")))
@@ -93,7 +93,7 @@ test_that("get_com_point() returns sf with expected fields and values", {
   com_point <- get_com_point(area_sf)
 
   expect_s3_class(com_point, "sf")
-  expect_true(all(c(identifiant, reg_num, dep_num, insee, postal, com_nom) %in% names(com_point)))
+  expect_true(all(c(identifiant, reg_code, dep_code, insee, postal, com_name) %in% names(com_point)))
   expect_true(sf::st_crs(com_point)$epsg == 2154)
   expect_true(all(sf::st_geometry_type(com_point) == "POINT"))
 })

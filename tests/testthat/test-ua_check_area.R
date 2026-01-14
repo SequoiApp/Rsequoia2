@@ -8,8 +8,8 @@ test_that("ua_check_area() updates inconsistent surfaces with warning", {
     "2 cadastral area values corrected in UA"
   )
 
-  surf_cad <- seq_field("surf_cad")$name
-  expect_equal(res[[surf_cad]], c(1, 2, 3))
+  cad_area <- seq_field("cad_area")$name
+  expect_equal(res[[cad_area]], c(1, 2, 3))
 })
 
 test_that("ua_check_area() keeps ua unchanged when no difference", {
@@ -18,8 +18,8 @@ test_that("ua_check_area() keeps ua unchanged when no difference", {
   ua <- seq_normalize(parca, "ua")
   expect_no_warning(res <- ua_check_area(ua, parca, verbose = FALSE))
 
-  surf_cad <- seq_field("surf_cad")$name
-  expect_identical(res[[surf_cad]], ua[[surf_cad]])
+  cad_area <- seq_field("cad_area")$name
+  expect_identical(res[[cad_area]], ua[[cad_area]])
 })
 
 test_that("ua_check_area() prints success message when verbose = TRUE", {
@@ -40,7 +40,7 @@ test_that("ua_check_area() ignores NA values from parca", {
 
   res <- ua_check_area(ua, parca, verbose = FALSE) |> suppressWarnings()
 
-  surf_cad <- seq_field("surf_cad")$name
-  expect_equal(res[[surf_cad]], c(1, 2, 3))
+  cad_area <- seq_field("cad_area")$name
+  expect_equal(res[[cad_area]], c(1, 2, 3))
 })
 

@@ -1,137 +1,137 @@
-identifiant:
+identifier:
   name: "IDENTIFIANT"
   alias: ["foret"]
   class: "character"
-  definition: "Identifiant de la forêt, génrélament identique au nom"
+  definition: "Forest identifier"
 
-proprietaire:
+owner:
   name: "PROPRIETAIRE"
   alias: ["prop", "owner", "proprio", "proprietaire"]
   class: "character"
-  definition: "Nom du propriétaire"
+  definition: "Owner name"
 
-land_use:
-  name: "LAND_USE"
+is_wooded:
+  name: "BOISE"
   alias: ["boisee", "is_boisee", "occupation", "occup_sol"]
-  class: "character"
-  definition: "Occupation du sol"
+  class: "boolean"
+  definition: "Land use field specific for forest"
 
 # cog ----
-reg_num:
+reg_code:
   name: "REG_CODE"
   alias: ["reg", "code_insee_de_la_region"]
   class: "character"
-  definition: "Code de la région selon l'INSEE"
+  definition: "Region INSEE code"
 
-reg_nom:
+reg_name:
   name: "REG_NOM"
   alias: ["ncc_reg"]
   class: "character"
-  definition: "Nom de la région selon l'INSEE"
+  definition: "Region INSEE name"
 
-dep_num:
+dep_code:
   name: "DEP_CODE"
   alias: ["dep", "dep_code", "code_insee_du_departement"]
   class: "character"
-  definition: "Code du département selon l'INSEE"
+  definition: "Department INSEE code"
 
-dep_nom:
+dep_name:
   name: "DEP_NOM"
   alias: ["NCC_DEP"]
   class: "character"
-  definition: "Nom du département selon l'INSEE"
+  definition: "Department INSEE name"
 
-com_num:
+com_code:
   name: "COM_CODE"
   alias: ["commune", "com"]
   class: "character"
-  definition: "Code de la commune selon l'INSEE"
+  definition: "Town INSEE code"
 
-com_nom:
+com_name:
   name: "COM_NOM"
   alias: ["ncc_com", "nom_officiel"]
   class: "character"
-  definition: "Nom de la commune selon l'INSEE"
+  definition: "Town INSEE name"
 
 insee:
   name: "INSEE"
   alias: ["insee", "code_insee"]
   class: "character"
-  definition: "Code INSEE de la commune"
+  definition: "Town full INSEE code"
 
 # com ----
 postal:
   name: "POSTAL"
   alias: ["code_postal"]
   class: "character"
-  definition: "Postal code of the town"
+  definition: "Postal town code"
 
 # cadastre ----
 idu:
   name: "IDU"
   alias: ["idu"]
   class: "character"
-  definition: "Identifiant cadastral unique"
+  definition: "Unique cadastral identifier"
 
 prefix:
   name: "PREFIXE"
   alias: ["com_abs", "prefixe"]
   class: "character"
-  definition: "Préfixe cadastral (3 entiers)"
+  definition: "Cadastral prefix code (3 integer)"
 
 section:
   name: "SECTION"
   alias: ["section"]
   class: "character"
-  definition: "Section cadastrale (2 lettres ou chiffres)"
+  definition: "Cadastral section code (2 character or integer)"
 
-numero:
+number:
   name: "NUMERO"
   alias: ["numero", "n_parca"]
   class: "character"
-  definition: "Numéro cadastral (4 entiers)"
+  definition: "Cadastral number code(4 integer)"
 
-lieu_dit:
+locality:
   name: "LIEU_DIT"
   alias: ["LIEUDIT", "lieu_dit"]
   class: "character"
-  definition: "Lieu-dit cadastral"
+  definition: "Locality / called place"
 
-surf_cad:
-  name: "SURF_CA"
-  alias: ["contenance"]
+cad_area:
+  name: "SURF_CAD"
+  alias: ["contenance", "SURF_CA"]
   class: numeric
-  definition: "Surface cadastrale (hectares)"
+  definition: "Cadastral area (hectares)"
 
 # surfaces ----
-surf_sig:
+gis_area:
   name: "SURF_SIG"
   class: numeric
-  definition: "Surface SIG en hectares"
+  definition: "GIS area (hectares)"
 
-surf_cor:
+cor_area:
   name: "SURF_COR"
   class: numeric
-  definition: "Surface corrigée recalculée"
+  definition: "Cadastral corrected area (hectares)"
 
 # ua ----
-ug:
+mgmt_code:
   name: "PARFOR"
   alias: ["ug"]
   class: "character"
-  definition: "Unité de gestion forestière"
+  definition: "Management unit code"
 
-parcelle:
+pcl_code:
   name: "N_PARFOR"
   alias: ["PF", "PRF", "PARCELLE", "PAR"]
   class: "character"
-  definition: "Parcelle forestière"
+  definition: "Parcel unit code"
 
-sous_parcelle:
+sub_code:
   name: "N_SSPARFOR"
   alias: ["SSPF", "SSPRF", "SOUS_PARCELLE", "SPAR"]
   class: "character"
-  definition: "Sous-parcelle forestière"
+  definition: "Sub-parcel unit code"
 
 stand:
   name: "PLT_PLMT"
@@ -160,67 +160,73 @@ structure:
   class: "character"
   definition: "Stand reserve structure"
 
-ess1:
+spe1:
   name: "ESS_1_NOM"
   alias: ["PLT_ESS", "PLT_COMS"]
   class: "character"
-  definition: "Essence principale"
+  definition: "Main specie"
 
-ess1_pct:
+spe1_pct:
   name: "ESS_1_PCT"
   class: numeric
-  definition: "% essence principale"
+  definition: "% main specie"
 
-ess2:
+spe2:
   name: "ESS_2_NOM"
   class: "character"
-  definition: "Essence secondaire"
+  definition: "Secondary specie"
 
-ess2_pct:
+spe2_pct:
   name: "ESS_2_PCT"
   class: numeric
-  definition: "% essence secondaire"
+  definition: "% secondary specie"
 
-ess3:
+spe3:
   name: "ESS_3_NOM"
   class: "character"
-  definition: "Essence tertiaire"
+  definition: "Tertiary essence"
 
-ess3_pct:
+spe3_pct:
   name: "ESS_3_PCT"
   class: numeric
-  definition: "% essence tertiaire"
+  definition: "% tertiary essence"
 
-taillis:
+copice:
   name: "TSE_DSCR"
   class: "character"
-  definition: "Taillis ou sous-étage"
+  definition: "Copice"
 
 regeneration:
   name: "REG_DSCR"
   class: "character"
-  definition: "Régénération"
+  definition: "Regeneration"
 
 comment:
   name: "COMMENTS"
   class: "character"
-  definition: "Commentaires"
+  definition: "Comments"
 
-sol:
+soil:
   name: "SOL_TYPE"
   alias: ["GEOL_TYPE"]
   class: "character"
-  definition: "Type de station forestière"
+  definition: "Soil classification"
 
-amenagement:
+treatment:
   name: "AME_TYPE"
   class: "character"
-  definition: "Traitement retenu par le gestionnaire"
+  definition: "Treatment chosen by the forest manager"
 
-dispositif:
-  name: "DISPOSITIF"
+is_subsidized:
+  name: "SUBVENTIONNE"
+  class: "boolean"
+  definition: "Is subsidized ?"
+
+subsidy:
+  name: "SUBVENTION"
+  alias: ["DISP_TYPE"]
   class: "character"
-  definition: "..."
+  definition: "Subsidy scheme"
 
 # vector ----
 source:
@@ -240,13 +246,12 @@ nature:
   definition: "Nature from IGN BDTopo"
 
 name:
-  name: "NAME"
-  alias: ["NOM"]
+  name: "NOM"
   class: "character"
   definition: "Name from IGN BDTopo"
 
 offset:
-  name: "OFFSET"
+  name: "DECALAGE"
   alias: ["DECA"]
   class: "character"
   definition: "Offset used in SEQUOIA process"
@@ -264,8 +269,8 @@ importance:
   class: "integer"
   definition: "Importance from IGN BDTopo"
 
-private:
-  name: "PRIVATE"
+is_private:
+  name: "PRIVE"
   alias: ["prive"]
   class: "boolean"
   definition: "Private from IGN BDTopo"

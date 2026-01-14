@@ -14,7 +14,7 @@ An \code{sf} object where polygons and descriptive fields are aggregated
 at the \emph{SSPF} level.
 }
 \description{
-Aggregates corrected surface areas (\code{surf_cor}) from a \emph{UA} layer by
+Aggregates corrected surface areas from a \emph{UA} layer by
 grouping rows according to the \code{sspf} field, as
 defined by the configuration returned by \code{\link[=seq_field]{seq_field()}}.
 }

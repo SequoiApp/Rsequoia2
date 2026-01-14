@@ -1,66 +1,69 @@
-test_that("seq_write() writes vector layers correctly", {
-
+with_seq_cache <- function(code) {
   seq_cache <- file.path(tempdir(), "seq")
   dir.create(seq_cache, showWarnings = FALSE)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
+  force(code)
+}
 
-  m <- create_matrice(seq_cache, "MY_TEST", verbose = F, overwrite = T)
-
-  v <- sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
-  v_path <- get_path("parca", seq_cache)
-
-  seq_write(v, "parca", seq_cache)
-
-  expect_true(file.exists(v_path))
-
+test_that("seq_write() writes vector layers correctly", {
+  with_seq_cache({
+    path <- seq_write(Rsequoia2:::seq_poly, "parca", dirname = seq_cache)
+    expect_true(file.exists(path))
+    expect_s3_class(sf::read_sf(path), "sf")
+  })
 })
 
 test_that("seq_write() writes raster layers correctly", {
 
-  d <- tempdir()
-  m_path <- create_matrice(d, "MY_TEST", verbose = F, overwrite = T)
+  skip_on_os("mac")
 
-  r <- rast(nrows=5, ncols=5, vals=1:25)
-  r_path <- get_path("irc", d)
-
-  on.exit(unlink(c(r_path, m_path)))
-
-  seq_write(r, "irc", d)
-
-  expect_true(file.exists(r_path))
+  with_seq_cache({
+    r <- rast(nrows=5, ncols=5, vals=1:25)
+    path <- seq_write(r, "irc", dirname = seq_cache)
+    expect_true(file.exists(path))
+    expect_s4_class(terra::rast(path), "SpatRaster")
+  })
 
 })
 
 test_that("seq_write() overwrite vector properly correctly", {
 
-  d <- tempdir()
-  m_path <- create_matrice(d, "MY_TEST", verbose = F, overwrite = T)
-
-  v <- sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
-  v_path <- get_path("parca", d)
-  seq_write(v, "parca", d)
-
-  on.exit(unlink(c(v_path, m_path)))
-
-  expect_silent(seq_write(v, "parca", d, overwrite = TRUE))
-  expect_warning(seq_write(v, "parca", d, overwrite = FALSE))
+  with_seq_cache({
+    v <- Rsequoia2:::seq_poly
+    seq_write(v, "parca", seq_cache)
+    expect_silent(seq_write(v, "parca", seq_cache, overwrite = TRUE))
+    expect_warning(seq_write(v, "parca", seq_cache, overwrite = FALSE))
+  })
 
 })
 
 test_that("seq_write() overwrite raster properly correctly", {
+
   skip_on_os("mac")
 
-  d <- tempdir()
+  with_seq_cache({
+    r <- rast(nrows=5, ncols=5, vals=1:25)
+    seq_write(r, "irc", seq_cache)
+    expect_silent(seq_write(r, "irc", seq_cache, overwrite = TRUE))
+    expect_warning(seq_write(r, "irc", seq_cache, overwrite = FALSE))
+  })
 
-  m <- create_matrice(d, "MY_TEST", verbose = F, overwrite = T)
+})
 
-  r <- rast(nrows=5, ncols=5, vals=1:25)
-  r_path <- get_path("irc", d)
-  seq_write(r, "irc", d)
+test_that("seq_write() creates target directory when needed", {
 
-  on.exit(unlink(c(r_path, m)))
+  with_seq_cache({
+    rel_path <- get_path("parca")
+    abs_path <- file.path(seq_cache, rel_path)
 
-  expect_silent(seq_write(r, "irc", d, overwrite = TRUE))
-  expect_warning(seq_write(r, "irc", d, overwrite = FALSE))
+    # directory must not exist beforehand
+    expect_false(dir.exists(dirname(abs_path)))
+
+    path <- seq_write(Rsequoia2:::seq_poly, "parca", seq_cache)
+
+    expect_true(file.exists(path))
+    expect_true(dir.exists(dirname(path)))
+    expect_s3_class(sf::read_sf(path), "sf")
+  })
 
 })

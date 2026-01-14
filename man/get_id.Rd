@@ -17,5 +17,5 @@ Invisibly returns a single forest ID (character scalar).
 }
 \description{
 Searches for a single Excel file matching \verb{*_matrice.xlsx} in a directory,
-reads its \code{IDENTIFIANT} column, and returns the unique forest ID.
+reads its identifier column, and returns the unique forest ID.
 }

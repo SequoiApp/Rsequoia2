@@ -1,31 +1,62 @@
 test_that("seq_parca() works with mocked get_parca()", {
 
-  seq_dir <- file.path(tempdir(), "seq")
-  dir.create(seq_dir, showWarnings = FALSE)
-  on.exit(unlink(seq_dir, recursive = TRUE, force = TRUE))
+  with_seq_cache({
 
-  m <- fake_matrice(id = "TEST", lieu_dit = c(NA, "OWNER"), numero = c("0001", "0002"))
-  m_path <- file.path(seq_dir, "TEST_matrice.xlsx")
-  openxlsx2::write_xlsx(m, m_path)
+    local_mocked_bindings(
+      get_parca = function(...) p,
+      read_matrice = function(...) m,
+    )
 
-  local_mocked_bindings(
-    get_parca = function(idu, bdp_geom, lieu_dit, verbose){
-      fake_raw_parca(
-        numero = c("0001", "0002"),
-        lieu_dit = c("LIEU_DIT1", "LIEU_DIT2")
-      )
-    }
-  )
+    parca_path <- seq_parca(dirname = seq_cache, verbose = FALSE, overwrite = TRUE)
+    expect_true(file.exists(parca_path))
 
-  parca_path <- seq_parca(dirname = seq_dir, verbose = F)
-  expect_true(file.exists(parca_path))
-
-  parca <- sf::read_sf(parca_path)
-
-  lieu_dit <- seq_field("lieu_dit")$name
-
-  expect_s3_class(parca, "sf")
-  expect_equal(parca[[lieu_dit]], c("LIEU_DIT1", "OWNER"))
+    parca <- sf::read_sf(parca_path)
+    expect_s3_class(parca, "sf")
+  })
 
 })
+
+test_that("seq_parca() correct lieu_dit when available ", {
+
+  with_seq_cache({
+
+    lieu_dit <- seq_field("locality")$name
+    m[[lieu_dit]] <- NA_character_
+    m[[lieu_dit]][1] <- "MATRICE"
+
+    p[[lieu_dit]] <- "PARCA"
+
+    local_mocked_bindings(
+      get_parca = function(...) p,
+      read_matrice = function(...) m,
+    )
+
+    parca_path <- seq_parca(dirname = seq_cache, verbose = F, overwrite = TRUE)
+    parca <- sf::read_sf(parca_path)
+
+    expect_all_true(c("MATRICE", "PARCA") %in% parca[[lieu_dit]])
+  })
+
+})
+
+test_that("seq_parca() correclty add id from matrice", {
+
+  with_seq_cache({
+
+    id <- seq_field("identifier")$name
+    m[[id]] <- "MATRICE_ID"
+
+    local_mocked_bindings(
+      get_parca = function(...) p,
+      read_matrice = function(...) m,
+    )
+
+    parca_path <- seq_parca(dirname = seq_cache, verbose = F, overwrite = TRUE)
+    parca <- sf::read_sf(parca_path)
+
+    expect_all_true(parca[[id]] == "MATRICE_ID")
+  })
+
+})
+
 

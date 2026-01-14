@@ -1,68 +1,62 @@
-test_that("seq_mnhn() works with mocked get_mnhn()", {
+test_that("seq_mnhn() return expected path", {
 
-  seq_cache <- file.path(tempdir(), "seq")
-  dir.create(seq_cache)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
+  with_seq_cache({
+    local_mocked_bindings(
+      get_mnhn = function(...) Rsequoia2:::seq_poly
+    )
 
-  m <- fake_matrice(id = "TEST")
-  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
-  openxlsx2::write_xlsx(m, m_path)
+    layer <- c("pn", "pnr")
+    mnhn_path <- seq_mnhn(dirname = seq_cache, key = layer, verbose = FALSE)
 
-  p <- fake_parca()
-  parca_path <- seq_write(p, "parca", dirname = seq_cache)
-
-  local_mocked_bindings(
-    get_mnhn = function(x, key, buffer, overwrite, verbose){
-      x <- sf::st_as_sf(sf::st_sfc(sf::st_point(c(5, 5)), crs = 2154))
-    }
-  )
-
-  mnhn_path <- seq_mnhn(dirname = seq_cache, buffer = 500, key = c("pn", "pnr"), verbose = FALSE)
-  pn_path <- mnhn_path[[1]]
-  pnr_path <- mnhn_path[[2]]
-  expect_all_true(c(file.exists(pn_path), file.exists(pnr_path)))
-
-  pn <- sf::read_sf(pn_path)
-  expect_s3_class(pn, "sf")
-
-  pnr <- sf::read_sf(pnr_path)
-  expect_s3_class(pnr, "sf")
-
+    expect_length(mnhn_path, length(layer))
+    expect_all_true(file.exists(unlist(mnhn_path)))
+  })
 })
 
+test_that("seq_mnhn() return sf", {
 
-test_that("seq_mnhn() works when verbose = TRUE", {
+  with_seq_cache({
+    local_mocked_bindings(
+      get_mnhn = function(...) Rsequoia2:::seq_poly
+    )
 
-  seq_cache <- file.path(tempdir(), "seq")
-  dir.create(seq_cache)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
+    mnhn_path <- seq_mnhn(dirname = seq_cache, key = "pn", verbose = FALSE)
+    pn <- sf::read_sf(mnhn_path)
 
-  m <- fake_matrice(id = "TEST")
-  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
-  openxlsx2::write_xlsx(m, m_path)
+    expect_s3_class(pn, "sf")
 
-  p <- fake_parca()
-  parca_path <- seq_write(p, "parca", dirname = seq_cache)
+  })
+})
 
-  local_mocked_bindings(
-    get_mnhn = function(x, key, buffer, overwrite, verbose){
-      x <- sf::st_as_sf(sf::st_sfc(sf::st_point(c(5, 5)), crs = 2154))
-    }
-  )
+test_that("seq_com() layers contain id", {
+  with_seq_cache({
 
-  expect_message(
-    mnhn_path <- seq_mnhn(dirname = seq_cache, buffer = 500, key = c("pn", "pnr"), verbose = TRUE),
-    "non-empty layers found:"
-  )
+    local_mocked_bindings(
+      get_mnhn = function(...) Rsequoia2:::seq_poly
+    )
 
-  pn_path <- mnhn_path[[1]]
-  pnr_path <- mnhn_path[[2]]
-  expect_all_true(c(file.exists(pn_path), file.exists(pnr_path)))
+    paths <- seq_mnhn(dirname = seq_cache, key = get_keys("mnhn"), verbose = FALSE)
+    mnhn <- lapply(paths, read_sf)
 
-  pn <- sf::read_sf(pn_path)
-  expect_s3_class(pn, "sf")
+    identifier <- seq_field("identifier")$name
+    expect_all_true(vapply(mnhn, \(x) identifier %in% names(x), TRUE))
+  })
+})
 
-  pnr <- sf::read_sf(pnr_path)
-  expect_s3_class(pnr, "sf")
+test_that("seq_mnhn() doesn't write when no data found", {
 
+  with_seq_cache({
+    local_mocked_bindings(
+      get_mnhn = function(...) Rsequoia2:::seq_empty
+    )
+
+    mnhn_path <- seq_mnhn(dirname = seq_cache, key = "pn", verbose = FALSE)
+    expect_length(mnhn_path, 0)
+
+    expect_warning(
+      seq_mnhn(dirname = seq_cache, key = "pn", verbose = TRUE),
+      "All layers are empty"
+    ) |> suppressMessages()
+
+  })
 })

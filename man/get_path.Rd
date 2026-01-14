@@ -4,14 +4,11 @@
 \alias{get_path}
 \title{Construct filepath for a given layer key}
 \usage{
-get_path(key, dirname = ".", verbose = FALSE)
+get_path(key, verbose = FALSE)
 }
 \arguments{
 \item{key}{\code{character} Name of a layer key to match against the entries
 defined in \code{inst/config/seq_layers.yaml}. (see \emph{Details} for partial matching).}
-
-\item{dirname}{\code{character} Directory where the matrice file is located.
-Defaults to the current working directory.}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }

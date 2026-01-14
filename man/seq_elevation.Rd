@@ -14,9 +14,6 @@ seq_elevation(
 )
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
-Defaults to the current working directory.}
-
 \item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
 the download area.}
 

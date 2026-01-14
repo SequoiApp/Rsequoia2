@@ -7,9 +7,6 @@
 seq_vege(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
-Defaults to the current working directory.}
-
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
 \item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}

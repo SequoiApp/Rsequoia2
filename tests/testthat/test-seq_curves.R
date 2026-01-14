@@ -1,59 +1,58 @@
-test_that("seq_curves() writes valid toponymy layer", {
-  skip_on_cran()
-  skip_on_ci()
+test_that("seq_curves() returned expected path", {
+  with_seq_cache({
 
-  # cache dir
-  seq_cache <- file.path(tempdir(), "seq")
-  dir.create(seq_cache, recursive = TRUE, showWarnings = FALSE)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
+    local_mocked_bindings(
+      get_curves = function(...) Rsequoia2:::seq_point
+    )
 
-  # matrice
-  m <- fake_matrice(insee = "71279", section = "0C", numero = "0380")
-  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
-  openxlsx2::write_xlsx(m, m_path)
-
-  # parca
-  p <- seq_parca(seq_cache, verbose = FALSE)
-
-  # seq_curves
-  line <- sf::st_as_sf(sf::st_sfc(sf::st_linestring(matrix(1:10, , 2)), crs = 2154))
-
-  testthat::local_mocked_bindings(
-    get_curves = function(...) line
-  )
-
-  path <- seq_curves(seq_cache, verbose = FALSE)
-
-  # tests
-  expect_true(nzchar(path))
-  curves <- sf::read_sf(path)
-  expect_s3_class(curves, "sf")
+    paths <- seq_curves(seq_cache, verbose = FALSE, overwrite = TRUE)
+    expect_length(paths, 1)
+    expect_all_true(file.exists(unlist(paths)))
+  })
 })
 
-test_that("seq_curves() returns NULL when no toponymic features exist", {
-  skip_on_cran()
-  skip_on_ci()
+test_that("seq_curves() returned correct geometry", {
+  with_seq_cache({
 
-  # cache dir
-  seq_cache <- file.path(tempdir(), "seq")
-  dir.create(seq_cache, recursive = TRUE, showWarnings = FALSE)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
+    local_mocked_bindings(
+      get_curves = function(...) Rsequoia2:::seq_point
+    )
 
-  # matrice
-  m <- fake_matrice(id = "TEST")
-  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
-  openxlsx2::write_xlsx(m, m_path)
+    paths <- seq_curves(seq_cache, verbose = FALSE, overwrite = TRUE)
+    curves <- read_sf(paths)
 
-  # parca
-  p <- fake_parca()
-  parca_path <- seq_write(p, "parca", dirname = seq_cache)
+    expect_all_true(sf::st_geometry_type(curves) %in% c("POINT", "MULTIPOINT"))
+    expect_true(sf::st_crs(curves) == sf::st_crs(2154))
 
-  # seq_curves
-  testthat::local_mocked_bindings(
-    get_curves = function(...) NULL
-  )
+  })
+})
 
-  expect_warning(path <- seq_curves(seq_cache, verbose = FALSE),
-                 "No hypsometric")
-  expect_null(path)
+test_that("seq_curves() layers contain id", {
+  with_seq_cache({
+
+    local_mocked_bindings(
+      get_curves = function(...) Rsequoia2:::seq_point
+    )
+
+    paths <- seq_curves(seq_cache, verbose = FALSE, overwrite = TRUE)
+    curves <- lapply(paths, read_sf)
+
+    identifier <- seq_field("identifier")$name
+    expect_all_true(vapply(curves, \(x) identifier %in% names(x), TRUE))
+  })
+})
+
+test_that("seq_curves() doesn't write if there no data", {
+  with_seq_cache({
+
+    called <- 0
+    local_mocked_bindings(
+      get_curves = function(...) NULL,
+      seq_write = function(...) called <<- called + 1
+    )
+
+    paths <- seq_curves(seq_cache, verbose = FALSE, overwrite = TRUE)
+    expect_length(paths, 0)
+    expect_equal(called, 0)
+  })
 })

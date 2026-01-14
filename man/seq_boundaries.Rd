@@ -7,9 +7,6 @@
 seq_boundaries(dirname = ".", tol = 10, verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
-Defaults to the current working directory.}
-
 \item{tol}{\code{numeric}; buffer tolerance in meter used to close small gaps.
 Any gap narrower than \code{2 * tol} is filled, causing polygons on both sides to
 be merged.}

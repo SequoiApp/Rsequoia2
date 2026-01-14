@@ -15,9 +15,6 @@ seq_scan(
 )
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
-Defaults to the current working directory.}
-
 \item{type}{\code{character}; One or several scanned map types to download.
 Must be one or more of:
 \itemize{

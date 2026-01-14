@@ -12,9 +12,6 @@ seq_write(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE)
 \item{key}{\code{character} Name of a layer key to match against the entries
 defined in \code{inst/config/seq_layers.yaml}. (see \emph{Details} for partial matching).}
 
-\item{dirname}{\code{character} Directory where the matrice file is located.
-Defaults to the current working directory.}
-
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
 \item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}

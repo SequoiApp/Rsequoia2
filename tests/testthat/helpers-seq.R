@@ -1,25 +1,21 @@
-seq_test_project <- function(with_matrice = TRUE, with_parca = TRUE) {
+with_seq_cache <- function(code) {
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache, showWarnings = FALSE)
+  assign("seq_cache", seq_cache, envir = parent.frame())
 
-  seq_dir <- file.path(tempdir(), "seq")
   ext <- system.file("extdata", package = "Rsequoia2")
 
-  if (with_matrice) {
-    matrice <- list.files(ext, pattern = "matrice", full.names = TRUE, ignore.case = T)
-    file.copy(matrice, seq_dir)
-  }
+  m_path <- list.files(ext, pattern = "matrice", full.names = TRUE, ignore.case = T)
+  m <- openxlsx2::read_xlsx(m_path)
+  assign("m", m, envir = parent.frame())
+  file.copy(m_path, seq_cache)
 
-  if (with_parca) {
-    parca <- list.files(ext, pattern = "parca", full.names = TRUE, ignore.case = T)
+  p_path <- list.files(ext, pattern = "parca", full.names = TRUE, ignore.case = T)
+  p <- sf::read_sf(p_path)
+  assign("p", p, envir = parent.frame())
+  seq_write(p, "parca", seq_cache)
 
-    cfg_path <- system.file("config/seq_path.yaml", package = "Rsequoia2")
-    cfg <- yaml::read_yaml(cfg_path)
-    ns <- cfg$namespace
-    idx <- startsWith("v.seq.parca.poly", names(ns))
-    family <- ns[idx][[1]]
-    path <- cfg$path[[family]]
-    dir.create(file.path(seq_dir, path))
-    file.copy(parca, file.path(seq_dir, path))
-  }
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
 
-  return(dir)
+  force(code)
 }

@@ -1,7 +1,7 @@
 #' Aggregate _UA_ surfaces at the `parcelle` field level
 #'
-#' Aggregates corrected surface areas (`surf_cor`) from a _UA_ layer by
-#' grouping rows according to the `parcelle` field, as defined by the
+#' Aggregates corrected surface areas from a _UA_ layer by
+#' grouping rows according to the parcel unit field, as defined by the
 #' configuration returned by [seq_field()].
 #'
 #' This function is typically used internally by [seq_parcels()], but may also
@@ -19,32 +19,32 @@ ua_to_pf <- function(ua){
   # Sanity check
   ua <- seq_normalize(ua, "ua")
 
-  pf <- seq_field("parcelle")$name
-  s <- seq_field("surf_cor")$name
+  pcl_code <- seq_field("pcl_code")$name
+  cor_area <- seq_field("cor_area")$name
 
-  if (all(is.na(ua[[pf]]))) {
+  if (all(is.na(ua[[pcl_code]]))) {
     cli::cli_abort(c(
       "x" = "Failed to generate PF layers from UA.",
-      "!" = "Field {.field {pf}} in UA contains only missing values.",
+      "!" = "Field {.field {pcl_code}} in UA contains only missing values.",
       "i" = "Please populate this field before running this step."
     ))
   }
 
-  # Generate pf ----
-  by_pf <- list(ua[[pf]]) |> setNames(pf)
-  pf_poly <- aggregate(
-    x = ua[, s],
-    by = by_pf,
+  # Generate pcl_code ----
+  by_plot_unit <- list(ua[[pcl_code]]) |> setNames(pcl_code)
+  plot_unit_poly <- aggregate(
+    x = ua[, cor_area],
+    by = by_plot_unit,
     FUN = sum,
     na.rm = TRUE
   )
 
-  return(pf_poly)
+  return(plot_unit_poly)
 }
 
 #' Aggregate _UA_ surfaces at the `sspf` field level
 #'
-#' Aggregates corrected surface areas (`surf_cor`) from a _UA_ layer by
+#' Aggregates corrected surface areas from a _UA_ layer by
 #' grouping rows according to the `sspf` field, as
 #' defined by the configuration returned by [seq_field()].
 #'
@@ -65,25 +65,25 @@ ua_to_sspf <- function(ua){
   # Sanity check
   ua <- seq_normalize(ua, "ua")
 
-  ug <- seq_field("ug")$name
-  s <- seq_field("surf_cor")$name
+  mgmt_code <- seq_field("mgmt_code")$name
+  s <- seq_field("cor_area")$name
 
   # Generate sspf ----
-  by_ug <- list(ua[[ug]]) |> setNames(ug)
+  by_mana_unit<- list(ua[[mgmt_code]]) |> setNames(mgmt_code)
   sspf_poly_raw <- aggregate(
     x = ua[, s],
-    by = by_ug,
+    by = by_mana_unit,
     FUN = sum,
     na.rm = TRUE
   )
 
   # Adding description to sspf ----
   desc <- intersect(seq_desc_fields(), names(ua))
-  desc_tbl <- unique(ua[, c(ug, desc)] |> sf::st_drop_geometry())
+  desc_tbl <- unique(ua[, c(mgmt_code, desc)] |> sf::st_drop_geometry())
   sspf_poly <- merge(
     sspf_poly_raw,
     desc_tbl,
-    by = ug,
+    by = mgmt_code,
     all.x = TRUE
   )
 
@@ -108,11 +108,11 @@ ua_to_sspf <- function(ua){
 #'
 #' 1. **PF (Parcelle)**
 #' Rows of the UA are grouped using the `parcelle` field, and corrected surface
-#' areas (`surf_cor`) are summed. A polygon and border lines layer are created.
+#' areas are summed. A polygon and border lines layer are created.
 #'
 #' 2. **SSPF (Sous-parcelle)**
 #' Rows of the UA are grouped using the `parcelle` and `sous-parcelle` field, and
-#' corrected surface areas (`surf_cor`) are summed. A polygon and border lines
+#' corrected surface areas are summed. A polygon and border lines
 #' layer are created.
 #'
 #' @return
@@ -128,18 +128,18 @@ seq_parcels <- function(dirname = ".", verbose = FALSE, overwrite = FALSE){
   # Resolve field and layer ----
   ua <- seq_read("v.seq.ua.poly", dirname = dirname)
 
-  paths <- list()
-
   pf_poly <- ua_to_pf(ua)
   pf_line <- poly_to_line(pf_poly)
-  paths$pf_poly <- seq_write2(pf_poly, "v.seq.pf.poly")
-  paths$pf_line <- seq_write2(pf_line, "v.seq.pf.line")
+
+  pf_poly <- seq_write2(pf_poly, "v.seq.pf.poly")
+  pf_line <- seq_write2(pf_line, "v.seq.pf.line")
 
   sspf_poly <- ua_to_sspf(ua)
   sspf_line <- poly_to_line(sspf_poly)
-  paths$sspf_poly <- seq_write2(sspf_poly, "v.seq.sspf.poly")
-  paths$sspf_line <- seq_write2(sspf_line, "v.seq.sspf.line")
 
-  return(invisible(paths))
+  sspf_poly <- seq_write2(sspf_poly, "v.seq.sspf.poly")
+  sspf_line <- seq_write2(sspf_line, "v.seq.sspf.line")
+
+  return(invisible(c(pf_poly, pf_line, sspf_poly, sspf_line) |> as.list()))
 
 }

@@ -1,94 +1,95 @@
 matrice:
-  - identifiant
-  - proprietaire
+  - identifier
+  - owner
   - insee
   - prefix
   - section
-  - numero
-  - lieu_dit
+  - number
+  - locality
 
 raw_parca:
   - idu
-  - reg_nom
-  - reg_num
-  - dep_nom
-  - dep_num
-  - com_nom
-  - com_num
+  - reg_name
+  - reg_code
+  - dep_name
+  - dep_code
+  - com_name
+  - com_code
   - prefix
   - section
-  - numero
-  - lieu_dit
-  - surf_cad
+  - number
+  - locality
+  - cad_area
   - source
 
 parca:
-  - identifiant
-  - proprietaire
+  - identifier
+  - owner
   - idu
-  - reg_nom
-  - reg_num
-  - dep_nom
-  - dep_num
-  - com_nom
-  - com_num
+  - reg_name
+  - reg_code
+  - dep_name
+  - dep_code
+  - com_name
+  - com_code
   - insee
   - prefix
   - section
-  - numero
-  - lieu_dit
-  - surf_cad
+  - number
+  - locality
+  - cad_area
   - source
 
 ua:
-  - identifiant
-  - proprietaire
+  - identifier
+  - owner
   - idu
-  - reg_nom
-  - reg_num
-  - dep_nom
-  - dep_num
-  - com_nom
-  - com_num
+  - reg_name
+  - reg_code
+  - dep_name
+  - dep_code
+  - com_name
+  - com_code
   - insee
   - prefix
   - section
-  - numero
-  - lieu_dit
-  - land_use
-  - ug
-  - parcelle
-  - sous_parcelle
+  - number
+  - locality
+  - is_wooded
+  - mgmt_code
+  - pcl_code
+  - sub_code
   - stand
   - wealth
   - stage
   - year
   - structure
-  - ess1
-  - ess1_pct
-  - ess2
-  - ess2_pct
-  - ess3
-  - ess3_pct
-  - taillis
-  - rege
-  - sol
-  - amenagement
-  - dispositif
+  - spe1
+  - spe1_pct
+  - spe2
+  - spe2_pct
+  - spe3
+  - spe3_pct
+  - copice
+  - regeneration
+  - soil
+  - treatment
+  - is_subsidized
+  - subsidy
   - comment
-  - surf_sig
-  - surf_cor
-  - surf_cad
+  - gis_area
+  - cor_area
+  - cad_area
 
 vct_poly:
-  - identifiant
+  - identifier
   - type
   - nature
   - name
   - source
 
 vct_line:
-  - identifiant
+  - identifier
   - type
   - nature
   - name
@@ -96,7 +97,7 @@ vct_line:
   - offset
 
 vct_point:
-  - identifiant
+  - identifier
   - type
   - nature
   - name
@@ -104,20 +105,20 @@ vct_point:
   - rotation
 
 road_line:
-  - identifiant
+  - identifier
   - type
   - nature
   - importance
-  - private
+  - is_private
   - restriction
   - name
   - source
   - offset
 
 com_poly:
-  - identifiant
-  - reg_num
-  - dep_num
+  - identifier
+  - reg_code
+  - dep_code
   - insee
   - postal
-  - com_nom
+  - com_name

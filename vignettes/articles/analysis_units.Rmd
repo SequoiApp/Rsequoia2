@@ -26,14 +26,14 @@ tmap_options(scale = 0.75)
 
 ```{r definition, include = FALSE}
 idu      <- Rsequoia2:::seq_field("idu")$name
-surf_ca  <- Rsequoia2:::seq_field("surf_cad")$name
+surf_ca  <- Rsequoia2:::seq_field("cad_area")$name
 stand    <- Rsequoia2:::seq_field("stand")$name
 wealth   <- Rsequoia2:::seq_field("wealth")$name
 stage    <- Rsequoia2:::seq_field("stage")$name
 year     <- Rsequoia2:::seq_field("year")$name
-ug       <- Rsequoia2:::seq_field("ug")$name
-parcelle <- Rsequoia2:::seq_field("parcelle")$name
-sous_parcelle <- Rsequoia2:::seq_field("sous_parcelle")$name
+management       <- Rsequoia2:::seq_field("management_code")$name
+parcelle <- Rsequoia2:::seq_field("parcel_code")$name
+sous_parcelle <- Rsequoia2:::seq_field("sub_code")$name
 ```
 
 # What are we looking for?
@@ -169,9 +169,9 @@ Ensure that the layer does not contain any topological errors by checking it fro
 
 When you have updated the *AU* layer, you can get new products:
 
--   **PF (Parcelle)**: Rows of the *AU* are grouped using the `parcelle` field, and corrected surface areas (`surf_cor`) are summed. A polygon and border lines layer are created.
+-   **PF (Parcelle)**: Rows of the *AU* are grouped using the `parcelle` field, and corrected surface areas (`cor_area`) are summed. A polygon and border lines layer are created.
 
--   **SSPF (Sous-parcelle)**: Rows of the *AU* are grouped using the `r parcelle` and `r sous_parcelle` field, and corrected surface areas (`surf_cor`) are summed. A polygon and border lines layer are created.
+-   **SSPF (Sous-parcelle)**: Rows of the *AU* are grouped using the `r parcelle` and `r sous_parcelle` field, and corrected surface areas (`cor_area`) are summed. A polygon and border lines layer are created.
 
 ```{r seq_parcels, fig.height = 3.5, eval = FALSE}
 # remove eval = FALSE when data is available 

@@ -162,9 +162,9 @@ seq_ifn <- function(
   }
 
   # read project area once
-  parca <- sf::read_sf(
-    get_path("v.seq.parca.poly", dirname = dirname)
-  )
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  identifier <- seq_field("identifier")$name
+  id <- unique(parca[[identifier]])
 
   out <- vector("list", length(types))
   names(out) <- types

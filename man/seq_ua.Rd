@@ -7,9 +7,6 @@
 seq_ua(dirname = ".", secure = TRUE, verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
-Defaults to the current working directory.}
-
 \item{secure}{\code{logical}. If \code{TRUE}, also writes a timestamped secure copy
 of the file.}
 

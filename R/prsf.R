@@ -73,7 +73,7 @@ seq_prsf <- function(
 
   # read PARCA
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id_field <- seq_field("identifiant")$name
+  id_field <- seq_field("identifier")$name
   id <- unique(parca[[id_field]])
 
   if (verbose){
@@ -83,26 +83,17 @@ seq_prsf <- function(
   # Retrieve toponyms
   prsf <- get_prsf(parca, verbose = verbose)
 
-  # Exit early if nothing to write
-  if (is.null(prsf) || nrow(prsf) == 0) {
-    if (verbose) {
-      cli::cli_alert_info(
-        "No PRSF features found: PRSF layer not written."
-      )
-    }
-    return(invisible(NULL))
+  if (!is.null(prsf)){
+    prsf[[id_field]] <- id
+
+    prsf <- seq_write(
+      prsf,
+      "v.prsf.point",
+      dirname = dirname,
+      verbose = verbose,
+      overwrite = overwrite
+    )
   }
 
-  prsf[[id_field]] <- id
-
-  # Write layer
-  prsf_path <- seq_write(
-    prsf,
-    "v.prsf.point",
-    dirname = dirname,
-    verbose = verbose,
-    overwrite = overwrite
-  )
-
-  return(invisible(prsf_path))
+  return(invisible(c(prsf) |> as.list()))
 }

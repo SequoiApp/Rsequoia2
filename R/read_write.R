@@ -10,8 +10,10 @@
 #' @export
 seq_read <- function(key, dirname = ".", verbose = FALSE) {
 
-  path <- get_path(key, dirname, verbose = FALSE)
-  key <- names(path)
+  rel_path <- get_path(key, verbose = FALSE)
+  key <- names(rel_path)
+
+  path <- file.path(dirname, rel_path)
 
   file_not_exist <- !file.exists(path)
   if (file_not_exist) {
@@ -72,8 +74,11 @@ seq_read <- function(key, dirname = ".", verbose = FALSE) {
 #' @export
 seq_write <- function(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE) {
 
-  path <- get_path(key, dirname, verbose = FALSE)
-  key <- names(path)
+  rel_path <- get_path(key, verbose = FALSE)
+  key <- names(rel_path)
+
+  path <- file.path(dirname, rel_path)
+  names(path) <- key
 
   if (file.exists(path) && !overwrite) {
     cli::cli_warn(
@@ -84,6 +89,8 @@ seq_write <- function(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE)
     )
     return(invisible(path))
   }
+
+  dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
 
   is_vector <- startsWith(key, "v.")
   if (is_vector) {
@@ -98,7 +105,7 @@ seq_write <- function(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE)
 
     if (verbose) {
       cli::cli_alert_success(
-        "Layer {.val {key}} with {nrow(x)} feature{?s} saved to {.file {basename(path)}}."
+        "Layer {.val {key}} with {nrow(x)} feature{?s} saved to {.file {rel_path}}."
       )
     }
 
@@ -118,7 +125,7 @@ seq_write <- function(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE)
 
     if (verbose) {
       cli::cli_alert_success(
-        "Layer {.val {key}} saved to {.file {basename(path)}}."
+        "Layer {.val {key}} saved to {.file {rel_path}}."
       )
     }
 

@@ -7,9 +7,6 @@
 seq_parcels(dirname = ".", verbose = FALSE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
-Defaults to the current working directory.}
-
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
 \item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
@@ -32,10 +29,10 @@ The function performs two levels of spatial aggregation ande create 4 layers:
 \enumerate{
 \item \strong{PF (Parcelle)}
 Rows of the UA are grouped using the \code{parcelle} field, and corrected surface
-areas (\code{surf_cor}) are summed. A polygon and border lines layer are created.
+areas are summed. A polygon and border lines layer are created.
 \item \strong{SSPF (Sous-parcelle)}
 Rows of the UA are grouped using the \code{parcelle} and \code{sous-parcelle} field, and
-corrected surface areas (\code{surf_cor}) are summed. A polygon and border lines
+corrected surface areas are summed. A polygon and border lines
 layer are created.
 }
 }

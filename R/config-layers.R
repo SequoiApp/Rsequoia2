@@ -1,7 +1,7 @@
 #' Extract forest ID from a matrice.xlsx file
 #'
 #' Searches for a single Excel file matching `*_matrice.xlsx` in a directory,
-#' reads its `IDENTIFIANT` column, and returns the unique forest ID.
+#' reads its identifier column, and returns the unique forest ID.
 #'
 #' @param dirname `character` Directory where the matrice file is located.
 #' Defaults to the current working directory.
@@ -13,7 +13,9 @@
 get_id <- function(dirname = ".", verbose = FALSE) {
 
   m <- read_matrice(dirname)
-  id <- unique(m$IDENTIFIANT)
+  identifier <- seq_field("identifier")$name
+
+  id <- unique(m[[identifier]])
 
   # Success
   if (verbose){
@@ -33,8 +35,6 @@ get_id <- function(dirname = ".", verbose = FALSE) {
 #'
 #' @param key `character` Name of a layer key to match against the entries
 #' defined in `inst/config/seq_layers.yaml`. (see *Details* for partial matching).
-#' @param dirname `character` Directory where the matrice file is located.
-#' Defaults to the current working directory.
 #' @param verbose `logical` If `TRUE`, display messages.
 #'
 #' @details
@@ -52,7 +52,7 @@ get_id <- function(dirname = ".", verbose = FALSE) {
 #'
 #' @return Invisibly returns a single forest ID (character scalar).
 #'
-get_path <- function(key, dirname = ".", verbose = FALSE){
+get_path <- function(key, verbose = FALSE){
 
   cfg_layer <- system.file("config/seq_layers.yaml", package = "Rsequoia2")
   cfg <- yaml::read_yaml(cfg_layer)
@@ -78,25 +78,21 @@ get_path <- function(key, dirname = ".", verbose = FALSE){
     ))
   }
 
+  # Layer name
   entry <- cfg[[match_key]]
-  id <- get_id(dirname)
-  filename <- sprintf("%s_%s.%s", id, entry$name, entry$ext)
+  filename <- sprintf("%s.%s", entry$name, entry$ext)
 
+  # Layer path
   cfg_path <- system.file("config/seq_path.yaml", package = "Rsequoia2")
   cfg <- yaml::read_yaml(cfg_path)
-  ns <- cfg$namespace
-  idx <- startsWith(match_key, names(ns))
-  family <- ns[idx][[1]]
-  path <- cfg$path[[family]]
-  dir <- file.path(dirname, path)
-  dir.create(dir, showWarnings = FALSE, recursive = TRUE)
-  path <- file.path(dir, filename)
 
+  family <- cfg$namespace[startsWith(match_key, names(cfg$namespace))]
+  path <- file.path(cfg$path[[unlist(family)]], filename)
   names(path) <- match_key
 
   if (verbose) {
     cli::cli_alert_success(
-      "Resolved {.arg key} {.val {key}} to {.file {filename}}."
+      "Resolved {.arg key} {.val {key}} to {.file {path}}."
     )
   }
 

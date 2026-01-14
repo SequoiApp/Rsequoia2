@@ -38,15 +38,15 @@
 seq_gpu <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
 
   # area of interest
-  geom <- seq_read("v.seq.parca.poly", dirname = dirname) |>
-    sf::st_union()
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  identifier <- seq_field("identifier")$name
+  id <- unique(parca[[identifier]])
+
+  geom <- parca |>  sf::st_union()
 
   if (verbose){
     cli::cli_h1("GPU")
   }
-
-  id_field <- seq_field("identifiant")$name
-  id_value <- get_id(dirname)
 
   # GPU layers specification
   layers <- list(
@@ -98,7 +98,7 @@ seq_gpu <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
     }
 
     # add project identifier
-    f[[id_field]] <- id_value
+    f[[identifier]] <- id
 
     # write output
     paths[[k]] <- seq_write(

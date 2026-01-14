@@ -7,9 +7,6 @@
 seq_geol(dirname = ".", cache = NULL, verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
-Defaults to the current working directory.}
-
 \item{cache}{\code{character}; Storage directory. Defaults to the user cache
 directory (see \code{\link[tools:userdir]{tools::R_user_dir()}}).}
 

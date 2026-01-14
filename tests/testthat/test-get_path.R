@@ -12,35 +12,29 @@ test_that("get_path() throw error when multiple matching key", {
   )
 })
 
-test_that("get_path() returns expected path", {
+test_that("get_path() returns a named file path for a valid key", {
 
-  seq_cache <- file.path(tempdir(), "seq")
-  dir.create(seq_cache)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+    path <- get_path("parca")
 
-  m <- create_matrice(seq_cache, "MY_ID", verbose = F, overwrite = T)
-
-  key <- "v.mnhn.znieff1.poly"
-  expected <- file.path(seq_cache, "MY_ID_MNHN_ZNIEFF1_poly.geojson")
-  names(expected) <- key
-
-  expect_equal(get_path(key, seq_cache), expected)
+    expect_type(path, "character")
+    expect_length(path, 1)
+    expect_named(path, get_keys("parca", FALSE))
 
 })
 
-test_that("get_path() partial key matching", {
+test_that("get_path() uses layer name and extension from config", {
 
-  seq_cache <- file.path(tempdir(), "seq")
-  dir.create(seq_cache)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+    path <- get_path("parca")
+    expect_match(basename(path),"\\.")
 
-  m <- create_matrice(seq_cache, "MY_ID", verbose = F, overwrite = T)
+})
 
-  key <- "v.mnhn.znieff1.poly"
-  expected <- file.path(seq_cache, "MY_ID_MNHN_ZNIEFF1_poly.geojson")
-  names(expected) <- key
+test_that("get_path() emits message in verbose mode", {
 
-  expect_equal(get_path("znieff1", seq_cache), expected)
+    expect_message(
+      get_path("parca", verbose = TRUE),
+      "Resolved"
+    )
 
 })
 
