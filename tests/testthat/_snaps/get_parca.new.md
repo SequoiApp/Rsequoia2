@@ -18,7 +18,7 @@
        $ SECTION     : chr "AB"
        $ NUMERO      : chr "0060"
        $ LIEU_DIT    : chr NA
-       $ SURF_CA     : num 150
+       $ SURF_CAD    : num 150
        $ SOURCE      : chr "etalab"
 
 ---
@@ -41,7 +41,7 @@
        $ SECTION     : chr "AB"
        $ NUMERO      : chr "0060"
        $ LIEU_DIT    : chr "LE BOURG"
-       $ SURF_CA     : num 150
+       $ SURF_CAD    : num 150
        $ SOURCE      : chr "etalab"
 
 ---
@@ -64,6 +64,6 @@
        $ SECTION     : chr "AB"
        $ NUMERO      : chr "0060"
        $ LIEU_DIT    : chr NA
-       $ SURF_CA     : num 150
+       $ SURF_CAD    : num 150
        $ SOURCE      : chr "etalab"
 

@@ -75,10 +75,10 @@ get_com_line <- function(x, graphic = FALSE, verbose = TRUE) {
 
   if (graphic){
     convex <- envelope(x, 500)
-    line <- quiet(sf::st_intersection(line, convex))
+    line <- sf::st_intersection(line, convex) |> suppressWarnings()
   }
 
-  invisible(line)
+  return(invisible(line))
 }
 
 #' Retrieve commune representative points around an area
@@ -120,7 +120,7 @@ get_com_point <- function(x, graphic = FALSE, verbose = TRUE) {
     point <- quiet(sf::st_centroid(poly, of_largest_polygon = FALSE))
   }
 
-  invisible(point)
+  return(invisible(point))
 }
 
 #' Generates commune polygon, line and point layers for a Sequoia project.

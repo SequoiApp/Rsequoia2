@@ -6,7 +6,7 @@ test_that("get_curves() returns null when no data", {
     .package = "happign"
   )
 
-  curves <- get_curves(x)
+  curves <- get_curves(x, verbose = FALSE)
 
   # tests
   expect_null(curves, "sf")
@@ -22,7 +22,7 @@ test_that("get_curves() works", {
     .package = "happign"
   )
 
-  curves <- get_curves(x)
+  curves <- get_curves(x, verbose = FALSE)
 
   expect_s3_class(curves, "sf")
   expect_all_true(sf::st_geometry_type(curves) == "LINESTRING")
@@ -38,7 +38,7 @@ test_that("get_curves() force crs to 2154", {
     .package = "happign"
   )
 
-  curves <- get_curves(x)
+  curves <- get_curves(x, verbose = FALSE)
 
   expect_equal(sf::st_crs(curves)$srid, "EPSG:2154")
 })

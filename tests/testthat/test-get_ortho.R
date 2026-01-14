@@ -18,7 +18,7 @@ test_that("get_ortho() works with real API (local only)", {
 
   p <- sf::st_sfc(sf::st_point(c(-4.372746579180652, 47.79820761331345)), crs = 4326)
 
-  ortho <- quiet(get_ortho(p, type = "rgb", buffer = 10, zoom = 7, crs = 2154))
+  ortho <- get_ortho(p, type = "rgb", buffer = 10, zoom = 7, crs = 2154, verbose = FALSE)
 
   expect_s4_class(ortho, "SpatRaster")
   expect_true(terra::ncell(ortho) > 0)
@@ -47,7 +47,7 @@ test_that("get_ortho() works with mocked WMTS", {
     .package = "happign"
   )
 
-  ortho <- get_ortho(p, type = "rgb", buffer = 1)
+  ortho <- get_ortho(p, type = "rgb", buffer = 1, verbose = FALSE)
 
   # tests
   expect_s4_class(ortho, "SpatRaster")

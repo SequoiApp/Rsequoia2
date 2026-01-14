@@ -96,7 +96,7 @@ test_that("get_legal_entity() reads CSV files from cache", {
   expect_shape(res, dim = c(1, 16))
 })
 
-test_that("get_legal_entity() keeps only proprietaire entries", {
+test_that("get_legal_entity() keeps only owner entries", {
 
   le_cache <- file.path(tempdir(), "legal_entity")
   dir.create(le_cache)
@@ -134,8 +134,8 @@ test_that("get_legal_entity() aggregates prop and lieu_dit per IDU", {
 
   res <- get_legal_entity("01", cache = le_cache, verbose = FALSE)
 
-  prop_field <- seq_field("proprietaire")$name
-  lieu_dit_field <- seq_field("lieu_dit")$name
+  prop_field <- seq_field("owner")$name
+  lieu_dit_field <- seq_field("locality")$name
 
   expect_true(any(grepl("PROP2 \\ PROP3", res[[prop_field]], fixed = TRUE)))
   expect_true(any(grepl("LIEU2 \\ LIEU3", res[[lieu_dit_field]], fixed = TRUE)))
@@ -163,7 +163,7 @@ test_that("get_legal_entity() return right cog info", {
   com_code <- seq_field("com_code")$name
   prefix <- seq_field("prefix")$name
   section <- seq_field("section")$name
-  numero <- seq_field("numero")$name
+  numero <- seq_field("number")$name
 
   expect_all_true(grepl("^[0-9]{2}$", res[[reg_code]]))
   expect_all_true(grepl("^([0-9]{2}|2A|2B)$", res[[dep_code]]))
