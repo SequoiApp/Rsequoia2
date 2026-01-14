@@ -1,10 +1,12 @@
 seq_summary <- function(dirname = ".", overwrite = FALSE, verbose = TRUE){
 
+  # ua_path <- "C:\\Users\\PaulCarteron\\Desktop\\temp\\sequoia_test\\ESTREMONT_UA_polygon.shp"
+  # ua_sf <- sf::st_read(ua_path) |> seq_normalize("ua")
+
   ua <- seq_read("v.seq.ua.poly", dirname = dirname)
-  ua_path <- "C:\\Users\\PaulCarteron\\Desktop\\temp\\sequoia_test\\ESTREMONT_UA_polygon.shp"
-  ua <- sf::read_sf(ua_path) |> seq_normalize("ua") |> sf::st_drop_geometry()
 
   sum_surf_by <- function(ua, ...){
+    ua <- sf::st_drop_geometry(ua)
     surf_cor <- seq_field("surf_cor")$name
 
     by <- list(...) |> lapply(\(x) seq_field(x)$name)
@@ -51,35 +53,76 @@ seq_summary <- function(dirname = ".", overwrite = FALSE, verbose = TRUE){
   pc_by_dep <- sum_surf_by(ua, "dep_nom")
 
   pf <- sum_surf_by(ua, "parcelle", "com_num", "section", "numero")
-  pf <- order_by(sspf, "parcelle")
+  pf <- order_by(pf, "parcelle")
 
   sspf <- sum_surf_by(ua, "parcelle", "sous_parcelle", "com_num", "section", "numero")
   sspf <- order_by(sspf, "parcelle", "sous_parcelle")
 
-  plt <- sum_surf_by(ua, "peuplement")
+  plt <- sum_surf_by(ua, "stand")
   plt <- order_by(plt, "surf_cor", decreasing = TRUE)
   plt$PROPORTION <- plt[[surf_cor]]/sum(plt[[surf_cor]])
 
   station <- sum_surf_by(ua, "sol")
 
-  pf_by_plt <- sum_surf_by(ua, "parcelle", "peuplement")
-  pf_by_plt <- order_by(pf_by_plt, "peuplement")
-  pf_by_plt <- pivot(pf_by_plt, "parcelle", "peuplement", direction = "wide")
+  pf_by_plt <- sum_surf_by(ua, "parcelle", "stand")
+  pf_by_plt <- order_by(pf_by_plt, "stand")
+  pf_by_plt <- pivot(pf_by_plt, "parcelle", "stand", direction = "wide")
   pf_by_plt <- order_by(pf_by_plt, "parcelle")
 
-  plt_by_pf <- sum_surf_by(ua, "parcelle", "peuplement")
+  plt_by_pf <- sum_surf_by(ua, "parcelle", "stand")
   plt_by_pf <- order_by(plt_by_pf, "parcelle")
-  plt_by_pf <- pivot(plt_by_pf, "peuplement", "parcelle", direction = "wide")
-  plt_by_pf <- order_by(plt_by_pf, "peuplement")
+  plt_by_pf <- pivot(plt_by_pf, "stand", "parcelle", direction = "wide")
+  plt_by_pf <- order_by(plt_by_pf, "stand")
 
-  pc_by_plt <- sum_surf_by(ua, "peuplement", "idu")
-  pc_by_plt <- order_by(pc_by_plt, "peuplement")
-  pc_by_plt <- pivot(pc_by_plt, "idu", "peuplement", direction = "wide")
+  pc_by_plt <- sum_surf_by(ua, "stand", "idu")
+  pc_by_plt <- order_by(pc_by_plt, "stand")
+  pc_by_plt <- pivot(pc_by_plt, "idu", "stand", direction = "wide")
   pc_by_plt <- order_by(pc_by_plt, "idu")
 
   ame <- sum_surf_by(ua, "amenagement")
   ame <- order_by(ame, "amenagement")
   ame$PROPORTION <- ame[[surf_cor]]/sum(ame[[surf_cor]])
 
+  ua$N_PARFOR <- runif(nrow(ua), 1, 10) |> round() |> as.character()
+  elevation <- seq_read("r.alt.mnt", dirname = dirname)
+  parcelle <- seq_field("parcelle")$name
+  pf <- terra::vect(ua[, parcelle]) |> terra::aggregate(parcelle, count = FALSE)
+
+  fun <- list(mean = mean, min = min, max = max)
+  elevation_by_pf <- Reduce(
+    function(x, y) merge(x, y, by = "N_PARFOR"),
+    lapply(
+      names(fun),
+      function(x){
+        names(elevation) <- paste0("ALTITUDE_", toupper(x))
+        as.data.frame(
+          terra::extract(elevation, pf, fun[[x]], na.rm = TRUE, bind = TRUE, ID = FALSE)
+        )}
+    ))
+
+
+  pente <- seq_read("r.alt.pente", dirname = dirname)
+  pente_by_plt <- as.data.frame(
+    terra::extract(
+      pente |> setNames("PENTE"),
+      terra::vect(ua[, stand]) |> terra::aggregate(stand, count = FALSE),
+      fun = mean,
+      na.rm = TRUE,
+      bind = TRUE,
+      ID = FALSE
+    )
+  )
+
+  expo <- seq_read("r.alt.expo", dirname = dirname)
+  expo_by_plt <- as.data.frame(
+    terra::extract(
+      expo |> setNames("EXPOSITION"),
+      terra::vect(ua[, stand]) |> terra::aggregate(stand, count = FALSE),
+      fun = mean,
+      na.rm = TRUE,
+      bind = TRUE,
+      ID = FALSE
+    )
+  )
 
 }

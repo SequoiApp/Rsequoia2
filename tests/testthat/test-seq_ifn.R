@@ -9,7 +9,7 @@ test_that("seq_ifn() writes valid polygon layer", {
 
   # matrice
   m <- fake_matrice(insee = "71279", section = "0B", numero = "0081")
-  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   # parca
@@ -48,7 +48,7 @@ test_that("seq_ifn() returns NULL when no features exist", {
 
   # matrice
   m <- fake_matrice(id = "TEST")
-  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   # parca

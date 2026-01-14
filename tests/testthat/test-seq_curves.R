@@ -9,7 +9,7 @@ test_that("seq_curves() writes valid toponymy layer", {
 
   # matrice
   m <- fake_matrice(insee = "71279", section = "0C", numero = "0380")
-  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   # parca
@@ -41,7 +41,7 @@ test_that("seq_curves() returns NULL when no toponymic features exist", {
 
   # matrice
   m <- fake_matrice(id = "TEST")
-  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   # parca

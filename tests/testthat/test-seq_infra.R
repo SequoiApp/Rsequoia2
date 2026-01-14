@@ -9,7 +9,7 @@ test_that("seq_infra() returns a named list of three paths", {
 
   # matrice
   m <- fake_matrice(insee = "71279", section = "0C", numero = "0380")
-  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   # parca
@@ -37,7 +37,7 @@ test_that("infra layers have correct geometry types and CRS", {
 
   # matrice
   m <- fake_matrice(insee = "71279", section = "0C", numero = "0380")
-  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   # parca
@@ -71,7 +71,7 @@ test_that("seq_infra() writes valid layers when features exist", {
 
   # matrice
   m <- fake_matrice(insee = "71279", section = "0C", numero = "0380")
-  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   # parca
@@ -105,7 +105,7 @@ test_that("seq_infra() writes valid empty layers when no features exist", {
 
   # matrice
   m <- fake_matrice(id = "TEST")
-  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   # parca

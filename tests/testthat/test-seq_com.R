@@ -9,7 +9,7 @@ test_that("seq_com() returns a named list of five paths", {
 
   # matrice
   m <- fake_matrice(insee = "71279", section = "0C", numero = "0380")
-  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   # parca
@@ -37,7 +37,7 @@ test_that("seq_com() layers have correct geometry types and CRS", {
 
   # matrice
   m <- fake_matrice(insee = "71279", section = "0C", numero = "0380")
-  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   # parca
@@ -79,7 +79,7 @@ test_that("seq_com() does not write layers when no commune intersects", {
 
   # matrice factice
   m <- fake_matrice(id = "TEST")
-  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   # fake parca hors France
@@ -108,7 +108,7 @@ test_that("graphic commune layers are spatially smaller than topo layers", {
 
   # matrice
   m <- fake_matrice(insee = "71279", section = "0C", numero = "0380")
-  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   # parca

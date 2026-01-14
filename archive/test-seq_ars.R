@@ -8,7 +8,7 @@ test_that("seq_ars() works with mocked get_ars()", {
   d <- tempdir()
 
   m <- fake_matrice(id = "TEST")
-  m_path <- file.path(d, "TEST_matrice.xlsx")
+  m_path <- file.path(d, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   p <- fake_parca()
@@ -46,7 +46,7 @@ test_that("seq_ars() returns NULL and warns when all layers are empty", {
 
   # fake matrice + parca
   m <- fake_matrice(id = "TEST")
-  m_path <- file.path(d, "TEST_matrice.xlsx")
+  m_path <- file.path(d, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
   parca_path <- seq_write(fake_parca(), "parca", dirname = d)
 
@@ -70,7 +70,7 @@ test_that("seq_ars() prints messages when verbose = TRUE", {
   d <- tempdir()
 
   m <- fake_matrice(id = "TEST")
-  m_path <- file.path(d, "TEST_matrice.xlsx")
+  m_path <- file.path(d, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
   parca_path <- seq_write(fake_parca(), "parca", dirname = d)
 
@@ -99,7 +99,7 @@ test_that("seq_ars() handles case where only captage has data", {
 
   d <- tempdir()
   m <- fake_matrice(id = "TEST")
-  m_path <- file.path(d, "TEST_matrice.xlsx")
+  m_path <- file.path(d, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
   parca_path <- seq_write(fake_parca(), "parca", dirname = d)
 
@@ -126,7 +126,7 @@ test_that("seq_ars() handles case where only perimetre has data", {
 
   d <- tempdir()
   m <- fake_matrice(id = "TEST")
-  m_path <- file.path(d, "TEST_matrice.xlsx")
+  m_path <- file.path(d, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
   parca_path <- seq_write(fake_parca(), "parca", dirname = d)
 

@@ -29,7 +29,7 @@ test_that("read_matrice() errors when column(s) missing", {
   dir.create(seq_cache)
   on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
 
-  m <- file.path(seq_cache, "test_matrice.xlsx")
+  m <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(data.frame(OTHER = 1), m)
 
   expect_error(read_matrice(seq_cache), "Missing column in")
@@ -42,7 +42,7 @@ test_that("read_matrice() errors when IDENTIFIANT is empty", {
   dir.create(seq_cache)
   on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
 
-  f <- file.path(seq_cache, "test_matrice.xlsx")
+  f <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   m <- fake_matrice(id = c("", NA, " "))
 
   openxlsx2::write_xlsx(m, f)
@@ -56,7 +56,7 @@ test_that("read_matrice() errors when multiple IDENTIFIANT values", {
   dir.create(seq_cache)
   on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
 
-  f <- file.path(seq_cache, "test_matrice.xlsx")
+  f <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   m <- fake_matrice(id = c("A", "B"))
 
   openxlsx2::write_xlsx(m, f)

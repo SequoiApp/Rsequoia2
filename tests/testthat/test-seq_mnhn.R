@@ -5,7 +5,7 @@ test_that("seq_mnhn() works with mocked get_mnhn()", {
   on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
 
   m <- fake_matrice(id = "TEST")
-  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   p <- fake_parca()
@@ -38,7 +38,7 @@ test_that("seq_mnhn() works when verbose = TRUE", {
   on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
 
   m <- fake_matrice(id = "TEST")
-  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   p <- fake_parca()

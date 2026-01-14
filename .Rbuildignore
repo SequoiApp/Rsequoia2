@@ -8,3 +8,4 @@
 ^LICENSE\.md$
 ^archive$
 ^vignettes/articles$
+^data-raw$

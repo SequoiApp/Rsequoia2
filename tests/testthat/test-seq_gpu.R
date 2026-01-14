@@ -9,7 +9,7 @@ test_that("seq_gpu() writes valid GPU layers", {
 
   # matrice
   m <- fake_matrice(insee = "53085", section = "0B", numero = "0081")
-  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   # parca
@@ -53,7 +53,7 @@ test_that("seq_gpu() returns empty list when no GPU features exist", {
 
   # matrice minimaliste
   m <- fake_matrice(id = "TEST")
-  m_path <- file.path(seq_cache, "TEST_matrice.xlsx")
+  m_path <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(m, m_path)
 
   # fake parca hors GPU coverage
