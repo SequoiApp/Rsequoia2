@@ -1,4 +1,10 @@
 test_that("seq_parcels() works", {
+
+  skip_if_not(
+    qgisprocess::has_qgis(),
+    "QGIS not available on this system"
+  )
+
   with_seq_cache({
 
     ua <- parca_to_ua(p)
