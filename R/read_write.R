@@ -1,6 +1,10 @@
 #' Open file based on key name
 #'
-#' @inheritParams get_path
+#' @param key `character` Name of a layer key to match against the entries
+#' defined in `inst/config/seq_layers.yaml`. (see *Details* for partial matching).
+#' @param dirname `character` Directory where the matrice file is located.
+#' Defaults to the current working directory.
+#' @param verbose `logical` If `TRUE`, display messages.
 #'
 #' @importFrom sf read_sf
 #' @importFrom terra rast
@@ -62,7 +66,7 @@ seq_read <- function(key, dirname = ".", verbose = FALSE) {
 
 #' Write a spatial object based on a layer key
 #'
-#' @inheritParams get_path
+#' @inheritParams seq_read
 #' @param x An `sf` object (for vector outputs) or a `SpatRaster` (for raster outputs).
 #' @param overwrite `logical` If `TRUE`, file is overwritten.
 #'

@@ -25,7 +25,7 @@ ua_to_pf <- function(ua){
   if (all(is.na(ua[[pcl_code]]))) {
     cli::cli_abort(c(
       "x" = "Failed to generate PF layers from UA.",
-      "!" = "Field {.field {pcl_code}} in UA contains only missing values.",
+      "!" = "Field {.field {pcl_code}} in UA is missing or is empty.",
       "i" = "Please populate this field before running this step."
     ))
   }
@@ -68,8 +68,17 @@ ua_to_sspf <- function(ua){
   mgmt_code <- seq_field("mgmt_code")$name
   s <- seq_field("cor_area")$name
 
+  no_ug <- all(is.na(ua[[mgmt_code]]))
+  if (no_ug){
+    cli::cli_abort(c(
+      "x" = "Failed to generate SSPF layers from UA.",
+      "!" = "Field {.field {mgmt_code}} in UA is missing or is empty.",
+      "i" = "Please populate this field before running this step."
+    ))
+  }
+
   # Generate sspf ----
-  by_mana_unit<- list(ua[[mgmt_code]]) |> setNames(mgmt_code)
+  by_mana_unit <- list(ua[[mgmt_code]]) |> setNames(mgmt_code)
   sspf_poly_raw <- aggregate(
     x = ua[, s],
     by = by_mana_unit,

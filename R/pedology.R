@@ -219,6 +219,6 @@ seq_pedology <- function(
     )
   }
 
-  return(invisible(c(pedo) |> as.list()))
+  return(invisible(pedo))
 }
 

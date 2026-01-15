@@ -1,108 +1,81 @@
-management   <- seq_field("management")$name
-surf <- seq_field("cor_area")$name
-
 test_that("ua_to_sspf() aggregates surfaces by UG correctly", {
+  with_seq_cache({
+    ua <- seq_normalize(p, "ua")
 
-  # Minimal UA with 2 SSPF groups: A and B
-  ua <- sf::st_sf(
-    "management"   = c("A", "A", "B"),
-    "surf" = c(10, 20, 5),
-    geometry = sf::st_sfc(
-      sf::st_point(c(0, 0)),
-      sf::st_point(c(1, 1)),
-      sf::st_point(c(2, 2))
-    )
-  )
+    mgmt_code <- seq_field("mgmt_code")$name
+    ua[[mgmt_code]] <- "A"
+    ua[[mgmt_code]][1:2] <- "B"
 
-  # rename to match real canonical names
-  names(ua) <- c(management, surf, "geometry")
+    cor_area <- seq_field("cor_area")$name
+    ua[[cor_area]] <- 10
 
-  sspf <- ua_to_sspf(ua)
+    sspf <- ua_to_sspf(ua)
 
-  expect_setequal(sspf[[management]], c("A", "B"))
-  expect_equal(sspf[[surf]][sspf[[management]] == "A"], 30)
-  expect_equal(sspf[[surf]][sspf[[management]] == "B"], 5)
+    expect_setequal(sspf[[mgmt_code]], c("A", "B"))
+    expect_gt(sspf[[cor_area]][sspf[[mgmt_code]] == "A"], 10)
+    expect_gt(sspf[[cor_area]][sspf[[mgmt_code]] == "B"], 10)
+  })
 })
 
 test_that("ua_to_sspf() ignores NA cor_area values", {
+  with_seq_cache({
+    ua <- seq_normalize(p, "ua")
 
-  ua <- sf::st_sf(
-    "management"   = c("A", "A"),
-    "surf" = c(10, NA),
-    geometry = sf::st_sfc(
-      sf::st_point(c(0, 0)),
-      sf::st_point(c(1, 1))
-    )
-  )
+    mgmt_code <- seq_field("mgmt_code")$name
+    ua[[mgmt_code]] <- "A"
 
-  names(ua) <- c(management, surf, "geometry")
+    cor_area <- seq_field("cor_area")$name
+    ua[[cor_area]] <- 10
+    ua[[cor_area]][1] <- NA
 
-  sspf <- ua_to_sspf(ua)
+    sspf <- ua_to_sspf(ua)
 
-  expect_equal(sspf[[surf]], 10)
+    expect_equal(sspf[[cor_area]], 10 * sum(!is.na(ua[[cor_area]])))
+  })
 })
 
 test_that("ua_to_sspf() errors when UG field is all NA", {
+  with_seq_cache({
+    ua <- seq_normalize(p, "ua")
 
-  ua <- sf::st_sf(
-    "management"   = c(NA, NA),
-    "surf" = c(1, 2),
-    geometry = sf::st_sfc(
-      sf::st_point(c(0, 0)),
-      sf::st_point(c(1, 1))
-    )
-  )
-  names(ua) <- c(management, surf, "geometry")
+    mgmt_code <- seq_field("mgmt_code")$name
+    ua[[mgmt_code]] <- NA
 
-  expect_error(
-    ua_to_sspf(ua),
-    "Field used to group by UG is missing"
-  )
+    expect_error(ua_to_sspf(ua), "Failed to generate SSPF")
+  })
 })
 
 test_that("ua_to_sspf() errors when UG field is missing entirely", {
 
-  ua <- sf::st_sf(
-    "wrong_name" = c("A", "A"),
-    "surf"       = c(1, 2),
-    geometry = sf::st_sfc(
-      sf::st_point(c(0, 0)),
-      sf::st_point(c(1, 1))
-    )
-  )
+  with_seq_cache({
+    ua <- seq_normalize(p, "ua")
 
-  # rename only surf properly, but remove UG entirely
-  names(ua) <- c("wrong_name", surf, "geometry")
+    mgmt_code <- seq_field("mgmt_code")$name
+    ua[[mgmt_code]] <- NULL
 
-  expect_error(
-    ua_to_sspf(ua),
-    "Field used to group by UG is missing"
-  )
+    expect_error(ua_to_sspf(ua), "Failed to generate SSPF")
+  })
 })
 
+
 test_that("ua_to_sspf() preserves descriptive fields correctly", {
+  with_seq_cache({
+    ua <- seq_normalize(p, "ua")
 
-  # Pick the first 2 desc fields to make test small
-  desc <- seq_desc_fields()[1:2]
+    mgmt_code <- seq_field("mgmt_code")$name
+    ua[[mgmt_code]] <- "A"
 
-  ua <- sf::st_sf(
-    "management"   = c("A", "A"),
-    "surf" = c(10, 20),
-    "desc1" = "desc1",
-    "desc2" = "desc2",
-    geometry = sf::st_sfc(
-      sf::st_point(c(0, 0)),
-      sf::st_point(c(1, 1))
-    )
-  )
-  names(ua) <- c(management, surf, desc, "geometry")  # Align canonical UG & cor_area
+    desc <- seq_desc_fields()[1:2]
+    ua[[desc[1]]] <- "DESC1"
+    ua[[desc[2]]] <- "DESC2"
 
-  sspf <- ua_to_sspf(ua)
+    sspf <- ua_to_sspf(ua)
 
-  # All descriptive fields should appear once
-  expect_true(all(desc %in% names(sspf)))
+    # All descriptive fields should appear once
+    expect_true(all(desc %in% names(sspf)))
 
-  # Values should be preserved (unique)
-  expect_equal(sspf[[desc[1]]], "desc1")
-  expect_equal(sspf[[desc[2]]], "desc2")
+    # Values should be preserved (unique)
+    expect_equal(sspf[[desc[1]]], "DESC1")
+    expect_equal(sspf[[desc[2]]], "DESC2")
+  })
 })

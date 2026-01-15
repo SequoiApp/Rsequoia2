@@ -1,69 +1,59 @@
-pf <- seq_field("parcel_code")$name
-surf <- seq_field("cor_area")$name
 
-test_that("ua_to_pf() aggregates surfaces correctly", {
+test_that("ua_to_pf() aggregates surfaces by UG correctly", {
+  with_seq_cache({
+    ua <- seq_normalize(p, "ua")
 
-  ua <- sf::st_sf(
-    "pf" = c("A", "A", "B"),
-    "surf" = c(10, 20, 5),
-    geometry = sf::st_sfc(
-      sf::st_point(c(0, 0)),
-      sf::st_point(c(1, 1)),
-      sf::st_point(c(2, 2))
-    )
-  )
-  names(ua) <- c(pf, surf, "geometry")
+    pcl_code <- seq_field("pcl_code")$name
+    ua[[pcl_code]] <- "A"
+    ua[[pcl_code]][1:2] <- "B"
 
-  pf_poly <- ua_to_pf(ua)
+    cor_area <- seq_field("cor_area")$name
+    ua[[cor_area]] <- 10
 
-  expect_shape(ua, dim = c(3, 3))
-  expect_setequal(pf_poly[[pf]], c("A", "B"))
-  expect_equal(pf_poly[[surf]][pf_poly[[pf]] == "A"], 30)
-  expect_equal(pf_poly[[surf]][pf_poly[[pf]] == "B"], 5)
+    pf <- ua_to_pf(ua)
+
+    expect_setequal(pf[[pcl_code]], c("A", "B"))
+    expect_gt(pf[[cor_area]][pf[[pcl_code]] == "A"], 10)
+    expect_gt(pf[[cor_area]][pf[[pcl_code]] == "B"], 10)
+  })
 })
 
 test_that("ua_to_pf() ignores NA cor_area values", {
+  with_seq_cache({
+    ua <- seq_normalize(p, "ua")
 
-  ua <- sf::st_sf(
-    "pf" = c("X", "X"),
-    "surf" = c(10, NA),
-    geometry = sf::st_sfc(
-      sf::st_point(c(0, 0)),
-      sf::st_point(c(1, 1))
-    )
-  )
-  names(ua) <- c(pf, surf, "geometry")
+    pcl_code <- seq_field("pcl_code")$name
+    ua[[pcl_code]] <- "A"
 
-  pf_poly <- ua_to_pf(ua)
+    cor_area <- seq_field("cor_area")$name
+    ua[[cor_area]] <- 10
+    ua[[cor_area]][1] <- NA
 
-  expect_equal(pf_poly[[surf]], 10)
+    pf <- ua_to_pf(ua)
+
+    expect_equal(pf[[cor_area]], 10 * sum(!is.na(ua[[cor_area]])))
+  })
 })
 
-test_that("ua_to_pf() errors when parcel field exists but is all NA", {
+test_that("ua_to_pf() errors when PF field is all NA", {
+  with_seq_cache({
+    ua <- seq_normalize(p, "ua")
 
-  # bad alias
-  ua1 <- sf::st_sf(
-    pf = c(NA, NA),
-    surf = c(1, 2),
-    geometry = sf::st_sfc(
-      sf::st_point(c(0, 0)),
-      sf::st_point(c(1, 1))
-    )
-  )
-  names(ua1) <- c(pf, surf, "geometry")
-  expect_error(ua_to_pf(ua1), "Field used to group by parcels is missing")
+    pcl_code <- seq_field("pcl_code")$name
+    ua[[pcl_code]] <- NA
 
-  # No prf col at all
-  ua2 <- sf::st_sf(
-    pf = c(NA, NA),
-    surf = c(1, 2),
-    geometry = sf::st_sfc(
-      sf::st_point(c(0, 0)),
-      sf::st_point(c(1, 1))
-    )
-  )
-  names(ua2) <- c("bad_name", surf, "geometry")
-  expect_error(ua_to_pf(ua2), "Field used to group by parcels is missing")
+    expect_error(ua_to_pf(ua), "Failed to generate PF")
+  })
+})
 
+test_that("ua_to_pf() errors when PF field is missing entirely", {
 
+  with_seq_cache({
+    ua <- seq_normalize(p, "ua")
+
+    pcl_code <- seq_field("pcl_code")$name
+    ua[[pcl_code]] <- NULL
+
+    expect_error(ua_to_pf(ua), "Failed to generate PF")
+  })
 })

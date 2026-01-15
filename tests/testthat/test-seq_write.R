@@ -1,13 +1,8 @@
-with_seq_cache <- function(code) {
-  seq_cache <- file.path(tempdir(), "seq")
-  dir.create(seq_cache, showWarnings = FALSE)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
-  force(code)
-}
 
 test_that("seq_write() writes vector layers correctly", {
   with_seq_cache({
-    path <- seq_write(Rsequoia2:::seq_poly, "parca", dirname = seq_cache)
+    # prsf is use because parca us already in seq_cache
+    path <- seq_write(Rsequoia2:::seq_poly, "prsf", dirname = seq_cache)
     expect_true(file.exists(path))
     expect_s3_class(sf::read_sf(path), "sf")
   })
@@ -30,9 +25,9 @@ test_that("seq_write() overwrite vector properly correctly", {
 
   with_seq_cache({
     v <- Rsequoia2:::seq_poly
-    seq_write(v, "parca", seq_cache)
-    expect_silent(seq_write(v, "parca", seq_cache, overwrite = TRUE))
-    expect_warning(seq_write(v, "parca", seq_cache, overwrite = FALSE))
+    seq_write(v, "prsf", seq_cache)
+    expect_silent(seq_write(v, "prsf", seq_cache, overwrite = TRUE))
+    expect_warning(seq_write(v, "prsf", seq_cache, overwrite = FALSE))
   })
 
 })
@@ -53,13 +48,13 @@ test_that("seq_write() overwrite raster properly correctly", {
 test_that("seq_write() creates target directory when needed", {
 
   with_seq_cache({
-    rel_path <- get_path("parca")
+    rel_path <- get_path("prsf")
     abs_path <- file.path(seq_cache, rel_path)
 
     # directory must not exist beforehand
     expect_false(dir.exists(dirname(abs_path)))
 
-    path <- seq_write(Rsequoia2:::seq_poly, "parca", seq_cache)
+    path <- seq_write(Rsequoia2:::seq_poly, "prsf", seq_cache)
 
     expect_true(file.exists(path))
     expect_true(dir.exists(dirname(path)))

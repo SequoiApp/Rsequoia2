@@ -42,3 +42,4 @@ test_that("seq_pedology() writes nothing when no features exist", {
   })
 
 })
+

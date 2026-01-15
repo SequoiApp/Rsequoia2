@@ -42,7 +42,7 @@ seq_parca_to_ua <- function(
     overwrite = overwrite
   )
 
-  return(invisible(ua_path) |> as.list())
+  return(invisible(ua_path))
 }
 
 #' Check cadastral IDU consistency between _UA_ and _PARCA_ sf objects
@@ -176,7 +176,7 @@ ua_generate_ug <- function(
   # Concatenate columns to create UG
   ua[[ug]] <- do.call(paste, c(cleaned, sep = separator))
 
-  if (verbose) cli::cli_alert_success(paste0("UG field '", ug_ua, "' created."))
+  if (verbose) cli::cli_alert_success("UG field {.field {ug}} created.")
 
   return(invisible(ua))
 }

@@ -44,11 +44,7 @@ get_curves <- function(x, verbose = TRUE) {
 #' Retrieves hypsometric curves line features intersecting and surrounding
 #' the project area and writes the resulting layer to disk.
 #'
-#' @param dirname `character` Path to the project directory.
-#'   Defaults to the current working directory.
-#' @param verbose `logical`; whether to display informational messages.
-#'   Defaults to `TRUE`.
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @inheritParams seq_write
 #'
 #' @details
 #' Hypsometric curves line features are retrieved using [get_curves()].

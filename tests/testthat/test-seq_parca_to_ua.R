@@ -1,8 +1,8 @@
 test_that("seq_parca_to_ua() write ua to expected path", {
 
   with_seq_cache({
-    ua_path <- seq_parca_to_ua(dirname = seq_cache, verbose = F)
-    expect_true(file.exists(ua_path))
+    ua_path <- seq_parca_to_ua(dirname = seq_cache, verbose = F, overwrite = TRUE)
+    expect_true(file.exists(normalizePath(ua_path)))
   })
 
 })

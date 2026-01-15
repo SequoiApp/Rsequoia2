@@ -84,7 +84,6 @@ seq_summary <- function(dirname = ".", overwrite = FALSE, verbose = TRUE){
   ame <- order_by(ame, "amenagement")
   ame$PROPORTION <- ame[[cor_area]]/sum(ame[[cor_area]])
 
-  ua$N_PARFOR <- runif(nrow(ua), 1, 10) |> round() |> as.character()
   elevation <- seq_read("r.alt.mnt", dirname = dirname)
   parcelle <- seq_field("parcelle")$name
   pf <- terra::vect(ua[, parcelle]) |> terra::aggregate(parcelle, count = FALSE)
@@ -103,6 +102,7 @@ seq_summary <- function(dirname = ".", overwrite = FALSE, verbose = TRUE){
 
 
   pente <- seq_read("r.alt.pente", dirname = dirname)
+  stand <- seq_field("stand")$name
   pente_by_plt <- as.data.frame(
     terra::extract(
       pente |> setNames("PENTE"),
