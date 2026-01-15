@@ -104,6 +104,10 @@ vct_point:
   - source
   - rotation
 
+road_poly:
+  - identifier
+  - type
+
 road_line:
   - identifier
   - type

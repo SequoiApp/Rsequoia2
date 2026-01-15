@@ -1,43 +1,131 @@
-# Standard field names ----
-type   <- seq_field("type")$name
-nature <- seq_field("nature")$name
-name   <- seq_field("name")$name
-source <- seq_field("source")$name
+test_that("get_road() returns NULL when WFS returns no features", {
 
-# area_sf ----
-bbox_vals <- c(xmin = 547226.9, ymin = 6794383.2,
-               xmax = 549263.2, ymax = 6795983.8)
-poly <- sf::st_as_sfc(sf::st_bbox(bbox_vals, crs = 2154))
-area_sf <- sf::st_sf(id = 1, geometry = poly)
+  testthat::local_mocked_bindings(
+    get_wfs = function(...) Rsequoia2:::seq_empty,
+    .package = "happign"
+  )
 
-# empty_area_sf ----
-empty_bbox <- c(xmin = 0, ymin = 0, xmax = 1, ymax = 1)
-empty_poly <- sf::st_as_sfc(sf::st_bbox(empty_bbox, crs = 2154))
-empty_area_sf <- sf::st_sf(id = 1, geometry = empty_poly)
+  road <- get_road(Rsequoia2:::seq_poly)
 
-# get_road() ----
-test_that("get_road() returns sf with expected fields and values", {
-  skip_on_cran()
-  skip_on_ci()
+  # tests
+  expect_null(road, "sf")
+})
 
-  troncon <- get_road(area_sf)
+test_that("get_road() classifies revetue roads correctly", {
 
-  expect_s3_class(troncon, "sf")
-  expect_true(all(c(type, nature, source, name) %in% names(troncon)))
-  expect_true(sf::st_crs(troncon)$epsg == 2154)
-  expect_true(all(sf::st_geometry_type(troncon) == "LINESTRING"))
+  tr_mock <- sf::st_sf(
+    nature = c("Route à 1 chaussée", "Route à 1 chaussée"),
+    importance = c(3, 3),
+    cpx_numero = c("N12", "D45"),
+    cpx_toponyme_route_nommee = c(NA, "Route de Test"),
+    geometry = sf::st_sfc(
+      sf::st_linestring(
+        matrix(c(0, 0,
+                 1, 1),
+               ncol = 2,
+               byrow = TRUE)
+      ),
+      sf::st_linestring(
+        matrix(c(0, 0,
+                 1, 1),
+               ncol = 2,
+               byrow = TRUE)
+      ),
+      crs = 2154
+    )
+  )
 
-  expect_true(
-    all(troncon[[type]] %in%
-          c("RN", "RD", "RC", "RF", "PN"))
+  testthat::local_mocked_bindings(
+    get_wfs = function(...) tr_mock,
+    .package = "happign"
+  )
+
+  road <- get_road(Rsequoia2:::seq_poly)
+
+  expect_s3_class(road, "sf")
+  expect_equal(road[[seq_field("type")$name]], c("RN", "RD"))
+  expect_equal(
+    road[[seq_field("name")$name]],
+    c("N12", "D45")
+  )
+  expect_equal(
+    unique(road[[seq_field("source")$name]]),
+    "BDTOPO V3"
   )
 })
 
-test_that("get_road() returns NULL on area with no linear infrastructure", {
-  skip_on_cran()
-  skip_on_ci()
+test_that("get_road() classifies natural paths as PN", {
 
-  troncon_empty <- get_road(empty_area_sf)
+  tr_mock <- sf::st_sf(
+    nature = c("Chemin", "Sentier"),
+    importance = c(NA, NA),
+    cpx_numero = c("", ""),
+    cpx_toponyme_route_nommee = c("Chemin du bois", "Sentier rural"),
+    geometry = sf::st_sfc(
+      sf::st_linestring(
+        matrix(c(0, 0,
+                 1, 1),
+               ncol = 2,
+               byrow = TRUE)
+      ),
+      sf::st_linestring(
+        matrix(c(0, 0,
+                 1, 1),
+               ncol = 2,
+               byrow = TRUE)
+      ),
+      crs = 2154
+    )
+  )
 
-  expect_null(troncon_empty)
+  testthat::local_mocked_bindings(
+    get_wfs = function(...) tr_mock,
+    .package = "happign"
+  )
+
+  road <- get_road(Rsequoia2:::seq_poly)
+
+  expect_equal(
+    unique(road[[seq_field("type")$name]]),
+    "PN"
+  )
 })
+
+test_that("get_road() classifies bretelles as RN when importance >= 2", {
+
+  tr_mock <- sf::st_sf(
+    nature = "Bretelle",
+    importance = 2,
+    cpx_numero = NA,
+    cpx_toponyme_route_nommee = "Bretelle A10",
+    geometry = sf::st_sfc(
+      sf::st_linestring(
+        matrix(c(0, 0,
+                 1, 1),
+               ncol = 2,
+               byrow = TRUE)
+      ),
+      sf::st_linestring(
+        matrix(c(0, 0,
+                 1, 1),
+               ncol = 2,
+               byrow = TRUE)
+      ),
+      crs = 2154
+    )
+  )
+
+  testthat::local_mocked_bindings(
+    get_wfs = function(...) tr_mock,
+    .package = "happign"
+  )
+
+  road <- get_road(Rsequoia2:::seq_poly)
+
+  expect_equal(road[[seq_field("type")$name]], c("RN", "RN"))
+})
+
+
+
+
+
