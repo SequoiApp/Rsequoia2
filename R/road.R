@@ -446,6 +446,13 @@ get_vides <- function(x){
   parcels <- happign::get_wfs(fetch_envelope, layer, verbose = FALSE) |>
     sf::st_transform(crs)
 
+  if (!nrow(parcels)) {
+    cli::cli_warn(
+      "No data retrieved for {.val {source}}"
+    )
+    return(fetch_envelope)
+  }
+
   # mask
   mask <- sf::st_union(sf::st_geometry(parcels),
                        sf::st_geometry(x)) |>
