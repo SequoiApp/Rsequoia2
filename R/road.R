@@ -363,7 +363,7 @@ seq_road <- function(
   }
 
   # Retrieve toponyms
-  road_line <- get_road(parca, verbose = verbose)
+  road_line <- get_road(parca)
 
   # Exit early if nothing to write
   if (!nrow(road_line) || nrow(road_line) == 0) {
@@ -382,6 +382,7 @@ seq_road <- function(
     road_line,
     "v.road.topo.line",
     dirname = dirname,
+    id = id,
     verbose = verbose,
     overwrite = overwrite
   )
@@ -394,11 +395,12 @@ seq_road <- function(
     road_poly,
     "v.road.topo.poly",
     dirname = dirname,
+    id = id,
     verbose = verbose,
     overwrite = overwrite
   )
 
-  paths <- list(line_path, poly_path)
+  paths <- c(line_path, poly_path)
 
   return(invisible(paths))
 }
@@ -521,6 +523,7 @@ seq_vides <- function(
     gaps,
     "v.cad.vides.poly",
     dirname = dirname,
+    id = id,
     verbose = verbose,
     overwrite = overwrite
   )
@@ -601,7 +604,9 @@ seq_graphic_road <- function(
     overwrite = FALSE
 ) {
 
+  parca <- seq_read("parca", dirname = dirname)
   id_field <- seq_field("identifier")$name
+  id <- unique(parca[[id_field]])
 
   gaps <- seq_read("v.cad.vides.poly", dirname = dirname)
   if (any(is.na(gaps[[type_field]]))) {
@@ -639,6 +644,7 @@ seq_graphic_road <- function(
     road_line,
     "v.road.graphic.line",
     dirname = dirname,
+    id = id,
     verbose = verbose,
     overwrite = overwrite
   )
@@ -651,6 +657,7 @@ seq_graphic_road <- function(
     road_poly,
     "v.road.graphic.poly",
     dirname = dirname,
+    id = id,
     verbose = verbose,
     overwrite = overwrite
   )

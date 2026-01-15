@@ -37,26 +37,24 @@ test_that("seq_road() returned correct geometry", {
   })
 })
 
-# test_that("seq_road() layers contain id", {
-#   with_seq_cache({
-#
-#     local_mocked_bindings(
-#       get_road = function(...) Rsequoia2:::seq_line
-#     )
-#
-#     local_mocked_bindings(
-#       line_to_poly = function(...) Rsequoia2:::seq_poly
-#     )
-#
-#     paths <- seq_road(seq_cache, verbose = FALSE, overwrite = TRUE)
-#     road_line <- read_sf(paths[1])
-#     road_poly <- read_sf(paths[2])
-#
-#     id_field <- seq_field("identifier")$name
-#     expect_all_true(vapply(road_line, \(x) id_field %in% names(x), TRUE))
-#     expect_all_true(vapply(road_poly, \(x) id_field %in% names(x), TRUE))
-#   })
-# })
+test_that("seq_road() layers contain id", {
+  with_seq_cache({
+
+    local_mocked_bindings(
+      get_road = function(...) Rsequoia2:::seq_line
+    )
+
+    local_mocked_bindings(
+      line_to_poly = function(...) Rsequoia2:::seq_poly
+    )
+
+    paths <- seq_road(seq_cache, verbose = FALSE, overwrite = TRUE)
+    road_sf <- lapply(paths, read_sf)
+
+    id_field <- seq_field("identifier")$name
+    expect_all_true(vapply(road_sf, \(x) id_field %in% names(x), TRUE))
+  })
+})
 
 test_that("seq_road() doesn't write if there no data", {
   with_seq_cache({

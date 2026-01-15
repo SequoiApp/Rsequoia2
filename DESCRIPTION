@@ -16,6 +16,7 @@ Imports:
     frheritage,
     happign,
     jsonlite,
+    lwgeom,
     openxlsx2,
     qgisprocess,
     sf,
