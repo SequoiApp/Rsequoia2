@@ -7,10 +7,12 @@
 seq_curves(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Path to the project directory.
+\item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+
+\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
 }
 \value{
 Invisibly returns a named list of file paths written by \code{\link[=seq_write]{seq_write()}}.
