@@ -1,30 +1,14 @@
-with_seq_cache <- function(code, env = parent.frame()) {
-  seq_cache <- file.path(tempdir(), "seq")
-  dir.create(seq_cache, showWarnings = FALSE)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
-
-  assign("seq_cache", seq_cache, envir = env)
-  force(code)
-}
-
-
 test_that("seq_read() reads vector layers", {
-
   with_seq_cache({
 
-    seq_write(Rsequoia2:::seq_poly, "parca", seq_cache)
-
-    expect_s3_class(
-      seq_read("parca", seq_cache),
-      "sf"
-    )
+    parca <- seq_read("parca", seq_cache)
+    expect_s3_class(parca, "sf")
 
     expect_message(
       seq_read("parca", seq_cache, verbose = TRUE),
       "Loaded vector layer"
     )
   })
-
 })
 
 test_that("seq_read() reads raster layers", {
@@ -32,7 +16,6 @@ test_that("seq_read() reads raster layers", {
   skip_on_os("mac")
 
   with_seq_cache({
-
     r <- terra::rast(nrows = 5, ncols = 5, vals = 1:25)
     seq_write(r, "irc", seq_cache)
 
@@ -46,16 +29,35 @@ test_that("seq_read() reads raster layers", {
       "Loaded raster layer"
     )
   })
-
 })
 
 test_that("seq_read() errors when file does not exist", {
 
   with_seq_cache({
     expect_error(
-      seq_read("parca", seq_cache, verbose = TRUE),
+      seq_read("prsf", seq_cache, verbose = TRUE),
       "doesn't exist"
     )
   })
 
+})
+
+test_that("seq_read() errors when multiple matching files are found", {
+
+  with_seq_cache({
+
+    layer_info <- seq_layer("parca")
+    dir.create(file.path(seq_cache, layer_info$path), recursive = TRUE, showWarnings = FALSE)
+
+    f1 <- file.path(seq_cache, layer_info$path, paste0(layer_info$name, ".gpkg"))
+    f2 <- file.path(seq_cache, layer_info$path, paste0(layer_info$name, "_copy.gpkg"))
+
+    file.create(f1)
+    file.create(f2)
+
+    expect_error(
+      seq_read("parca", seq_cache),
+      "Multiple layer"
+    )
+  })
 })

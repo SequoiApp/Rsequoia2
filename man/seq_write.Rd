@@ -4,7 +4,7 @@
 \alias{seq_write}
 \title{Write a spatial object based on a layer key}
 \usage{
-seq_write(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE)
+seq_write(x, key, dirname = ".", id = NULL, verbose = FALSE, overwrite = FALSE)
 }
 \arguments{
 \item{x}{An \code{sf} object (for vector outputs) or a \code{SpatRaster} (for raster outputs).}
@@ -14,6 +14,9 @@ defined in \code{inst/config/seq_layers.yaml}. (see \emph{Details} for partial m
 
 \item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
+
+\item{id}{\code{character} Identifier of the project that will be added to the filename.
+Default to \code{NULL} i.e. no identifier added.}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 

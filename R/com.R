@@ -165,8 +165,7 @@ get_com_point <- function(x, graphic = FALSE, verbose = TRUE) {
 seq_com <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
   # tiny helper ----
   seq_write2 <- function(x, key, id) {
-    x[[id_field]] <- id
-    seq_write(x, key, dirname = dirname, verbose = verbose, overwrite = overwrite)
+    seq_write(x, key, dirname = dirname, id = id, verbose = verbose, overwrite = overwrite)
   }
 
   # read PARCA
@@ -180,26 +179,31 @@ seq_com <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
 
   topo_poly <- get_com_poly(parca, verbose = verbose)
   if (!is.null(topo_poly)){
+    topo_poly[[id_field]] <- id
     topo_poly <- seq_write2(topo_poly, "v.com.topo.poly", id)
   }
 
   topo_line <- get_com_line(parca, verbose = verbose)
   if (!is.null(topo_line)){
+    topo_line[[id_field]] <- id
     topo_line <- seq_write2(topo_line, "v.com.topo.line", id)
   }
 
   topo_point <- get_com_point(parca, verbose = verbose)
   if (!is.null(topo_point)){
+    topo_point[[id_field]] <- id
     topo_point <- seq_write2(topo_point, "v.com.topo.point", id)
   }
 
   graphic_line <- get_com_line(parca, graphic = TRUE, verbose = verbose)
   if (!is.null(graphic_line)){
+    graphic_line[[id_field]] <- id
     graphic_line <- seq_write2(graphic_line, "v.com.graphic.line", id)
   }
 
   graphic_point <- get_com_point(parca, graphic = TRUE, verbose = verbose)
   if (!is.null(graphic_point)){
+    graphic_point[[id_field]] <- id
     graphic_point <- seq_write2(graphic_point, "v.com.graphic.point", id)
   }
 

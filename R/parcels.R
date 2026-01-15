@@ -130,24 +130,28 @@ ua_to_sspf <- function(ua){
 #'
 seq_parcels <- function(dirname = ".", verbose = FALSE, overwrite = FALSE){
   # tiny helper ----
-  seq_write2 <- function(x, key) {
-    seq_write(x, key, dirname = dirname, verbose = verbose, overwrite = overwrite)
+  seq_write2 <- function(x, key, id) {
+    seq_write(x, key, dirname = dirname, id = id, verbose = verbose, overwrite = overwrite)
   }
 
   # Resolve field and layer ----
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  id_field <- seq_field("identifier")$name
+  id <- unique(parca[[id_field]])
+
   ua <- seq_read("v.seq.ua.poly", dirname = dirname)
 
   pf_poly <- ua_to_pf(ua)
   pf_line <- poly_to_line(pf_poly)
 
-  pf_poly <- seq_write2(pf_poly, "v.seq.pf.poly")
-  pf_line <- seq_write2(pf_line, "v.seq.pf.line")
+  pf_poly <- seq_write2(pf_poly, "v.seq.pf.poly", id)
+  pf_line <- seq_write2(pf_line, "v.seq.pf.line", id)
 
   sspf_poly <- ua_to_sspf(ua)
   sspf_line <- poly_to_line(sspf_poly)
 
-  sspf_poly <- seq_write2(sspf_poly, "v.seq.sspf.poly")
-  sspf_line <- seq_write2(sspf_line, "v.seq.sspf.line")
+  sspf_poly <- seq_write2(sspf_poly, "v.seq.sspf.poly", id)
+  sspf_line <- seq_write2(sspf_line, "v.seq.sspf.line", id)
 
   return(invisible(c(pf_poly, pf_line, sspf_poly, sspf_line) |> as.list()))
 

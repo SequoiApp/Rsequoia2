@@ -1,104 +1,3 @@
-#' Extract forest ID from a matrice.xlsx file
-#'
-#' Searches for a single Excel file matching `*_matrice.xlsx` in a directory,
-#' reads its identifier column, and returns the unique forest ID.
-#'
-#' @param dirname `character` Directory where the matrice file is located.
-#' Defaults to the current working directory.
-#' @param verbose `logical` If `TRUE`, display messages.
-#'
-#' @return Invisibly returns a single forest ID (character scalar).
-#'
-#' @export
-get_id <- function(dirname = ".", verbose = FALSE) {
-
-  m <- read_matrice(dirname)
-  identifier <- seq_field("identifier")$name
-
-  id <- unique(m[[identifier]])
-
-  # Success
-  if (verbose){
-    cli::cli_inform(c(
-      "v" = "Detected forest ID {.val {id}}."
-    ))
-  }
-
-  return(invisible(id))
-}
-
-#' Construct filepath for a given layer key
-#'
-#' Builds the expected output filename for a given layer key by combining:
-#' (1) the forest ID extracted from the local *_matrice.xlsx file, and
-#' (2) the corresponding layer definition stored in `inst/config/seq_layers.yaml`.
-#'
-#' @param key `character` Name of a layer key to match against the entries
-#' defined in `inst/config/seq_layers.yaml`. (see *Details* for partial matching).
-#' @param verbose `logical` If `TRUE`, display messages.
-#'
-#' @details
-#' The function resolves the input `key` using **partial matching** against
-#' keys defined in `inst/config/seq_layers.yaml`.
-#'
-#' If exactly **one** entry matches, it is selected : for example,
-#' `key = "znieff1"` can be used to match `v.mnhn.znieff1.poly` because only
-#' one key contain `"znieff1`
-#'
-#' If **multiple** entries match, the user is shown the ambiguous options and
-#' must provide a more specific key.
-#'
-#' Note: **`seq_layers.yaml` is part of the package and should not be modified.**
-#'
-#' @return Invisibly returns a single forest ID (character scalar).
-#'
-get_path <- function(key, verbose = FALSE){
-
-  cfg_layer <- system.file("config/seq_layers.yaml", package = "Rsequoia2")
-  cfg <- yaml::read_yaml(cfg_layer)
-
-  all_key <- names(cfg)
-  match_key <- grep(key, all_key, value = TRUE)
-
-  if (length(match_key) > 1){
-    cli::cli_abort(
-      c(
-        "!" = "Multiple match for {.arg key} {.val {key}} :",
-        "i" = cli::cli_fmt(cli::cli_ul(match_key))
-      )
-    )
-  }
-
-  if (length(match_key) == 0){
-    red_warn <- cli::combine_ansi_styles("red", "bold")
-    cli::cli_abort(c(
-      "x" = "{.arg key} {.val {key}} does not exist.",
-      "i" = "Valid keys are defined in {.path inst/config/seq_layers.yaml}.",
-      "!" = red_warn("This file is part of the package and must not be modified.")
-    ))
-  }
-
-  # Layer name
-  entry <- cfg[[match_key]]
-  filename <- sprintf("%s.%s", entry$name, entry$ext)
-
-  # Layer path
-  cfg_path <- system.file("config/seq_path.yaml", package = "Rsequoia2")
-  cfg <- yaml::read_yaml(cfg_path)
-
-  family <- cfg$namespace[startsWith(match_key, names(cfg$namespace))]
-  path <- file.path(cfg$path[[unlist(family)]], filename)
-  names(path) <- match_key
-
-  if (verbose) {
-    cli::cli_alert_success(
-      "Resolved {.arg key} {.val {key}} to {.file {path}}."
-    )
-  }
-
-  return(path)
-}
-
 #' Helper to find layer configuration keys
 #'
 #' This helper function searches for keys defined in `inst/config/seq_layers.yaml`.
@@ -193,38 +92,140 @@ get_keys <- function(pattern = NULL, reduce = TRUE, filepath = NULL){
   return(keys)
 }
 
-#' Load layer config from the Sequoia configuration
+#' Retrieve layer metadata from the Sequoia configuration
 #'
-#' Internal helper used to determine layer info like name or extension are stored
-#' in `inst/config/seq_layerss.yaml`.
+#' Resolves a layer key against the config defined in
+#' `inst/config/seq_layers.yaml` and `inst/config/seq_path.yaml` and returns
+#' the associated metadata: name, extension, filename, path, fullpath
 #'
-#' @inheritParams get_keys
+#' @param key `character` Name of a layer key to match against the entries
+#' defined in `inst/config/seq_layers.yaml`. (see *Details* for partial matching).
+#' @param verbose `logical` If `TRUE`, display messages.
 #'
-#' @return A list describing matched layer
+#' @details
+#' The function resolves the input `key` using **partial matching** against
+#' the keys defined in `inst/config/seq_layers.yaml`.
+#'
+#' - If exactly **one** entry matches, it is selected.
+#'   For example, `key = "znieff1"` can be used to match
+#'   `"v.mnhn.znieff1.poly"` when this is the only key containing `"znieff1"`.
+#'
+#' - If **multiple** entries match, the function aborts and displays the
+#'   ambiguous keys, prompting the user to provide a more specific key.
+#'
+#' Note: **`seq_layers.yaml` is part of the package and must not be modified.**
+#'
+#' @return A named list containing layer metadata, including:
+#' \itemize{
+#'   \item \code{key}: the resolved configuration key
+#'   \item \code{name}: the layer name
+#'   \item \code{ext}: the file extension
+#'   \item \code{family}: the resolved namespace family
+#'   \item \code{path}: the base directory for the layer
+#'   \item \code{full_path}: the complete filesystem path to the layer
+#' }
 #'
 #' @examples
 #' \dontrun{
-#' # List all available tables
-#' names(seq_table())
+#' # Retrieve metadata for a layer
+#' l <- seq_layer("parca")
 #'
-#' # Load field keys for the "parcelle" table
-#' seq_table("parca")
+#' l$full_path
 #' }
 #'
-seq_layer <- function(pattern = NULL, filepath = NULL){
-  # Use test path if provided
-  if (is.null(filepath)) {
-    filepath <- system.file("config/seq_layers.yaml", package = "Rsequoia2")
+#' @export
+#'
+seq_layer <- function(key, verbose = FALSE){
+
+  cfg_layer <- system.file("config/seq_layers.yaml", package = "Rsequoia2") |>
+    yaml::read_yaml()
+
+  cfg_path <- system.file("config/seq_path.yaml", package = "Rsequoia2") |>
+      yaml::read_yaml()
+
+  match_key <- seq_key(key, allow_multiple = FALSE)
+
+  # metadata fetching ----
+  layer <- cfg_layer[[match_key]]
+  filename <- sprintf("%s.%s", layer$name, layer$ext)
+
+  family <- cfg_path$namespace[startsWith(match_key, names(cfg_path$namespace))]
+  family <- unname(unlist(family))
+  if (!is.null(family)){
+    path <- cfg_path$path[[unlist(family)]]
+    full_path <- file.path(path, filename)
   }
 
-  cfg <- yaml::read_yaml(filepath)
+  type <- switch(
+    sub("\\..*$", "", match_key),
+    v = "vect",
+    r = "rast",
+    x = "xlsx",
+    NA
+  )
 
-  if (is.null(pattern)){
-    return(cfg)
+  layer_metadata <- list(
+    key = match_key,
+    name = layer$name,
+    ext = layer$ext,
+    filename = filename,
+    family = family,
+    path = path,
+    full_path = full_path,
+    type = type
+  )
+
+  if (verbose) {
+    cli::cli_alert_success(
+      "Resolved {.arg key} {.val {key}} to {.file {full_path}}."
+    )
   }
 
-  key <- get_keys(pattern, reduce = FALSE)
+  return(layer_metadata)
+}
 
-  return(cfg[[key]])
+#' Resolve a layer configuration key
+#'
+#' Resolves a user-provided key or pattern against the keys defined in
+#' `inst/config/seq_layers.yaml`.
+#'
+#' @param key `character` Search pattern to resolve.
+#' @param allow_multiple `logical` If `TRUE`, allow and return multiple matches.
+#'
+#' @return A character vector of matching configuration keys.
+#'
+#' @details
+#' Partial matching is used. If no key matches, the function aborts.
+#' If multiple keys match and `allow_multiple = FALSE`, the function aborts.
+#'
+#' @export
+seq_key <- function(key = NULL, allow_multiple = FALSE){
 
+  cfg_layer <- system.file("config/seq_layers.yaml", package = "Rsequoia2") |>
+    yaml::read_yaml()
+
+  all_keys <- names(cfg_layer)
+  keys <- grep(key, all_keys, value = TRUE)
+
+  no_match <- length(keys) == 0
+  if (no_match){
+    red_warn <- cli::combine_ansi_styles("red", "bold")
+    cli::cli_abort(c(
+      "x" = "{.arg key} {.val {key}} does not exist.",
+      "i" = "Valid keys are defined in {.path inst/config/seq_layers.yaml}.",
+      "!" = red_warn("This file is part of the package and must not be modified.")
+    ))
+  }
+
+  if (!allow_multiple){
+    multiple_match <- length(keys) > 1
+    if (multiple_match){
+      cli::cli_abort(c(
+        "!" = "Multiple matches for {.arg key} {.val {key}} :",
+        "i" = cli::cli_fmt(cli::cli_ul(sprintf("{.val %s}", keys)))
+      ))
+    }
+  }
+
+  return(keys)
 }

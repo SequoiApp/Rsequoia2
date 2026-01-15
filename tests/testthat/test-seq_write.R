@@ -46,9 +46,10 @@ test_that("seq_write() overwrite raster properly correctly", {
 })
 
 test_that("seq_write() creates target directory when needed", {
-
   with_seq_cache({
-    rel_path <- get_path("prsf")
+    layer_info <- seq_layer("prsf")
+
+    rel_path <- layer_info$full_path
     abs_path <- file.path(seq_cache, rel_path)
 
     # directory must not exist beforehand
@@ -60,5 +61,34 @@ test_that("seq_write() creates target directory when needed", {
     expect_true(dir.exists(dirname(path)))
     expect_s3_class(sf::read_sf(path), "sf")
   })
-
 })
+
+test_that("seq_write() aborts if vector key is used with non-sf object", {
+  with_seq_cache({
+    expect_error(
+      seq_write(data.frame(a = 1), "prsf", dirname = seq_cache),
+      "not an .*sf"
+    )
+  })
+})
+
+test_that("seq_write() aborts if raster key is used with non-raster object", {
+  with_seq_cache({
+    expect_error(
+      seq_write(Rsequoia2:::seq_poly, "irc", dirname = seq_cache),
+      "not a .*SpatRaster"
+    )
+  })
+})
+
+test_that("seq_write() prefixes filename with id when provided", {
+  with_seq_cache({
+    path <- seq_write(
+      Rsequoia2:::seq_poly, "prsf", dirname = seq_cache, id = "TEST"
+    )
+
+    expect_true(grepl("TEST_", basename(path)))
+    expect_true(file.exists(path))
+  })
+})
+

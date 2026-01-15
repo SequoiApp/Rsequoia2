@@ -104,7 +104,7 @@ seq_ars <- function(
     overwrite = FALSE){
 
   # read matrice
-  parca <- read_sf(get_path("v.seq.parca.poly", dirname = dirname))
+  parca <- seq_read("parca", dirname = dirname)
 
   pb <- cli::cli_progress_bar(
     format = "{cli::pb_spin} Querying MNHN layer: {.val {key}} | [{cli::pb_current}/{cli::pb_total}]",

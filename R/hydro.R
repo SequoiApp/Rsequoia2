@@ -236,6 +236,7 @@ seq_hydro <- function(
       f,
       layers[[k]]$key,
       dirname = dirname,
+      id = id,
       verbose = verbose,
       overwrite = overwrite
     )

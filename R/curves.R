@@ -89,6 +89,7 @@ seq_curves <- function(
       curves,
       "v.curves.line",
       dirname = dirname,
+      id = id,
       verbose = verbose,
       overwrite = overwrite
     )

@@ -261,8 +261,8 @@ seq_vege <- function(
 ) {
 
   # tiny helper : avoid repeating all arg eacvh time
-  seq_write2 <- function(x, key) {
-    seq_write(x, key, dirname = dirname, verbose = verbose, overwrite = overwrite)
+  seq_write2 <- function(x, key, id) {
+    seq_write(x, key, dirname = dirname, id = id, verbose = verbose, overwrite = overwrite)
   }
 
   # read PARCA
@@ -275,16 +275,23 @@ seq_vege <- function(
   }
 
   vege_poly <- get_vege_poly(parca)
-  vege_poly[[id_field]] <- id
-  seq_write2(vege_poly, "v.vege.poly")
+  if (nrow(vege_poly) > 1){
+    vege_poly[[id_field]] <- id
+  }
+  vege_poly <- seq_write2(vege_poly, "v.vege.poly", id)
 
   vege_line <- get_vege_line(parca)
-  vege_line[[id_field]] <- id
-  seq_write2(vege_line, "v.vege.line")
+  if (nrow(vege_line) > 1){
+    vege_line[[id_field]] <- id
+  }
+  vege_line <- seq_write2(vege_line, "v.vege.line", id)
 
   vege_point <- get_vege_point(parca)
-  vege_point[[id_field]] <- id
-  seq_write2(vege_point, "v.vege.point")
+  if (nrow(vege_point) > 1){
+    vege_point[[id_field]] <- id
+  }
+  vege_point <- seq_write2(vege_point, "v.vege.point", id)
 
   return(c(vege_poly, vege_line, vege_point) |> as.list())
 }
+

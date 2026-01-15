@@ -6,21 +6,18 @@ test_that("read_matrice() errors when no *_matrice.xlsx file", {
 })
 
 test_that("read_matrice() errors when multiple *_matrice.xlsx files", {
+  with_seq_cache({
+    m1 <- file.path(seq_cache, "1_matrice.xlsx")
+    openxlsx2::write_xlsx(fake_matrice(id = "X1"), m1)
 
-  seq_cache <- file.path(tempdir(), "seq")
-  dir.create(seq_cache)
-  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+    m2 <- file.path(seq_cache, "2_matrice.xlsx")
+    openxlsx2::write_xlsx(fake_matrice(id = "X2"), m2)
 
-  m1 <- file.path(seq_cache, "1_matrice.xlsx")
-  openxlsx2::write_xlsx(fake_matrice(id = "X1"), m1)
-
-  m2 <- file.path(seq_cache, "2_matrice.xlsx")
-  openxlsx2::write_xlsx(fake_matrice(id = "X2"), m2)
-
-  expect_error(
-    read_matrice(seq_cache),
-    "Multiple .*_matrice.xlsx.* files"
-  )
+    expect_error(
+      read_matrice(seq_cache),
+      "Multiple .*_matrice.xlsx.* files"
+    )
+  })
 })
 
 test_that("read_matrice() errors when column(s) missing", {
@@ -32,7 +29,7 @@ test_that("read_matrice() errors when column(s) missing", {
   m <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
   openxlsx2::write_xlsx(data.frame(OTHER = 1), m)
 
-  expect_error(read_matrice(seq_cache), "Missing column in")
+  expect_error(read_matrice(seq_cache), "Column .* is empty")
 
 })
 
@@ -65,3 +62,4 @@ test_that("read_matrice() errors when multiple IDENTIFIANT values", {
   expect_error(read_matrice(seq_cache), "Multiple IDs detected")
 
 })
+

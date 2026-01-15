@@ -105,6 +105,7 @@ seq_gpu <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
       x         = sf::st_transform(f, 2154),
       key       = spec[[1]],
       dirname   = dirname,
+      id        = id,
       verbose   = verbose,
       overwrite = overwrite
     )

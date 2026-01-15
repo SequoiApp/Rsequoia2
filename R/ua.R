@@ -31,6 +31,9 @@ seq_parca_to_ua <- function(
 
   # create ua
   parca <- seq_read("v.seq.parca.poly", dirname = dirname, verbose = verbose)
+  identifier <- seq_field("identifier")$name
+  id <- unique(parca[[identifier]])
+
   ua <- parca_to_ua(parca)
 
   # write ua
@@ -38,6 +41,7 @@ seq_parca_to_ua <- function(
     ua,
     "v.seq.ua.poly",
     dirname = dirname,
+    id = id,
     verbose = verbose,
     overwrite = overwrite
   )
@@ -412,6 +416,9 @@ seq_ua <- function(
 
   # read
   parca <- seq_read("v.seq.parca.poly", dirname = dirname, verbose = FALSE)
+  identifier <- seq_field("identifier")$name
+  id <- unique(parca[[identifier]])
+
   ua <- seq_read("v.seq.ua.poly", dirname = dirname, verbose = FALSE)
 
   # ua treatment
@@ -422,6 +429,7 @@ seq_ua <- function(
     seq_ua,
     "v.seq.ua.poly",
     dirname = dirname,
+    id = id,
     verbose = verbose,
     overwrite = overwrite
   )

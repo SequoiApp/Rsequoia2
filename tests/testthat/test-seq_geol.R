@@ -50,8 +50,9 @@ test_that("seq_geol() works for one dep", {
 
     expect_length(paths, 2)
 
-    brgm_dir <- get_path("v.sol.carhab.poly") |> dirname()
-    expect_length(list.files(file.path(seq_cache, brgm_dir), pattern = "\\.qml$"), 1)
+    layer_info <- seq_layer("v.sol.carhab.poly")
+    path <- layer_info$path
+    expect_length(list.files(file.path(seq_cache, path), pattern = "\\.qml$"), 1)
   })
 })
 

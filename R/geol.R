@@ -161,8 +161,8 @@ get_brgm <- function(deps, source = "carhab", cache = NULL, verbose = FALSE, ove
 #' @keywords internal
 #' @export
 seq_geol <- function(dirname = ".", cache = NULL, verbose = TRUE, overwrite = FALSE){
-  seq_write2 <- function(x, key) {
-    seq_write(x, key, dirname = dirname, verbose = verbose, overwrite = overwrite)
+  seq_write2 <- function(x, key, id) {
+    seq_write(x, key, dirname = dirname, id = id, verbose = verbose, overwrite = overwrite)
   }
 
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
@@ -181,13 +181,13 @@ seq_geol <- function(dirname = ".", cache = NULL, verbose = TRUE, overwrite = FA
   carhab <- get_brgm(dep, source = "carhab", cache = cache, verbose = verbose, overwrite = FALSE)
   carhab_mask <- carhab[sf::st_intersects(carhab, fetch_envelope, sparse = FALSE), ]
   carhab_mask[[identifier]] <- id
-  carhab_path <- seq_write2(carhab_mask, "v.sol.carhab.poly")
+  carhab_path <- seq_write2(carhab_mask, "v.sol.carhab.poly", id)
 
   # BDCHARM50 ----
   bdcharm50 <- get_brgm(dep, source = "bdcharm50", cache = cache, verbose = verbose, overwrite = FALSE)
   bdcharm50_mask <- bdcharm50[sf::st_intersects(bdcharm50, fetch_envelope, sparse = FALSE), ]
   bdcharm50_mask[[identifier]] <- id
-  bdcharm50_path <- seq_write2(bdcharm50_mask, "v.sol.bdcharm50.poly")
+  bdcharm50_path <- seq_write2(bdcharm50_mask, "v.sol.bdcharm50.poly", id)
 
   # BDCHARM50 QML ----
   if (is.null(cache)){

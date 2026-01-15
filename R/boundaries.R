@@ -40,8 +40,8 @@ seq_boundaries <- function(
     overwrite = FALSE){
 
   # tiny helper ----
-  seq_write2 <- function(x, key) {
-    seq_write(x, key, dirname = dirname, verbose = verbose, overwrite = overwrite)
+  seq_write2 <- function(x, key, id) {
+    seq_write(x, key, dirname = dirname, id = id, verbose = verbose, overwrite = overwrite)
   }
 
   # Resolve field and layer ----
@@ -70,9 +70,9 @@ seq_boundaries <- function(
 
   forest_point <- sf::st_centroid(forest) |> suppressWarnings()
 
-  f_poly <- seq_write2(forest, "v.seq.forest.poly")
-  f_line <- seq_write2(forest_line, "v.seq.forest.line")
-  f_point <- seq_write2(forest_point, "v.seq.forest.point")
+  f_poly <- seq_write2(forest, "v.seq.forest.poly", id)
+  f_line <- seq_write2(forest_line, "v.seq.forest.line", id)
+  f_point <- seq_write2(forest_point, "v.seq.forest.point", id)
 
   # Owner boudaries ----
   by_id_owner <- list(parca[[identifier]], parca[[owner]]) |>
@@ -90,9 +90,9 @@ seq_boundaries <- function(
 
   owner_point <- sf::st_centroid(owner) |> suppressWarnings()
 
-  o_poly <- seq_write2(owner, "v.seq.owner.poly")
-  o_line <- seq_write2(owner_line, "v.seq.owner.line")
-  o_point <- seq_write2(owner_point, "v.seq.owner.point")
+  o_poly <- seq_write2(owner, "v.seq.owner.poly", id)
+  o_line <- seq_write2(owner_line, "v.seq.owner.line", id)
+  o_point <- seq_write2(owner_point, "v.seq.owner.point", id)
 
   return(c(f_poly, f_line, f_point, o_poly, o_line , o_point) |> as.list())
 

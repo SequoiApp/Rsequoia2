@@ -171,7 +171,7 @@ seq_mnhn <- function(
       f[[identifier]] <- id
       valid <- c(valid, k)
       seq_key <- sprintf("v.mnhn.%s.poly", k)
-      f_path <- seq_write(f, seq_key, dirname, verbose = FALSE, overwrite = overwrite)
+      f_path <- seq_write(f, seq_key, dirname, id, verbose = FALSE, overwrite = overwrite)
       path <- c(path, f_path)
     } else {
       empty <- c(empty, k)

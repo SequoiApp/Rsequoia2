@@ -143,6 +143,7 @@ seq_toponyme <- function(
       topo,
       "v.toponyme.point",
       dirname = dirname,
+      id = id,
       verbose = verbose,
       overwrite = overwrite
     )

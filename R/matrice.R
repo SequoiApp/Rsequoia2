@@ -52,6 +52,7 @@ read_matrice <- function(dirname = "."){
   m_path <- list.files(
     dirname,
     pattern = "_matrice\\.xlsx$",
+    ignore.case = TRUE,
     full.names = TRUE,
     recursive = TRUE
   )
@@ -80,6 +81,8 @@ read_matrice <- function(dirname = "."){
     na.strings = c("", " ",  "#N/A"),
     convert = FALSE
   )
+
+  m <- seq_normalize(m, "matrice")
 
   # name_check
   matrice_keys <- c(

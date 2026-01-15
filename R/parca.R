@@ -199,9 +199,11 @@ seq_parca <- function(
     verbose = TRUE,
     overwrite = FALSE){
 
-  rel_path <- get_path("parca", verbose = FALSE)
-  path <- file.path(dirname, rel_path)
-  names(path) <- names(rel_path)
+  layer_info <- seq_layer("parca")
+  full_path <- layer_info$full_path
+  key <- layer_info$key
+  path <- file.path(dirname, full_path)
+  names(path) <- key
 
   if (file.exists(path) && !overwrite) {
     cli::cli_warn(
@@ -264,6 +266,7 @@ seq_parca <- function(
     seq_parca,
     "v.seq.parca.poly",
     dirname = dirname,
+    id = id,
     verbose = verbose,
     overwrite = overwrite
   )

@@ -207,6 +207,7 @@ seq_pedology <- function(
       pedo,
       "v.sol.pedo.poly",
       dirname = dirname,
+      id = id,
       verbose = verbose,
       overwrite = overwrite
     )

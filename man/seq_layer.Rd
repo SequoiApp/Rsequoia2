@@ -2,31 +2,51 @@
 % Please edit documentation in R/config-layers.R
 \name{seq_layer}
 \alias{seq_layer}
-\title{Load layer config from the Sequoia configuration}
+\title{Retrieve layer metadata from the Sequoia configuration}
 \usage{
-seq_layer(pattern = NULL, filepath = NULL)
+seq_layer(key, verbose = FALSE)
 }
 \arguments{
-\item{pattern}{\code{character} or \code{NULL}; regular-expression pattern used to
-filter keys. If \code{NULL}, all keys defined in the configuration are returned.}
+\item{key}{\code{character} Name of a layer key to match against the entries
+defined in \code{inst/config/seq_layers.yaml}. (see \emph{Details} for partial matching).}
 
-\item{filepath}{\code{character} or \code{NULL}; optional override for the path to the
-YAML configuration file. Mainly used for testing purposes.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
-A list describing matched layer
+A named list containing layer metadata, including:
+\itemize{
+\item \code{key}: the resolved configuration key
+\item \code{name}: the layer name
+\item \code{ext}: the file extension
+\item \code{family}: the resolved namespace family
+\item \code{path}: the base directory for the layer
+\item \code{full_path}: the complete filesystem path to the layer
+}
 }
 \description{
-Internal helper used to determine layer info like name or extension are stored
-in \code{inst/config/seq_layerss.yaml}.
+Resolves a layer key against the config defined in
+\code{inst/config/seq_layers.yaml} and \code{inst/config/seq_path.yaml} and returns
+the associated metadata: name, extension, filename, path, fullpath
+}
+\details{
+The function resolves the input \code{key} using \strong{partial matching} against
+the keys defined in \code{inst/config/seq_layers.yaml}.
+\itemize{
+\item If exactly \strong{one} entry matches, it is selected.
+For example, \code{key = "znieff1"} can be used to match
+\code{"v.mnhn.znieff1.poly"} when this is the only key containing \code{"znieff1"}.
+\item If \strong{multiple} entries match, the function aborts and displays the
+ambiguous keys, prompting the user to provide a more specific key.
+}
+
+Note: \strong{\code{seq_layers.yaml} is part of the package and must not be modified.}
 }
 \examples{
 \dontrun{
-# List all available tables
-names(seq_table())
+# Retrieve metadata for a layer
+l <- seq_layer("parca")
 
-# Load field keys for the "parcelle" table
-seq_table("parca")
+l$full_path
 }
 
 }

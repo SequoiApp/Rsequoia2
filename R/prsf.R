@@ -90,6 +90,7 @@ seq_prsf <- function(
       prsf,
       "v.prsf.point",
       dirname = dirname,
+      id = id,
       verbose = verbose,
       overwrite = overwrite
     )

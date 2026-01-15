@@ -338,7 +338,9 @@ seq_elevation <- function(
     verbose = TRUE) {
 
   seq_get_or_read <- function(key, compute_fn) {
-    path <- file.path(dirname, get_path(key))
+    layer_info <- seq_layer(key)
+    full_path <- layer_info$full_path
+    path <- file.path(dirname, full_path)
 
     if (!overwrite && file.exists(path)) {
       return(list(path = path, data = seq_read(key, dirname = dirname)))

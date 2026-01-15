@@ -14,59 +14,72 @@
 #' @export
 seq_read <- function(key, dirname = ".", verbose = FALSE) {
 
-  rel_path <- get_path(key, verbose = FALSE)
-  key <- names(rel_path)
+  layer_info <- seq_layer(key, verbose = FALSE)
+  layer_name <- layer_info$name
+  full_key <- layer_info$key
+  type <- layer_info$type
 
-  path <- file.path(dirname, rel_path)
+  # recursive search on layer name only
+  path <- list.files(
+    path = dirname,
+    pattern = layer_name,
+    ignore.case = TRUE,
+    full.names = TRUE,
+    recursive = TRUE
+  )
 
-  file_not_exist <- !file.exists(path)
-  if (file_not_exist) {
-      cli::cli_abort(c(
-        "!" = "File {.file {basename(path)}} for key {.val {key}} doesn't exist.",
-        "i" = "{.code NULL} is returned."
-      ))
-    return(invisible(NULL))
+  no_match <- length(path) == 0
+  if (no_match) {
+    cli::cli_abort("Layer {.file {layer_name}} doesn't exist.")
   }
 
-  is_vector <- startsWith(key, "v.")
+  multiple_match <- length(path) > 1
+  if (multiple_match) {
+    cli::cli_abort(c(
+      "!" = "Multiple layer {.file {layer_name}} found:",
+      "i" = cli::cli_fmt(cli::cli_ul(sprintf("{.file %s}", path)))
+    ))
+  }
+
+  is_vector <- (type == "vect")
   if (is_vector) {
+    v <- sf::read_sf(path)
     if (verbose) {
       cli::cli_alert_success(
         "Loaded vector layer {.val {key}} from {.file {basename(path)}}."
       )
     }
-    return(invisible(sf::read_sf(path)))
+    return(invisible(v))
   }
 
-  is_raster <- startsWith(key, "r.")
+  is_raster <- (type == "rast")
   if (is_raster) {
+    r <- terra::rast(path)
     if (verbose) {
       cli::cli_alert_success(
         "Loaded raster layer {.val {key}} from {.file {basename(path)}}."
       )
     }
-
-    return(invisible(terra::rast(path)))
+    return(invisible(r))
   }
 
-  is_xlsx <- startsWith(key, "x.")
+  is_xlsx <- (type == "xlsx")
   if (is_xlsx) {
+    x <- openxlsx2::read_xlsx(path, na.strings = "", skip_empty_rows = TRUE, skip_empty_cols = TRUE)
     if (verbose) {
       cli::cli_alert_success(
-        "Loaded xlsx {.val {key}} from {.file {basename(path)}}."
+        "Loaded xlsx table {.val {key}} from {.file {basename(path)}}."
       )
     }
-    return(invisible(openxlsx2::read_xlsx(
-      path,
-      na.strings = "",
-      skip_empty_rows = TRUE,
-      skip_empty_cols = TRUE)))
+    return(invisible(x))
   }
 }
 
 #' Write a spatial object based on a layer key
 #'
 #' @inheritParams seq_read
+#' @param id `character` Identifier of the project that will be added to the filename.
+#' Default to `NULL` i.e. no identifier added.
 #' @param x An `sf` object (for vector outputs) or a `SpatRaster` (for raster outputs).
 #' @param overwrite `logical` If `TRUE`, file is overwritten.
 #'
@@ -76,12 +89,20 @@ seq_read <- function(key, dirname = ".", verbose = FALSE) {
 #' @importFrom terra writeRaster
 #'
 #' @export
-seq_write <- function(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE) {
+seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwrite = FALSE) {
 
-  rel_path <- get_path(key, verbose = FALSE)
-  key <- names(rel_path)
+  layer_info <- seq_layer(key, verbose = FALSE)
+  key <- layer_info$key
+  filename <- layer_info$filename
+  relative_path <- layer_info$path
+  type <- layer_info$type
 
-  path <- file.path(dirname, rel_path)
+  if (!is.null(id)){
+    filename <- sprintf("%s_%s", id, filename)
+  }
+
+  full_path <- file.path(relative_path, filename)
+  path <- file.path(dirname, full_path)
   names(path) <- key
 
   if (file.exists(path) && !overwrite) {
@@ -96,7 +117,7 @@ seq_write <- function(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE)
 
   dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
 
-  is_vector <- startsWith(key, "v.")
+  is_vector <- type == "vect"
   if (is_vector) {
     if (!inherits(x, c("sf", "sfc"))) {
       cli::cli_abort(c(
@@ -109,14 +130,14 @@ seq_write <- function(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE)
 
     if (verbose) {
       cli::cli_alert_success(
-        "Layer {.val {key}} with {nrow(x)} feature{?s} saved to {.file {rel_path}}."
+        "Layer {.val {key}} with {nrow(x)} feature{?s} saved to {.file {full_path}}."
       )
     }
 
     return(invisible(path))
   }
 
-  is_raster <- startsWith(key, "r.")
+  is_raster <- type == "rast"
   if (is_raster) {
     if (!inherits(x, "SpatRaster")) {
       cli::cli_abort(c(
@@ -129,7 +150,7 @@ seq_write <- function(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE)
 
     if (verbose) {
       cli::cli_alert_success(
-        "Layer {.val {key}} saved to {.file {rel_path}}."
+        "Layer {.val {key}} saved to {.file {full_path}}."
       )
     }
 

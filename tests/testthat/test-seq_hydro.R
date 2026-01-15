@@ -1,6 +1,5 @@
 test_that("seq_hydro() returned expected path", {
   with_seq_cache({
-
     local_mocked_bindings(
       get_hydro_poly = function(...) Rsequoia2:::seq_poly,
       get_hydro_line = function(...) Rsequoia2:::seq_line,

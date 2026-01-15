@@ -13,7 +13,7 @@ with_seq_cache <- function(code) {
   p_path <- list.files(ext, pattern = "parca", full.names = TRUE, ignore.case = T)
   p <- sf::read_sf(p_path)
   assign("p", p, envir = parent.frame())
-  seq_write(p, "parca", seq_cache)
+  seq_write(x = p, key = "parca", dirname = seq_cache)
 
   on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE), add = TRUE)
 

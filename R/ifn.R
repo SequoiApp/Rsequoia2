@@ -187,6 +187,7 @@ seq_ifn <- function(
       region,
       type_key[[type]],
       dirname   = dirname,
+      id        = id,
       verbose   = FALSE,
       overwrite = overwrite
     ))
