@@ -5,7 +5,6 @@
 #'
 #' @param path `character` Optional. Path to the project folder. If not
 #' provided, the user will be prompted to enter it interactively.
-#' @param verbose `logical` If `TRUE`, display messages.
 #' @param overwrite `logical` If `TRUE`, file is overwritten.
 #'
 #' @details

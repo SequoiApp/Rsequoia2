@@ -11,8 +11,6 @@ sequoia(path = NULL, overwrite = FALSE)
 provided, the user will be prompted to enter it interactively.}
 
 \item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
-
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
 Invisibly returns \code{path}.
