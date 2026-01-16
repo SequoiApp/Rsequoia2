@@ -349,6 +349,7 @@ seq_road <- function(
 
   # Retrieve toponyms
   road_line <- get_road(parca)
+  road_line <- road_line[road_line[[type_field]] != "PN", ]
 
   # Exit early if nothing to write
   if (!nrow(road_line) || nrow(road_line) == 0) {
