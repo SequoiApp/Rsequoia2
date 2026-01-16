@@ -88,13 +88,17 @@ seq_xlsx <- function(x, filename, overwrite = FALSE, verbose = TRUE) {
 
   # Force .xlsx extension
   filename <- normalizePath(filename, mustWork = FALSE)
-  if (!grepl("\\.xlsx$", filename, ignore.case = TRUE))
+  if (!grepl("\\.xlsx$", filename, ignore.case = TRUE)){
     filename <- paste0(filename, ".xlsx")
+  }
 
   # Check parent directory exists
   dir <- dirname(filename)
-  if (!dir.exists(dir)) {
-    cli::cli_abort("The directory {.path {dir}} does not exist.")
+  if (!dir.exists(dir)){
+    dir.create(dir, recursive = TRUE, showWarnings = FALSE)
+    if (verbose){
+      cli::cli_alert_info("Directory {.path {dir}} is created.")
+    }
   }
 
   wb <- wb_workbook()

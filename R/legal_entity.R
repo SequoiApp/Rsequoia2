@@ -225,8 +225,8 @@ search_legal_entity <- function(x, prop = NULL, lieu_dit = NULL) {
     trimws(x)
   }
 
-  prop_field <- seq_field("proprietaire")$name
-  lieu_dit_field <- seq_field("lieu_dit")$name
+  prop_field <- seq_field("owner")$name
+  lieu_dit_field <- seq_field("locality")$name
 
   x$prop_norm <- normalize_txt(x[[prop_field]])
   x$lieu_dit_norm <- normalize_txt(x[[lieu_dit_field]])

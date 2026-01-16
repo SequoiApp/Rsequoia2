@@ -203,7 +203,7 @@ seq_pedology <- function(
   if (!is.null(pedo)){
     pedo[[id_field]] <- id
 
-    pedo <- seq_write(
+    pedo_path <- seq_write(
       pedo,
       "v.sol.pedo.poly",
       dirname = dirname,
@@ -220,6 +220,6 @@ seq_pedology <- function(
     )
   }
 
-  return(invisible(pedo))
+  return(invisible(pedo_path))
 }
 

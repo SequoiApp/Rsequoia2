@@ -24,6 +24,7 @@ path:
   vectoriel: "2_VECTOR/VECTORIEL"
   cadastre: "2_VECTOR/CADASTRE"
   sol: "2_VECTOR/SOL"
+  scan: "3_RASTER/SCAN"
   patrimoine: "2_VECTOR/PATRIMOINE"
   urbanisme: "2_VECTOR/URBANISME"
   environnement: "2_VECTOR/ENVIRONNEMENT"

@@ -113,30 +113,30 @@ menu_legal_entity <- function(path, overwrite){
 menu_data <- function(path, overwrite){
 
   seq_functions <- list(
-    "Communes"      = function() seq_com(path, overwrite = overwrite),
-    "MNHN"          = function() seq_mnhn(path, overwrite = overwrite),
-    "Geology"       = function() seq_geol(path, overwrite = overwrite),
-    "Pedology"      = function() seq_pedology(path, overwrite = overwrite),
-    "Infra"         = function() seq_infra(path, overwrite = overwrite),
-    "Routes"        = function() seq_road(path, overwrite = overwrite),
-    "PRSF"          = function() seq_prsf(path, overwrite = overwrite),
-    "Toponyme"      = function() seq_toponyme(path, overwrite = overwrite),
-    "Hydrology"     = function() seq_hydro(path, overwrite = overwrite),
-    "Vegetation"    = function() seq_vege(path, overwrite = overwrite),
-    "Contour lines" = function() seq_curves(path, overwrite = overwrite),
-    "IFN"           = function() seq_ifn(path, overwrite = overwrite),
-    "GPU"           = function() seq_gpu(path, overwrite = overwrite),
-    "Patrimony"     = function() seq_patrimony(path, overwrite = overwrite),
-    "Elevation"     = function() seq_elevation(path, overwrite = overwrite),
-    "Orthophoto"    = function() seq_ortho(path, overwrite = overwrite),
-    "Scan"          = function() seq_scan(path, overwrite = overwrite)
+    "Communes"      = function() try(seq_com(path, overwrite = overwrite)),
+    "MNHN"          = function() try(seq_mnhn(path, overwrite = overwrite)),
+    "Geology"       = function() try(seq_geol(path, overwrite = overwrite)),
+    "Pedology"      = function() try(seq_pedology(path, overwrite = overwrite)),
+    "Infra"         = function() try(seq_infra(path, overwrite = overwrite)),
+    "Routes"        = function() try(seq_road(path, overwrite = overwrite)),
+    "PRSF"          = function() try(seq_prsf(path, overwrite = overwrite)),
+    "Toponyme"      = function() try(seq_toponyme(path, overwrite = overwrite)),
+    "Hydrology"     = function() try(seq_hydro(path, overwrite = overwrite)),
+    "Vegetation"    = function() try(seq_vege(path, overwrite = overwrite)),
+    "Contour lines" = function() try(seq_curves(path, overwrite = overwrite)),
+    "IFN"           = function() try(seq_ifn(path, overwrite = overwrite)),
+    "GPU"           = function() try(seq_gpu(path, overwrite = overwrite)),
+    "Patrimony"     = function() try(seq_patrimony(path, overwrite = overwrite)),
+    "Elevation"     = function() try(seq_elevation(path, overwrite = overwrite)),
+    "Orthophoto"    = function() try(seq_ortho(path, overwrite = overwrite)),
+    "Scan"          = function() try(seq_scan(path, overwrite = overwrite))
   )
 
   # 2. Actions reuse seq_functions
   actions <- c(
     list(
       "All" = function() {
-        lapply(seq_functions, function(f) f())
+        lapply(seq_functions, function(f) try(f()))
       }
     ),
     seq_functions

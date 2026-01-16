@@ -191,48 +191,52 @@ seq_scan <- function(
 
   paths <- lapply(type, function(type) {
 
-    r <- get_scan(
-      parca,
-      type = type,
-      buffer = buffer,
-      res = res,
-      crs = crs,
-      overwrite = overwrite,
-      verbose = verbose
-    )
+    try({
+      r <- get_scan(
+        parca,
+        type = type,
+        buffer = buffer,
+        res = res,
+        crs = crs,
+        overwrite = overwrite,
+        verbose = verbose
+      )
 
-    # raster validity check (black / empty raster)
-    v <- terra::values(r, mat = FALSE)
+      # raster validity check (black / empty raster)
+      v <- terra::values(r, mat = FALSE)
 
-    is_empty <- length(v) == 0 ||
-      all(is.na(v)) ||
-      suppressWarnings(max(v, na.rm = TRUE) == 0)
+      is_empty <- length(v) == 0 ||
+        all(is.na(v)) ||
+        suppressWarnings(max(v, na.rm = TRUE) == 0)
 
-    if (is_empty) {
-      if (verbose) {
-        cli::cli_alert_info(
-          "No usable data for scan type {.val {type}}."
-        )
+      if (is_empty) {
+        if (verbose) {
+          cli::cli_alert_info(
+            "No usable data for scan type {.val {type}}."
+          )
+        }
+        return(NULL)
       }
-      return(NULL)
-    }
 
-    # writes rasters
-    key <- switch(
-      type,
-      scan25    = "r.scan.25",
-      scan100   = "r.scan.100",
-      oaci      = "r.scan.oaci",
-      carte_ign = "r.scan.ign"
-    )
+      # writes rasters
+      key <- switch(
+        type,
+        scan25    = "r.scan.25",
+        scan100   = "r.scan.100",
+        oaci      = "r.scan.oaci",
+        carte_ign = "r.scan.ign"
+      )
 
-    seq_write(
-      r,
-      key = key,
-      dirname = dirname,
-      overwrite = overwrite,
-      verbose = verbose
-    )
+      path <- seq_write(
+        r,
+        key = key,
+        dirname = dirname,
+        overwrite = overwrite,
+        verbose = verbose
+      )
+
+      path
+    }, silent = TRUE)
   })
 
   # remove empty results

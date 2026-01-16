@@ -161,6 +161,10 @@ seq_ifn <- function(
     )
   }
 
+  if (verbose){
+    cli::cli_h1("IFN")
+  }
+
   # read project area once
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
   identifier <- seq_field("identifier")$name
