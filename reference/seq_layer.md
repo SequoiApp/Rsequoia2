@@ -1,38 +1,66 @@
-# Load layer config from the Sequoia configuration
+# Retrieve layer metadata from the Sequoia configuration
 
-Internal helper used to determine layer info like name or extension are
-stored in `inst/config/seq_layerss.yaml`.
+Resolves a layer key against the config defined in
+`inst/config/seq_layers.yaml` and `inst/config/seq_path.yaml` and
+returns the associated metadata: name, extension, filename, path,
+fullpath
 
 ## Usage
 
 ``` r
-seq_layer(pattern = NULL, filepath = NULL)
+seq_layer(key, verbose = FALSE)
 ```
 
 ## Arguments
 
-- pattern:
+- key:
 
-  `character` or `NULL`; regular-expression pattern used to filter keys.
-  If `NULL`, all keys defined in the configuration are returned.
+  `character` Name of a layer key to match against the entries defined
+  in `inst/config/seq_layers.yaml`. (see *Details* for partial
+  matching).
 
-- filepath:
+- verbose:
 
-  `character` or `NULL`; optional override for the path to the YAML
-  configuration file. Mainly used for testing purposes.
+  `logical` If `TRUE`, display messages.
 
 ## Value
 
-A list describing matched layer
+A named list containing layer metadata, including:
+
+- `key`: the resolved configuration key
+
+- `name`: the layer name
+
+- `ext`: the file extension
+
+- `family`: the resolved namespace family
+
+- `path`: the base directory for the layer
+
+- `full_path`: the complete filesystem path to the layer
+
+## Details
+
+The function resolves the input `key` using **partial matching** against
+the keys defined in `inst/config/seq_layers.yaml`.
+
+- If exactly **one** entry matches, it is selected. For example,
+  `key = "znieff1"` can be used to match `"v.mnhn.znieff1.poly"` when
+  this is the only key containing `"znieff1"`.
+
+- If **multiple** entries match, the function aborts and displays the
+  ambiguous keys, prompting the user to provide a more specific key.
+
+Note: **`seq_layers.yaml` is part of the package and must not be
+modified.**
 
 ## Examples
 
 ``` r
 if (FALSE) { # \dontrun{
-# List all available tables
-names(seq_table())
+# Retrieve metadata for a layer
+l <- seq_layer("parca")
 
-# Load field keys for the "parcelle" table
-seq_table("parca")
+l$full_path
 } # }
 ```

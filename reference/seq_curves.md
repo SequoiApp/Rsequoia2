@@ -13,12 +13,16 @@ seq_curves(dirname = ".", verbose = TRUE, overwrite = FALSE)
 
 - dirname:
 
-  `character` Path to the project directory. Defaults to the current
-  working directory.
+  `character` Directory where the matrice file is located. Defaults to
+  the current working directory.
 
 - verbose:
 
   `logical` If `TRUE`, display messages.
+
+- overwrite:
+
+  `logical` If `TRUE`, file is overwritten.
 
 ## Value
 

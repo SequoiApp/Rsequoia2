@@ -51,9 +51,6 @@
 - [`get_hydro_poly()`](https://mucau.github.io/Rsequoia2/reference/get_hydro_poly.md)
   : Retrieve hydrographic polygons around an area
 
-- [`get_id()`](https://mucau.github.io/Rsequoia2/reference/get_id.md) :
-  Extract forest ID from a matrice.xlsx file
-
 - [`get_ifn()`](https://mucau.github.io/Rsequoia2/reference/get_ifn.md)
   : Retrieve IFN regional layers by intersecting an area
 
@@ -90,9 +87,6 @@
 - [`get_parca_etalab()`](https://mucau.github.io/Rsequoia2/reference/get_parca_etalab.md)
   : Retrieve a cadastral parcel geometry from Etalab
 
-- [`get_path()`](https://mucau.github.io/Rsequoia2/reference/get_path.md)
-  : Construct filepath for a given layer key
-
 - [`get_patrimony()`](https://mucau.github.io/Rsequoia2/reference/get_patrimony.md)
   : Download patrimony vector layer
 
@@ -125,6 +119,11 @@
 
 - [`get_vege_poly()`](https://mucau.github.io/Rsequoia2/reference/get_vege_poly.md)
   : Retrieve forest vegetation polygons around an area
+
+- [`get_vides()`](https://mucau.github.io/Rsequoia2/reference/get_vides.md)
+  :
+
+  Retrieve cadastral gaps around the *PARCA*
 
 - [`parca_check_area()`](https://mucau.github.io/Rsequoia2/reference/parca_check_area.md)
   : Check inconsistencies between cadastral and cartographic areas
@@ -164,6 +163,9 @@
 - [`seq_gpu()`](https://mucau.github.io/Rsequoia2/reference/seq_gpu.md)
   : Generate GPU layers for a Sequoia project
 
+- [`seq_graphic_road()`](https://mucau.github.io/Rsequoia2/reference/seq_graphic_road.md)
+  : Generate graphic road layers for a Sequoia project
+
 - [`seq_hydro()`](https://mucau.github.io/Rsequoia2/reference/seq_hydro.md)
   : Generates hydrographic polygon, line and point layers for a Sequoia
   project.
@@ -175,8 +177,11 @@
   : Generates infrastructure polygon, line and point layers for a
   Sequoia project.
 
+- [`seq_key()`](https://mucau.github.io/Rsequoia2/reference/seq_key.md)
+  : Resolve a layer configuration key
+
 - [`seq_layer()`](https://mucau.github.io/Rsequoia2/reference/seq_layer.md)
-  : Load layer config from the Sequoia configuration
+  : Retrieve layer metadata from the Sequoia configuration
 
 - [`seq_mnhn()`](https://mucau.github.io/Rsequoia2/reference/seq_mnhn.md)
   : Download MNHN vector layers for a Sequoia project
@@ -210,6 +215,9 @@
 - [`seq_read()`](https://mucau.github.io/Rsequoia2/reference/seq_read.md)
   : Open file based on key name
 
+- [`seq_road()`](https://mucau.github.io/Rsequoia2/reference/seq_road.md)
+  : Generate road layers for a Sequoia project
+
 - [`seq_scan()`](https://mucau.github.io/Rsequoia2/reference/seq_scan.md)
   : Download scanned IGN maps for a Sequoia project
 
@@ -225,6 +233,9 @@
 - [`seq_vege()`](https://mucau.github.io/Rsequoia2/reference/seq_vege.md)
   : Generates vegetation polygon, line and point layers for a Sequoia
   project.
+
+- [`seq_vides()`](https://mucau.github.io/Rsequoia2/reference/seq_vides.md)
+  : Generate cadastral gaps layer for a Sequoia project
 
 - [`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
   : Write a spatial object based on a layer key

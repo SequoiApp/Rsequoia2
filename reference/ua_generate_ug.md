@@ -8,7 +8,7 @@ object based on configured parcel keys.
 ``` r
 ua_generate_ug(
   ua,
-  ug_keys = c("parcelle", "sous_parcelle"),
+  ug_keys = c("pcl_code", "sub_code"),
   separator = ".",
   verbose = TRUE
 )
@@ -23,8 +23,8 @@ ua_generate_ug(
 
 - ug_keys:
 
-  `character` vector, default `c("parcelle", "sous_parcelle")`. Keys
-  used to build the UG identifier.
+  `character` vector, default `c("pcl_code", "sub_code")`. Keys used to
+  build the UG identifier.
 
 - separator:
 

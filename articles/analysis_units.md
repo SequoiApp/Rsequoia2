@@ -36,7 +36,7 @@ identifier.
 In other words, each *AU* :
 
 - keep its cadastral attributes in order to calculate cadastral areas:
-  unique cadastral identifier (IDU) and cadastral surface (SURF_CA);
+  unique cadastral identifier (IDU) and cadastral surface (SURF_CAD);
 
 - receives a forest description by filling the attribute table: stand
   type (PLT_PLMT), stand wealth (PLT_RICH), stand stage (PLT_RICH) and
@@ -162,12 +162,12 @@ checking it from your GIS software.
 When you have updated the *AU* layer, you can get new products:
 
 - **PF (Parcelle)**: Rows of the *AU* are grouped using the `parcelle`
-  field, and corrected surface areas (`surf_cor`) are summed. A polygon
+  field, and corrected surface areas (`cor_area`) are summed. A polygon
   and border lines layer are created.
 
 - **SSPF (Sous-parcelle)**: Rows of the *AU* are grouped using the
   N_PARFOR and N_SSPARFOR field, and corrected surface areas
-  (`surf_cor`) are summed. A polygon and border lines layer are created.
+  (`cor_area`) are summed. A polygon and border lines layer are created.
 
 ``` r
 # remove eval = FALSE when data is available 

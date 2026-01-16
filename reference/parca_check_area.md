@@ -1,7 +1,7 @@
 # Check inconsistencies between cadastral and cartographic areas
 
-This function compares cadastral areas (`CONTENANCE`, in m²) with
-cartographic areas computed from geometry
+This function compares cadastral areas (in m²) with cartographic areas
+computed from geometry
 ([`sf::st_area()`](https://r-spatial.github.io/sf/reference/geos_measures.html)).
 
 ## Usage

@@ -1,8 +1,8 @@
 # Aggregate *UA* surfaces at the `sspf` field level
 
-Aggregates corrected surface areas (`surf_cor`) from a *UA* layer by
-grouping rows according to the `sspf` field, as defined by the
-configuration returned by
+Aggregates corrected surface areas from a *UA* layer by grouping rows
+according to the `sspf` field, as defined by the configuration returned
+by
 [`seq_field()`](https://mucau.github.io/Rsequoia2/reference/seq_field.md).
 
 ## Usage

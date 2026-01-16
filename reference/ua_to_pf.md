@@ -1,8 +1,8 @@
 # Aggregate *UA* surfaces at the `parcelle` field level
 
-Aggregates corrected surface areas (`surf_cor`) from a *UA* layer by
-grouping rows according to the `parcelle` field, as defined by the
-configuration returned by
+Aggregates corrected surface areas from a *UA* layer by grouping rows
+according to the parcel unit field, as defined by the configuration
+returned by
 [`seq_field()`](https://mucau.github.io/Rsequoia2/reference/seq_field.md).
 
 ## Usage

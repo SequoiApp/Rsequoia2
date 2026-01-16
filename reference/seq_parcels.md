@@ -40,10 +40,9 @@ The function performs two levels of spatial aggregation ande create 4
 layers:
 
 1.  **PF (Parcelle)** Rows of the UA are grouped using the `parcelle`
-    field, and corrected surface areas (`surf_cor`) are summed. A
-    polygon and border lines layer are created.
+    field, and corrected surface areas are summed. A polygon and border
+    lines layer are created.
 
 2.  **SSPF (Sous-parcelle)** Rows of the UA are grouped using the
     `parcelle` and `sous-parcelle` field, and corrected surface areas
-    (`surf_cor`) are summed. A polygon and border lines layer are
-    created.
+    are summed. A polygon and border lines layer are created.

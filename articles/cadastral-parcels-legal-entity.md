@@ -64,10 +64,10 @@ insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
 #> ℹ Downloading legal entity datasets...
-#> ⠙ 12 extracted | 570 MB (208 MB/s) | 2.7s
-#> ⠹ 30 extracted | 1.3 GB (225 MB/s) | 5.7s
-#> ⠙ 26 extracted | 994 MB (254 MB/s) | 3.9s
-#> ⠹ 45 extracted | 1.8 GB (268 MB/s) | 6.9s
+#> ⠙ 22 extracted | 1.0 GB (269 MB/s) | 3.8s
+#> ⠙ 17 extracted | 658 MB (210 MB/s) | 3.1s
+#> ⠹ 35 extracted | 1.4 GB (229 MB/s) | 6.1s
+#> ⠸ 54 extracted | 2.1 GB (235 MB/s) | 9.1s
 #> ✔ Data available at: /home/runner/.cache/R/Rsequoia2
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
@@ -89,13 +89,13 @@ head(legal_entity_cp)
 #> 4       29 PENMARCH      158 29158     000      AB   0008          DES GOELANDS
 #> 5       29 PENMARCH      158 29158     000      AB   0011         ROGER QUINIOU
 #> 6       29 PENMARCH      158 29158     000      AB   0025 PIERRE ET JEAN DUPOUY
-#>   SURF_CA
-#> 1     370
-#> 2   12358
-#> 3      97
-#> 4     765
-#> 5     339
-#> 6     237
+#>   SURF_CAD
+#> 1      370
+#> 2    12358
+#> 3       97
+#> 4      765
+#> 5      339
+#> 6      237
 #>                                                                                                             SOURCE
 #> 1 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales
 #> 2 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales
@@ -172,17 +172,18 @@ to do it before saving.
 id <- "MY_FOREST"
 search_mat$IDENTIFIANT <- id
 
-# "MATRICE" = search_mat mean write search_mat to sheet "MATRICE
-seq_xlsx(
-  x = list("MATRICE" = search_mat),
-  filename = file.path(seq_dir, paste0(id, "_matrice.xlsx"))
+seq_write(
+  x = search_mat,
+  key = "matrice",
+  dirname = seq_dir,
+  id = id
 )
-#> ✔ Excel file created at: /tmp/RtmpN3G8CP/MY_FOREST/MY_FOREST_matrice.xlsx
 
 seq_parca(seq_dir)
 #> ℹ Downloading BDP from IGN...
 #> ✔ 12 of 13 ETALAB geom successfully replaced with BDP geom.
-#> ✔ Layer "v.seq.parca.poly" with 13 features saved to MY_FOREST_SEQ_PARCA_poly.geojson.
+#> ✔ No area inconsistencies (cadastre vs GIS) detected.
+#> ✔ Layer "v.seq.parca.poly" with 13 features saved to 1_SEQUOIA/IDENTIFIANT_SEQ_PARCA_poly.geojson.
 parca <- seq_read("parca", seq_dir)
 
 tm_tiles("OpenStreetMap")+

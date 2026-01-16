@@ -25,7 +25,6 @@
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_hydro_line.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_hydro_point.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_hydro_poly.html</loc></url>
-<url><loc>https://mucau.github.io/Rsequoia2/reference/get_id.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_ifn.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_infra_line.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_infra_point.html</loc></url>
@@ -38,7 +37,6 @@
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_parca.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_parca_bdp.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_parca_etalab.html</loc></url>
-<url><loc>https://mucau.github.io/Rsequoia2/reference/get_path.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_patrimony.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_pedology.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_pedology_pdf.html</loc></url>
@@ -50,6 +48,7 @@
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_vege_line.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_vege_point.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_vege_poly.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/get_vides.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/idu_build.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/idu_split.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/index.html</loc></url>
@@ -67,9 +66,11 @@
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_field.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_geol.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_gpu.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/seq_graphic_road.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_hydro.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_ifn.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_infra.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/seq_key.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_layer.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_mnhn.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_normalize.html</loc></url>
@@ -81,11 +82,14 @@
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_pedology.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_prsf.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_read.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/seq_retry.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/seq_road.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_scan.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_table.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_toponyme.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_ua.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_vege.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/seq_vides.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_write.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_xlsx.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/sequoia.html</loc></url>

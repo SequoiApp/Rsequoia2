@@ -120,10 +120,10 @@ commune.</p>
 <span></span>
 <span><span class="va">legal_entity_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_legal_entity.html">get_legal_entity</a></span><span class="op">(</span><span class="va">insee</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading legal entity datasets...</span></span>
-<span><span class="co">#&gt; ⠙ 12 extracted | 570 MB (208 MB/s) | 2.7s</span></span>
-<span><span class="co">#&gt; ⠹ 30 extracted | 1.3 GB (225 MB/s) | 5.7s</span></span>
-<span><span class="co">#&gt; ⠙ 26 extracted | 994 MB (254 MB/s) | 3.9s</span></span>
-<span><span class="co">#&gt; ⠹ 45 extracted | 1.8 GB (268 MB/s) | 6.9s</span></span>
+<span><span class="co">#&gt; ⠙ 22 extracted | 1.0 GB (269 MB/s) | 3.8s</span></span>
+<span><span class="co">#&gt; ⠙ 17 extracted | 658 MB (210 MB/s) | 3.1s</span></span>
+<span><span class="co">#&gt; ⠹ 35 extracted | 1.4 GB (229 MB/s) | 6.1s</span></span>
+<span><span class="co">#&gt; ⠸ 54 extracted | 2.1 GB (235 MB/s) | 9.1s</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Data available at: <span style="color: #0000BB;">/home/runner/.cache/R/Rsequoia2</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Reading CSV files...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Preparing CSV files...</span></span>
@@ -145,13 +145,13 @@ commune.</p>
 <span><span class="co">#&gt; 4       29 PENMARCH      158 29158     000      AB   0008          DES GOELANDS</span></span>
 <span><span class="co">#&gt; 5       29 PENMARCH      158 29158     000      AB   0011         ROGER QUINIOU</span></span>
 <span><span class="co">#&gt; 6       29 PENMARCH      158 29158     000      AB   0025 PIERRE ET JEAN DUPOUY</span></span>
-<span><span class="co">#&gt;   SURF_CA</span></span>
-<span><span class="co">#&gt; 1     370</span></span>
-<span><span class="co">#&gt; 2   12358</span></span>
-<span><span class="co">#&gt; 3      97</span></span>
-<span><span class="co">#&gt; 4     765</span></span>
-<span><span class="co">#&gt; 5     339</span></span>
-<span><span class="co">#&gt; 6     237</span></span>
+<span><span class="co">#&gt;   SURF_CAD</span></span>
+<span><span class="co">#&gt; 1      370</span></span>
+<span><span class="co">#&gt; 2    12358</span></span>
+<span><span class="co">#&gt; 3       97</span></span>
+<span><span class="co">#&gt; 4      765</span></span>
+<span><span class="co">#&gt; 5      339</span></span>
+<span><span class="co">#&gt; 6      237</span></span>
 <span><span class="co">#&gt;                                                                                                             SOURCE</span></span>
 <span><span class="co">#&gt; 1 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales</span></span>
 <span><span class="co">#&gt; 2 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales</span></span>
@@ -215,17 +215,18 @@ filling it in excel, we encouraged you to do it before saving.</p>
 <code class="sourceCode R"><span><span class="va">id</span> <span class="op">&lt;-</span> <span class="st">"MY_FOREST"</span></span>
 <span><span class="va">search_mat</span><span class="op">$</span><span class="va">IDENTIFIANT</span> <span class="op">&lt;-</span> <span class="va">id</span></span>
 <span></span>
-<span><span class="co"># "MATRICE" = search_mat mean write search_mat to sheet "MATRICE</span></span>
-<span><span class="fu"><a href="../reference/seq_xlsx.html">seq_xlsx</a></span><span class="op">(</span></span>
-<span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"MATRICE"</span> <span class="op">=</span> <span class="va">search_mat</span><span class="op">)</span>,</span>
-<span>  filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">seq_dir</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">id</span>, <span class="st">"_matrice.xlsx"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/seq_write.html">seq_write</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="va">search_mat</span>,</span>
+<span>  key <span class="op">=</span> <span class="st">"matrice"</span>,</span>
+<span>  dirname <span class="op">=</span> <span class="va">seq_dir</span>,</span>
+<span>  id <span class="op">=</span> <span class="va">id</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Excel file created at: <span style="color: #0000BB;">/tmp/RtmpN3G8CP/MY_FOREST/MY_FOREST_matrice.xlsx</span></span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/seq_parca.html">seq_parca</a></span><span class="op">(</span><span class="va">seq_dir</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading BDP from IGN...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> 12 of 13 ETALAB geom successfully replaced with BDP geom.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Layer <span style="color: #0000BB;">"v.seq.parca.poly"</span> with 13 features saved to <span style="color: #0000BB;">MY_FOREST_SEQ_PARCA_poly.geojson</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> No area inconsistencies (cadastre vs GIS) detected.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Layer <span style="color: #0000BB;">"v.seq.parca.poly"</span> with 13 features saved to <span style="color: #0000BB;">1_SEQUOIA/IDENTIFIANT_SEQ_PARCA_poly.geojson</span>.</span></span>
 <span><span class="va">parca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/seq_read.html">seq_read</a></span><span class="op">(</span><span class="st">"parca"</span>, <span class="va">seq_dir</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_basemap.html" class="external-link">tm_tiles</a></span><span class="op">(</span><span class="st">"OpenStreetMap"</span><span class="op">)</span><span class="op">+</span></span>

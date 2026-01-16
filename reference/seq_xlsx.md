@@ -8,15 +8,16 @@ to each sheet.
 ## Usage
 
 ``` r
-seq_xlsx(x, filename, overwrite = FALSE, verbose = TRUE)
+seq_xlsx(..., filename, overwrite = FALSE, verbose = TRUE)
 ```
 
 ## Arguments
 
-- x:
+- ...:
 
-  `list` A named list of data frames. List names are used as worksheet
-  names.
+  `data.frame` Each `data.frame` is wrote to a different sheet name. If
+  `...` contain named arg, name is used as sheet name else variable name
+  is used.
 
 - filename:
 
@@ -35,13 +36,3 @@ seq_xlsx(x, filename, overwrite = FALSE, verbose = TRUE)
 Invisibly returns the path `filename` after saving.
 
 ## Examples
-
-``` r
-if (FALSE) { # \dontrun{
-library(openxlsx2)
-df1 <- data.frame(A = 1:3, B = 4:6)
-df2 <- data.frame(X = letters[1:3], Y = runif(3))
-tables <- list(FirstSheet = df1, SecondSheet = df2)
-save_tables_to_xlsx(tables, "my_data.xlsx")
-} # }
-```

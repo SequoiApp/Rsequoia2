@@ -14,8 +14,12 @@ sequoia(path = NULL, overwrite = FALSE)
 
 - path:
 
-  Character. Optional. Path to the project folder. If not provided, the
+  `character` Optional. Path to the project folder. If not provided, the
   user will be prompted to enter it interactively.
+
+- overwrite:
+
+  `logical` If `TRUE`, file is overwritten.
 
 ## Value
 

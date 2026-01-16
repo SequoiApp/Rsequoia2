@@ -5,7 +5,7 @@ Write a spatial object based on a layer key
 ## Usage
 
 ``` r
-seq_write(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE)
+seq_write(x, key, dirname = ".", id = NULL, verbose = FALSE, overwrite = FALSE)
 ```
 
 ## Arguments
@@ -25,6 +25,11 @@ seq_write(x, key, dirname = ".", verbose = FALSE, overwrite = FALSE)
 
   `character` Directory where the matrice file is located. Defaults to
   the current working directory.
+
+- id:
+
+  `character` Identifier of the project that will be added to the
+  filename. Default to `NULL` i.e. no identifier added.
 
 - verbose:
 
