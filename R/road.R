@@ -146,28 +146,13 @@ get_road <- function(x){
 road_buffer <- function(x, type, dist) {
 
   type_field <- seq_field("type")$name
-  name_field <- seq_field("name")$name
 
   lines <- x[x[[type_field]] == type, ]
   if (nrow(lines) == 0) return(NULL)
 
-  lines[[name_field]][is.na(lines[[name_field]])] <- "NA_TEMP"
-
-  agg <- aggregate(
-    lines,
-    by = setNames(
-      list(lines[[type_field]], lines[[name_field]]),
-      c(type_field, name_field)
-    ),
-    FUN = mean,
-    do_union = TRUE
-  )
-
-  agg[[name_field]][agg[[name_field]] == "NA_TEMP"] <- NA
-
   buf <- sf::st_simplify(
     sf::st_buffer(
-      agg,
+      sf::st_union(sf::st_geometry(lines)),
       dist,
       nQuadSegs = 5,
       joinStyle = "ROUND",
@@ -177,12 +162,11 @@ road_buffer <- function(x, type, dist) {
     preserveTopology = TRUE
   )
 
-  polygon <- sf::st_sf(
-    geometry = sf::st_union(sf::st_geometry(buf)),
-    structure(list(type), names = type_field)
+  sf::st_sf(
+    geometry = buf,
+    structure(list(type), names = type_field),
+    crs = sf::st_crs(x)
   )
-
-  polygon
 }
 
 #' Compute hierarchical road differences
@@ -265,9 +249,10 @@ road_mask <- function(x, dist) {
   union <- sf::st_union(
     sf::st_buffer(sf::st_combine(lines), dist, endCapStyle = "FLAT"),
     sf::st_buffer(pts_dup, dist)
-  ) |> sf::st_sf()
+  )
 
-  result <- sf::st_union(union)
+  result <- sf::st_sf(geometry = union) |> sf::st_union()
+
   return(sf::st_sf(geometry = result))
 }
 
@@ -613,6 +598,8 @@ seq_graphic_road <- function(
 
   parca <- seq_read("parca", dirname = dirname)
   id_field <- seq_field("identifier")$name
+  type_field <- seq_field("type")$name
+
   id <- unique(parca[[id_field]])
 
   gaps <- seq_read("v.cad.vides.poly", dirname = dirname)
