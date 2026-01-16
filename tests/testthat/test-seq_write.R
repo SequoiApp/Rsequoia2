@@ -21,6 +21,17 @@ test_that("seq_write() writes raster layers correctly", {
 
 })
 
+test_that("seq_write() writes xlsx layers correctly", {
+
+  with_seq_cache({
+    x <- data.frame(col1 = 1:10, col2 = 1:10)
+    path <- seq_write(x, "matrice", dirname = seq_cache)
+    expect_true(file.exists(path))
+    expect_s3_class(openxlsx2::read_xlsx(path), "data.frame")
+  })
+
+})
+
 test_that("seq_write() overwrite vector properly correctly", {
 
   with_seq_cache({

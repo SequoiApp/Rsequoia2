@@ -152,8 +152,8 @@ seq_layer <- function(key, verbose = FALSE){
   family <- cfg_path$namespace[startsWith(match_key, names(cfg_path$namespace))]
   family <- unname(unlist(family))
 
-  path <- if (!is.null(family)) cfg_path$path[[family]] else filename
-  full_path <- if (!is.null(family)) file.path(path, filename) else filename
+  path <- if (!is.null(family)) cfg_path$path[[family]] else NULL
+  full_path <- if (!is.null(family)) file.path(path, filename) else NULL
 
   type <- switch(
     sub("\\..*$", "", match_key),

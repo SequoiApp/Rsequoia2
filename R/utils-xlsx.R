@@ -59,8 +59,9 @@ style_table <- function(wb, sheet, df, numfmt = "0.00"){
 #' Creates a new Excel workbook, adds each element of a named list of data frames
 #' as a separate sheet, writes the data, and applies `style_table()` to each sheet.
 #'
-#' @param x `list` A named list of data frames.
-#' List names are used as worksheet names.
+#' @param ... `data.frame` Each `data.frame` is wrote to a different sheet name.
+#' If `...` contain named arg, name is used as sheet name else variable name is
+#' used.
 #' @param filename `character` File path where the workbook will be saved.
 #' @param overwrite `logical` If `TRUE`, filename is overwritten.
 #' @param verbose `logical` If `TRUE`, display messages.
@@ -73,16 +74,65 @@ style_table <- function(wb, sheet, df, numfmt = "0.00"){
 #' library(openxlsx2)
 #' df1 <- data.frame(A = 1:3, B = 4:6)
 #' df2 <- data.frame(X = letters[1:3], Y = runif(3))
-#' tables <- list(FirstSheet = df1, SecondSheet = df2)
-#' save_tables_to_xlsx(tables, "my_data.xlsx")
+#'
+#' Create xlsx with two sheet named THIS_DF1 and THIS_DF2
+#' save_tables_to_xlsx(THIS_DF1 = df1, THIS_DF2 = df2, filename = "my_data.xlsx")
+#'
+#' Create xlsx with two sheet named df1 and df2
+#' save_tables_to_xlsx(df1, df2, filename = "my_data.xlsx")
+#'
+#' Create xlsx with two sheet named df1 and THIS_DF2
+#' save_tables_to_xlsx(df1, THIS_DF2 = df2, filename = "my_data.xlsx")
+#'
 #' }
-seq_xlsx <- function(x, filename, overwrite = FALSE, verbose = TRUE) {
+seq_xlsx <- function(..., filename, overwrite = FALSE, verbose = TRUE) {
 
-  not_a_list <- !inherits(x, "list")
-  if (not_a_list){
+  # convert to symbol then to list. First element is always the function name
+  exprs <- as.list(substitute(list(...)))[-1]
+
+  values <- list(...)
+  if (!length(values)) {
+    cli::cli_abort("No data provided.")
+  }
+
+  sheets <- list()
+  for (i in seq_along(values)) {
+
+    name <- names(values)[i]
+    value <- values[[i]]
+    expr <- exprs[[i]]
+
+    is_df <- inherits(value, "data.frame")
+    if (!is_df) {
+      cli::cli_abort(c(
+        "All sheet inputs must be {.cls data.frame}.",
+        "i" = "Invalid input: {deparse(expr)}"
+      ))
+    }
+
+    # If name is mising use variable name
+    if (is.null(name) || name == "") {
+      name <- deparse(expr, nlines = 1)
+    }
+
+    sheets[[name]] <- value
+  }
+
+  too_long_name <- nchar(names(sheets)) > 31
+  bad_character_in_name <- grepl("[:\\\\/\\?\\*\\[\\]]", names(sheets))
+  invalid <- too_long_name | bad_character_in_name
+  if (any(invalid)) {
     cli::cli_abort(c(
-      "{.field tables} must be a {.strong named} {.cls list} of {.cls data.frame}.",
-      "i" = "Example: {.code list(\"SHEET_NAME\" = df)}"
+      "Invalid Excel sheet name(s): {paste(names(sheets)[invalid], collapse = ', ')}",
+      "i" = "Names must be < 31 characters and not contain : \\ / ? * [ ]"
+    ))
+  }
+
+  dup <- duplicated(names(sheets))
+  if (any(dup)) {
+    cli::cli_abort(c(
+      "Duplicate sheet names detected.",
+      "i" = "Duplicates: {paste(unique(names(sheets)[dup]), collapse = ', ')}"
     ))
   }
 
@@ -111,8 +161,8 @@ seq_xlsx <- function(x, filename, overwrite = FALSE, verbose = TRUE) {
     )
   }
 
-  for (sheet in names(x)) {
-    df <- x[[sheet]]
+  for (sheet in names(sheets)) {
+    df <- sheets[[sheet]]
 
     wb <- wb |>
       wb_add_worksheet(sheet) |>

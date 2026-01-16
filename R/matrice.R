@@ -31,7 +31,7 @@ create_matrice <- function(dirname = ".", id = "MY_FOREST", overwrite = FALSE, v
   ) |> seq_normalize("matrice")
 
   seq_xlsx(
-    x = list("MATRICE" = matrice),
+    MATRICE = matrice,
     filename = file.path(dirname, paste0(id, "_matrice.xlsx")),
     overwrite = overwrite,
     verbose = verbose

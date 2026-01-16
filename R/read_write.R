@@ -102,7 +102,7 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
     filename <- sprintf("%s_%s", id, filename)
   }
 
-  full_path <- file.path(relative_path, filename)
+  full_path <- if (is.null(relative_path)) filename else file.path(relative_path, filename)
   path <- file.path(dirname, full_path)
   names(path) <- key
 
@@ -157,5 +157,29 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
 
     return(invisible(path))
   }
+
+  is_xlsx <- type == "xlsx"
+  if (is_xlsx) {
+    if (!inherits(x, "data.frame")) {
+      cli::cli_abort(c(
+        "!" = "Object supplied for {.arg x} is not a {.cls data.frame}.",
+        "i" = "Table layers must be written using {.val x.*} keys."
+      ))
+    }
+
+    seq_xlsx(x, filename = path, overwrite = overwrite, verbose = FALSE)
+
+    if (verbose) {
+      cli::cli_alert_success(
+        "Table {.val {key}} saved to {.file {full_path}}."
+      )
+    }
+
+    return(invisible(path))
+  }
+
+  cli::cli_abort(
+    "Unsupported layer type {.val {type}} for key {.val {key}}."
+  )
 
 }

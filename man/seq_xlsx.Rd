@@ -4,11 +4,12 @@
 \alias{seq_xlsx}
 \title{Save Multiple Data Frames to an Excel Workbook with Styling}
 \usage{
-seq_xlsx(x, filename, overwrite = FALSE, verbose = TRUE)
+seq_xlsx(..., filename, overwrite = FALSE, verbose = TRUE)
 }
 \arguments{
-\item{x}{\code{list} A named list of data frames.
-List names are used as worksheet names.}
+\item{...}{\code{data.frame} Each \code{data.frame} is wrote to a different sheet name.
+If \code{...} contain named arg, name is used as sheet name else variable name is
+used.}
 
 \item{filename}{\code{character} File path where the workbook will be saved.}
 
@@ -28,7 +29,15 @@ as a separate sheet, writes the data, and applies \code{style_table()} to each s
 library(openxlsx2)
 df1 <- data.frame(A = 1:3, B = 4:6)
 df2 <- data.frame(X = letters[1:3], Y = runif(3))
-tables <- list(FirstSheet = df1, SecondSheet = df2)
-save_tables_to_xlsx(tables, "my_data.xlsx")
+
+Create xlsx with two sheet named THIS_DF1 and THIS_DF2
+save_tables_to_xlsx(THIS_DF1 = df1, THIS_DF2 = df2, filename = "my_data.xlsx")
+
+Create xlsx with two sheet named df1 and df2
+save_tables_to_xlsx(df1, df2, filename = "my_data.xlsx")
+
+Create xlsx with two sheet named df1 and THIS_DF2
+save_tables_to_xlsx(df1, THIS_DF2 = df2, filename = "my_data.xlsx")
+
 }
 }
