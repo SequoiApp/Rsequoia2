@@ -200,6 +200,7 @@ seq_pedology <- function(
   # Retrieve pedology ----
   pedo <- get_pedology(parca)
 
+  pedo_path <- NULL
   if (!is.null(pedo)){
     pedo[[id_field]] <- id
 

@@ -71,8 +71,8 @@ test_that("seq_graphic_road() returned correct geometry", {
     )
 
     paths <- seq_graphic_road(seq_cache, verbose = FALSE, overwrite = TRUE)
-    road_line <- read_sf(paths[1])
-    road_poly <- read_sf(paths[2])
+    road_line <- sf::read_sf(paths[1]) |> suppressWarnings()
+    road_poly <- sf::read_sf(paths[2])
 
     expect_all_true(sf::st_geometry_type(road_line) %in% c("LINESTRING", "MULTILINESTRING"))
     expect_all_true(sf::st_geometry_type(road_poly) %in% c("POLYGON", "MULTIPOLYGON"))
