@@ -103,10 +103,11 @@ Notice that the `data.frame` generated with `get_legal_entity()` is already form
 id <- "MY_FOREST"
 search_mat$IDENTIFIANT <- id
 
-# "MATRICE" = search_mat mean write search_mat to sheet "MATRICE
-seq_xlsx(
-  x = list("MATRICE" = search_mat),
-  filename = file.path(seq_dir, paste0(id, "_matrice.xlsx"))
+seq_write(
+  x = search_mat,
+  key = "matrice",
+  dirname = seq_dir,
+  id = id
 )
 
 seq_parca(seq_dir)

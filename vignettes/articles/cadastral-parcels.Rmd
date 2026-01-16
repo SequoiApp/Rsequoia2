@@ -214,7 +214,6 @@ tm_shape(parca)+
 ```{r clean_sequoie_dir, include=FALSE}
 unlink(sequoia_dir, recursive = TRUE, force = TRUE)
 unlink(my_forest_dir, recursive = TRUE, force = TRUE)
-
 ```
 
 
