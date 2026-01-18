@@ -12,7 +12,6 @@ owner:
 
 is_wooded:
   name: "BOISE"
-  alias: ["boisee", "is_boisee", "occupation", "occup_sol"]
   class: "boolean"
   definition: "Land use field specific for forest"
 
@@ -133,84 +132,98 @@ sub_code:
   class: "character"
   definition: "Sub-parcel unit code"
 
-stand:
+std_type:
   name: "PLT_PLMT"
   alias: ["PLT_TYPE"]
   class: "character"
   definition: "Forest stand type"
 
-wealth:
+std_wealth:
   name: "PLT_RICH"
   class: "character"
   definition: "Stand wealth"
 
-stage:
+std_stage:
   name: "PLT_STAD"
   class: "character"
   definition: "Stand development stage"
 
-year:
+std_year:
   name: "PLT_ANNE"
   class: "character"
   definition: "Year of stand establishment"
 
-structure:
-  name: "PLT_STRU"
-  alias: ["PLT_STR", "REV_CA"]
-  class: "character"
-  definition: "Stand reserve structure"
+is_damaged:
+  name: "SINISTRE"
+  class: "boolean"
+  definition: "Is damaged ?"
 
-spe1:
-  name: "ESS_1_NOM"
+is_available:
+  name: "DISPONIBLE"
+  class: "boolean"
+  definition: "Is available for production ?"
+
+is_compartmented:
+  name: "CLOISONNE"
+  class: "boolean"
+  definition: ""
+
+res_spe1:
+  name: "RES_ESS1"
   alias: ["PLT_ESS", "PLT_COMS"]
   class: "character"
-  definition: "Main specie"
+  definition: "Main specie of reserves"
 
-spe1_pct:
-  name: "ESS_1_PCT"
-  class: numeric
-  definition: "% main specie"
-
-spe2:
-  name: "ESS_2_NOM"
+res_spe2:
+  name: "RES_ESSS"
   class: "character"
-  definition: "Secondary specie"
+  definition: "Other species of reserves"
 
-spe2_pct:
-  name: "ESS_2_PCT"
-  class: numeric
-  definition: "% secondary specie"
-
-spe3:
-  name: "ESS_3_NOM"
+res_struct:
+  name: "RES_STRUCTURE"
+  alias: ["PLT_STR", "REV_CA"]
   class: "character"
-  definition: "Tertiary essence"
+  definition: "Stand structure of reserves"
 
-spe3_pct:
-  name: "ESS_3_PCT"
-  class: numeric
-  definition: "% tertiary essence"
-
-copice:
-  name: "TSE_DSCR"
+cop_spe1:
+  name: "TSE_ESS1"
   class: "character"
-  definition: "Copice"
+  definition: "Main specie of coppice"
 
-regeneration:
-  name: "REG_DSCR"
+cop_spe2:
+  name: "TSE_ESSS"
   class: "character"
-  definition: "Regeneration"
+  definition: "Other species of coppice"
 
-comment:
-  name: "COMMENTS"
+cop_density:
+  name: "TSE_DENSITE"
   class: "character"
-  definition: "Comments"
+  definition: "Density of coppice"
 
-soil:
-  name: "SOL_TYPE"
-  alias: ["GEOL_TYPE"]
+cop_nature:
+  name: "TSE_NATURE"
   class: "character"
-  definition: "Soil classification"
+  definition: "Nature of coppice"
+
+reg_spe1:
+  name: "JEU_ESS1"
+  class: "character"
+  definition: "Main specie of regeneration"
+
+reg_spe2:
+  name: "JEU_ESSS"
+  class: "character"
+  definition: "Other species of regeneration"
+
+reg_stage:
+  name: "JEU_STADE"
+  class: "character"
+  definition: "Regeneration growth stage"
+
+reg_density:
+  name: "JEU_DENSITE"
+  class: "character"
+  definition: "Regeneration density"
 
 treatment:
   name: "AME_TYPE"
@@ -223,10 +236,21 @@ is_subsidized:
   definition: "Is subsidized ?"
 
 subsidy:
-  name: "SUBVENTION"
+  name: "SUB_DISPOSITIF"
   alias: ["DISP_TYPE"]
   class: "character"
   definition: "Subsidy scheme"
+
+comment:
+  name: "COMMENTS"
+  class: "character"
+  definition: "Comments"
+
+soil:
+  name: "SOL_TYPE"
+  alias: ["GEOL_TYPE"]
+  class: "character"
+  definition: "Soil classification"
 
 # vector ----
 source:

@@ -10,6 +10,31 @@ parca_to_ua <- function(parca) {
   ua <- seq_normalize(parca, "ua")
 }
 
+#' Create _PARCA_ sf object from _UA_ sf object
+#'
+#' @param ua `sf` object containing analysis units
+#'
+#' @return An `sf` object containing cadastral parcels.
+#'
+#' @details
+#' This function deviates from the traditional process.
+#' It allows the _PARCA_ layer to be recreated from a _UA_ layer
+#' in the case of a folder where the first layer is missing.
+#'
+#' @export
+ua_to_parca <- function(ua) {
+  idu_field <- seq_field("idu")$name
+
+  parca <- seq_normalize(ua, "parca")
+
+  aggregate(
+    parca,
+    by = setNames(list(parca[[idu_field]]), idu_field),
+    FUN = function(x) x[1],
+    do_union = TRUE
+  )
+}
+
 #' Create analysis units layer
 #'
 #' This function reads the cadastral layer file from a project directory
@@ -237,9 +262,14 @@ ua_generate_area <- function(ua, verbose = TRUE) {
 #' @noRd
 seq_desc_fields <- function() {
   keys <- c(
-    "stand","wealth","stage","year","structure",
-    "spe1","spe1_pct","spe2","spe2_pct","spe3","spe3_pct",
-    "copice","regeneration","treatment"
+    "std_type", "std_wealth", "std_stage", "std_year",
+    "is_damaged", "is_available", "is_compartmented",
+    "res_spe1", "res_spe2", "res_struct",
+    "cop_spe1", "cop_spe2", "cop_density", "cop_nature",
+    "reg_spe1", "reg_spe2", "reg_stage", "reg_density",
+    "treatment",
+    "is_subsidized", "subsidy",
+    "comment", "soil"
   )
   vapply(keys, function(k) seq_field(k)$name, character(1))
 }

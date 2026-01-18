@@ -347,9 +347,8 @@ seq_road <- function(
     cli::cli_h1("ROAD")
   }
 
-  # Retrieve toponyms
+  # Retrieve lines
   road_line <- get_road(parca)
-  road_line <- road_line[road_line[[type_field]] != "PN", ]
 
   # Exit early if nothing to write
   if (!nrow(road_line) || nrow(road_line) == 0) {
@@ -374,6 +373,9 @@ seq_road <- function(
   )
 
   # Write road_poly with id
+  type_field <- seq_field("type")$name
+  road_line <- road_line[road_line[[type_field]] != "PN", ]
+
   road_poly <- line_to_poly(road_line)
   road_poly[[id_field]] <- id
 

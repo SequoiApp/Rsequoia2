@@ -59,24 +59,29 @@ ua:
   - mgmt_code
   - pcl_code
   - sub_code
-  - stand
-  - wealth
-  - stage
-  - year
-  - structure
-  - spe1
-  - spe1_pct
-  - spe2
-  - spe2_pct
-  - spe3
-  - spe3_pct
-  - copice
-  - regeneration
-  - soil
+  - std_type
+  - std_wealth
+  - std_stage
+  - std_year
+  - is_damaged
+  - is_available
+  - is_compartmented
+  - res_spe1
+  - res_spe2
+  - res_struct
+  - cop_spe1
+  - cop_spe2
+  - cop_density
+  - cop_nature
+  - reg_spe1
+  - reg_spe2
+  - reg_stage
+  - reg_density
   - treatment
   - is_subsidized
   - subsidy
   - comment
+  - soil
   - gis_area
   - cor_area
   - cad_area
