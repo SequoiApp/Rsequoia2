@@ -17,7 +17,11 @@ seq1_update(dirname = ".", verbose = TRUE, overwrite = FALSE)
 
 - verbose:
 
-  `logical` If `TRUE`, display progress messages.
+  `logical` If `TRUE`, display progress messages. Defaults to `TRUE`.
+
+- overwrite:
+
+  `logical`; whether to overwrite existing files. Defaults to `FALSE`.
 
 ## Value
 
