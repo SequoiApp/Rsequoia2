@@ -64,11 +64,11 @@ insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
 #> ℹ Downloading legal entity datasets...
-#> ⠙ 15 extracted | 709 MB (146 MB/s) | 4.9s
-#> ⠹ 33 extracted | 1.4 GB (178 MB/s) | 7.9s
-#> ⠙ 25 extracted | 936 MB (215 MB/s) | 4.3s
-#> ⠹ 34 extracted | 1.4 GB (186 MB/s) | 7.3s
-#> ⠸ 51 extracted | 2.1 GB (199 MB/s) | 10.3s
+#> ⠙ 7 extracted | 348 MB ( 87 MB/s) | 4s
+#> ⠹ 21 extracted | 993 MB (158 MB/s) | 6.3s
+#> ⠙ 24 extracted | 901 MB (152 MB/s) | 5.9s
+#> ⠹ 28 extracted | 1.0 GB (153 MB/s) | 6.7s
+#> ⠸ 51 extracted | 2.0 GB (210 MB/s) | 9.7s
 #> ✔ Data available at: /home/runner/.cache/R/Rsequoia2
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
@@ -182,8 +182,6 @@ seq_write(
 
 seq_parca(seq_dir)
 #> ℹ Downloading BDP from IGN...
-#> ⠙ iterating 1 done (0.24/s) | 4.2s
-#> iterating ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 #> ✔ 12 of 13 ETALAB geom successfully replaced with BDP geom.
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 13 features saved to 1_SEQUOIA/IDENTIFIANT_SEQ_PARCA_poly.geojson.
