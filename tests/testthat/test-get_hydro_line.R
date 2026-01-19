@@ -18,7 +18,7 @@ test_that("get_hydro_line() returns empty sf when get_vege_poly() returns empty"
   expect_true(all(st_geometry_type(res) == "LINESTRING"))
 })
 
-test_that("get_hydro_line() returns lines when polygons are available", {
+test_that("get_hydro_line() returns lines when data are available", {
 
   x <- sf::st_as_sf(sf::st_sfc(sf::st_point(c(5, 5)), crs = 2154))
 

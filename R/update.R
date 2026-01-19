@@ -45,9 +45,9 @@ seq1_read <- function(dirname = ".", layer) {
   )
 
   if (length(file) == 0) {
-    cli::cli_warn(
+    cli::cli_warn(c(
       "!" = "No matched file for {.val {layer}}."
-    )
+    ))
     return(seq_empty)
   }
 
@@ -77,10 +77,17 @@ seq1_id <- function(dirname = "."){
     recursive = TRUE
   )
 
-  if (length(file) != 1) {
-    cli::cli_abort(
+  if (length(file) == 0) {
+    cli::cli_warn(c(
+      "!" = "No _PARCA_ file detected."
+    ))
+    return(NULL)
+  }
+
+  if (length(file) > 1) {
+    cli::cli_abort(c(
       "x" = "Multiple files _PARCA_ detected. The folder must contain exactly one matching file."
-    )
+    ))
   }
 
   fname <- basename(file)
@@ -149,6 +156,22 @@ update_ua <- function(ua, id){
 #'
 #' @noRd
 update_infra <- function(x) {
+
+  # normalize
+  gtype <- sf::st_geometry_type(x, by_geometry = FALSE)
+  target <- switch(
+    as.character(gtype),
+    "POLYGON"      = "vct_poly",
+    "MULTIPOLYGON" = "vct_poly",
+    "LINESTRING"      = "vct_line",
+    "MULTILINESTRING" = "vct_line",
+    "POINT"      = "vct_point",
+    "MULTIPOINT" = "vct_point",
+    cli::cli_abort("Invalid geometry : {gtype}")
+  )
+  x <- seq_normalize(x, target)
+
+  # update
   type_field <- seq_field("type")$name
 
   map <- c(
@@ -179,7 +202,7 @@ update_infra <- function(x) {
     x[[type_field]]
   )
 
-  return(x)
+  return(invisible(x))
 }
 
 #' Update `R_SEQUOIA` projet to `Rsequoia2`
@@ -187,7 +210,6 @@ update_infra <- function(x) {
 #' @param dirname `character` Directory where the `R_SEQUOIA` files are located.
 #' Defaults to the current working directory.
 #' @param verbose `logical` If `TRUE`, display progress messages.
-#' @param overwrite `logical` If `TRUE`, overwrite layer
 #'
 #' @return
 #' Invisibly returns a named vector of file paths written by [seq_write()].

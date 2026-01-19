@@ -171,6 +171,10 @@ get_hydro_line <- function(x){
 #' @export
 get_hydro_point <- function(x){
 
+  if (!inherits(x, c("sf", "sfc"))) {
+    cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
+  }
+
   # convex buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
@@ -187,16 +191,24 @@ get_hydro_point <- function(x){
 
   # mare
   mar <- happign::get_wfs(
-    fetch_envelope, "BDTOPO_V3:detail_hydrographique", verbose = FALSE
-  ) |> sf::st_transform(crs)
+    x = fetch_envelope,
+    layer = "BDTOPO_V3:detail_hydrographique",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
-  if(nrow(mar)){
+  if(nrow(mar)>0){
+    mar <- sf::st_transform(mar, crs)
     mar[[type]] <- "MAR"
     mar[[name]] <- mar$toponyme
     mar[[source]] <- "IGNF_BDTOPO_V3"
 
     mar <- seq_normalize(mar, "vct_point")
     hydro_point <- rbind(hydro_point, mar)
+  }
+
+  if (nrow(hydro_point)==0) {
+    cli::cli_warn("No hydrologic data found. Empty {.cls sf} is returned.")
   }
 
   return(invisible(hydro_point))
