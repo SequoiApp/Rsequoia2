@@ -10,7 +10,11 @@ seq1_update(dirname = ".", verbose = TRUE, overwrite = FALSE)
 \item{dirname}{\code{character} Directory where the \code{R_SEQUOIA} files are located.
 Defaults to the current working directory.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.
+Defaults to \code{TRUE}.}
+
+\item{overwrite}{\code{logical}; whether to overwrite existing files.
+Defaults to \code{FALSE}.}
 }
 \value{
 Invisibly returns a named vector of file paths written by \code{\link[=seq_write]{seq_write()}}.
