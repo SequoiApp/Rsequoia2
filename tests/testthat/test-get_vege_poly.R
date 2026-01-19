@@ -1,4 +1,4 @@
-test_that("get_mnhn() validates x", {
+test_that("get_vege_poly() validates x", {
   expect_error(get_vege_poly(42), "x.*sf")
   expect_error(get_vege_poly("a"), "x.*sf")
 })

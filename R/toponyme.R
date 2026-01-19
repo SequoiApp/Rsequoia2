@@ -11,9 +11,9 @@
 #' @return An `sf` object containing toponymic point features with standardized
 #' attribute fields:
 #'   * `TYPE` — Toponym class
-#'     - `THYDR` = Hydrographic toponym
-#'     - `TVEGE` = Vegetation-related toponym
-#'     - `TYPON` = Other toponyms
+#'     - `HYD` = Hydrographic toponym
+#'     - `VEG` = Vegetation-related toponym
+#'     - `TYP` = Other toponyms
 #'   * `NATURE` — Original BDTOPO object nature
 #'   * `NAME` — Official toponym name (when available)
 #'   * `SOURCE` — Data source identifier (`IGNF_BDTOPO_V3`)
@@ -73,9 +73,9 @@ get_toponyme <- function(x, verbose = verbose) {
   )
 
   # type
-  toponyme[[type]] <- "TYPON"
-  toponyme[toponyme$classe_de_l_objet %in% t_hydr, type] <- "THYDR"
-  toponyme[toponyme$classe_de_l_objet %in% t_vege, type] <- "TVEGE"
+  toponyme[[type]] <- "TYP"
+  toponyme[toponyme$classe_de_l_objet %in% t_hydr, type] <- "HYD"
+  toponyme[toponyme$classe_de_l_objet %in% t_vege, type] <- "VEG"
 
   # autres champs
   toponyme[[nature]] <- toponyme$nature_de_l_objet

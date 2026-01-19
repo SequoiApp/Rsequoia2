@@ -27,10 +27,10 @@ tmap_options(scale = 0.75)
 ```{r definition, include = FALSE}
 idu <- Rsequoia2:::seq_field("idu")$name
 surf_ca <- Rsequoia2:::seq_field("cad_area")$name
-stand <- Rsequoia2:::seq_field("stand")$name
-wealth <- Rsequoia2:::seq_field("wealth")$name
-stage <- Rsequoia2:::seq_field("stage")$name
-year <- Rsequoia2:::seq_field("year")$name
+stand <- Rsequoia2:::seq_field("std_type")$name
+wealth <- Rsequoia2:::seq_field("std_wealth")$name
+stage <- Rsequoia2:::seq_field("std_stage")$name
+year <- Rsequoia2:::seq_field("std_year")$name
 management <- Rsequoia2:::seq_field("mgmt_code")$name
 parcelle <- Rsequoia2:::seq_field("pcl_code")$name
 sous_parcelle <- Rsequoia2:::seq_field("sub_code")$name

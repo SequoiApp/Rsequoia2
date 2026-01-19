@@ -5,7 +5,7 @@
 #' @return An `sf` object containing hydrographic polygons with two fields:
 #'   * `TYPE` — hydrographic class
 #'     - `RSO` = Reservoir or water tower
-#'     - `SFO` = Permanent hydrographic surface
+#'     - `SFP` = Permanent hydrographic surface
 #'     - `SFI` = Intermittent hydrographic surface
 #'   * `NATURE` — Original BDTOPO nature field
 #'   * `NAME` — Official hydrographic name (when available)
@@ -17,6 +17,10 @@
 #'
 #' @export
 get_hydro_poly <- function(x){
+
+  if (!inherits(x, c("sf", "sfc"))) {
+    cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
+  }
 
   # convex buffer
   crs <- 2154
@@ -34,10 +38,14 @@ get_hydro_poly <- function(x){
 
   # retrieve rso
   rso <- happign::get_wfs(
-    fetch_envelope, "BDTOPO_V3:reservoir", verbose = FALSE
-  ) |> sf::st_transform(crs)
+    x = fetch_envelope,
+    layer = "BDTOPO_V3:reservoir",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
-  if(nrow(rso)){
+  if(nrow(rso)>0){
+    rso <- sf::st_transform(rso, crs)
     rso[[type]] <- "RSO"
     rso[[source]] <- "IGNF_BDTOPO_V3"
 
@@ -47,16 +55,24 @@ get_hydro_poly <- function(x){
 
   # surface
   sfo <- happign::get_wfs(
-    fetch_envelope, "BDTOPO_V3:surface_hydrographique", verbose = FALSE
-  ) |> sf::st_transform(crs)
+    x = fetch_envelope,
+    layer = "BDTOPO_V3:surface_hydrographique",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
-  if(nrow(sfo)){
-    sfo[[type]] <- ifelse(sfo$persistance == "Permanent", "SFO", "SFI")
+  if(nrow(sfo)>0){
+    sfo <- sf::st_transform(sfo, crs)
+    sfo[[type]] <- ifelse(sfo$persistance == "Permanent", "SFP", "SFI")
     sfo[[name]] <- sfo$cpx_toponyme_de_plan_d_eau
     sfo[[source]] <- "IGNF_BDTOPO_V3"
 
     sfo <- seq_normalize(sfo, "vct_poly")
     hydro_poly <- rbind(hydro_poly, sfo)
+  }
+
+  if (nrow(hydro_poly)==0) {
+    cli::cli_warn("No hydrologic data found. Empty {.cls sf} is returned.")
   }
 
   return(invisible(hydro_poly))
@@ -72,8 +88,8 @@ get_hydro_poly <- function(x){
 #'
 #' @return An `sf` object containing hydrographic line features with four fields:
 #'   * `TYPE` — hydrographic class
-#'     - `RUI` = Permanent hydrographic line
-#'     - `RIN` = Intermittent hydrographic line
+#'     - `RUP` = Permanent hydrographic line
+#'     - `RUI` = Intermittent hydrographic line
 #'   * `NATURE` — Original BDTOPO nature field
 #'   * `NAME` — Official hydrographic name (when available)
 #'   * `OFFSET` — Offset information
@@ -86,6 +102,10 @@ get_hydro_poly <- function(x){
 #'
 #' @export
 get_hydro_line <- function(x){
+
+  if (!inherits(x, c("sf", "sfc"))) {
+    cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
+  }
 
   # convex buffer
   crs <- 2154
@@ -103,16 +123,24 @@ get_hydro_line <- function(x){
 
   # troncon
   rui <- happign::get_wfs(
-    fetch_envelope, "BDTOPO_V3:troncon_hydrographique", verbose = FALSE
-  ) |> sf::st_transform(crs)
+    x = fetch_envelope,
+    layer = "BDTOPO_V3:troncon_hydrographique",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
   if(nrow(rui)){
-    rui[[type]] = ifelse(rui$persistance == "Permanent", "RUI", "RIN")
+    rui <- sf::st_transform(rui, crs)
+    rui[[type]] = ifelse(rui$persistance == "Permanent", "RUP", "RUI")
     rui[[name]] = rui$cpx_toponyme_de_cours_d_eau
     rui[[source]] <- "IGNF_BDTOPO_V3"
 
     rui <- seq_normalize(rui, "vct_line")
     hydro_line <- rbind(hydro_line, rui)
+  }
+
+  if (nrow(hydro_line)==0) {
+    cli::cli_warn("No hydrologic data found. Empty {.cls sf} is returned.")
   }
 
   return(invisible(hydro_line))
