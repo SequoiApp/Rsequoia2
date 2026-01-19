@@ -17,9 +17,9 @@ attribute fields:
 \itemize{
 \item \code{TYPE} — Toponym class
 \itemize{
-\item \code{THYDR} = Hydrographic toponym
-\item \code{TVEGE} = Vegetation-related toponym
-\item \code{TYPON} = Other toponyms
+\item \code{HYD} = Hydrographic toponym
+\item \code{VEG} = Vegetation-related toponym
+\item \code{TYP} = Other toponyms
 }
 \item \code{NATURE} — Original BDTOPO object nature
 \item \code{NAME} — Official toponym name (when available)

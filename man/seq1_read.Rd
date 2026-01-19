@@ -13,7 +13,7 @@ Defaults to the current working directory.}
 \item{layer}{\code{character} Layer name.}
 }
 \value{
-An \code{sf} object.
+An \code{sf} object or an empty \code{sf} object if no file are matched.
 }
 \description{
 Open old \code{R_SEQUOIA} vector file

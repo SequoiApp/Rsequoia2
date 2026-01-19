@@ -15,7 +15,7 @@ An \code{sf} object containing hydrographic polygons with two fields:
 \item \code{TYPE} — hydrographic class
 \itemize{
 \item \code{RSO} = Reservoir or water tower
-\item \code{SFO} = Permanent hydrographic surface
+\item \code{SFP} = Permanent hydrographic surface
 \item \code{SFI} = Intermittent hydrographic surface
 }
 \item \code{NATURE} — Original BDTOPO nature field

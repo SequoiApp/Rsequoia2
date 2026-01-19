@@ -87,8 +87,6 @@ get_legal_entity <- function(
     x,
     cache = NULL,
     verbose = TRUE){
-  # Helpers ----
-  pad_left <- function(x, width) gsub(" ", "0", sprintf(paste0("%", width, "s"), as.character(x)))
 
   # Check input ---
   x <- as.character(x)
@@ -123,65 +121,21 @@ get_legal_entity <- function(
   pattern <- paste0(deps, ".*\\.csv$")
   files <- list.files(cache, pattern = pattern, recursive = TRUE, full.names = TRUE)
 
-  if (verbose) cli_alert_info("Reading CSV files...")
-  col_classes <- replace(rep("NULL", 24), c(1, 3, 5, 6, 7, 13, 14, 16, 17, 18, 24), NA)
-  raw <- do.call(rbind, lapply(files, read.csv2, colClasses = col_classes))
-  names(raw) <- c(
-    "dep", "com", "prefix", "section", "numero", "lieu_dit",
-    "surf_tot", "nature", "contenance", "type", "prop"
+  raw <- read_legal_entity(files, verbose = verbose)
+
+  f_legal_entity <- format_legal_entity(
+    legal_entity = raw,
+    code_insee = code_insee,
+    verbose = verbose
   )
 
-  if (length(code_insee)){
-    raw_insee <- paste0(pad_left(raw$dep, 2), pad_left(raw$com, 3))
-    raw <- raw[raw_insee %in% code_insee, ] # Keep insee code
-  }
-
-  raw <- raw[startsWith(raw$type, "P"), ] # Keep proprietaire only
-
-  if (verbose) cli_alert_info("Preparing CSV files...")
-  legal_entity <- raw |>
-    transform(
-      idu = paste0(
-        pad_left(dep, 2),
-        pad_left(com, 3),
-        ifelse(is.na(prefix), "000", pad_left(prefix, 3)),
-        pad_left(section, 2),
-        pad_left(numero, 4)
-      )
-    )
-
-  legal_entity_prop <- aggregate(prop ~ idu, data = legal_entity, FUN = \(x) paste(unique(x), collapse = " \\ "))
-  legal_entity_lieu_dit <- aggregate(lieu_dit ~ idu, data = legal_entity, FUN = \(x) paste(unique(x), collapse = " \\ "))
-
-  if (verbose) cli_alert_info("Generating matrice...")
-
-  legal_entity_clean <- legal_entity |>
-    subset(select = c("idu", "surf_tot")) |>
-    unique() |>
-    merge(legal_entity_prop, all.x = TRUE) |>
-    merge(legal_entity_lieu_dit, all.x = TRUE)
-
-  matrice_legal_entity <- legal_entity_clean |>
-    transform(
-      "idu" = legal_entity_clean$idu,
-      "insee" = substr(idu, 1, 5),
-      "com" = substr(idu, 3, 5),
-      "prefix" = substr(idu, 6, 8),
-      "section" = substr(idu, 9, 10),
-      "numero" = substr(idu, 11, 14),
-      "contenance" = legal_entity_clean$surf_tot,
-      "source" = "https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales"
-    ) |>
-    merge(happign::com_2025[, c("COM", "NCC_COM", "DEP")], by.x = "insee", by.y = "COM") |>
-    merge(happign::dep_2025[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
-    merge(happign::reg_2025[, c("REG", "NCC_REG")], all.x = TRUE) |>
-    seq_normalize("parca")
+  matrice <- normalize_legal_entity(f_legal_entity, verbose = verbose)
 
   if (verbose) {
-    cli::cli_alert_success("Matrix successfully generated ({.val {nrow(legal_entity_clean)}} rows).")
+    cli::cli_alert_success("Matrix successfully generated ({.val {nrow(matrice)}} rows).")
   }
 
-  return(matrice_legal_entity)
+  return(matrice)
 }
 
 #' Helpers to search within a forest matrix
@@ -248,4 +202,115 @@ search_legal_entity <- function(x, prop = NULL, lieu_dit = NULL) {
   return(res)
 }
 
+#' Read legal-entity CSV files
+#'
+#' @keywords internal
+read_legal_entity <- function(files, verbose = TRUE) {
 
+  if (verbose) cli::cli_alert_info("Reading CSV files...")
+
+  # Column classes: keep only useful fields, others ignored
+  col_classes <- replace(
+    rep("NULL", 24),
+    c(1, 3, 5, 6, 7, 13, 14, 16, 17, 18, 24),
+    NA
+  )
+
+  raw <- do.call(
+    rbind,
+    lapply(files, read.csv2, colClasses = col_classes)
+  )
+
+  # Canonical column names (DGFiP layout)
+  names(raw) <- c(
+    "dep", "com", "prefix", "section", "numero", "lieu_dit",
+    "surf_tot", "nature", "contenance", "type", "prop"
+  )
+
+  return(raw)
+}
+
+#' Format and aggregate legal-entity data
+#'
+#' @keywords internal
+format_legal_entity <- function(legal_entity, code_insee = NULL, verbose = FALSE){
+
+  if (verbose)
+    cli::cli_alert_info("Preparing CSV files...")
+
+  # Filter by INSEE code if provided
+  if (length(code_insee)) {
+    insee <- paste0(
+      pad_left(legal_entity$dep, 2),
+      pad_left(legal_entity$com, 3)
+    )
+    legal_entity <- legal_entity[insee %in% code_insee, ]
+  }
+
+  # Keep proprietors only
+  legal_entity <- legal_entity[startsWith(legal_entity$type, "P"), ]
+
+  # Build IDU
+  formatted_legal_entity <- transform(
+    legal_entity,
+    idu = paste0(
+      pad_left(dep, 2),
+      pad_left(com, 3),
+      ifelse(is.na(prefix), "000", pad_left(prefix, 3)),
+      pad_left(section, 2),
+      pad_left(numero, 4)
+    )
+  )
+
+  # Aggregate textual fields
+  legal_entity_prop <- aggregate(
+    prop ~ idu,
+    data = formatted_legal_entity,
+    FUN = \(x) paste(unique(x), collapse = " \\ ")
+  )
+
+  legal_entity_lieu_dit <- aggregate(
+    lieu_dit ~ idu,
+    data = formatted_legal_entity,
+    FUN = \(x) paste(unique(x), collapse = " \\ ")
+  )
+
+  # One row per IDU
+  cleaned_legal_entity <- formatted_legal_entity |>
+    subset(select = c("idu", "surf_tot")) |>
+    unique() |>
+    merge(legal_entity_prop, all.x = TRUE) |>
+    merge(legal_entity_lieu_dit, all.x = TRUE)
+
+  return(cleaned_legal_entity)
+}
+
+#' Normalize legal-entity matrice
+#'
+#' @keywords internal
+normalize_legal_entity <- function(legal_entity, verbose = FALSE){
+
+  le_insee <- "insee"
+  le_idu <- "idu"
+  le_cad_area <- "surf_tot"
+
+  if (verbose) cli_alert_info("Generating matrice...")
+
+  matrice <- legal_entity |>
+    transform(
+      "idu" = legal_entity[[le_idu]],
+      "insee" = substr(idu, 1, 5),
+      "com" = substr(idu, 3, 5),
+      "prefix" = substr(idu, 6, 8),
+      "section" = substr(idu, 9, 10),
+      "numero" = substr(idu, 11, 14),
+      "contenance" = legal_entity[[le_cad_area]],
+      "source" = "https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales"
+    ) |>
+    merge(happign::com_2025[, c("COM", "NCC_COM", "DEP")], by.x = le_insee, by.y = "COM") |>
+    merge(happign::dep_2025[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
+    merge(happign::reg_2025[, c("REG", "NCC_REG")], all.x = TRUE) |>
+    seq_normalize("parca")
+
+  return(matrice)
+}

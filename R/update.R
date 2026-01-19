@@ -187,6 +187,7 @@ update_infra <- function(x) {
 #' @param dirname `character` Directory where the `R_SEQUOIA` files are located.
 #' Defaults to the current working directory.
 #' @param verbose `logical` If `TRUE`, display progress messages.
+#' @param overwrite `logical` If `TRUE`, overwrite layer
 #'
 #' @return
 #' Invisibly returns a named vector of file paths written by [seq_write()].

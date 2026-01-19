@@ -14,8 +14,8 @@ An \code{sf} object containing hydrographic line features with four fields:
 \itemize{
 \item \code{TYPE} — hydrographic class
 \itemize{
-\item \code{RUI} = Permanent hydrographic line
-\item \code{RIN} = Intermittent hydrographic line
+\item \code{RUP} = Permanent hydrographic line
+\item \code{RUI} = Intermittent hydrographic line
 }
 \item \code{NATURE} — Original BDTOPO nature field
 \item \code{NAME} — Official hydrographic name (when available)
