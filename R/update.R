@@ -208,8 +208,11 @@ update_infra <- function(x) {
 #' Update `R_SEQUOIA` projet to `Rsequoia2`
 #'
 #' @param dirname `character` Directory where the `R_SEQUOIA` files are located.
-#' Defaults to the current working directory.
+#'   Defaults to the current working directory.
 #' @param verbose `logical` If `TRUE`, display progress messages.
+#'   Defaults to `TRUE`.
+#' @param overwrite `logical`; whether to overwrite existing files.
+#'   Defaults to `FALSE`.
 #'
 #' @return
 #' Invisibly returns a named vector of file paths written by [seq_write()].
