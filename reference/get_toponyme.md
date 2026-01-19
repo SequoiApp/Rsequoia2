@@ -28,11 +28,11 @@ attribute fields:
 
 - `TYPE` — Toponym class
 
-  - `THYDR` = Hydrographic toponym
+  - `HYD` = Hydrographic toponym
 
-  - `TVEGE` = Vegetation-related toponym
+  - `VEG` = Vegetation-related toponym
 
-  - `TYPON` = Other toponyms
+  - `TYP` = Other toponyms
 
 - `NATURE` — Original BDTOPO object nature
 

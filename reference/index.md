@@ -152,6 +152,11 @@
 
   Open old `R_SEQUOIA` vector file
 
+- [`seq1_update()`](https://mucau.github.io/Rsequoia2/reference/seq1_update.md)
+  :
+
+  Update `R_SEQUOIA` projet to `Rsequoia2`
+
 - [`seq_boundaries()`](https://mucau.github.io/Rsequoia2/reference/seq_boundaries.md)
   :
 

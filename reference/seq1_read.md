@@ -21,4 +21,4 @@ seq1_read(dirname = ".", layer)
 
 ## Value
 
-An `sf` object.
+An `sf` object or an empty `sf` object if no file are matched.

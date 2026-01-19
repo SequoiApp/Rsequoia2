@@ -22,7 +22,7 @@ An `sf` object containing hydrographic polygons with two fields:
 
   - `RSO` = Reservoir or water tower
 
-  - `SFO` = Permanent hydrographic surface
+  - `SFP` = Permanent hydrographic surface
 
   - `SFI` = Intermittent hydrographic surface
 

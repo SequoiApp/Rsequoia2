@@ -22,9 +22,9 @@ An `sf` object containing hydrographic line features with four fields:
 
 - `TYPE` — hydrographic class
 
-  - `RUI` = Permanent hydrographic line
+  - `RUP` = Permanent hydrographic line
 
-  - `RIN` = Intermittent hydrographic line
+  - `RUI` = Intermittent hydrographic line
 
 - `NATURE` — Original BDTOPO nature field
 
