@@ -142,6 +142,16 @@
 - [`search_legal_entity()`](https://mucau.github.io/Rsequoia2/reference/search_legal_entity.md)
   : Helpers to search within a forest matrix
 
+- [`seq1_id()`](https://mucau.github.io/Rsequoia2/reference/seq1_id.md)
+  :
+
+  Retrieve old `R_SEQUOIA` *PARCA* identifier
+
+- [`seq1_read()`](https://mucau.github.io/Rsequoia2/reference/seq1_read.md)
+  :
+
+  Open old `R_SEQUOIA` vector file
+
 - [`seq_boundaries()`](https://mucau.github.io/Rsequoia2/reference/seq_boundaries.md)
   :
 
@@ -280,6 +290,11 @@
 
   Create management unit field (UG) in the *UA* sf object
 
+- [`ua_to_parca()`](https://mucau.github.io/Rsequoia2/reference/ua_to_parca.md)
+  :
+
+  Create *PARCA* sf object from *UA* sf object
+
 - [`ua_to_pf()`](https://mucau.github.io/Rsequoia2/reference/ua_to_pf.md)
   :
 
@@ -294,3 +309,13 @@
   :
 
   Check and update *UA* consistency with cadastral *PARCA* data
+
+- [`update_parca()`](https://mucau.github.io/Rsequoia2/reference/update_parca.md)
+  :
+
+  Update `R_SEQUOIA` *PARCA* layer to `Rsequoia2`
+
+- [`update_ua()`](https://mucau.github.io/Rsequoia2/reference/update_ua.md)
+  :
+
+  Update `R_SEQUOIA` *UA* layer to `Rsequoia2`
