@@ -120,6 +120,7 @@ menu_data <- function(path, overwrite){
     "Infra"         = function() try(seq_infra(path, overwrite = overwrite)),
     "Routes"        = function() try(seq_road(path, overwrite = overwrite)),
     "PRSF"          = function() try(seq_prsf(path, overwrite = overwrite)),
+    "OLD"           = function() try(seq_old(path, overwrite = overwrite)),
     "Toponyme"      = function() try(seq_toponyme(path, overwrite = overwrite)),
     "Hydrology"     = function() try(seq_hydro(path, overwrite = overwrite)),
     "Vegetation"    = function() try(seq_vege(path, overwrite = overwrite)),

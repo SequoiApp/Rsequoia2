@@ -1,19 +1,19 @@
-#' Retrieve PRSF point features around an area
+#' Retrieve OLD features around an area
 #'
-#' Builds a convex buffer around the input geometry, retrieves PRSF
-#' point features and returns an `sf` point layer.
+#' Builds a convex buffer around the input geometry, retrieves OLD
+#' features and returns an `sf` point layer.
 #'
 #' @param x An `sf` object defining the input area of interest.
 #' @param verbose `logical` If `TRUE`, display messages.
 #'
-#' @return An `sf` object containing PRSF point features.
+#' @return An `sf` object containing OLD features.
 #'
 #' @details
 #' The function creates a 5000 m convex buffer around the input geometry `x`
-#' and retrieves PRSF point features before returns as a single `sf` point layer.
+#' and retrieves OLD features before returns as a single `sf` point layer.
 #'
 #' @export
-get_prsf <- function(x, verbose = TRUE) {
+get_old <- function(x, verbose = TRUE) {
 
   # convex buffer
   crs <- 2154
@@ -21,27 +21,27 @@ get_prsf <- function(x, verbose = TRUE) {
   fetch_envelope <- envelope(x, 5000)
 
   if (verbose){
-    cli::cli_alert_info("Downloading PRSF dataset...")
+    cli::cli_alert_info("Downloading OLD dataset...")
   }
 
   # retrieve toponymic point
-  prsf <- happign::get_wfs(
+  old <- happign::get_wfs(
     x = fetch_envelope,
-    layer = "PROTECTEDAREAS.PRSF:prsf",
+    layer = "DEBROUSSAILLEMENT:debroussaillement",
     predicate = happign::intersects(),
     verbose = FALSE
   )
 
-  if (!nrow(prsf)) {
+  if (!nrow(old)) {
     return(NULL)
   }
 
-  return(invisible(sf::st_transform(prsf, crs)))
+  return(invisible(sf::st_transform(old, crs)))
 }
 
-#' Generate PRSF point layer for a Sequoia project
+#' Generate OLD layer for a Sequoia project
 #'
-#' Retrieves PRSF point features intersecting and surrounding
+#' Retrieves OLD features intersecting and surrounding
 #' the project area, and writes the resulting layer to disk.
 #'
 #' @param dirname `character` Path to the project directory.
@@ -52,23 +52,23 @@ get_prsf <- function(x, verbose = TRUE) {
 #'   Defaults to `FALSE`.
 #'
 #' @details
-#' PRSF point features are retrieved using [get_prsf()].
+#' OLD features are retrieved using [get_old()].
 #'
-#' If no PRSF point features are found, the function returns `NULL`
+#' If no OLD features are found, the function returns `NULL`
 #' invisibly and no file is written.
 #'
 #' When features are present, the layer is written to disk using
-#' [seq_write()] with the key `"v.prsf.point"`.
+#' [seq_write()] with the key `"v.old.poly"`.
 #'
 #' @return
 #' Invisibly returns a named list of file paths written by [seq_write()].
-#' Returns `NULL` invisibly when no PRSF point features are found.
+#' Returns `NULL` invisibly when no OLD features are found.
 #'
 #' @seealso
 #' [get_prsf()], [seq_write()]
 #'
 #' @export
-seq_prsf <- function(
+seq_old <- function(
     dirname = ".",
     verbose = TRUE,
     overwrite = FALSE
@@ -80,18 +80,18 @@ seq_prsf <- function(
   id <- unique(parca[[id_field]])
 
   if (verbose){
-    cli::cli_h1("PRSF")
+    cli::cli_h1("OLD")
   }
 
   # Retrieve toponyms
-  prsf <- get_prsf(parca, verbose = verbose)
+  old <- get_old(parca, verbose = verbose)
 
-  if (!is.null(prsf)){
-    prsf[[id_field]] <- id
+  if (!is.null(old)){
+    old[[id_field]] <- id
 
-    prsf <- seq_write(
-      prsf,
-      "v.prsf.point",
+    old <- seq_write(
+      old,
+      "v.old.poly",
       dirname = dirname,
       id = id,
       verbose = verbose,
@@ -99,5 +99,5 @@ seq_prsf <- function(
     )
   }
 
-  return(invisible(c(prsf) |> as.list()))
+  return(invisible(c(old) |> as.list()))
 }
