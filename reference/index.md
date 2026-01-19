@@ -75,6 +75,9 @@
 - [`get_mnhn()`](https://mucau.github.io/Rsequoia2/reference/get_mnhn.md)
   : Download MNHN vector layer from IGN WFS (RGB or IRC)
 
+- [`get_old()`](https://mucau.github.io/Rsequoia2/reference/get_old.md)
+  : Retrieve OLD features around an area
+
 - [`get_ortho()`](https://mucau.github.io/Rsequoia2/reference/get_ortho.md)
   : Download orthophotos from the IGN WMS (RGB or IRC)
 
@@ -203,6 +206,9 @@
 
 - [`seq_normalize()`](https://mucau.github.io/Rsequoia2/reference/seq_normalize.md)
   : Normalize a data frame according to Sequoia table definitions
+
+- [`seq_old()`](https://mucau.github.io/Rsequoia2/reference/seq_old.md)
+  : Generate OLD layer for a Sequoia project
 
 - [`seq_ortho()`](https://mucau.github.io/Rsequoia2/reference/seq_ortho.md)
   : Download RGB and/or IRC orthophotos for a Sequoia project
