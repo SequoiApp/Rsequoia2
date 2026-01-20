@@ -247,8 +247,8 @@ comment:
   definition: "Comments"
 
 station:
-  name: "SOL_TYPE"
-  alias: ["GEOL_TYPE"]
+  name: "STATION"
+  alias: ["GEOL_TYPE", "SOL_TYPE"]
   class: "character"
   definition: "Soil classification"
 
