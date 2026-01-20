@@ -395,6 +395,6 @@ seq_elevation <- function(
     id = id
   )
 
-  return(c(dem$path, dsm$path, chm$path, slope$path, aspect$path) |> as.list())
+  return(invisible(c(dem$path, dsm$path, chm$path, slope$path, aspect$path) |> as.list()))
 }
 

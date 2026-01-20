@@ -4,7 +4,7 @@
 \alias{seq_ua}
 \title{Check and update the analysis units layer}
 \usage{
-seq_ua(dirname = ".", secure = TRUE, verbose = TRUE, overwrite = FALSE)
+seq_ua(dirname = ".", secure = TRUE, verbose = TRUE, overwrite = TRUE)
 }
 \arguments{
 \item{dirname}{\code{character} Directory where the matrice file is located.

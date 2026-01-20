@@ -15,7 +15,7 @@
 seq_read <- function(key, dirname = ".", verbose = FALSE) {
 
   layer_info <- seq_layer(key, verbose = FALSE)
-  layer_name <- layer_info$name
+  filename <- layer_info$filename
   full_key <- layer_info$key
   type <- layer_info$type
 
@@ -23,7 +23,7 @@ seq_read <- function(key, dirname = ".", verbose = FALSE) {
   # \\. is necessary to avoid multi match on UA SEQ_UA_poly.geojson & SEQ_UA_poly_20260116T135813.geojson
   path <- list.files(
     path = dirname,
-    pattern = sprintf("%s\\.",layer_name),
+    pattern = filename,
     ignore.case = TRUE,
     full.names = TRUE,
     recursive = TRUE
@@ -31,13 +31,13 @@ seq_read <- function(key, dirname = ".", verbose = FALSE) {
 
   no_match <- length(path) == 0
   if (no_match) {
-    cli::cli_abort("Layer {.file {layer_name}} doesn't exist.")
+    cli::cli_abort("Layer {.file {filename}} doesn't exist.")
   }
 
   multiple_match <- length(path) > 1
   if (multiple_match) {
     cli::cli_abort(c(
-      "!" = "Multiple layer {.file {layer_name}} found:",
+      "!" = "Multiple layer {.file {filename}} found:",
       "i" = cli::cli_fmt(cli::cli_ul(sprintf("{.file %s}", path)))
     ))
   }

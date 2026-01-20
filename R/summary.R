@@ -13,7 +13,10 @@
 #'  - `"SSPF"`: Surfaces by forest sub-parcels
 #'  - `"CAD_PLT"`: Link between cadastral parcels and forest parcels
 #'  - `"OCCUPATION"`: Surfaces by land use
-#'  - `"GEOLOGY"`: Surfaces by geology
+#'  - `"STATION"`: Surfaces by station
+#'  - `"GEOL_BDCHARM50"`: Surfaces by geology (source: BDCHARM50)
+#'  - `"GEOL_CARHAB"`: Surfaces by geology (source: CARHAB)
+#'  - `"PEDO"`: Surfaces by pedology type
 #'  - `"PLT_PF"`: Link between stand type and forest parcels
 #'  - `"PF_PLT"`: Link between forest parcels and stand type
 #'  - `"GESTION"`: Surfaces by management type
@@ -28,17 +31,21 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
   ua <- seq_read("v.seq.ua.poly", dirname = dirname)
   pf <- ua_to_pf(ua)
 
-  sum_surf_by <- function(ua, ...){
+  sum_surf_by <- function(x, ...){
 
-    ua <- sf::st_drop_geometry(ua)
-    surf_cor <- seq_field("cor_area")$name
+    x <- sf::st_drop_geometry(x)
+    cor_area <- seq_field("cor_area")$name
 
-    by <- list(...) |> lapply(\(x) seq_field(x)$name)
+    by <- c(...)
+    is_key <- by %in% names(seq_field())
+    by_key <- vapply(by[is_key], \(x) seq_field(x)$name, character(1))
+    by[is_key] <- by_key
+
     by_formula <- paste(by, collapse = " + ")
 
     aggregate(
       stats::as.formula(paste(cor_area, "~", by_formula)),
-      data = ua,
+      data = x,
       FUN = sum,
       na.rm = TRUE,
       na.action = stats::na.pass
@@ -123,7 +130,38 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
     add_prop("cor_area") |>
     add_total("cor_area", "PROPORTION")
 
-  geol <- sum_surf_by(ua, "soil") |>
+  station <- sum_surf_by(ua, "station") |>
+    add_prop("cor_area") |>
+    add_total("cor_area", "PROPORTION")
+
+  bdcharm50 <- seq_read("bdcharm50", dirname = dirname)
+  geol_bdcharm50 <- ua |>
+    sf::st_intersection(bdcharm50) |>
+    suppressWarnings() |>
+    ua_generate_area(verbose = FALSE) |> #if mutiple geol on one ua it's duplicated
+    sum_surf_by("DESCR")  |>
+    order_by("cor_area", decreasing = TRUE) |>
+    add_prop("cor_area") |>
+    add_total("cor_area", "PROPORTION")
+
+  carhab <- seq_read("carhab", dirname = dirname)
+  geol_carhab <- ua |>
+    sf::st_intersection(carhab) |>
+    suppressWarnings()  |>
+    ua_generate_area(verbose = FALSE) |>
+    sum_surf_by("TYPE")  |>
+    order_by("cor_area", decreasing = TRUE) |>
+    add_prop("cor_area") |>
+    add_total("cor_area", "PROPORTION")
+
+  pedo <- seq_read("pedo", dirname = dirname)
+  pedo <- ua |>
+    sf::st_intersection(pedo) |>
+    ua_generate_area(verbose = FALSE) |>
+    suppressWarnings() |>
+    sum_surf_by("ger_nom", "nom_ucs") |>
+    setNames(c("NOM_GER", "NOM_UCS", seq_field("cor_area")$name)) |>
+    order_by("cor_area", decreasing = TRUE) |>
     add_prop("cor_area") |>
     add_total("cor_area", "PROPORTION")
 
@@ -143,6 +181,9 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
     order_by("treatment") |>
     add_prop("cor_area") |>
     add_total("cor_area", "PROPORTION")
+
+  pf_field <- seq_field("pcl_code")$name
+  pf <- aggregate(ua, list(ua[[pf_field]]), FUN = \(x) x[1])
 
   elevation <- seq_read("r.alt.mnt", dirname = dirname)
   fun <- list(mean = mean, min = min, max = max)
@@ -173,7 +214,7 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
   freq <- terra::extract(expo_class, pf, "table", ID = FALSE) |> as.data.frame()
 
   expo_by_pf <- cbind(
-    pf[[pcl_code]],
+    pf[pf_field] |> sf::st_drop_geometry(),
     freq,
     setNames(freq / rowSums(freq) * 100, paste0("%_", names(freq)))
   )
@@ -184,7 +225,7 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
   freq <- terra::extract(pente_class, pf, "table", ID = FALSE) |> as.data.frame()
 
   pente_by_pf <- cbind(
-    pf[[pcl_code]],
+    pf[pf_field] |> sf::st_drop_geometry(),
     freq,
     setNames(freq / rowSums(freq) * 100, paste0("% ", names(freq)))
   )
@@ -200,7 +241,10 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
     PF_CAD = pf_by_cad,
     SSPF_CAD = sspf_by_cad,
     OCCUPATION = ocs,
-    GEOLOGY = geol,
+    STATION = station,
+    GEOL_BDCHARM50 = geol_bdcharm50,
+    GEOL_CARHAB = geol_carhab,
+    PEDO = pedo,
     PLT_PF = plt_by_pf,
     PF_PLT = pf_by_plt,
     GESTION = ame,

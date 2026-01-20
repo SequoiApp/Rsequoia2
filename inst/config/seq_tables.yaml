@@ -83,7 +83,7 @@ ua:
   - is_subsidized
   - subsidy
   - comment
-  - soil
+  - station
   - gis_area
   - cor_area
   - cad_area

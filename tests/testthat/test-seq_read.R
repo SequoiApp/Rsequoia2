@@ -49,8 +49,8 @@ test_that("seq_read() errors when multiple matching files are found", {
     layer_info <- seq_layer("parca")
     dir.create(file.path(seq_cache, layer_info$path), recursive = TRUE, showWarnings = FALSE)
 
-    f1 <- file.path(seq_cache, layer_info$path, paste0(layer_info$name, ".gpkg"))
-    f2 <- file.path(seq_cache, layer_info$path, paste0(layer_info$name, "_copy.gpkg"))
+    f1 <- file.path(seq_cache, layer_info$path, layer_info$filename)
+    f2 <- file.path(seq_cache, layer_info$path, paste0("2", layer_info$filename))
 
     file.create(f1)
     file.create(f2)

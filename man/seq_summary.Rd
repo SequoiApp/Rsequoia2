@@ -30,7 +30,10 @@ Available tables:
 \item \code{"SSPF"}: Surfaces by forest sub-parcels
 \item \code{"CAD_PLT"}: Link between cadastral parcels and forest parcels
 \item \code{"OCCUPATION"}: Surfaces by land use
-\item \code{"GEOLOGY"}: Surfaces by geology
+\item \code{"STATION"}: Surfaces by station
+\item \code{"GEOL_BDCHARM50"}: Surfaces by geology (source: BDCHARM50)
+\item \code{"GEOL_CARHAB"}: Surfaces by geology (source: CARHAB)
+\item \code{"PEDO"}: Surfaces by pedology type
 \item \code{"PLT_PF"}: Link between stand type and forest parcels
 \item \code{"PF_PLT"}: Link between forest parcels and stand type
 \item \code{"GESTION"}: Surfaces by management type

@@ -203,6 +203,6 @@ seq_geol <- function(dirname = ".", cache = NULL, verbose = TRUE, overwrite = FA
   qml_path <- paste0(tools::file_path_sans_ext(bdcharm50_path), ".qml")
   file.rename(file.path(dirname, qml_zip), qml_path) |> invisible()
 
-  return(c(carhab_path, bdcharm50_path) |> as.list())
+  return(invisible(c(carhab_path, bdcharm50_path) |> as.list()))
 }
 

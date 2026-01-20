@@ -246,7 +246,7 @@ comment:
   class: "character"
   definition: "Comments"
 
-soil:
+station:
   name: "SOL_TYPE"
   alias: ["GEOL_TYPE"]
   class: "character"
