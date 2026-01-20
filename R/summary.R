@@ -101,7 +101,9 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
   ocs <- sum_surf_by(ua, "is_wooded")
   ocs <- add_total(ocs, "cor_area")
 
-  ua <- ua[ua[[seq_field("is_wooded")$name]], ]
+  is_wooded <- seq_field("is_wooded")$name
+  ua[[is_wooded]] <- ifelse(is.na(ua[[is_wooded]]), TRUE, ua[[is_wooded]])
+  ua <- ua[ua[[is_wooded]], ]
 
   pc_raw <- sum_surf_by(ua, "reg_name", "dep_name", "com_name", "insee", "prefix", "section", "number") |>
     add_total("cor_area")
@@ -175,7 +177,7 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
     order_by("pcl_code") |>
     pivot("std_type", "pcl_code", direction = "wide") |>
     order_by("std_type") |>
-    add_total(unique(ua[[seq_field("std_type")$name]]))
+    add_total(unique(ua[[seq_field("pcl_code")$name]]))
 
   ame <- sum_surf_by(ua, "treatment") |>
     order_by("treatment") |>
@@ -183,8 +185,6 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
     add_total("cor_area", "PROPORTION")
 
   pf_field <- seq_field("pcl_code")$name
-  pf <- aggregate(ua, list(ua[[pf_field]]), FUN = \(x) x[1])
-
   elevation <- seq_read("r.alt.mnt", dirname = dirname)
   fun <- list(mean = mean, min = min, max = max)
   elevation_by_pf <- Reduce(
