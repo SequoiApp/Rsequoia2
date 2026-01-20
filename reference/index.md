@@ -242,6 +242,9 @@
 - [`seq_scan()`](https://mucau.github.io/Rsequoia2/reference/seq_scan.md)
   : Download scanned IGN maps for a Sequoia project
 
+- [`seq_summary()`](https://mucau.github.io/Rsequoia2/reference/seq_summary.md)
+  : Summarize information for a Sequoia folder
+
 - [`seq_table()`](https://mucau.github.io/Rsequoia2/reference/seq_table.md)
   : Load table definitions from the Sequoia configuration
 
