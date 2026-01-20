@@ -33,5 +33,5 @@ parca_check_area(parca, atol = 500, rtol = 0.05, verbose = TRUE)
 ## Value
 
 The input `parca` with four additional fields: `AREA_SIG` (cartographic
-area in ha), `AREA_ATOL` (absolute difference in m²), `AREA_RTOL`
-(relative difference), `AREA_CHECK` (logical flag).
+area in ha), `ATOL_AREA` (absolute difference in m²), `RTOL_AREA`
+(relative difference), `CHECK_AREA` (logical flag).
