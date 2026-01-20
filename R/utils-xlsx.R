@@ -95,24 +95,24 @@ seq_xlsx <- function(..., filename, overwrite = FALSE, verbose = TRUE) {
     cli::cli_abort("No data provided.")
   }
 
+  if (length(values) == 1 && is.list(values[[1]]) && !inherits(values[[1]], "data.frame")) {
+    values <- values[[1]]
+  }
+
   sheets <- list()
   for (i in seq_along(values)) {
 
     name <- names(values)[i]
     value <- values[[i]]
-    expr <- exprs[[i]]
 
     is_df <- inherits(value, "data.frame")
     if (!is_df) {
-      cli::cli_abort(c(
-        "All sheet inputs must be {.cls data.frame}.",
-        "i" = "Invalid input: {deparse(expr)}"
-      ))
+      cli::cli_abort("All sheet inputs must be {.cls data.frame}.")
     }
 
     # If name is mising use variable name
     if (is.null(name) || name == "") {
-      name <- deparse(expr, nlines = 1)
+      name <- deparse(exprs[[i]], nlines = 1)
     }
 
     sheets[[name]] <- value

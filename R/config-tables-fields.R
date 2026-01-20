@@ -39,9 +39,11 @@ seq_field <- function(field = NULL, filepath = NULL){
 
   bad_field_name <- !(field %in% names(cfg))
   if (bad_field_name){
+    red_warn <- cli::combine_ansi_styles("red", "bold")
     cli::cli_abort(c(
-      "x" = "Bad {.arg field} value : {.val {field}}",
-      "i" = "Run {.run  Rsequoia2::seq_field()} for all available fields."
+      "x" = "{.arg field} {.val {field}} does not exist.",
+      "i" = "Valid keys are defined in {.path inst/config/seq_fields.yaml}.",
+      "!" = red_warn("This file is part of the package and must not be modified.")
     ))
   }
 

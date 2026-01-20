@@ -1,14 +1,37 @@
-seq_summary <- function(dirname = ".", overwrite = FALSE, verbose = TRUE){
-
-  # ua_path <- "C:\\Users\\PaulCarteron\\Desktop\\temp\\sequoia_test\\ESTREMONT_UA_polygon.shp"
-  # ua_sf <- sf::st_read(ua_path) |> seq_normalize("ua")
+#' Summarize information for a Sequoia folder
+#'
+#' Generate synthetic table from Sequoia layers and write them as `.xlsx`
+#' inside the current Sequoia dir. Useful for redaction of management document.
+#'
+#' @inheritParams seq_write
+#'
+#' @detail
+#' Available tables:
+#'  - `"CAD"`: Cadastral parcels
+#'  - `"CAD_COM"`: Surfaces by communes
+#'  - `"PF"`: Surfaces by forest parcels
+#'  - `"SSPF"`: Surfaces by forest sub-parcels
+#'  - `"CAD_PLT"`: Link between cadastral parcels and forest parcels
+#'  - `"OCCUPATION"`: Surfaces by land use
+#'  - `"GEOLOGY"`: Surfaces by geology
+#'  - `"PLT_PF"`: Link between stand type and forest parcels
+#'  - `"PF_PLT"`: Link between forest parcels and stand type
+#'  - `"GESTION"`: Surfaces by management type
+#'  - `"ALTI_PF"`: Altimetry recap by forest parcels (max, min, mean)
+#'  - `"EXPO_PF"`: Exposition recap by forest parcels
+#'  - `"PENTE_PF"`: Slope recap by forest parcels
+#'
+#' @return `list` of `data.frame`
+#'
+seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
 
   ua <- seq_read("v.seq.ua.poly", dirname = dirname)
+  pf <- ua_to_pf(ua)
 
   sum_surf_by <- function(ua, ...){
 
     ua <- sf::st_drop_geometry(ua)
-    surf_cor <- seq_field("surf_cor")$name
+    surf_cor <- seq_field("cor_area")$name
 
     by <- list(...) |> lapply(\(x) seq_field(x)$name)
     by_formula <- paste(by, collapse = " + ")
@@ -44,50 +67,84 @@ seq_summary <- function(dirname = ".", overwrite = FALSE, verbose = TRUE){
 
     return(pivoted)
   }
+  add_total <- function(df, ..., name = "TOTAL"){
+    cols <- c(...)
+    is_key <- cols %in% names(seq_field())
+    cols_key <- vapply(cols[is_key], \(x) seq_field(x)$name, character(1))
+    cols[is_key] <- cols_key
+
+    empty_row <- df[0, , drop = FALSE]
+    empty_row[1, ] <- NA
+
+    # total row
+    total <- empty_row
+    total[1, 1] <- name
+    total[cols] <- colSums(df[cols], na.rm = TRUE)
+
+    return(rbind(df, empty_row, total))
+  }
+  add_prop <- function(df, by, name = "PROPORTION"){
+    by <- seq_field(by)$name
+    df[[name]] <- if (nrow(df) > 0) df[[by]]/sum(df[[by]]) else numeric(0)
+    return(df)
+  }
 
   cor_area <- seq_field("cor_area")$name
 
-  ocs <- sum_surf_by(ua, "land_use")
+  ocs <- sum_surf_by(ua, "is_wooded")
+  ocs <- add_total(ocs, "cor_area")
 
-  pc <- sum_surf_by(ua, "com_nom", "section", "numero")
-  pc_by_com <- sum_surf_by(ua, "com_nom")
-  pc_by_dep <- sum_surf_by(ua, "dep_nom")
+  ua <- ua[ua[[seq_field("is_wooded")$name]], ]
 
-  pf <- sum_surf_by(ua, "parcelle", "com_num", "section", "numero")
-  pf <- order_by(pf, "parcelle")
+  pc_raw <- sum_surf_by(ua, "reg_name", "dep_name", "com_name", "insee", "prefix", "section", "number") |>
+    add_total("cor_area")
 
-  sspf <- sum_surf_by(ua, "parcelle", "sous_parcelle", "com_num", "section", "numero")
-  sspf <- order_by(sspf, "parcelle", "sous_parcelle")
+  pc_by_com <- sum_surf_by(ua, "insee", "com_name") |>
+    add_total("cor_area")
 
-  plt <- sum_surf_by(ua, "stand")
-  plt <- order_by(plt, "surf_cor", decreasing = TRUE)
-  plt$PROPORTION <- plt[[cor_area]]/sum(plt[[cor_area]])
+  pf_raw <- sum_surf_by(ua, "pcl_code") |>
+    order_by("pcl_code") |>
+    add_total("cor_area")
 
-  station <- sum_surf_by(ua, "sol")
+  sspf_raw <- sum_surf_by(ua, "pcl_code", "sub_code") |>
+    order_by("pcl_code", "sub_code") |>
+    add_total("cor_area")
 
-  pf_by_plt <- sum_surf_by(ua, "parcelle", "stand")
-  pf_by_plt <- order_by(pf_by_plt, "stand")
-  pf_by_plt <- pivot(pf_by_plt, "parcelle", "stand", direction = "wide")
-  pf_by_plt <- order_by(pf_by_plt, "parcelle")
+  pf_by_cad <- sum_surf_by(ua, "pcl_code", "com_name", "insee", "prefix", "section", "number") |>
+    order_by("pcl_code","insee", "prefix", "section", "number") |>
+    add_total("cor_area")
 
-  plt_by_pf <- sum_surf_by(ua, "parcelle", "stand")
-  plt_by_pf <- order_by(plt_by_pf, "parcelle")
-  plt_by_pf <- pivot(plt_by_pf, "stand", "parcelle", direction = "wide")
-  plt_by_pf <- order_by(plt_by_pf, "stand")
+  sspf_by_cad <- sum_surf_by(ua, "pcl_code", "sub_code", "com_name", "insee", "prefix", "section", "number") |>
+    order_by("pcl_code", "sub_code","insee", "prefix", "section", "number") |>
+    add_total("cor_area")
 
-  pc_by_plt <- sum_surf_by(ua, "stand", "idu")
-  pc_by_plt <- order_by(pc_by_plt, "stand")
-  pc_by_plt <- pivot(pc_by_plt, "idu", "stand", direction = "wide")
-  pc_by_plt <- order_by(pc_by_plt, "idu")
+  plt <- sum_surf_by(ua, "std_type") |>
+    order_by("cor_area", decreasing = TRUE) |>
+    add_prop("cor_area") |>
+    add_total("cor_area", "PROPORTION")
 
-  ame <- sum_surf_by(ua, "amenagement")
-  ame <- order_by(ame, "amenagement")
-  ame$PROPORTION <- ame[[cor_area]]/sum(ame[[cor_area]])
+  geol <- sum_surf_by(ua, "soil") |>
+    add_prop("cor_area") |>
+    add_total("cor_area", "PROPORTION")
+
+  pf_by_plt <- sum_surf_by(ua, "pcl_code", "std_type") |>
+    order_by("std_type") |>
+    pivot("pcl_code", "std_type", direction = "wide") |>
+    order_by("pcl_code") |>
+    add_total(unique(ua[[seq_field("std_type")$name]]))
+
+  plt_by_pf <- sum_surf_by(ua, "pcl_code", "std_type") |>
+    order_by("pcl_code") |>
+    pivot("std_type", "pcl_code", direction = "wide") |>
+    order_by("std_type") |>
+    add_total(unique(ua[[seq_field("std_type")$name]]))
+
+  ame <- sum_surf_by(ua, "treatment") |>
+    order_by("treatment") |>
+    add_prop("cor_area") |>
+    add_total("cor_area", "PROPORTION")
 
   elevation <- seq_read("r.alt.mnt", dirname = dirname)
-  parcelle <- seq_field("parcelle")$name
-  pf <- terra::vect(ua[, parcelle]) |> terra::aggregate(parcelle, count = FALSE)
-
   fun <- list(mean = mean, min = min, max = max)
   elevation_by_pf <- Reduce(
     function(x, y) merge(x, y, by = "N_PARFOR"),
@@ -100,30 +157,64 @@ seq_summary <- function(dirname = ".", overwrite = FALSE, verbose = TRUE){
         )}
     ))
 
+  expo <- seq_read("expo", dirname)
+  m <- matrix(c(
+    0,   45,  1, # Nord
+    45,  135, 2, # Est
+    135, 225, 3, # Sud
+    225, 315, 4, # Ouest
+    315, 360, 1  # Nord
+  ), ncol = 3, byrow = TRUE)
 
-  pente <- seq_read("r.alt.pente", dirname = dirname)
-  stand <- seq_field("stand")$name
-  pente_by_plt <- as.data.frame(
-    terra::extract(
-      pente |> setNames("PENTE"),
-      terra::vect(ua[, stand]) |> terra::aggregate(stand, count = FALSE),
-      fun = mean,
-      na.rm = TRUE,
-      bind = TRUE,
-      ID = FALSE
-    )
+  expo_class <- terra::classify(expo, m)
+
+  classes <- c("NORD", "EST", "SUD", "OUEST")
+  levels(expo_class) <- data.frame(value = 1:4, exposition = classes)
+  freq <- terra::extract(expo_class, pf, "table", ID = FALSE) |> as.data.frame()
+
+  expo_by_pf <- cbind(
+    pf[[pcl_code]],
+    freq,
+    setNames(freq / rowSums(freq) * 100, paste0("%_", names(freq)))
+  )
+  expo_by_pf$EXPO_MAJ <- classes[max.col(freq[classes])]
+
+  pente <- seq_read("pente", dirname)
+  pente_class <- terra::classify(pente, c(-Inf, 10, 40, 60, 80, Inf))
+  freq <- terra::extract(pente_class, pf, "table", ID = FALSE) |> as.data.frame()
+
+  pente_by_pf <- cbind(
+    pf[[pcl_code]],
+    freq,
+    setNames(freq / rowSums(freq) * 100, paste0("% ", names(freq)))
+  )
+  pente_by_pf$PENTE_MAJ <- names(freq)[max.col(freq)]
+
+  filename <- dirname |> file.path(seq_layer("summary")$filename)
+
+  synthese <- list(
+    CAD = pc_raw,
+    CAD_COM = pc_by_com,
+    PF = pf_raw,
+    SSPF = sspf_raw,
+    PF_CAD = pf_by_cad,
+    SSPF_CAD = sspf_by_cad,
+    OCCUPATION = ocs,
+    GEOLOGY = geol,
+    PLT_PF = plt_by_pf,
+    PF_PLT = pf_by_plt,
+    GESTION = ame,
+    ALTI_PF = elevation_by_pf,
+    EXPO_PF = expo_by_pf,
+    PENTE_PF = pente_by_pf
   )
 
-  expo <- seq_read("r.alt.expo", dirname = dirname)
-  expo_by_plt <- as.data.frame(
-    terra::extract(
-      expo |> setNames("EXPOSITION"),
-      terra::vect(ua[, stand]) |> terra::aggregate(stand, count = FALSE),
-      fun = mean,
-      na.rm = TRUE,
-      bind = TRUE,
-      ID = FALSE
-    )
+  seq_xlsx(
+    synthese,
+    filename = filename,
+    overwrite = overwrite,
+    verbose = verbose
   )
 
+  return(synthese)
 }

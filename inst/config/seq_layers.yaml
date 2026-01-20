@@ -1,5 +1,6 @@
 # XLSX
 x.seq.matrice: {name: "MATRICE", ext: "xlsx"}
+x.seq.summary: {name: "SYNTHESE", ext: "xlsx"}
 
 # RASTER
 r.alt.mnt:   { name: "MNT",     ext: "tif" }
