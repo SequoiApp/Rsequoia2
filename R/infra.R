@@ -28,6 +28,10 @@
 #' @export
 get_infra_poly <- function(x) {
 
+  if (!inherits(x, c("sf", "sfc"))) {
+    cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
+  }
+
   crs <- 2154
   x <- sf::st_transform(x, crs)
   fetch_envelope <- envelope(x, 1000)
@@ -42,38 +46,53 @@ get_infra_poly <- function(x) {
   name <- seq_field("name")$name
   source <-  seq_field("source")$name
 
-  # batiment
-  batiment <- happign::get_wfs(fetch_envelope, "BDTOPO_V3:batiment", verbose = FALSE) |>
-    sf::st_transform(crs)
+  # building
+  building <- happign::get_wfs(
+    x = fetch_envelope,
+    layer = "BDTOPO_V3:batiment",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
-  if(nrow(batiment)){
-    batiment[[type]] <- "BAT"
-    batiment[[source]] <- "IGNF_BDTOPO_V3"
+  if(nrow(building)>0){
+    building <- sf::st_transform(building, crs)
+    building[[type]] <- "BAT"
+    building[[source]] <- "IGNF_BDTOPO_V3"
 
-    batiment <- seq_normalize(batiment, "vct_poly")
+    building <- seq_normalize(building, "vct_poly")
 
-    infra_poly <- rbind(infra_poly, batiment)
+    infra_poly <- rbind(infra_poly, building)
   }
 
   # cimetiere
-  cimetiere <- happign::get_wfs(fetch_envelope, "BDTOPO_V3:cimetiere", verbose = FALSE) |>
-    sf::st_transform(crs)
+  cemetery <- happign::get_wfs(
+    x = fetch_envelope,
+    layer = "BDTOPO_V3:cimetiere",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
-  if(nrow(cimetiere)){
-    cimetiere[[type]] <- "CIM"
-    cimetiere[[name]] <- cimetiere$toponyme
-    cimetiere[[source]] <- "IGNF_BDTOPO_V3"
+  if(nrow(cemetery)>0){
+    cemetery <- sf::st_transform(cemetery, crs)
+    cemetery[[type]] <- "CIM"
+    cemetery[[name]] <- cemetery$toponyme
+    cemetery[[source]] <- "IGNF_BDTOPO_V3"
 
-    cimetiere <- seq_normalize(cimetiere, "vct_poly")
+    cemetery <- seq_normalize(cemetery, "vct_poly")
 
-    infra_poly <- rbind(infra_poly, cimetiere)
+    infra_poly <- rbind(infra_poly, cemetery)
   }
 
   # construction
-  construction <- happign::get_wfs(fetch_envelope, "BDTOPO_V3:construction_surfacique", verbose = FALSE) |>
-    sf::st_transform(crs)
+  construction <- happign::get_wfs(
+    x = fetch_envelope,
+    layer = "BDTOPO_V3:construction_surfacique",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
-  if(nrow(construction)){
+  if(nrow(construction)>0){
+    construction <- sf::st_transform(construction, crs)
     construction[[type]] <- "CST"
     construction[[name]] <- construction$toponyme
     construction[[source]] <- "IGNF_BDTOPO_V3"
@@ -83,50 +102,52 @@ get_infra_poly <- function(x) {
     infra_poly <- rbind(infra_poly, construction)
   }
 
-  # piste d aerodrome
-  piste <- happign::get_wfs(fetch_envelope, "BDTOPO_V3:piste_d_aerodrome", verbose = FALSE) |>
-    sf::st_transform(crs)
+  # runway
+  runway <- happign::get_wfs(
+    x = fetch_envelope,
+    layer = "BDTOPO_V3:piste_d_aerodrome",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
-  if(nrow(piste)){
-    piste[[type]] <- "AER"
-    piste[[source]] <- "IGNF_BDTOPO_V3"
+  if(nrow(runway)>0){
+    runway <- sf::st_transform(runway, crs)
+    runway[[type]] <- "AER"
+    runway[[source]] <- "IGNF_BDTOPO_V3"
 
-    piste <- seq_normalize(piste, "vct_poly")
+    runway <- seq_normalize(runway, "vct_poly")
 
-    infra_poly <- rbind(infra_poly, piste)
+    infra_poly <- rbind(infra_poly, runway)
   }
 
   # terrain de sport
-  terrain <- happign::get_wfs(fetch_envelope, "BDTOPO_V3:terrain_de_sport", verbose = FALSE) |>
-    sf::st_transform(crs)
+  sport <- happign::get_wfs(
+    x = fetch_envelope,
+    layer = "BDTOPO_V3:terrain_de_sport",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
-  if(nrow(terrain)){
-    terrain[[type]] <- "SPO"
-    terrain[[source]] <- "IGNF_BDTOPO_V3"
+  if(nrow(sport)>0){
+    sport <- sf::st_transform(sport, crs)
+    sport[[type]] <- "SPO"
+    sport[[source]] <- "IGNF_BDTOPO_V3"
 
-    terrain <- seq_normalize(terrain, "vct_poly")
+    sport <- seq_normalize(sport, "vct_poly")
 
-    infra_poly <- rbind(infra_poly, terrain)
+    infra_poly <- rbind(infra_poly, sport)
   }
 
-  # terrain de sport
-  terrain <- happign::get_wfs(fetch_envelope, "BDTOPO_V3:terrain_de_sport", verbose = FALSE) |>
-    sf::st_transform(crs)
+  # habitation
+  habitation <- happign::get_wfs(
+    x = fetch_envelope,
+    layer = "BDTOPO_V3:zone_d_habitation",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
-  if(nrow(terrain)){
-    terrain[[type]] <- "SPO"
-    terrain[[source]] <- "IGNF_BDTOPO_V3"
-
-    terrain <- seq_normalize(terrain, "vct_poly")
-
-    infra_poly <- rbind(infra_poly, terrain)
-  }
-
-  # terrain de sport
-  habitation <- happign::get_wfs(fetch_envelope, "BDTOPO_V3:zone_d_habitation", verbose = FALSE) |>
-    sf::st_transform(crs)
-
-  if(nrow(habitation)){
+  if(nrow(habitation)>0){
+    habitation <- sf::st_transform(habitation, crs)
     habitation[[type]] <- ifelse(habitation$importance  %in% c(1, 2), "VIL", "HAB")
     habitation[[name]] <- habitation$toponyme
     habitation[[source]] <- "IGNF_BDTOPO_V3"
@@ -134,6 +155,10 @@ get_infra_poly <- function(x) {
     habitation <- seq_normalize(habitation, "vct_poly")
 
     infra_poly <- rbind(infra_poly, habitation)
+  }
+
+  if (nrow(infra_poly)==0) {
+    cli::cli_warn("No infrastructure data found. Empty {.cls sf} is returned.")
   }
 
   return(invisible(infra_poly))
@@ -167,6 +192,10 @@ get_infra_poly <- function(x) {
 #' @export
 get_infra_line <- function(x) {
 
+  if (!inherits(x, c("sf", "sfc"))) {
+    cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
+  }
+
   # convex buffers
   crs <- 2154
   x <- sf::st_transform(x, crs)
@@ -184,10 +213,14 @@ get_infra_line <- function(x) {
 
   # construction lineaire
   construction <- happign::get_wfs(
-    fetch_envelope, "BDTOPO_V3:construction_lineaire", verbose = FALSE
-  ) |> sf::st_transform(crs)
+    x = fetch_envelope,
+    layer = "BDTOPO_V3:construction_lineaire",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
-  if(nrow(construction)){
+  if(nrow(construction)>0){
+    construction <- sf::st_transform(construction, crs)
     construction[[type]] <- "CST"
     construction[[name]] <- construction$toponyme
     construction[[source]] <- "IGNF_BDTOPO_V3"
@@ -198,48 +231,64 @@ get_infra_line <- function(x) {
   }
 
   # ligne electrique
-  ligne <- happign::get_wfs(
-    fetch_envelope, "BDTOPO_V3:ligne_electrique", verbose = FALSE
-  ) |> sf::st_transform(crs)
+  electric <- happign::get_wfs(
+    x = fetch_envelope,
+    layer = "BDTOPO_V3:ligne_electrique",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
-  if(nrow(ligne)){
-    ligne[[type]] <- "LEL"
-    ligne[[nature]] <- ligne$voltage
-    ligne[[source]] <- "IGNF_BDTOPO_V3"
+  if(nrow(electric)>0){
+    electric <- sf::st_transform(electric, crs)
+    electric[[type]] <- "LEL"
+    electric[[nature]] <- electric$voltage
+    electric[[source]] <- "IGNF_BDTOPO_V3"
 
-    ligne <- seq_normalize(ligne, "vct_line")
+    electric <- seq_normalize(electric, "vct_line")
 
-    infra_line <- rbind(infra_line, ligne)
+    infra_line <- rbind(infra_line, electric)
   }
 
   # ligne orographique
-  oro <- happign::get_wfs(
-    fetch_envelope, "BDTOPO_V3:ligne_orographique", verbose = FALSE
-  ) |> sf::st_transform(crs)
+  orography <- happign::get_wfs(
+    x = fetch_envelope,
+    layer = "BDTOPO_V3:ligne_orographique",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
-  if(nrow(oro)){
-    oro[[type]] <- "ORO"
-    oro[[name]] <- oro$toponyme
-    oro[[source]] <- "IGNF_BDTOPO_V3"
+  if(nrow(orography)>0){
+    orography <- sf::st_transform(orography, crs)
+    orography[[type]] <- "ORO"
+    orography[[name]] <- orography$toponyme
+    orography[[source]] <- "IGNF_BDTOPO_V3"
 
-    oro <- seq_normalize(oro, "vct_line")
+    orography <- seq_normalize(orography, "vct_line")
 
-    infra_line <- rbind(infra_line, oro)
+    infra_line <- rbind(infra_line, orography)
   }
 
-  # voie ferree
-  vfe <- happign::get_wfs(
-    fetch_envelope, "BDTOPO_V3:troncon_de_voie_ferree", verbose = FALSE
-  ) |> sf::st_transform(crs)
+  # rail
+  rail <- happign::get_wfs(
+    x = fetch_envelope,
+    layer = "BDTOPO_V3:troncon_de_voie_ferree",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
-  if(nrow(vfe)){
-    vfe[[type]] <- "VFE"
-    vfe[[name]] <- vfe$cpx_toponyme
-    vfe[[source]] <- "IGNF_BDTOPO_V3"
+  if(nrow(rail)>0){
+    rail <- sf::st_transform(rail, crs)
+    rail[[type]] <- "VFE"
+    rail[[name]] <- rail$cpx_toponyme
+    rail[[source]] <- "IGNF_BDTOPO_V3"
 
-    vfe <- seq_normalize(vfe, "vct_line")
+    rail <- seq_normalize(rail, "vct_line")
 
-    infra_line <- rbind(infra_line, vfe)
+    infra_line <- rbind(infra_line, rail)
+  }
+
+  if (nrow(infra_line)==0) {
+    cli::cli_warn("No infrastructure data found. Empty {.cls sf} is returned.")
   }
 
   return(invisible(infra_line))
@@ -277,6 +326,10 @@ get_infra_line <- function(x) {
 #' @export
 get_infra_point <- function(x) {
 
+  if (!inherits(x, c("sf", "sfc"))) {
+    cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
+  }
+
   # convex buffers
   crs <- 2154
   x <- sf::st_transform(x, crs)
@@ -292,12 +345,16 @@ get_infra_point <- function(x) {
   name <- seq_field("name")$name
   source <-  seq_field("source")$name
 
-  # construction ponctuelle
+  # construction
   construction <- happign::get_wfs(
-    fetch_envelope, "BDTOPO_V3:construction_ponctuelle", verbose = FALSE
-  ) |> sf::st_transform(crs)
+    x = fetch_envelope,
+    layer = "BDTOPO_V3:construction_ponctuelle",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
-  if(nrow(construction)){
+  if(nrow(construction)>0){
+    construction <- sf::st_transform(construction, crs)
     construction[[type]] <- ifelse(construction$nature == "Antenne", "PYL",
                                    ifelse(construction$nature == "Clocher", "CLO",
                                           ifelse(construction$nature == "Croix", "CRX",
@@ -311,37 +368,51 @@ get_infra_point <- function(x) {
     infra_point <- rbind(infra_point, construction)
   }
 
-  # detail orographique
-  oro <- happign::get_wfs(
-    fetch_envelope, "BDTOPO_V3:detail_orographique", verbose = FALSE
-  ) |> sf::st_transform(crs)
+  # orography
+  orography <- happign::get_wfs(
+    x = fetch_envelope,
+    layer = "BDTOPO_V3:detail_orographique",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
-  if(nrow(oro)){
-    oro[[type]] <- ifelse(oro$nature == "Grotte", "GRO",
-                          ifelse(oro$nature == "Gouffre", "GOU", "ORO"))
-    oro[[name]] <- oro$toponyme
-    oro[[source]] <- "IGNF_BDTOPO_V3"
+  if(nrow(orography)>0){
+    orography <- sf::st_transform(orography, crs)
+    orography[[type]] <- ifelse(orography$nature == "Grotte", "GRO",
+                          ifelse(orography$nature == "Gouffre", "GOU", "ORO"))
+    orography[[name]] <- orography$toponyme
+    orography[[source]] <- "IGNF_BDTOPO_V3"
 
-    oro <- seq_normalize(oro, "vct_point")
+    orography <- seq_normalize(orography, "vct_point")
 
-    infra_point <- rbind(infra_point, oro)
+    infra_point <- rbind(infra_point, orography)
   }
 
-  # pylone
-  pylone <- happign::get_wfs(
-    fetch_envelope, "BDTOPO_V3:pylone", verbose = FALSE
-  ) |> sf::st_transform(crs)
+  # pylon
+  pylon <- happign::get_wfs(
+    x = fetch_envelope,
+    layer = "BDTOPO_V3:pylone",
+    predicate = happign::intersects(),
+    verbose = FALSE
+  )
 
-  if(nrow(pylone)){
-    pylone[[type]] <- "PYL"
-    pylone[[source]] <- "IGNF_BDTOPO_V3"
+  if(nrow(pylon)>0){
+    pylon <- sf::st_transform(pylon, crs)
+    pylon[[type]] <- "PYL"
+    pylon[[source]] <- "IGNF_BDTOPO_V3"
 
-    pylone <- seq_normalize(pylone, "vct_point")
+    pylon <- seq_normalize(pylon, "vct_point")
 
-    infra_point <- rbind(infra_point, pylone)
+    infra_point <- rbind(infra_point, pylon)
   }
 
-  return(invisible(infra_point |> sf::st_zm(drop = TRUE, what = "ZM")))
+  if (nrow(infra_point)==0) {
+    cli::cli_warn("No infrastructure data found. Empty {.cls sf} is returned.")
+  } else {
+    infra_point <- sf::st_zm(infra_point, drop = TRUE, what = "ZM")
+  }
+
+  return(invisible(infra_point))
 }
 
 #' Generates infrastructure polygon, line and point layers for a Sequoia project.

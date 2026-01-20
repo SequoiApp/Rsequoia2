@@ -130,6 +130,9 @@ v.prsf.point: { name: "PRSF_point", ext: "geojson" }
 # HYPSOMETRIC CURVES
 v.curves.line: { name: "CURVES_line", ext: "geojson" }
 
+# OLD
+v.old.poly: { name: "OLD_poly", ext: "geojson" }
+
 # ROAD
 v.road.topo.line:     { name: "ROAD_TOPO_line",    ext: "geojson" }
 v.road.topo.poly:     { name: "ROAD_TOPO_poly",    ext: "geojson" }
