@@ -19,9 +19,9 @@ parcels.}
 \value{
 The input \code{parca} with four additional fields:
 \code{AREA_SIG} (cartographic area in ha),
-\code{AREA_ATOL} (absolute difference in m²),
-\code{AREA_RTOL} (relative difference),
-\code{AREA_CHECK} (logical flag).
+\code{ATOL_AREA} (absolute difference in m²),
+\code{RTOL_AREA} (relative difference),
+\code{CHECK_AREA} (logical flag).
 }
 \description{
 This function compares cadastral areas (in m²) with

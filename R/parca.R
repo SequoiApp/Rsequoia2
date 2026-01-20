@@ -49,9 +49,6 @@ get_parca_etalab <- function(idu){
 
   etalab <- lapply(urls, read_sf)
   etalab <- do.call(rbind, etalab)
-  etalab$prefixe <- pad_left(etalab$prefixe, 3)
-  etalab$section <- pad_left(etalab$section, 2)
-  etalab$numero <- pad_left(etalab$numero, 4)
 
   invalid_idu <- !idu %in% etalab$id
   has_invalid_idu <- sum(invalid_idu) > 0
@@ -61,10 +58,25 @@ get_parca_etalab <- function(idu){
 
   etalab <- etalab[etalab$id %in% idu,]
 
-  names(etalab)[names(etalab) == "id"] <- "idu"
+  etalab$idu <- etalab$id
+  etalab$prefixe <- pad_left(etalab$prefixe, 3)
+  etalab$section <- pad_left(etalab$section, 2)
+  etalab$numero <- pad_left(etalab$numero, 4)
+  etalab$insee <- pad_left(etalab$commune, 5)
+  etalab$com_code  <- substr(etalab$commune, 3, 5)
+  etalab$contenance <- etalab$contenance / 10000
+
+  # Add COG info
+  etalab <- etalab |>
+    merge(happign::com_2025[, c("COM", "NCC_COM", "DEP")], by.x = "insee", by.y = "COM") |>
+    merge(happign::dep_2025[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
+    merge(happign::reg_2025[, c("REG", "NCC_REG")], all.x = TRUE)
 
   source <- seq_field("source")$name
   etalab[[source]] <- "etalab"
+
+  etalab <- seq_normalize(etalab, "raw_parca")
+
   return(etalab)
 }
 
@@ -117,21 +129,23 @@ get_parca <- function(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE){
   idu <- unique(idu)
   etalab <- get_parca_etalab(idu)
 
+  idu_field <- seq_field("idu")$name
+
   if (bdp_geom){
     if (verbose) cli::cli_alert_info("Downloading BDP from IGN...")
     tryCatch({
       bdp <- get_parca_bdp(idu)
-      idx <- match(etalab$idu, bdp$idu)
+      idx <- match(etalab[[idu_field]], bdp$idu)
       etalab$geometry[!is.na(idx)] <- bdp$geometry[idx[!is.na(idx)]]
 
       source <- seq_field("source")$name
       etalab[[source]][!is.na(idx)] <- bdp[[source]][idx[!is.na(idx)]]
 
       if (verbose) {
-        valid_bdp_idu <- intersect(etalab$idu, bdp$idu)
+        valid_bdp_idu <- intersect(etalab[[idu_field]], bdp$idu)
         if (length(valid_bdp_idu) > 0) {
           cli::cli_alert_success(
-            "{length(valid_bdp_idu)} of {length(etalab$idu)} ETALAB geom successfully replaced with BDP geom."
+            "{length(valid_bdp_idu)} of {length(etalab[[idu_field]])} ETALAB geom successfully replaced with BDP geom."
           )
         }
       }
@@ -139,29 +153,23 @@ get_parca <- function(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE){
     )
   }
 
-  missing_idu <- setdiff(idu, etalab$idu)
+  missing_idu <- setdiff(idu, etalab[[idu_field]])
   if (length(missing_idu) > 0) {
       cli::cli_warn("Geometry not found for {length(missing_idu)} IDU(s): {.val {missing_idu}}")
   }
 
   # Ajout des lieux dits
+  lieu_dit_field <- seq_field("locality")$name
   if (lieu_dit){
     if (verbose) cli::cli_alert_info("Downloading and joining Lieux dits...")
     lieux_dits <- get_lieux_dits(idu)
+    etalab[[lieu_dit_field]] <- NULL
     etalab <- sf::st_join(etalab, lieux_dits[,"lieu_dit"], largest = TRUE) |>
       suppressWarnings()
     if (verbose) cli::cli_alert_success("Lieux dits joined.")
-  }else{
-    etalab$lieu_dit <- NA
   }
 
-  # Add COG info
-  raw_parca <- etalab |>
-    merge(happign::com_2025[, c("COM", "NCC_COM", "DEP")], by.x = "commune", by.y = "COM") |>
-    merge(happign::dep_2025[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
-    merge(happign::reg_2025[, c("REG", "NCC_REG")], all.x = TRUE)
-
-  raw_parca <- seq_normalize(raw_parca, "parca") |>
+  raw_parca <- seq_normalize(etalab, "parca") |>
     sf::st_transform(2154)
 
   return(invisible(raw_parca))
@@ -200,22 +208,23 @@ seq_parca <- function(
     overwrite = FALSE){
 
   layer_info <- seq_layer("parca")
-  full_path <- layer_info$full_path
+  filename <- layer_info$filename
   key <- layer_info$key
-  path <- file.path(dirname, full_path)
-  names(path) <- key
 
-  if (file.exists(path) && !overwrite) {
+  path <- list.files(dirname, filename, recursive = T, full.names = T)
+
+  if (length(path) > 0 && !overwrite) {
     cli::cli_warn(
       "{.file {basename(path)}} already exists. Use {.arg overwrite = TRUE} to replace it."
       )
-    return(invisible(path))
+    return(invisible(setNames(path, key)))
   }
 
   # read matrice
   m <- read_matrice(dirname)
+  identifier <- seq_field("identifier")$name
+  id <- unique(m[[identifier]])
 
-  id <- seq_field("identifier")$name
   idu <- seq_field("idu")$name
   insee <- seq_field("insee")$name
   prefix <- seq_field("prefix")$name
@@ -256,10 +265,11 @@ seq_parca <- function(
   )
 
   # format parca
-  seq_parca <- seq_normalize(seq_parca, "parca") |>
-    parca_check_area(verbose = verbose)
+  seq_parca <- seq_parca |>
+    parca_check_area(verbose = verbose) |>
+    seq_normalize("parca")
 
-  seq_parca[[id]] <- unique(m[[id]])
+  seq_parca[[identifier]] <- id
 
   # write parca
   parca_path <- seq_write(
@@ -287,9 +297,9 @@ seq_parca <- function(
 #'
 #' @return The input `parca` with four additional fields:
 #'   `AREA_SIG` (cartographic area in ha),
-#'   `AREA_ATOL` (absolute difference in m²),
-#'   `AREA_RTOL` (relative difference),
-#'   `AREA_CHECK` (logical flag).
+#'   `ATOL_AREA` (absolute difference in m²),
+#'   `RTOL_AREA` (relative difference),
+#'   `CHECK_AREA` (logical flag).
 #'
 #' @importFrom sf st_area
 #'
@@ -301,13 +311,14 @@ parca_check_area <- function(
     verbose = TRUE){
 
   cad_area <- seq_field("cad_area")$name
+  gis_area <- seq_field("gis_area")$name
 
-  parca$AREA_GIS <- as.numeric(sf::st_area(parca)) / 10000
-  parca$AREA_ATOL <- abs(parca[[cad_area]] - parca$AREA_GIS * 10000)
-  parca$AREA_RTOL <- parca$AREA_ATOL / parca[[cad_area]]
-  parca$AREA_CHECK <- (parca$AREA_ATOL >= atol & parca$AREA_RTOL >= rtol)
+  parca[[gis_area]] <- as.numeric(sf::st_area(parca)) / 10000
+  parca$ATOL_AREA <- abs(parca[[cad_area]] - parca[[gis_area]])
+  parca$RTOL_AREA <- parca$ATOL_AREA / parca[[cad_area]]
+  parca$CHECK_AREA <- (parca$ATOL_AREA >= atol/10000 & parca$RTOL_AREA >= rtol)
 
-  bad_idu <- parca$IDU[parca$AREA_CHECK]
+  bad_idu <- parca$IDU[parca$CHECK_AREA]
   n_bad_idu <- length(bad_idu)
   if (n_bad_idu > 0) {
     cli::cli_warn(
@@ -320,6 +331,9 @@ parca_check_area <- function(
       cli::cli_alert_success("No area inconsistencies (cadastre vs GIS) detected.")
     }
   }
+
+  parca$ATOL_AREA <- NULL
+  parca$RTOL_AREA <- NULL
 
   return(invisible(parca))
 }

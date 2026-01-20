@@ -229,7 +229,7 @@ ua_generate_area <- function(ua, verbose = TRUE) {
   cor_area <- seq_field("cor_area")$name
 
   # Calculate mapped surface in hectares
-  ua[[gis_area]] <- as.numeric(sf::st_area(ua)) / 10000
+  ua[[gis_area]] <- as.numeric(sf::st_area(ua))
 
   # Compute correction factor per cadastral ID
   sum_sig <- stats::ave(ua[[gis_area]], ua[[idu]], FUN = sum, na.rm = T)

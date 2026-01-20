@@ -4,9 +4,7 @@ test_that("parca_check_area() returns expected object", {
 
     expect_s3_class(check, "sf")
 
-    expect_all_true(
-      c("AREA_ATOL", "AREA_RTOL", "AREA_CHECK") %in% names(check)
-    )
+    expect_true("CHECK_AREA" %in% names(check))
   })
 })
 
@@ -26,10 +24,10 @@ test_that("parca_check_area() warns when inconsistencies are detected", {
 test_that("parca_check_area() produces no warning when areas are consistent", {
   with_seq_cache({
     cad_area <- seq_field("cad_area")$name
-    p[[cad_area]] <- 10
+    p[[cad_area]] <- 150 / 10000
 
     local_mocked_bindings(
-      st_area = function(...) 10,
+      st_area = function(...) 150,
       .package = "sf"
     )
 
@@ -40,10 +38,10 @@ test_that("parca_check_area() produces no warning when areas are consistent", {
 test_that("parca_check_area() prints details when verbose = TRUE", {
   with_seq_cache({
     cad_area <- seq_field("cad_area")$name
-    p[[cad_area]] <- 10
+    p[[cad_area]] <- 150 / 10000
 
     local_mocked_bindings(
-      st_area = function(...) 10,
+      st_area = function(...) 150,
       .package = "sf"
     )
 

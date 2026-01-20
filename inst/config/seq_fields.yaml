@@ -42,7 +42,7 @@ dep_name:
 
 com_code:
   name: "COM_CODE"
-  alias: ["commune", "com"]
+  alias: ["com"]
   class: "character"
   definition: "Town INSEE code"
 
@@ -54,7 +54,7 @@ com_name:
 
 insee:
   name: "INSEE"
-  alias: ["insee", "code_insee"]
+  alias: ["code_insee"]
   class: "character"
   definition: "Town full INSEE code"
 

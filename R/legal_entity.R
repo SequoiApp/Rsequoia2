@@ -235,8 +235,7 @@ read_legal_entity <- function(files, verbose = TRUE) {
 #' @keywords internal
 format_legal_entity <- function(legal_entity, code_insee = NULL, verbose = FALSE){
 
-  if (verbose)
-    cli::cli_alert_info("Preparing CSV files...")
+  if (verbose) cli::cli_alert_info("Preparing CSV files...")
 
   # Filter by INSEE code if provided
   if (length(code_insee)) {
@@ -304,7 +303,7 @@ normalize_legal_entity <- function(legal_entity, verbose = FALSE){
       "prefix" = substr(idu, 6, 8),
       "section" = substr(idu, 9, 10),
       "numero" = substr(idu, 11, 14),
-      "contenance" = legal_entity[[le_cad_area]],
+      "contenance" = legal_entity[[le_cad_area]] / 10000,
       "source" = "https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales"
     ) |>
     merge(happign::com_2025[, c("COM", "NCC_COM", "DEP")], by.x = le_insee, by.y = "COM") |>

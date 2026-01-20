@@ -78,7 +78,7 @@ menu_legal_entity <- function(path, overwrite){
   m <- get_legal_entity(insee)
   ms <- search_legal_entity(m, prop = prop)
 
-  s <- sum(ms$SURF_CA / 10000)
+  s <- sum(ms$SURF_CA)
   p <- unique(ms$PROPRIETAIRE)
 
   cli::cli_h2("Summary")

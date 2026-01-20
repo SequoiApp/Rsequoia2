@@ -21,3 +21,21 @@ Defaults to the current working directory.}
 Generate synthetic table from Sequoia layers and write them as \code{.xlsx}
 inside the current Sequoia dir. Useful for redaction of management document.
 }
+\details{
+Available tables:
+\itemize{
+\item \code{"CAD"}: Cadastral parcels
+\item \code{"CAD_COM"}: Surfaces by communes
+\item \code{"PF"}: Surfaces by forest parcels
+\item \code{"SSPF"}: Surfaces by forest sub-parcels
+\item \code{"CAD_PLT"}: Link between cadastral parcels and forest parcels
+\item \code{"OCCUPATION"}: Surfaces by land use
+\item \code{"GEOLOGY"}: Surfaces by geology
+\item \code{"PLT_PF"}: Link between stand type and forest parcels
+\item \code{"PF_PLT"}: Link between forest parcels and stand type
+\item \code{"GESTION"}: Surfaces by management type
+\item \code{"ALTI_PF"}: Altimetry recap by forest parcels (max, min, mean)
+\item \code{"EXPO_PF"}: Exposition recap by forest parcels
+\item \code{"PENTE_PF"}: Slope recap by forest parcels
+}
+}

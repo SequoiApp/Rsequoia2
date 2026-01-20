@@ -33,14 +33,6 @@ test_that("normalize_legal_entity explodes IDU into components", {
   expect_equal(res[[seq_field("insee")$name]], substr(res[[seq_field("idu")$name]], 1, 5))
 })
 
-test_that("normalize_legal_entity maps surf_tot to contenance", {
-
-  res <- normalize_legal_entity(fake_data(), verbose = FALSE)
-
-  expect_true(seq_field("cad_area")$name %in% names(res))
-  expect_equal(sum(res[[seq_field("cad_area")$name]]), sum(fake_data()$surf_tot))
-})
-
 test_that("normalize_legal_entity joins are non-destructive", {
 
   le <- fake_data()
@@ -76,6 +68,17 @@ test_that("normalize_legal_entity enriches with cog info", {
   expect_all_true(grepl("^[0-9]{1,3}$", res[[prefix]]))
   expect_all_true(grepl("^[0-9A-Z]{2}$", res[[section]]))
   expect_all_true(grepl("^[0-9]{1,4}$", res[[numero]]))
+
+})
+
+test_that("normalize_legal_entity convert contenance to hectare", {
+
+  le <- fake_data()
+  res <- normalize_legal_entity(le, verbose = FALSE)
+
+  cad_area <- seq_field("cad_area")$name
+  le_cad_area <- "surf_tot"
+  expect_equal(sum(le[[le_cad_area]])/10000, sum(res[[cad_area]]))
 
 })
 

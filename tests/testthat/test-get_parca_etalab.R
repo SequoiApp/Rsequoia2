@@ -1,3 +1,11 @@
+test_that("get_parca_etalab() aborts on empty idu", {
+
+  expect_error(get_parca_etalab(character()), "idu.*non-empty")
+  expect_error(get_parca_etalab(NULL), "idu.*non-empty")
+  expect_error(get_parca_etalab(numeric()), "idu.*non-empty")
+
+})
+
 test_that("get_parca_etalab() abort when all idu are invalid", {
 
   idu <- c("352890000A0145", "352890000A0147")
@@ -30,19 +38,70 @@ test_that("get_parca_etalab() abort when any idu are invalid", {
 
 })
 
+test_that("get_parca_etalab() de-duplicates idu", {
+
+  idu <- c("010010000A0001", "010010000A0001")
+
+  calls <- 0
+  local_mocked_bindings(
+    read_sf = function(...) {
+      calls <<- calls + 1
+      Rsequoia2:::seq_poly |>
+        transform(
+          id = "010010000A0001",
+          commune = "01001",
+          prefixe = "000",
+          section = "0A",
+          numero = "0001",
+          contenance = 10
+        )
+    }
+  )
+
+  res <- get_parca_etalab(idu)
+
+  expect_equal(calls, 1)
+  expect_equal(nrow(res), nrow(seq_poly))
+})
+
+test_that("get_parca_etalab() pads cadastral fields", {
+
+  idu <- "010010000A0001"
+  fake <- Rsequoia2:::seq_poly |>
+    transform(
+      id = idu,
+      commune = "1001",   # intentionally unpadded
+      prefixe = "1",
+      section = "A",
+      numero  = "1",
+      contenance = 10
+    )
+
+  local_mocked_bindings(
+    read_sf = function(...) fake
+  )
+
+  res <- get_parca_etalab(idu)
+
+  f <- \(x) seq_field(x)$name
+  expect_all_equal(res[[f("prefix")]], "001")
+  expect_all_equal(res[[f("section")]], "0A")
+  expect_all_equal(res[[f("number")]], "0001")
+  expect_all_equal(res[[f("insee")]], "01001")
+})
+
 test_that("get_parca_etalab() add source", {
 
-  poly <- sf::st_polygon(list(rbind(c(0, 0), c(2, 0), c(2, 2), c(0, 2), c(0, 0)))) |>
-    sf::st_sfc(crs = 2154)
-
-  idu <- c("352890000A0145")
-  fake_parca_etalab <- sf::st_sf(
-    id = idu,
-    prefixe = "000",
-    section = "0A",
-    numero = "0001",
-    geometry = poly
-  )
+  idu <- c("010010000A0001")
+  fake_parca_etalab <- Rsequoia2:::seq_poly |>
+    transform(
+      "id" = idu,
+      "commune" = "01001",
+      "prefixe" = "000",
+      "section" = "0A",
+      "numero" = "0001",
+      "contenance" = 10
+    )
 
   local_mocked_bindings(
     read_sf = function(...) fake_parca_etalab
@@ -53,47 +112,54 @@ test_that("get_parca_etalab() add source", {
 
   expect_s3_class(res, "sf")
   expect_all_equal(res[[source]], "etalab")
-
 })
 
-test_that("get_parca_etalab() deduplicates idu input", {
+test_that("get_parca_etalab() convert contenance to ha", {
 
-  idu <- c("352890000A0145", "352890000A0145")
+  idu <- c("010010000A0001")
+  fake_parca_etalab <- Rsequoia2:::seq_poly |>
+    transform(
+      "id" = idu,
+      "commune" = "01001",
+      "prefixe" = "000",
+      "section" = "0A",
+      "numero" = "0001",
+      "contenance" = 10
+    )
 
-  fake <- sf::st_sf(
-    id = "352890000A0145",
-    prefixe = "0",
-    section = "A",
-    numero = "1",
-    geometry = sf::st_sfc(sf::st_point(c(0,0)), crs = 2154)
+  local_mocked_bindings(
+    read_sf = function(...) fake_parca_etalab
   )
 
-  local_mocked_bindings(read_sf = function(...) fake)
-
   res <- get_parca_etalab(idu)
+  cad_area <- seq_field("cad_area")$name
 
-  expect_equal(nrow(res), 1)
+  expect_s3_class(res, "sf")
+  expect_all_equal(res[[cad_area]], 0.001)
 })
 
-test_that("get_parca_etalab() queries one URL per commune", {
+test_that("get_parca_etalab() queries one URL per unique commune", {
 
-  idu <- c("352890000A0145", "352900000A0001")
+  idu <- c("010010000A0001", "010020000A0001", "010030000A0001")
+  urls <- character()
 
-  calls <- 0
   local_mocked_bindings(
-    read_sf = function(...) {
-      calls <<- calls + 1
-      sf::st_sf(
-        id = c("352890000A0145", "352900000A0001")[calls],
-        prefixe = "000",
-        section = "0A",
-        numero = "0001",
-        geometry = sf::st_sfc(sf::st_point(c(0,0)), crs = 2154)
-      )
+    read_sf = function(x, ...) {
+      urls <<- c(urls, x)
+      Rsequoia2:::seq_poly |>
+        transform(
+          id = idu,
+          commune = "01001",
+          prefixe = "000",
+          section = "0A",
+          numero = "0001",
+          contenance = 10
+        )
     }
   )
 
   res <- get_parca_etalab(idu)
 
-  expect_equal(calls, 2)
+  expect_length(urls, 3)
+  expect_true(all(grepl("/communes/0100", urls)))
 })

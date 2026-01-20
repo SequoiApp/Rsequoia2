@@ -74,6 +74,6 @@ test_that("get_legal_entity() reads CSV files from cache", {
 
   res <- get_legal_entity("01", cache = le_cache, verbose = FALSE)
 
-  expect_shape(res, dim = c(2, 16))
+  expect_shape(res, dim = c(2, 17))
 })
 

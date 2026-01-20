@@ -15,6 +15,7 @@ raw_parca:
   - dep_code
   - com_name
   - com_code
+  - insee
   - prefix
   - section
   - number
@@ -37,6 +38,7 @@ parca:
   - section
   - number
   - locality
+  - gis_area
   - cad_area
   - source
 

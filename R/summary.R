@@ -5,7 +5,7 @@
 #'
 #' @inheritParams seq_write
 #'
-#' @detail
+#' @details
 #' Available tables:
 #'  - `"CAD"`: Cadastral parcels
 #'  - `"CAD_COM"`: Surfaces by communes
