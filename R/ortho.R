@@ -122,6 +122,8 @@ seq_ortho <- function(
     verbose = TRUE){
 
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  identifier <- seq_field("identifier")$name
+  id <- unique(parca[[identifier]])
 
   if (verbose){
     cli::cli_h1("IMAGERY")
@@ -144,12 +146,13 @@ seq_ortho <- function(
     path <- seq_write(
       r,
       key = switch(type, "irc" = "r.ortho.irc", "rgb" = "r.ortho.rgb"),
+      id = id,
       dirname = dirname,
       overwrite = overwrite,
       verbose = verbose
     )
   })
 
-  return(paths)
+  return(invisible(paths))
 
 }

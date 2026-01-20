@@ -184,6 +184,8 @@ seq_scan <- function(
 
   # read project geometry
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  identifier <- seq_field("identifier")$name
+  id <- unique(parca[[identifier]])
 
   if (verbose){
     cli::cli_h1("SCAN")
@@ -231,6 +233,7 @@ seq_scan <- function(
         r,
         key = key,
         dirname = dirname,
+        id = id,
         overwrite = overwrite,
         verbose = verbose
       )
@@ -252,6 +255,6 @@ seq_scan <- function(
   }
 
   names(paths) <- type[seq_along(paths)]
-  paths
+  return(paths)
 }
 

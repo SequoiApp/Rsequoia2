@@ -337,7 +337,7 @@ seq_elevation <- function(
     overwrite = FALSE,
     verbose = TRUE) {
 
-  seq_get_or_read <- function(key, compute_fn) {
+  seq_get_or_read <- function(key, compute_fn, id) {
     layer_info <- seq_layer(key)
     full_path <- layer_info$full_path
     path <- file.path(dirname, full_path)
@@ -347,12 +347,14 @@ seq_elevation <- function(
     }
 
     x <- compute_fn()
-    path <- seq_write(x, key, dirname = dirname, verbose = verbose, overwrite = overwrite)
+    path <- seq_write(x, key, dirname = dirname, id = id, verbose = verbose, overwrite = overwrite)
 
     return(list(path = path, data = x))
   }
 
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  identifier <- seq_field("identifier")$name
+  id <- unique(parca[[identifier]])
 
   if (verbose){
     cli::cli_h1("ELEVATION")
