@@ -361,29 +361,39 @@ seq_elevation <- function(
   }
 
   # DEM ----
-  dem <- seq_get_or_read("r.alt.mnt", function() {
-    get_dem(parca, buffer = buffer, res = res, crs = crs, verbose = verbose)
-  })
+  dem <- seq_get_or_read(
+    "r.alt.mnt",
+    function() {get_dem(parca, buffer = buffer, res = res, crs = crs, verbose = verbose)},
+    id = id
+  )
 
   # DSM ----
-  dsm <- seq_get_or_read("r.alt.mns", function() {
-    get_dsm(parca, buffer = buffer, res = res, crs = crs, verbose = verbose)
-  })
+  dsm <- seq_get_or_read(
+    "r.alt.mns",
+    function() {get_dsm(parca, buffer = buffer, res = res, crs = crs, verbose = verbose)},
+    id = id
+  )
 
   # CHM ----
-  chm <- seq_get_or_read("r.alt.mnh", function() {
-    get_chm(x = NULL, dem = dem$data, dsm = dsm$data, verbose = verbose)
-  })
+  chm <- seq_get_or_read(
+    "r.alt.mnh",
+    function() {get_chm(x = NULL, dem = dem$data, dsm = dsm$data, verbose = verbose)},
+    id = id
+  )
 
   # SLOPE ----
-  slope <- seq_get_or_read("r.alt.pente", function() {
-    get_slope(x = NULL, dem = dem$data, verbose = verbose)
-  })
+  slope <- seq_get_or_read(
+    "r.alt.pente",
+    function() {get_slope(x = NULL, dem = dem$data, verbose = verbose)},
+    id = id
+  )
 
   # ASPECT ----
-  aspect <- seq_get_or_read("r.alt.expo", function() {
-    get_aspect(x = NULL, dem = dem$data, verbose = verbose)
-  })
+  aspect <- seq_get_or_read(
+    "r.alt.expo",
+    function() {get_aspect(x = NULL, dem = dem$data, verbose = verbose)},
+    id = id
+  )
 
   return(c(dem$path, dsm$path, chm$path, slope$path, aspect$path) |> as.list())
 }
