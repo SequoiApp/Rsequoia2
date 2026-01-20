@@ -62,7 +62,7 @@ test_that("seq_field() errors on invalid field name", {
 
   expect_error(
     seq_field(field = "xxx", filepath = cfg_path),
-    "Bad `field` value"
+    "does not exist"
   )
 
 })
