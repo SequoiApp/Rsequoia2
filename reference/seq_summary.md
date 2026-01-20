@@ -45,7 +45,13 @@ Available tables:
 
 - `"OCCUPATION"`: Surfaces by land use
 
-- `"GEOLOGY"`: Surfaces by geology
+- `"STATION"`: Surfaces by station
+
+- `"GEOL_BDCHARM50"`: Surfaces by geology (source: BDCHARM50)
+
+- `"GEOL_CARHAB"`: Surfaces by geology (source: CARHAB)
+
+- `"PEDO"`: Surfaces by pedology type
 
 - `"PLT_PF"`: Link between stand type and forest parcels
 

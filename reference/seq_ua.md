@@ -6,7 +6,7 @@ directory, check and udapte attributes and overwrite it.
 ## Usage
 
 ``` r
-seq_ua(dirname = ".", secure = TRUE, verbose = TRUE, overwrite = FALSE)
+seq_ua(dirname = ".", secure = TRUE, verbose = TRUE, overwrite = TRUE)
 ```
 
 ## Arguments
