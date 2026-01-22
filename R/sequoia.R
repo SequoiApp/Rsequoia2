@@ -32,7 +32,7 @@ sequoia <- function(path = NULL, overwrite = FALSE) {
 
   if (is.null(path) | path == "") cli_abort("No selection.")
 
-  cli_alert_info("You choose folder: {.path {normalizePath(path)}}")
+  cli_alert_info("You choose folder: {.file {normalizePath(path)}}")
 
   # MAIN MENU ---
   actions <- list(

@@ -63,6 +63,8 @@ style_table <- function(wb, sheet, df, numfmt = "0.00"){
 #' If `...` contain named arg, name is used as sheet name else variable name is
 #' used.
 #' @param filename `character` File path where the workbook will be saved.
+#' @param data_table `logical` If `TRUE`, data table is set up with total row.
+#' Default to `FALSE`.
 #' @param overwrite `logical` If `TRUE`, filename is overwritten.
 #' @param verbose `logical` If `TRUE`, display messages.
 #'
@@ -85,7 +87,7 @@ style_table <- function(wb, sheet, df, numfmt = "0.00"){
 #' save_tables_to_xlsx(df1, THIS_DF2 = df2, filename = "my_data.xlsx")
 #'
 #' }
-seq_xlsx <- function(..., filename, overwrite = FALSE, verbose = TRUE) {
+seq_xlsx <- function(..., filename, data_table = FALSE, overwrite = FALSE, verbose = TRUE) {
 
   # convert to symbol then to list. First element is always the function name
   exprs <- as.list(substitute(list(...)))[-1]
@@ -164,10 +166,13 @@ seq_xlsx <- function(..., filename, overwrite = FALSE, verbose = TRUE) {
   for (sheet in names(sheets)) {
     df <- sheets[[sheet]]
 
-    wb <- wb |>
-      wb_add_worksheet(sheet) |>
-      wb_add_data(sheet, x = df, na.strings = "") |>
-      style_table(sheet, df)
+    wb <- wb_add_worksheet(wb, sheet)
+    if (data_table & nrow(df) > 0){
+      wb <- openxlsx2::wb_add_data_table(wb, sheet, x = df, na.strings = "", total_row = TRUE)
+    }else{
+      wb <- wb_add_data(wb, sheet, x = df, na.strings = "")
+    }
+    wb <- style_table(wb, sheet, df)
   }
 
   wb_save(wb, filename, overwrite)

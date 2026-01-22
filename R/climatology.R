@@ -59,11 +59,48 @@ get_climatology <- function(dep, cache = NULL){
 
   climatology <- lapply(resource$url, function(url){
     filename <- basename(url)
-    res <- curl::curl_download(url, file.path(cache, filename))
-    read.csv2(res)
+    clim <- curl::curl_download(url, file.path(cache, filename))
+    clim <- read.csv2(clim)
+    periode <- regmatches(filename, regexpr("\\d{4}-\\d{4}", filename))
+    res <- cbind(PERIODE = periode, clim)
+    return(res)
   })
   climatology <- do.call(rbind, climatology)
 
   return(climatology)
+
+}
+
+get_climat <- function(x, dirname = NULL, verbose = TRUE, cache = NULL){
+
+  nearest <- get_nearest_station(x, n = 1, verbose = verbose)
+  dep <- substr(nearest$num, 1, 2) |> unique()
+  clim <- get_climatology(dep, cache = NULL)
+  clim <- clim[clim$NUM_POSTE == nearest$num, ]
+
+  # p: precipitation
+  year_month <- "AAAAMM"
+  year <- "year"
+  month <- "month"
+  tmoy <- "TM"
+  tmin <- "TN"
+  tmax <- "TX"
+  p_mm <- "RR"
+
+  clim[[year]] <- substr(clim[[year_month]], 1, 4) |> as.numeric()
+  clim[[month]] <- substr(clim[[year_month]], 5, 6) |> as.numeric()
+
+  cols <- c(year, month, tmoy, tmin, tmax, p_mm)
+  clim[cols] <- clim[cols] |> lapply(as.numeric)
+
+  # Ombro
+  ombro_agg <- aggregate(
+    clim[, c(tmoy, tmin, tmax, p_mm)],
+    by = list(MONTH = clim[[month]]),
+    FUN = mean,
+    na.rm = TRUE
+  )
+
+
 
 }

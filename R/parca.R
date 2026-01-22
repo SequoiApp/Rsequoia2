@@ -38,7 +38,11 @@ get_parca_bdp <- function(idu){
 get_parca_etalab <- function(idu){
 
   if (is.null(idu) || length(idu) == 0) {
-    cli::cli_abort("{.arg idu} must be a non-empty character vector.")
+    cli::cli_abort("{.arg idu} must be a non-empty vector.")
+  }
+
+  if (!inherits(idu, "character")) {
+    cli::cli_abort("{.arg idu} must be a character vector.")
   }
 
   url <- "https://cadastre.data.gouv.fr/bundler/cadastre-etalab/communes/%s/geojson/parcelles"

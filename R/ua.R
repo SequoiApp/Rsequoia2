@@ -8,6 +8,10 @@
 #' @export
 parca_to_ua <- function(parca) {
   ua <- seq_normalize(parca, "ua")
+  is_wooded <- seq_field("is_wooded")$name
+  ua[[is_wooded]] <- TRUE
+
+  return(ua)
 }
 
 #' Create _PARCA_ sf object from _UA_ sf object
