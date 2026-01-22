@@ -8,7 +8,7 @@ to each sheet.
 ## Usage
 
 ``` r
-seq_xlsx(..., filename, overwrite = FALSE, verbose = TRUE)
+seq_xlsx(..., filename, data_table = FALSE, overwrite = FALSE, verbose = TRUE)
 ```
 
 ## Arguments
@@ -22,6 +22,11 @@ seq_xlsx(..., filename, overwrite = FALSE, verbose = TRUE)
 - filename:
 
   `character` File path where the workbook will be saved.
+
+- data_table:
+
+  `logical` If `TRUE`, data table is set up with total row. Default to
+  `FALSE`.
 
 - overwrite:
 

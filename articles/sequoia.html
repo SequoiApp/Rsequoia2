@@ -67,14 +67,6 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html" class="external-link">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span></span>
-<span>  collapse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  out.width <span class="op">=</span> <span class="st">"100%"</span>,</span>
-<span>  dpi <span class="op">=</span> <span class="fl">300</span>,</span>
-<span>  fig.width <span class="op">=</span> <span class="fl">7.2916667</span>,</span>
-<span>  comment <span class="op">=</span> <span class="st">"#&gt;"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mucau.github.io/Rsequoia2/">Rsequoia2</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Attempting to load the package cache ... No cache found.</span></span>
 <span><span class="co">#&gt; Will try to reconfigure qgisprocess and build new cache ...</span></span>
@@ -94,43 +86,6 @@ goal is to :</p>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="how-it-works">How it works<a class="anchor" aria-label="anchor" href="#how-it-works"></a>
-</h2>
-<div class="section level3">
-<h3 id="internal-configuration">Internal configuration<a class="anchor" aria-label="anchor" href="#internal-configuration"></a>
-</h3>
-<p><code>Rsequoia2</code> relies on an internal configuration that maps
-keys to data layers and their metadata. For example, the key
-<code>"r.sol.geol"</code> refers to the geological raster layer named
-<code>GEOL.tif</code>.</p>
-<p>All available keys can be listed with <code><a href="../reference/seq_layer.html">seq_layer()</a></code>. To
-access metadata for a specific layer, use
-<code>seq_layer("r.sol.geol")</code>.</p>
-<p>Note that full keys are not always required:
-<code>seq_layer("geol")</code> also works.</p>
-<p>##<code>seq_*</code> functions</p>
-<p>All main functions in <code>Rsequoia2</code> start with
-<code>seq_*</code> (e.g. seq_geol(), seq_prsf(), …).</p>
-<p>These functions: - Read the project cadastral parcels to defined area
-of interest ; - Download the required data ; - Save them according to
-the configuration (name and extension) ; - Return path(s) where the data
-are stored.</p>
-<p><em>Note: for advanced users, each <code>seq_*</code> function has an
-equivalent <code>get_*</code> function (e.g. <code>get_geol()</code>,
-<code><a href="../reference/get_prsf.html">get_prsf()</a></code>, …). These can be used independently of the
-Sequoia workflow.</em></p>
-</div>
-<div class="section level3">
-<h3 id="reading-data">Reading data<a class="anchor" aria-label="anchor" href="#reading-data"></a>
-</h3>
-<p><code><a href="../reference/seq_read.html">seq_read()</a></code> uses the configuration to read any layer
-using its key (vector or raster).</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">parca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/seq_read.html">seq_read</a></span><span class="op">(</span><span class="st">"parca"</span><span class="op">)</span></span>
-<span><span class="va">dem</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/seq_read.html">seq_read</a></span><span class="op">(</span><span class="st">"dem"</span><span class="op">)</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level2">
 <h2 id="what-is-a-sequoia-process">What is a Sequoia process<a class="anchor" aria-label="anchor" href="#what-is-a-sequoia-process"></a>
 </h2>
 <p>Sequoia process always have those step :</p>
@@ -142,47 +97,45 @@ using its key (vector or raster).</p>
 <li>GIS part to create analysis units ;</li>
 <li>Generating final layer from analysis units</li>
 </ul>
-</div>
-<div class="section level2">
-<h2 id="setting-a-directory">Setting a directory<a class="anchor" aria-label="anchor" href="#setting-a-directory"></a>
-</h2>
+<div class="section level3">
+<h3 id="setting-a-directory">Setting a directory<a class="anchor" aria-label="anchor" href="#setting-a-directory"></a>
+</h3>
 <p>All <code>seq_*</code> function have <code>dirname = "."</code>
 argument, meaning they use the current working directory by default.
 Best practice is to create a dedicated directory and set it as the
 working directory for the R session.</p>
 <p>For the example, a forest named <code>"ECKMUHL"</code> is used:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sequoia_dir</span> <span class="op">&lt;-</span> <span class="st">"ECKMUHL"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">sequoia_dir</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># setting current dir to our sequoia dir</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="va">sequoia_dir</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="creating-parca-matrice">Creating parca matrice<a class="anchor" aria-label="anchor" href="#creating-parca-matrice"></a>
-</h2>
+<div class="section level3">
+<h3 id="creating-parca-matrice">Creating parca matrice<a class="anchor" aria-label="anchor" href="#creating-parca-matrice"></a>
+</h3>
 <p><code>Rsequoia2</code> provides several ways to generate this
 fundamental file:</p>
 <ul>
-<li>A manually filled empty Excel file (see Cadastral Parcels
-article)</li>
+<li>A manually filled Excel file (see Cadastral Parcels article)</li>
 <li>Using legal-entity open data (see Cadastral Parcels – Legal Entity
 article)</li>
 <li>Generating the file from DGFiP PDF matrices</li>
 </ul>
 </div>
-<div class="section level2">
-<h2 id="downloading-parca-geometry">Downloading parca geometry<a class="anchor" aria-label="anchor" href="#downloading-parca-geometry"></a>
-</h2>
+<div class="section level3">
+<h3 id="downloading-parca-geometry">Downloading parca geometry<a class="anchor" aria-label="anchor" href="#downloading-parca-geometry"></a>
+</h3>
 <p>All data downloaded by <code>Rsequoia2</code> are based on cadastral
 parcels (parca). The first mandatory step is therefore to download them
 using <code><a href="../reference/seq_parca.html">seq_parca()</a></code>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/seq_parca.html">seq_parca</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="downloading-data">Downloading data<a class="anchor" aria-label="anchor" href="#downloading-data"></a>
-</h2>
+<div class="section level3">
+<h3 id="downloading-data">Downloading data<a class="anchor" aria-label="anchor" href="#downloading-data"></a>
+</h3>
 <p><code>Rsequoia2</code> offer many datasets, which can be downloaded
 using <code>seq_*</code> functions:</p>
 <ul>
@@ -194,42 +147,99 @@ using <code>seq_*</code> functions:</p>
 <li>Patrimony data from Atlas du Patrimoine ;</li>
 <li>…</li>
 </ul>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/seq_mnhn.html">seq_mnhn</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="analyst-unist">Analyst unist<a class="anchor" aria-label="anchor" href="#analyst-unist"></a>
+</h3>
+<p>The next step after downloading <strong>parca</strong> and the
+additional datasets is to create the analysis units.</p>
+<p>This layer is generated using <code><a href="../reference/seq_parca_to_ua.html">seq_parca_to_ua()</a></code>. Your
+task is to segment the layer so that it reflects the actual forest
+structure.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/seq_parca_to_ua.html">seq_parca_to_ua</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Additional layers can help with this step, but the real diagnostic
+comes from field data collection.</p>
+<p>For more details, see the Analysis units article.</p>
+</div>
+<div class="section level3">
+<h3 id="finalizing-the-layer">Finalizing the layer<a class="anchor" aria-label="anchor" href="#finalizing-the-layer"></a>
+</h3>
+<p>The final step, after manually completing the UA layer, is to make
+sure everything is correct (and, more importantly, that nothing was
+accidently corrupted). Some additional processing is also required to
+properly finalize this layer.</p>
+<p><code><a href="../reference/seq_ua.html">seq_ua()</a></code> performs a series of checks and corrections to
+validate and finalize the UA layer:</p>
+<ul>
+<li>Checks cadastral IDU consistency between UA and PARCA</li>
+<li>Ensures UA cadastral areas match PARCA by correcting any detected
+differences</li>
+<li>Generates a standardized management unit identifier (UG) in the UA
+object</li>
+<li>Computes corrected cadastral areas for analysis units based on
+cartographic area</li>
+<li>Checks management unit (UG) consistency within the UA sf object</li>
+<li>Detects and corrects minor inconsistencies within management units
+(UG)</li>
+<li>Cleans geometry topology</li>
+</ul>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mnhn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/seq_mnhn.html">seq_mnhn</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>As explained above, all data are saved in the current directory by
-default. If you need a more structured folder layout, you can provide a
-custom <code>dirname</code>.</p>
-<p>In the example below, raster and vector data are stored in separate
-directories:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/seq_ua.html">seq_ua</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+</h3>
+<p>Last but not least, the final step is to generate tables that help
+users better understand and write their forest management document.</p>
+<p><code><a href="../reference/seq_summary.html">seq_summary()</a></code> produces a set of opinionated summary
+tables derived from the UA layer.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">vdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">sequoia_dir</span>, <span class="st">"VECTOR"</span><span class="op">)</span></span>
-<span><span class="va">rdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">sequoia_dir</span>, <span class="st">"RASTER"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/seq_parca.html">seq_parca</a></span><span class="op">(</span><span class="va">vdir</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/seq_mnhn.html">seq_mnhn</a></span><span class="op">(</span><span class="va">vdir</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/seq_elevation.html">seq_elevation</a></span><span class="op">(</span><span class="va">rdir</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/seq_ortho.html">seq_ortho</a></span><span class="op">(</span><span class="va">rdir</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/seq_geol.html">seq_geol</a></span><span class="op">(</span><span class="va">vdir</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/seq_hydro.html">seq_hydro</a></span><span class="op">(</span><span class="va">vfdir</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/seq_patrimony.html">seq_patrimony</a></span><span class="op">(</span><span class="va">vdir</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/seq_summary.html">seq_summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
-<h2 id="gis-part">GIS part<a class="anchor" aria-label="anchor" href="#gis-part"></a>
+<h2 id="how-it-works">How it works<a class="anchor" aria-label="anchor" href="#how-it-works"></a>
 </h2>
-<p>…</p>
+<div class="section level3">
+<h3 id="internal-configuration">Internal configuration<a class="anchor" aria-label="anchor" href="#internal-configuration"></a>
+</h3>
+<p><code>Rsequoia2</code> relies on an internal configuration that maps
+keys to data layers and their metadata. For example, the key
+<code>"r.sol.geol"</code> refers to the geological raster layer named
+<code>GEOL.tif</code>.</p>
+<p>All available keys can be listed with <code><a href="../reference/seq_key.html">seq_key()</a></code>. To
+access metadata for a specific layer, use
+<code>seq_layer("r.sol.geol")</code>.</p>
+<p>Note that full keys are not always required:
+<code>seq_layer("geol")</code> also works.</p>
 </div>
-<div class="section level2">
-<h2 id="finalizing-layer">Finalizing layer<a class="anchor" aria-label="anchor" href="#finalizing-layer"></a>
-</h2>
-<p>..</p>
+<div class="section level3">
+<h3 id="seq_-functions">
+<code>seq_*</code> functions<a class="anchor" aria-label="anchor" href="#seq_-functions"></a>
+</h3>
+<p>All main functions in <code>Rsequoia2</code> start with
+<code>seq_*</code> (e.g. <code><a href="../reference/seq_geol.html">seq_geol()</a></code>,
+<code><a href="../reference/seq_prsf.html">seq_prsf()</a></code>, …).</p>
+<p>These functions: - Read the project cadastral parcels to defined area
+of interest ; - Download the required data ; - Save them according to
+the configuration (name and extension) ; - Return path(s) where the data
+are stored.</p>
+<p>Note: for advanced users, each <code>seq_*</code> function has an
+equivalent <code>get_*</code> function (e.g. <code>get_geol()</code>,
+<code><a href="../reference/get_prsf.html">get_prsf()</a></code>, …). These can be used independently of the
+Sequoia workflow.</p>
 </div>
-<div class="section level2">
-<h2 id="how-it-can-be-used">How it can be used<a class="anchor" aria-label="anchor" href="#how-it-can-be-used"></a>
-</h2>
-<p>Sequoia is created thinking that power user and friendly user will
-use it. This is reflected by the name of function. All function starting
-with <code>seq_*</code> are wrapper around low level function for
-friendly user.</p>
+<div class="section level3">
+<h3 id="cheat-code">Cheat code !<a class="anchor" aria-label="anchor" href="#cheat-code"></a>
+</h3>
+<p>For those who made it to the end, <code>Rsequoia2</code> provides a
+wrapper function to guide you through the entire workflow:
+<code><a href="../reference/sequoia.html">sequoia()</a></code>.</p>
+<p>Have fun !</p>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
