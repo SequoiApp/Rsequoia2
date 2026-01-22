@@ -4,7 +4,7 @@
 \alias{seq_xlsx}
 \title{Save Multiple Data Frames to an Excel Workbook with Styling}
 \usage{
-seq_xlsx(..., filename, overwrite = FALSE, verbose = TRUE)
+seq_xlsx(..., filename, data_table = FALSE, overwrite = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{...}{\code{data.frame} Each \code{data.frame} is wrote to a different sheet name.
@@ -12,6 +12,9 @@ If \code{...} contain named arg, name is used as sheet name else variable name i
 used.}
 
 \item{filename}{\code{character} File path where the workbook will be saved.}
+
+\item{data_table}{\code{logical} If \code{TRUE}, data table is set up with total row.
+Default to \code{FALSE}.}
 
 \item{overwrite}{\code{logical} If \code{TRUE}, filename is overwritten.}
 

@@ -103,7 +103,7 @@ get_lieux_dits <- function(idu){
   lieux_dits <- lapply(urls, sf::read_sf)
   lieux_dits <- do.call(rbind, lieux_dits)
 
-  names(lieux_dits)[names(lieux_dits) == "nom"] <- "lieu_dit"
+  names(lieux_dits)[names(lieux_dits) == "nom"] <- seq_field("locality")$name
 
   return(lieux_dits)
 }
@@ -164,9 +164,11 @@ get_parca <- function(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE){
   # Ajout des lieux dits
   if (lieu_dit){
     if (verbose) cli::cli_alert_info("Downloading and joining Lieux dits...")
+    locality <- seq_field("locality")$name
     lieux_dits <- get_lieux_dits(idu)
-    etalab <- sf::st_join(etalab, lieux_dits[,"lieu_dit"], largest = TRUE) |>
+    etalab <- sf::st_join(etalab, lieux_dits[locality], largest = TRUE, suffix = c("_XX", "")) |>
       suppressWarnings()
+    etalab[[paste0(locality, "_XX")]] <- NULL
     if (verbose) cli::cli_alert_success("Lieux dits joined.")
   }
 

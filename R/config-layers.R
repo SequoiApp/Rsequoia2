@@ -204,6 +204,9 @@ seq_key <- function(key = NULL, allow_multiple = FALSE){
     yaml::read_yaml()
 
   all_keys <- names(cfg_layer)
+  if (is.null(key)){
+    return(all_keys)
+  }
   keys <- grep(key, all_keys, value = TRUE)
 
   no_match <- length(keys) == 0

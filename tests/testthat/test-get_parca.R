@@ -111,7 +111,7 @@ test_that("get_parca() works with bdp_geom = F & get_lieux_dit = T", {
 
   lieu <-  c("lieu1", "lieu2", "lieu3")
   lieu_dit <- Rsequoia2:::seq_poly
-  lieu_dit$lieu_dit <- lieu
+  lieu_dit[[locality_field]] <- lieu
 
   calls <- list(etalab = 0, lieu_dit = 0)
   local_mocked_bindings(
@@ -142,7 +142,7 @@ test_that("get_parca() is verbose with bdp_geom = F & get_lieux_dit = T", {
 
   lieu <-  c("lieu1", "lieu2", "lieu3")
   lieu_dit <- Rsequoia2:::seq_poly
-  lieu_dit$lieu_dit <- lieu
+  lieu_dit[[locality_field]] <- lieu
 
   calls <- list(etalab = 0, lieu_dit = 0)
   local_mocked_bindings(
