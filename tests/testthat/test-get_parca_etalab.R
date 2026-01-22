@@ -3,7 +3,9 @@ test_that("get_parca_etalab() aborts on empty idu", {
   expect_error(get_parca_etalab(character()), "idu.*non-empty")
   expect_error(get_parca_etalab(NULL), "idu.*non-empty")
   expect_error(get_parca_etalab(numeric()), "idu.*non-empty")
-  expect_error(get_parca_etalab(Rsequoia2:::seq_poly), "idu.*non-empty")
+
+  expect_error(get_parca_etalab(Rsequoia2:::seq_poly), "must be")
+  expect_error(get_parca_etalab(list("aaa")), "must be")
 
 })
 

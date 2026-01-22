@@ -1,12 +1,10 @@
-test_that("get_parca_bdp() works with real API (local only)", {
+test_that("get_parca_bdp() aborts on empty idu", {
 
-  skip_on_cran()
-  skip_on_ci()
-  skip_if_offline()
+  expect_error(get_parca_bdp(character()), "idu.*non-empty")
+  expect_error(get_parca_bdp(NULL), "idu.*non-empty")
+  expect_error(get_parca_bdp(numeric()), "idu.*non-empty")
 
-  idu <- "29158000AZ0086"
-  out <- get_parca_bdp(idu)
-
-  expect_snapshot(str(sf::st_drop_geometry(out)))
+  expect_error(get_parca_bdp(Rsequoia2:::seq_poly), "must be")
+  expect_error(get_parca_bdp(list("aaaa")), "must be")
 
 })

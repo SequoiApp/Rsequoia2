@@ -10,6 +10,10 @@ get_parca_bdp <- function(idu){
     cli::cli_abort("{.arg idu} must be a non-empty character vector.")
   }
 
+  if (!inherits(idu, "character")) {
+    cli::cli_abort("{.arg idu} must be {.cls character}, not {.cls {class(idu)}}.")
+  }
+
   idu_parts <- idu_split(idu)
 
   bdp <- happign::get_apicarto_cadastre(
@@ -42,7 +46,7 @@ get_parca_etalab <- function(idu){
   }
 
   if (!inherits(idu, "character")) {
-    cli::cli_abort("{.arg idu} must be a character vector.")
+    cli::cli_abort("{.arg idu} must be {.cls character}, not {.cls {class(idu)}}.")
   }
 
   url <- "https://cadastre.data.gouv.fr/bundler/cadastre-etalab/communes/%s/geojson/parcelles"
@@ -153,21 +157,14 @@ get_parca <- function(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE){
           )
         }
       }
-    }, error = \(e) cli::cli_alert_warning("BDP not available, ETALAB geom only is used.")
+    }, error = \(e) cli::cli_warn("BDP not available, ETALAB geom only is used.")
     )
   }
 
-  missing_idu <- setdiff(idu, etalab[[idu_field]])
-  if (length(missing_idu) > 0) {
-      cli::cli_warn("Geometry not found for {length(missing_idu)} IDU(s): {.val {missing_idu}}")
-  }
-
   # Ajout des lieux dits
-  lieu_dit_field <- seq_field("locality")$name
   if (lieu_dit){
     if (verbose) cli::cli_alert_info("Downloading and joining Lieux dits...")
     lieux_dits <- get_lieux_dits(idu)
-    etalab[[lieu_dit_field]] <- NULL
     etalab <- sf::st_join(etalab, lieux_dits[,"lieu_dit"], largest = TRUE) |>
       suppressWarnings()
     if (verbose) cli::cli_alert_success("Lieux dits joined.")
