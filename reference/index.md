@@ -72,6 +72,9 @@
 - [`get_lieux_dits()`](https://mucau.github.io/Rsequoia2/reference/get_lieux_dits.md)
   : Retrieve a "Lieud-dit" from Etalab
 
+- [`get_matrice()`](https://mucau.github.io/Rsequoia2/reference/get_matrice.md)
+  : Process multiple PDFs and combine results
+
 - [`get_mnhn()`](https://mucau.github.io/Rsequoia2/reference/get_mnhn.md)
   : Download MNHN vector layer from IGN WFS (RGB or IRC)
 
@@ -81,6 +84,9 @@
 - [`get_ortho()`](https://mucau.github.io/Rsequoia2/reference/get_ortho.md)
   : Download orthophotos from the IGN WMS (RGB or IRC)
 
+- [`get_owner()`](https://mucau.github.io/Rsequoia2/reference/get_owner.md)
+  : Extract owner information from PDF
+
 - [`get_parca()`](https://mucau.github.io/Rsequoia2/reference/get_parca.md)
   : Download and format cadastral parcel(s)
 
@@ -89,6 +95,9 @@
 
 - [`get_parca_etalab()`](https://mucau.github.io/Rsequoia2/reference/get_parca_etalab.md)
   : Retrieve a cadastral parcel geometry from Etalab
+
+- [`get_parcels()`](https://mucau.github.io/Rsequoia2/reference/get_parcels.md)
+  : Extract and process complete parcel data from PDF
 
 - [`get_patrimony()`](https://mucau.github.io/Rsequoia2/reference/get_patrimony.md)
   : Download patrimony vector layer
@@ -101,6 +110,9 @@
 
 - [`get_prsf()`](https://mucau.github.io/Rsequoia2/reference/get_prsf.md)
   : Retrieve PRSF point features around an area
+
+- [`get_reference()`](https://mucau.github.io/Rsequoia2/reference/get_reference.md)
+  : Extract reference information from PDF header
 
 - [`get_road()`](https://mucau.github.io/Rsequoia2/reference/get_road.md)
   : Retrieve road sections around an area
