@@ -147,7 +147,28 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
       ))
     }
 
-    terra::writeRaster(x, path, overwrite = overwrite)
+    is_rgb <- terra::has.RGB(x)
+    gdal_base <- c("BLOCKSIZE=512", "NUM_THREADS=ALL_CPUS", "BIGTIFF=IF_NEEDED")
+
+    cfg <- list(
+      datatype = "FLT4S",
+      gdal = c(gdal_base, "COMPRESS=DEFLATE", "PREDICTOR=3")
+    )
+    if (is_rgb) {
+      cfg <- list(
+        datatype = "INT1U",
+        gdal = c(gdal_base, "COMPRESS=JPEG", "JPEG_QUALITY=85", "PHOTOMETRIC=RGB")
+      )
+    }
+
+    terra::writeRaster(
+      x,
+      path,
+      overwrite = overwrite,
+      filetype = "COG",
+      datatype = cfg$datatype,
+      gdal = cfg$gdal
+    )
 
     if (verbose) {
       cli::cli_alert_success(

@@ -8,6 +8,7 @@
 #' @export
 parca_to_ua <- function(parca) {
   ua <- seq_normalize(parca, "ua")
+
   is_wooded <- seq_field("is_wooded")$name
   ua[[is_wooded]] <- TRUE
 

@@ -21,40 +21,4 @@ fake_matrice <- function(
   return(matrice)
 }
 
-# Helper: fake parca used only for tests (not exported)
-fake_raw_parca <- function(
-    insee = "29158", prefix = "000",
-    section = "ZR", numero = "0003",
-    contenance = 50, lieu_dit = "LIEU_DIT",
-    dep = 29,
-    geom = sf::st_point(c(-0.0116, 44.6794)) |> sf::st_sfc(crs = 2154)
-){
 
-  sf::st_sf(
-    IDU        = paste0(insee, prefix, section, numero),
-    REG_NOM    = "REG_NOM",
-    REG_CODE    = "01",
-    DEP_NOM    = "DEP_NOM",
-    DEP_CODE    = dep,
-    COM_NOM    = "COM_TEST",
-    COM_CODE    = insee,
-    PREFIXE    = prefix,
-    SECTION    = section,
-    NUMERO     = numero,
-    LIEU_DIT   = lieu_dit,
-    SURF_CA    = contenance,
-    geometry   = geom
-  ) |> suppressWarnings()
-}
-
-
-# Helper: fake parca used only for tests (not exported)
-fake_parca <- function(...){
-
-  fake_raw_parca(...) |>
-    transform(
-      "IDENTIFIANT" = "FAKE",
-      "PROPRIETAIRE" = "OWNER",
-      "OCCUP_SOL"  = "BOISEE") |>
-    suppressWarnings()
-}

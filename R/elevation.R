@@ -26,24 +26,39 @@ get_dem <- function(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE) {
   }
 
   x <- sf::st_transform(x, 2154)
-  x_buff <- sf::st_buffer(x, buffer)
+  x_env <- envelope(x, buffer)
 
-  if (verbose){
-    cli::cli_alert_info("Downloading DEM raster dataset...")
+  if (verbose) {cli::cli_alert_info("Downloading DEM dataset...")}
+
+  pb <- cli::cli_progress_bar("DEM", total = nrow(x_env), clear = TRUE)
+  tmp <- tempdir()
+  files <- c()
+  for (i in seq_len(nrow(x_env))){
+
+    if (verbose) {cli::cli_progress_update(id = pb)}
+
+    file <- sprintf(file.path(tmp, sprintf("r_%03d.tif", i)))
+
+    happign::get_wms_raster(
+      x[i, ],
+      layer = "ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES",
+      rgb = FALSE,
+      res = res,
+      crs = crs,
+      filename = file,
+      overwrite = TRUE,
+      verbose = FALSE) |> suppressWarnings()
+
+    files <- c(files, file)
   }
+  cli::cli_progress_done(id = pb)
 
-  r <- happign::get_wms_raster(
-    x_buff,
-    layer = "ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES",
-    rgb = FALSE,
-    res = res,
-    crs = crs,
-    verbose = verbose
-  ) |> suppressWarnings()
+  v <- terra::vrt(files, options = c("-hidenodata"))
 
-  r_mask <- terra::mask(r, terra::vect(x_buff))
+  if (verbose) {cli::cli_alert_info("Raster size optimization...")}
+  r_mask <- terra::mask(v, x_env)
 
-  return(r_mask)
+  return(invisible(r_mask))
 }
 
 #' Download Digital Surface Model (DSM) raster from IGN RGEAlti
@@ -66,23 +81,40 @@ get_dsm <- function(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE) {
     cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
   }
 
-  x <- sf::st_transform(x, crs)
-  x_buff <- sf::st_buffer(x, buffer)
+  x <- sf::st_transform(x, 2154)
+  x_env <- envelope(x, buffer)
 
-  if (verbose){
-    cli::cli_alert_info("Downloading DSM raster dataset...")
+  if (verbose) {cli::cli_alert_info("Downloading DSM dataset...")}
+
+  pb <- cli::cli_progress_bar("DSM", total = nrow(x_env), clear = TRUE)
+  tmp <- tempdir()
+  files <- c()
+  for (i in seq_len(nrow(x_env))){
+
+    if (verbose) {cli::cli_progress_update(id = pb)}
+
+    file <- sprintf(file.path(tmp, sprintf("r_%03d.tif", i)))
+
+    happign::get_wms_raster(
+      x[i, ],
+      layer = "ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES.MNS",
+      rgb = FALSE,
+      res = res,
+      crs = crs,
+      filename = file,
+      overwrite = TRUE,
+      verbose = FALSE) |> suppressWarnings()
+
+    files <- c(files, file)
   }
+  cli::cli_progress_done(id = pb)
 
-  r <- happign::get_wms_raster(
-    x_buff,
-    layer = "ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES.MNS",
-    rgb = FALSE,
-    res = res,
-    crs = crs,
-    verbose = verbose
-  ) |> suppressWarnings()
+  v <- terra::vrt(files, options = c("-hidenodata"))
 
-  terra::mask(r, terra::vect(x_buff))
+  if (verbose) {cli::cli_alert_info("Raster size optimization...")}
+  r_mask <- terra::mask(v, x_env)
+
+  return(invisible(r_mask))
 }
 
 #' Compute Canopy Height Model (CHM)
