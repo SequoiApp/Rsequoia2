@@ -40,6 +40,7 @@ sequoia <- function(path = NULL, overwrite = FALSE) {
       identifiant <- readline("Choose the forest identifiant: ")
       create_matrice(dirname = path, id = identifiant, overwrite = overwrite)
     },
+    "Create MATRICE (from RP)" = function() menu_rp(path, overwrite),
     "Create MATRICE (legal entity)" = function() menu_legal_entity(path, overwrite),
     "Download PARCA" = function() seq_parca(path, overwrite = overwrite),
     "Create UA & BOUNDARIES" = function() {
@@ -57,6 +58,67 @@ sequoia <- function(path = NULL, overwrite = FALSE) {
   actions[[choice]]()
 
   return(invisible(path))
+}
+
+#' Interactive legal-entity menu
+#'
+#' Prompts the user for INSEE codes and owner name patterns, retrieves matching
+#' legal-entity parcels, displays a short summary (area, owners, number of
+#' parcels), and asks for confirmation before creating the matrice.
+#'
+#' @details
+#' This function is interactive and intended for manual use only.
+#'
+#' @noRd
+menu_rp <- function(path, overwrite){
+  files <- choose.files()
+  rp <- lapply(files, parse_rp)
+  m <- do.call(rbind, lapply(rp, `[[`, "m"))
+  m_all <- do.call(rbind, lapply(rp, `[[`, "m_all"))
+
+  s <- sum(m$SURF_CA)
+
+  cli::cli_h2("Summary")
+  cli::cli_bullets(c(
+    "Number of parcels: {nrow(m)}",
+    "Total area: {format(round(s, 2), nsmall = 2)} ha"
+  ))
+
+  switch(utils::menu(
+    c("Check parca ?", "Cancel")),
+         {
+           parca_geom <- get_parca(m$IDU, verbose = TRUE)
+           parca <- merge(parca_geom[ , "IDU"], m) |> seq_normalize("parca")
+         }
+  )
+
+  tmap::tmap_mode("view")
+  print(tmap::qtm(parca))
+
+  switch(utils::menu(c("Confirm and continue", "Cancel")),
+         {
+           identifiant <- readline("Choose the forest identifiant: ")
+           owner <- readline("Choose the forest owner: ")
+           m$IDENTIFIANT <- identifiant
+           m$OWNER <- owner
+           seq_xlsx(
+             x = list("MATRICE" = m),
+             filename = file.path(path, paste0(identifiant, "_matrice.xlsx")),
+             overwrite = overwrite
+           )
+
+           m_all$IDENTIFIANT <- identifiant
+           m_all$OWNER <- owner
+           seq_xlsx(
+             x = list("MATRICE" = m_all),
+             filename = file.path(path, paste0(identifiant, "_matrice_detail.xlsx")),
+             overwrite = overwrite
+           )
+         }
+  )
+
+  return(NULL)
+
 }
 
 #' Interactive legal-entity menu
