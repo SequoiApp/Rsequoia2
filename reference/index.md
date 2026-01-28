@@ -148,6 +148,9 @@
 
   Create *UA* sf object from *PARCA* sf object
 
+- [`parse_rp()`](https://mucau.github.io/Rsequoia2/reference/parse_rp.md)
+  : Parse a French cadastral property record (RP) PDF
+
 - [`poly_to_line()`](https://mucau.github.io/Rsequoia2/reference/poly_to_line.md)
   : Get a border layer from polygons
 
