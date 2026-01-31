@@ -6,12 +6,12 @@ department, and other reference information from the header section.
 ## Usage
 
 ``` r
-get_reference(pdf_path)
+get_reference(pdf)
 ```
 
 ## Arguments
 
-- pdf_path:
+- pdf:
 
   `character`. Path to PDF file
 

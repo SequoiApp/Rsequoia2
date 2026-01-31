@@ -6,12 +6,12 @@ name, and address from property rights sections.
 ## Usage
 
 ``` r
-get_owner(pdf_path)
+get_owner(pdf)
 ```
 
 ## Arguments
 
-- pdf_path:
+- pdf:
 
   `character`. Path to PDF file
 

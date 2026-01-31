@@ -6,12 +6,12 @@ results into a single list with three data frames.
 ## Usage
 
 ``` r
-get_matrice(pdf_files)
+get_matrice(pdf)
 ```
 
 ## Arguments
 
-- pdf_files:
+- pdf:
 
   `character` vector. Paths to PDF file
 

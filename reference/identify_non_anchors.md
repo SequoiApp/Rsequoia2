@@ -1,4 +1,4 @@
-# Identify "non bâtie(s)" section anchors
+# Identify "non batie(s)" section anchors
 
 Locates the "non" markers that indicate the start of unbuilt property
 sections in French cadastral PDFs, with context validation.
