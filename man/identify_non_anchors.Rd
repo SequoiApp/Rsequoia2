@@ -2,7 +2,7 @@
 % Please edit documentation in R/pdf.R
 \name{identify_non_anchors}
 \alias{identify_non_anchors}
-\title{Identify "non bâtie(s)" section anchors}
+\title{Identify "non batie(s)" section anchors}
 \usage{
 identify_non_anchors(all_visual_data)
 }

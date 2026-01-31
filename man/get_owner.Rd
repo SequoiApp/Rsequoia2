@@ -4,10 +4,10 @@
 \alias{get_owner}
 \title{Extract owner information from PDF}
 \usage{
-get_owner(pdf_path)
+get_owner(pdf)
 }
 \arguments{
-\item{pdf_path}{\code{character}. Path to PDF file}
+\item{pdf}{\code{character}. Path to PDF file}
 }
 \value{
 A \code{data.frame} with columns: type, type_code, code, name, firstname,

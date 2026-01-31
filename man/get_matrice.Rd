@@ -4,10 +4,10 @@
 \alias{get_matrice}
 \title{Process multiple PDFs and combine results}
 \usage{
-get_matrice(pdf_files)
+get_matrice(pdf)
 }
 \arguments{
-\item{pdf_files}{\code{character} vector. Paths to PDF file}
+\item{pdf}{\code{character} vector. Paths to PDF file}
 }
 \value{
 List with three \code{data.frame}: \code{refs}, \code{owners}, \code{parcels}

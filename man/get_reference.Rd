@@ -4,10 +4,10 @@
 \alias{get_reference}
 \title{Extract reference information from PDF header}
 \usage{
-get_reference(pdf_path)
+get_reference(pdf)
 }
 \arguments{
-\item{pdf_path}{\code{character}. Path to PDF file}
+\item{pdf}{\code{character}. Path to PDF file}
 }
 \value{
 A \code{data.frame} with columns: year, department_code, commune_code,

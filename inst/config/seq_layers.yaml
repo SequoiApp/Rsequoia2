@@ -133,6 +133,9 @@ v.curves.line: { name: "CURVES_line", ext: "geojson" }
 # OLD
 v.old.poly: { name: "OLD_poly", ext: "geojson" }
 
+# ACCESS
+v.acces.point: {name: "ACCES_point", ext: "geojson" }
+
 # ROAD
 v.road.topo.line:     { name: "ROAD_TOPO_line",    ext: "geojson" }
 v.road.topo.poly:     { name: "ROAD_TOPO_poly",    ext: "geojson" }
