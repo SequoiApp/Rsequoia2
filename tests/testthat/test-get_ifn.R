@@ -187,3 +187,4 @@ test_that("get_ifn() keeps CRS when identical to input", {
 
   expect_equal(sf::st_crs(ifn), sf::st_crs(point))
 })
+
