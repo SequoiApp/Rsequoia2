@@ -120,6 +120,9 @@
 - [`get_scan()`](https://mucau.github.io/Rsequoia2/reference/get_scan.md)
   : Download IGN scanned maps (SCAN25, SCAN100, OACI or IGN maps)
 
+- [`get_ser_pdf()`](https://mucau.github.io/Rsequoia2/reference/get_ser_pdf.md)
+  : Download sylvoecoregion PDF reports from INF repository
+
 - [`get_slope()`](https://mucau.github.io/Rsequoia2/reference/get_slope.md)
   : Compute a Slope Raster from a DEM
 
