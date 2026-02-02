@@ -305,7 +305,7 @@ normalize_legal_entity <- function(legal_entity, verbose = FALSE){
       "numero" = substr(idu, 11, 14),
       "contenance" = legal_entity[[le_cad_area]] / 10000,
       "source" = "https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales"
-    )
+    ) |>
     merge(happign::com_2025[happign::com_2025$TYPECOM == "COM", c("COM", "NCC_COM", "DEP")], by.x = le_insee, by.y = "COM") |>
     merge(happign::dep_2025[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
     merge(happign::reg_2025[, c("REG", "NCC_REG")], all.x = TRUE) |>
