@@ -103,3 +103,15 @@ test_that("seq_write() prefixes filename with id when provided", {
   })
 })
 
+test_that("seq_write() prefixes filename with id from x when id = NULL", {
+  with_seq_cache({
+    x <- Rsequoia2:::seq_poly
+    x[[seq_field("identifier")$name]] <- "TEST"
+
+    path <- seq_write(x, "prsf", dirname = seq_cache, id = NULL)
+
+    expect_true(grepl("TEST_", basename(path)))
+    expect_true(file.exists(path))
+  })
+})
+

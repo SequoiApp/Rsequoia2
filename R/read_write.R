@@ -79,8 +79,9 @@ seq_read <- function(key, dirname = ".", verbose = FALSE) {
 #' Write a spatial object based on a layer key
 #'
 #' @inheritParams seq_read
-#' @param id `character` Identifier of the project that will be added to the filename.
-#' Default to `NULL` i.e. no identifier added.
+#' @param id `character`. Project identifier to prefix the output filename.
+#' If `NULL`, the identifier is inferred from layer `x` when a single,
+#' non-missing value is found; otherwise no identifier is added.
 #' @param x An `sf` object (for vector outputs) or a `SpatRaster` (for raster outputs).
 #' @param overwrite `logical` If `TRUE`, file is overwritten.
 #'
@@ -98,8 +99,12 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
   relative_path <- layer_info$path
   type <- layer_info$type
 
-  if (!is.null(id)){
-    filename <- sprintf("%s_%s", id, filename)
+  if (is.null(id)) {
+    id_col <- x[[seq_field("identifier")$name]]
+    id_val <- unique(id_col[!is.na(id_col) & id_col != ""])
+    if (length(id_val) == 1) {
+      filename <- sprintf("%s_%s", id_val, filename)
+    }
   }
 
   full_path <- if (is.null(relative_path)) filename else file.path(relative_path, filename)
@@ -152,7 +157,7 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
 
     cfg <- list(
       datatype = "FLT4S",
-      gdal = c(gdal_base, "COMPRESS=DEFLATE", "PREDICTOR=3")
+      gdal = c(gdal_base, "COMPRESS=DEFLATE")
     )
     if (is_rgb) {
       cfg <- list(

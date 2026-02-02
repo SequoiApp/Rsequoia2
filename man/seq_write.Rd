@@ -15,8 +15,9 @@ defined in \code{inst/config/seq_layers.yaml}. (see \emph{Details} for partial m
 \item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{id}{\code{character} Identifier of the project that will be added to the filename.
-Default to \code{NULL} i.e. no identifier added.}
+\item{id}{\code{character}. Project identifier to prefix the output filename.
+If \code{NULL}, the identifier is inferred from layer \code{x} when a single,
+non-missing value is found; otherwise no identifier is added.}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
