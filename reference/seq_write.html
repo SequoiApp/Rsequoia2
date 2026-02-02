@@ -66,8 +66,12 @@ Defaults to the current working directory.</p></dd>
 
 
 <dt id="arg-id">id<a class="anchor" aria-label="anchor" href="#arg-id"></a></dt>
-<dd><p><code>character</code> Identifier of the project that will be added to the filename.
-Default to <code>NULL</code> i.e. no identifier added.</p></dd>
+<dd><p><code>character</code>. Project identifier used to prefix the output filename.
+If <code>NULL</code>, the identifier is automatically inferred. The function first
+attempts to extract a single, non-missing value from the <code>IDENTIFIANT</code>
+field of layer <code>x</code>; if this fails, it then looks for a valid identifier in
+a <code>*_matrice.xlsx</code> file found in <code>dirname</code>. If no unique identifier can be
+determined, the filename is left unchanged.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>

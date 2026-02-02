@@ -28,8 +28,12 @@ seq_write(x, key, dirname = ".", id = NULL, verbose = FALSE, overwrite = FALSE)
 
 - id:
 
-  `character` Identifier of the project that will be added to the
-  filename. Default to `NULL` i.e. no identifier added.
+  `character`. Project identifier used to prefix the output filename. If
+  `NULL`, the identifier is automatically inferred. The function first
+  attempts to extract a single, non-missing value from the `IDENTIFIANT`
+  field of layer `x`; if this fails, it then looks for a valid
+  identifier in a `*_matrice.xlsx` file found in `dirname`. If no unique
+  identifier can be determined, the filename is left unchanged.
 
 - verbose:
 
