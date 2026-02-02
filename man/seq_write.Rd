@@ -15,9 +15,12 @@ defined in \code{inst/config/seq_layers.yaml}. (see \emph{Details} for partial m
 \item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{id}{\code{character}. Project identifier to prefix the output filename.
-If \code{NULL}, the identifier is inferred from layer \code{x} when a single,
-non-missing value is found; otherwise no identifier is added.}
+\item{id}{\code{character}. Project identifier used to prefix the output filename.
+If \code{NULL}, the identifier is automatically inferred. The function first
+attempts to extract a single, non-missing value from the \code{IDENTIFIANT}
+field of layer \code{x}; if this fails, it then looks for a valid identifier in
+a \verb{*_matrice.xlsx} file found in \code{dirname}. If no unique identifier can be
+determined, the filename is left unchanged.}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 

@@ -115,3 +115,12 @@ test_that("seq_write() prefixes filename with id from x when id = NULL", {
   })
 })
 
+test_that("seq_write() prefixes filename with id from matrice when id = NULL", {
+  with_seq_cache({
+    path <- seq_write(Rsequoia2:::seq_poly, "prsf", dirname = seq_cache, id = NULL)
+
+    expect_true(grepl("ECKMUHL_", basename(path)))
+    expect_true(file.exists(path))
+  })
+})
+

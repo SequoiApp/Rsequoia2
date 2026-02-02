@@ -61,3 +61,4 @@ test_that("seq_read() errors when multiple matching files are found", {
     )
   })
 })
+
