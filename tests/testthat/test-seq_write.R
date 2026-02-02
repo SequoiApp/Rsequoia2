@@ -10,16 +10,12 @@ test_that("seq_write() writes vector layers correctly", {
 
 test_that("seq_write() writes raster layers correctly", {
 
-  skip_on_os("mac")
+  skip_on_os(c("mac", "linux"))
 
   with_seq_cache({
     r <- rast(nrows=5, ncols=5, vals=1:25)
-    # Raster should be save as tiff so gdal can understand drive = GTIFF not MEM
-    tmp <- file.path(seq_cache, "test.tif")
-    terra::writeRaster(r, tmp, overwrite = TRUE)
-    r_file <- terra::rast(tmp)
 
-    path <- seq_write(r_file, "irc", dirname = seq_cache)
+    path <- seq_write(r, "irc", dirname = seq_cache)
     expect_true(file.exists(path))
     expect_s4_class(terra::rast(path), "SpatRaster")
   })
@@ -50,17 +46,12 @@ test_that("seq_write() overwrite vector properly correctly", {
 
 test_that("seq_write() overwrite raster properly correctly", {
 
-  skip_on_os("mac")
+  skip_on_os(c("mac", "linux"))
 
   with_seq_cache({
     r <- rast(nrows=5, ncols=5, vals=1:25)
 
-    # Raster should be save as tiff so gdal can understand drive = GTIFF not MEM
-    tmp <- file.path(tempdir(), "test.tif")
-    terra::writeRaster(r, tmp, overwrite = TRUE)
-    r_file <- terra::rast(tmp)
-
-    seq_write(r_file, "irc", seq_cache)
+    seq_write(r, "irc", seq_cache)
     expect_silent(seq_write(r, "irc", seq_cache, overwrite = TRUE))
     expect_warning(seq_write(r, "irc", seq_cache, overwrite = FALSE))
   })
