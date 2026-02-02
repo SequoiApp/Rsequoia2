@@ -81,7 +81,7 @@ parse_rp <- function(pdf){
   df$source <- basename(pdf)
 
   m_all <- df |>
-    merge(happign::com_2025[, c("COM", "NCC_COM", "DEP")], by.x = "insee", by.y = "COM") |>
+    merge(happign::com_2025[happign::com_2025$TYPECOM == "COM", c("COM", "NCC_COM", "DEP")], by.x = "insee", by.y = "COM") |>
     merge(happign::dep_2025[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
     merge(happign::reg_2025[, c("REG", "NCC_REG")], all.x = TRUE) |>
     field_rename() |>
@@ -102,11 +102,11 @@ parse_rp <- function(pdf){
   prefix    = "(?:\\s+([0-9]{3}))?",
   section   = "\\s+([A-Za-z]{1,2})",
   numero    = "\\s+([0-9]+)",
-  lieu_dit    = "\\s+(.+?)(?=\\s+(?:[A-Z][0-9]{3}|[0-9]{4}))",
+  lieu_dit  = "\\s+(.+?)(?=\\s+(?:[A-Z][0-9]{3}|[0-9]{4}))",
   rivoli    = "\\s+((?:[A-Z][0-9]{3})|(?:[0-9]{4}))",
   parc_prim = "(?:\\s+([0-9]{4}))?",
   fp        = "\\s+([0-9])",
-  s_par      = "(?:\\s+([0-9]{3}[A-Z]))?",
+  s_par     = "(?:\\s+([0-9]{3}[A-Z]))?",
   gr        = "(?:\\s+([A-Z]{1,2}))?",
   cls_nat   = "(?:(?:\\s+([0-9]{2}))?\\s+([A-Za-z][A-Za-z ']*))?",
   rest      = "\\s+(.*)$"

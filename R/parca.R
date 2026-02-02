@@ -75,8 +75,9 @@ get_parca_etalab <- function(idu){
   etalab$contenance <- etalab$contenance / 10000
 
   # Add COG info
+  com <- happign::com_2025[happign::com_2025$TYPECOM == "COM", c("COM", "NCC_COM", "DEP")]
   etalab <- etalab |>
-    merge(happign::com_2025[, c("COM", "NCC_COM", "DEP")], by.x = "insee", by.y = "COM") |>
+    merge(com, by.x = "insee", by.y = "COM") |>
     merge(happign::dep_2025[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
     merge(happign::reg_2025[, c("REG", "NCC_REG")], all.x = TRUE)
 
