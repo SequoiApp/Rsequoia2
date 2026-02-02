@@ -106,6 +106,106 @@ get_ifn <- function(x,
   ifn
 }
 
+#' Download sylvoecoregion PDF reports from INF repository
+#'
+#' Downloads PDF documents associated with SER identifiers
+#' from the IFN repository.
+#'
+#' @param ser An object (typically an `sf` object get by `get_ifn("ser")`)
+#' containing an `codeser` field used to identify sylvoecoregion reports.
+#' @param out_dir Output directory where PDF files are saved.
+#' @param overwrite `logical`; whether to overwrite existing files.
+#'   Defaults to `FALSE`.
+#' @param verbose `logical`. If `TRUE`, display progress messages.
+#'
+#' @return
+#' Invisibly returns the normalized path to `out_dir`. Returns
+#' `NULL` invisibly if no valid `id_ucs` is found.
+#'
+#' @details
+#' The function extracts unique SER identifiers from the `codeser`
+#' field of `ser`, builds download URLs pointing to the INRA
+#' soil map repository, and downloads the corresponding PDF documents.
+#'
+#' Existing files are skipped unless `overwrite = TRUE`. All user
+#' feedback is handled via the `cli` package and can be silenced by
+#' setting `verbose = FALSE`.
+#'
+#' @seealso [get_ifn()]
+#'
+#' @export
+get_ser_pdf <- function(ser,
+                        out_dir   = "ser_pdf",
+                        overwrite = FALSE,
+                        verbose   = TRUE) {
+
+  # Input checks ----
+  if (!"codeser" %in% names(ser)) {
+    cli::cli_abort("Field {.field codeser} is missing from the input object.")
+  }
+
+  codeser <- unique(ser$codeser[!is.na(ser$codeser)])
+
+  if (length(codeser) == 0) {
+    if (verbose) {
+      cli::cli_alert_warning("No valid {.field codeser} found.")
+    }
+    return(invisible(NULL))
+  }
+
+  # Output directory ----
+  if (!dir.exists(out_dir)) {
+    dir.create(out_dir, recursive = TRUE)
+    if (verbose) {
+      cli::cli_alert_success("Created directory {.path {out_dir}}.")
+    }
+  }
+
+  base_url <- "https://inventaire-forestier.ign.fr/IMG/pdf/"
+
+  if (verbose) {
+    cli::cli_h1("Downloading ser PDFs")
+  }
+
+  # Download loop ----
+  for (code in codeser) {
+
+    file_name <- paste0(substr(code, 1, 1),
+                        "_",
+                        substr(code, 2, 3),
+                        ".pdf")
+    url       <- paste0(base_url, file_name)
+    destfile  <- file.path(out_dir, file_name)
+
+    if (file.exists(destfile) && !overwrite) {
+      if (verbose) {
+        cli::cli_alert_info("Already exists: {.file {file_name}}")
+      }
+      next
+    }
+
+    if (verbose) {
+      cli::cli_alert("Downloading {.file {file_name}}")
+    }
+
+    tryCatch(
+      utils::download.file(
+        url      = url,
+        destfile = destfile,
+        mode     = "wb",
+        quiet    = TRUE
+      ),
+      error = function(e) {
+        if (verbose) {
+          cli::cli_alert_danger("Failed to download {.file {file_name}}")
+        }
+      }
+    )
+  }
+
+  invisible(normalizePath(out_dir))
+}
+
 #' Generate regional layers for a Sequoia project
 #'
 #' Retrieves official IGN regional datasets intersecting the project
@@ -192,9 +292,18 @@ seq_ifn <- function(
       type_key[[type]],
       dirname   = dirname,
       id        = id,
-      verbose   = FALSE,
+      verbose   = verbose,
       overwrite = overwrite
     ))
+
+    if (type == "ser"){
+      get_ser_pdf(
+        region,
+        out_dir   = "ser_pdf",
+        overwrite = overwrite,
+        verbose   = verbose
+      )
+    }
 
     if (verbose) {
       cli::cli_alert_success(

@@ -27,7 +27,7 @@ extract_visual_data <- function(pdf) {
   out
 }
 
-#' Identify "non bâtie(s)" section anchors
+#' Identify "non batie(s)" section anchors
 #'
 #' Locates the "non" markers that indicate the start of unbuilt property
 #' sections in French cadastral PDFs, with context validation.
@@ -36,6 +36,7 @@ extract_visual_data <- function(pdf) {
 #' @return A `data.frame` of anchor positions with same columns as input
 #' @keywords internal
 identify_non_anchors <- function(all_visual_data) {
+  valid <- NULL
 
   # 1. Pre-filter "non" candidates
   non_candidates <- all_visual_data[
@@ -48,17 +49,18 @@ identify_non_anchors <- function(all_visual_data) {
   # 2. Add columns to check context words
   line_matches <- merge(
     non_candidates,
-    all_visual_data[all_visual_data$text %in% c("Propriété(s)", "bâtie(s)"),
+    all_visual_data[all_visual_data$text %in% c("Propri\u00E9t\u00E9(s)",
+                                                "b\u00E2tie(s)"),
                     c("page", "y", "text", "x")],
     by = "page",
     suffixes = c("", "_ctx")
   )
 
-  # 3. Check if context words are on the same line ±10px
+  # 3. Check if context words are on the same line +-10px
   line_matches$y_diff <- abs(line_matches$y - line_matches$y_ctx)
-  line_matches$valid <- (line_matches$text_ctx == "Propriété(s)" &
+  line_matches$valid <- (line_matches$text_ctx == "Propri\u00E9t\u00E9(s)" &
                            line_matches$x_ctx >= 363 & line_matches$x_ctx <= 373) |
-    (line_matches$text_ctx == "bâtie(s)" &
+    (line_matches$text_ctx == "b\u00E2tie(s)" &
        line_matches$x_ctx >= 436 & line_matches$x_ctx <= 446)
 
   line_matches$valid <- line_matches$valid & (line_matches$y_diff <= 10)
@@ -74,7 +76,7 @@ identify_non_anchors <- function(all_visual_data) {
       by(non_candidates, non_candidates$page, function(x) x[1, ])
     )
     rownames(non_anchors) <- NULL
-    warning("'Propriété(s) non bâtie(s)' context not verified")
+    warning("'Propri\u00E9t\u00E9(s) non b\u00E2tie(s)' context not verified")
   }
 
   return(non_anchors)
@@ -106,7 +108,7 @@ identify_total_anchors <- function(all_visual_data) {
   merged <- merge(total_candidates, contenance, by = "page", suffixes = c("", "_ctx"))
   merged$y_diff <- abs(merged$y - merged$y_ctx)
 
-  # 3. Keep only if ±15px vertical tolerance
+  # 3. Keep only if +-15px vertical tolerance
   valid_total <- merged[merged$y_diff <= 15, names(total_candidates)]
 
   # 4. Keep only one anchor per page
@@ -133,7 +135,7 @@ extract_table_section <- function(page_data, non_anchor, has_total) {
   if(has_total) {
     # Last page: stop before "totale"
     total_y <- page_data[
-      page_data$text == "totale" & page_data$x == 158L,
+      page_data$text == "totale" & page_data$x >= 156 & page_data$x <= 160,
       "y"
     ]
     if(length(total_y) > 0) {
@@ -153,7 +155,7 @@ extract_table_section <- function(page_data, non_anchor, has_total) {
 
   # Remove repeated column headers
   section_data <- section_data[
-    !grepl("An|Sec|N°|Plan|Voirie|Adresse|Code", section_data$text),
+    !grepl("An|Sec|N\u00B0|Plan|Voirie|Adresse|Code", section_data$text),
   ]
 
   return(section_data)
@@ -177,7 +179,7 @@ filter_column_headers <- function(table_data) {
   filters <- list(
     list(x_min = 252, x_max = 272, pattern = "Code"),
     list(x_min = 252, x_max = 272, pattern = "Rivoli"),
-    list(x_min = 275, x_max = 295, pattern = "N°"),
+    list(x_min = 275, x_max = 295, pattern = "N\u00B0"),
     list(x_min = 284, x_max = 304, pattern = "Parc"),
     list(x_min = 279, x_max = 299, pattern = "Prim"),
     list(x_min = 301, x_max = 321, pattern = "FP/"),
@@ -207,7 +209,7 @@ filter_column_headers <- function(table_data) {
     list(x_min = 718, x_max = 738, pattern = "%EXO"),
     list(x_min = 742, x_max = 762, pattern = "TC"),
     list(x_min = 774, x_max = 794, pattern = "Feuillet"),
-    list(x_min = 714, x_max = 734, pattern = "Délivré")
+    list(x_min = 714, x_max = 734, pattern = "D\u00E9livr\u00E9")
   )
 
   # Apply all filters
@@ -241,7 +243,7 @@ group_lines_by_y <- function(table_data, tolerance = 8) {
   table_data <- table_data[order(table_data$page, table_data$y), ]
 
   # Compute line groups per page
-  table_data$y_group <- ave(
+  table_data$y_group <- stats::ave(
     table_data$y, table_data$page,
     FUN = function(y) {
       # Compute difference between consecutive y values
@@ -439,7 +441,7 @@ get_raw_parcels <- function(pdf) {
 
     page_data <- pages_split[[as.character(current_page)]]
 
-    has_total <- any(page_data$text == "totale" & page_data$x == 158L)
+    has_total <- any(page_data$text == "totale" & page_data$x >= 156 & page_data$x <= 160)
 
     # Extract section (already handles empty)
     section_data <- extract_table_section(page_data, current_non, has_total)
@@ -586,11 +588,13 @@ process_raw_parcels <- function(df) {
   for(idx in main_rows) {
     parcel <- df$id[idx]
     end_idx <- idx
-    for(j in (idx+1):nrow(df)) {
-      if(df$id[j] != parcel || (!is.na(df$row_type[j]) && df$row_type[j] != "main")) break
-      end_idx <- j
+    if(idx < nrow(df)) {   # seulement si on a des lignes suivantes
+      for(j in (idx+1):nrow(df)) {
+        if(df$id[j] != parcel || (!is.na(df$row_type[j]) && df$row_type[j] != "main")) break
+        end_idx <- j
+      }
     }
-    rows <- (idx+1):end_idx
+    rows <- if(idx < end_idx) (idx+1):end_idx else integer(0)
     target_rows <- rows[is.na(df$row_type[rows])]
     if(length(target_rows) > 0) {
       df$row_type[target_rows] <- "main"
@@ -610,7 +614,7 @@ process_raw_parcels <- function(df) {
   # --- STEP 5: Calculated columns ---
   df$is_subdivision <- FALSE
   if(!is.null(df$id) && !is.null(df$suf)) {
-    parcels <- unique(na.omit(df$id))
+    parcels <- unique(stats::na.omit(df$id))
     for(parcel in parcels) {
       parcel_rows <- df$id == parcel
       if(any(!is.na(df$suf[parcel_rows]))) df$is_subdivision[parcel_rows] <- TRUE
@@ -638,37 +642,75 @@ process_raw_parcels <- function(df) {
 #' Parses the first page of a French cadastral PDF to extract commune,
 #' department, and other reference information from the header section.
 #'
-#' @param pdf_path `character`. Path to PDF file
+#' @param pdf `character`. Path to PDF file
 #' @return A `data.frame` with columns: year, department_code, commune_code,
 #'   commune_name, tres, communal_num, file_name, file_path, insee
 #' @importFrom pdftools pdf_text
 #' @export
-get_reference <- function(pdf_path) {
-  pdf_text <- tryCatch(pdftools::pdf_text(pdf_path)[1],
-                       error = function(e) { warning(paste("PDF read error:", e$message)); return(NULL) })
-  text <- pdf_text[1]
+get_reference <- function(pdf) {
 
-  # Helper to extract pattern
-  extract <- \(pattern) {
-    m <- regmatches(text, regexec(pattern, text, perl = TRUE))[[1]]
-    if(length(m) >= 2) trimws(m[2]) else NA_character_
+  # Read & normalize text
+  txt <- tryCatch(
+    pdftools::pdf_text(pdf) |> paste(collapse = "\n"),
+    error = function(e) {
+      warning("PDF read error: ", e$message)
+      return(NULL)
+    }
+  )
+  if (is.null(txt)) return(NULL)
+
+  txt <- gsub(" +", " ", txt)
+
+  if (nchar(txt) < 500) {
+    warning("PDF is probably an image (scan)")
+    return(NULL)
   }
 
-  # Extract all values
-  commune_name_match <- regmatches(text, regexec("Commune\\s*:\\s*\\d{2,3}\\s+([A-ZÉÈÊÀÂÎÏÔÙÛÇ'\\s-]+?)(?=\\s+TRES|$)", text, perl = TRUE))
+  # ASCII version for tolerant matching
+  txt_ascii <- iconv(txt, "UTF-8", "ASCII//TRANSLIT")
 
-  data.frame(
-    year = extract("Année de référence\\s*:\\s*(\\d{4})"),
-    department_code = extract("Département\\s*:\\s*([0-9A-Z]{2,3})"),
+  # Helper extractor
+  extract <- function(pattern, text = txt_ascii) {
+    m <- regmatches(text, regexec(pattern, text, perl = TRUE, ignore.case = TRUE))[[1]]
+    if (length(m) >= 2) trimws(m[2]) else NA_character_
+  }
+
+  # Commune name (keep UTF-8)
+  commune_name_match <- regmatches(
+    txt,
+    regexec(
+      "Commune\\s*:\\s*\\d{2,3}\\s+([A-Z'\\s-]+?)(?=\\s+TRES|$)",
+      txt,
+      perl = TRUE
+    )
+  )
+
+  commune_name <- if (length(commune_name_match[[1]]) >= 2){
+    trimws(commune_name_match[[1]][2])
+  } else {
+    NA_character_
+  }
+
+  # Assemble result
+  out <- data.frame(
+    year = extract("Annee de reference\\s*:\\s*(\\d{4})"),
+    department_code = extract("Departement\\s*:\\s*([0-9A-Z]{2,3})"),
     commune_code = extract("Commune\\s*:\\s*(\\d{2,3})"),
-    commune_name = if(length(commune_name_match[[1]]) >= 2) trimws(commune_name_match[[1]][2]) else NA_character_,
+    commune_name = commune_name,
     tres = extract("TRES\\s*:\\s*([0-9A-Z]+)"),
-    communal_num = extract("(?<!\\d)([A-Z]\\d{5})(?!\\d)"),
-    file_name = basename(pdf_path),
-    file_path = pdf_path,
+    communal_num = extract("Numero communal\\s*:\\s*\\+?([0-9A-Z]+)"),
+    file_name = basename(pdf),
+    file_path = pdf,
     stringsAsFactors = FALSE
-  ) |>
-    transform(insee = as.character(paste0(department_code, commune_code)))
+  )
+
+  out$insee <- with(out, ifelse(
+    !is.na(department_code) & !is.na(commune_code),
+    paste0(department_code, commune_code),
+    NA_character_
+  ))
+
+  out
 }
 
 #' Extract owner information from PDF
@@ -676,63 +718,76 @@ get_reference <- function(pdf_path) {
 #' Parses French cadastral PDFs to extract owner details including type,
 #' name, and address from property rights sections.
 #'
-#' @param pdf_path `character`. Path to PDF file
+#' @param pdf `character`. Path to PDF file
 #' @return A `data.frame` with columns: type, type_code, code, name, firstname,
 #'   address, seq_name, file_name, file_path
 #' @importFrom pdftools pdf_text
 #' @export
-get_owner <- function(pdf_path) {
-  text <- tryCatch(pdftools::pdf_text(pdf_path)[1],
+get_owner <- function(pdf) {
+  txt <- tryCatch(pdftools::pdf_text(pdf),
                    error = function(e) { warning(paste("PDF read error:", e$message)); return("") })
 
-  blocks <- strsplit(text, "Droit réel\\s*:")[[1]]
+  blocks <- strsplit(txt, "Droit r\u00E9el\\s*:")[[1]]
   if (length(blocks) < 2) return(data.frame())
 
-  type_map <- c("Propriétaire" = "pp", "Propriétaire/Indivision" = "ind_pp",
-                "Usufruitier" = "us", "Nu-propriétaire/Indivision" = "ind_np",
-                "Usufruitier/Indivision" = "ind_us", "Nu-propriétaire" = "np")
+  type_map <- c("Propri\u00E9taire" = "pp", "Propri\u00E9taire/Indivision" = "ind_pp",
+                "Usufruitier" = "us", "Nu-propri\u00E9taire/Indivision" = "ind_np",
+                "Usufruitier/Indivision" = "ind_us", "Nu-propri\u00E9taire" = "np")
 
-  extract <- function(pattern, text) {
-    m <- regmatches(text, regexec(pattern, text, perl = TRUE))
+  extract <- function(pattern, txt) {
+    m <- regmatches(txt, regexec(pattern, txt, perl = TRUE))
     if(length(m[[1]]) > 1) trimws(m[[1]][2]) else NA_character_
   }
 
   owners_df <- data.frame()
-  file_name <- basename(pdf_path)
+  file_name <- basename(pdf)
 
   for (block in blocks[-1]) {
-    block <- sub("Propriété\\(s\\).*", "", block)
+    block <- sub("Propri\u00E9t\u00E9\\(s\\).*", "", block)
 
-    type <- if(grepl("Propriétaire/Indivision", block)) "Propriétaire/Indivision"
-    else if(grepl("Propriétaire", block)) "Propriétaire"
+    type <- if(grepl("Propri\u00E9taire/Indivision", block)) "Propri\u00E9taire/Indivision"
+    else if(grepl("Propri\u00E9taire", block)) "Propri\u00E9taire"
     else if(grepl("Usufruitier/Indivision", block)) "Usufruitier/Indivision"
     else if(grepl("Usufruitier", block)) "Usufruitier"
-    else if(grepl("Nu-propriétaire/Indivision", block)) "Nu-propriétaire/Indivision"
-    else if(grepl("Nu-propriétaire", block)) "Nu-propriétaire"
+    else if(grepl("Nu-propri\u00E9taire/Indivision", block)) "Nu-propri\u00E9taire/Indivision"
+    else if(grepl("Nu-propri\u00E9taire", block)) "Nu-propri\u00E9taire"
     else NA_character_
 
     type_code <- if(!is.na(type) && type %in% names(type_map)) type_map[type] else "NA"
-    code <- extract("Numéro propriétaire\\s*:\\s*([A-Z0-9]+)", block)
-    name <- extract("Nom\\s*:\\s*([A-ZÉÈÊÀÂÎÏÔÙÛÇ'\\s-]+)(?=\\s+Prénom|\\s+Adresse|$)", block)
-    firstname <- extract("Prénom\\s*:\\s*([A-ZÉÈÊÀÂÎÏÔÙÛÇ'\\s-]+)(?=\\s+Adresse|$)", block)
+    code <- extract("Num\u00E9ro propri\u00E9taire\\s*:\\s*([A-Z0-9]+)", block)
+    name <- extract("Nom\\s*:\\s*([A-Z'\\s-]+)(?=\\s+Pr\u00E9nom|\\s+Adresse|$)", block)
+    firstname <- extract("Pr\u00E9nom\\s*:\\s*([A-Z'\\s-]+)(?=\\s+Adresse|$)", block)
+    denomination <- extract("D\u00E9nomination\\s*:\\s*([A-Z0-9'\\s-]+)(?=\\s+Adresse|$)", block)
 
     # Address extraction
     addr_start <- regexpr("Adresse\\s*:", block)
     address <- if(addr_start > 0) {
       addr <- substr(block, addr_start + attr(addr_start, "match.length"), nchar(block))
       addr <- trimws(gsub("\\s+", " ", addr))
-      sub("\\s*(Propriété\\(s\\)|Droit réel).*$", "", addr)
+      sub("\\s*(Propri\u00E9t\u00E9\\(s\\)|Droit r\u00E9el).*$", "", addr)
     } else NA_character_
 
-    seq_name <- if(!is.na(firstname) && !is.na(name) && !is.na(type_code)) {
-      paste(name, " ", firstname, " (", type_code, ")", sep = "")
-    } else if(!is.na(name) && !is.na(type_code)) {
-      paste(name, " (", type_code, ")", sep = "")
-    } else NA_character_
+    seq_name <- if (!is.na(denomination) && !is.na(type_code)) {
+      paste0(denomination, " (", type_code, ")")
+    } else if (!is.na(name) && !is.na(firstname) && !is.na(type_code)) {
+      paste0(name, " ", firstname, " (", type_code, ")")
+    } else if (!is.na(name) && !is.na(type_code)) {
+      paste0(name, " (", type_code, ")")
+    } else {
+      NA_character_
+    }
 
     owners_df <- rbind(owners_df, data.frame(
-      type, type_code, code, name, firstname, address, seq_name,
-      file_name, file_path = pdf_path,
+      type,
+      type_code,
+      code,
+      name,
+      firstname,
+      denomination,
+      address,
+      seq_name,
+      file_name,
+      file_path = pdf,
       stringsAsFactors = FALSE
     ))
   }
@@ -780,22 +835,22 @@ get_parcels <- function(pdf){
 #' Applies the extraction pipeline to multiple PDF files and combines
 #' results into a single list with three data frames.
 #'
-#' @param pdf_files `character` vector. Paths to PDF file
+#' @param pdf `character` vector. Paths to PDF file
 #' @return List with three `data.frame`: `refs`, `owners`, `parcels`
 #' @export
-get_matrice <- function(pdf_files){
-  n <- length(pdf_files)
+get_matrice <- function(pdf){
+  n <- length(pdf)
   refs_list <- vector("list", n)
   owners_list <- vector("list", n)
   parcels_list <- vector("list", n)
 
-  for(i in seq_along(pdf_files)) {
-    pdf <- pdf_files[i]
-    cat("Treatment :", pdf, "\n")
+  for(i in seq_along(pdf)) {
+    file <- pdf[i]
+    cat("Treatment :", file, "\n")
 
-    refs_list[[i]] <- get_reference(pdf)
-    owners_list[[i]] <- get_owner(pdf)
-    parcels_list[[i]] <- get_parcels(pdf)
+    refs_list[[i]] <- get_reference(file)
+    owners_list[[i]] <- get_owner(file)
+    parcels_list[[i]] <- get_parcels(file)
   }
 
   list(

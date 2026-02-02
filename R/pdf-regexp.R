@@ -153,12 +153,12 @@ parse_surface <- function(x) {
   if (m[1] != -1 &&
       grepl("^[0-9]{3},", regmatches(x, m)) &&
       length(tok) > 0 &&
-      nchar(tail(tok, 1)) == 1) {
+      nchar(utils::tail(tok, 1)) == 1) {
     tok <- tok[-length(tok)]
   }
 
   # take last up to 3 tokens and right-align as ha / a / ca
-  tok <- tail(tok, 3)
+  tok <- utils::tail(tok, 3)
   tok <- c(rep("0", 3 - length(tok)), tok)
 
   setNames(as.integer(tok), c("ha", "a", "ca"))

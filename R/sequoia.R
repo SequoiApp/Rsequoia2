@@ -71,7 +71,7 @@ sequoia <- function(path = NULL, overwrite = FALSE) {
 #'
 #' @noRd
 menu_rp <- function(path, overwrite){
-  files <- choose.files()
+  files <- utils::choose.files()
   rp <- lapply(files, parse_rp)
   m <- do.call(rbind, lapply(rp, `[[`, "m"))
   m_all <- do.call(rbind, lapply(rp, `[[`, "m_all"))
