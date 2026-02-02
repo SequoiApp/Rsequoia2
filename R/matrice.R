@@ -60,7 +60,7 @@ read_matrice <- function(dirname = "."){
   # No file
   if (length(m_path) == 0) {
     cli::cli_abort(c(
-      "!" = "No {.val *_matrice.xlsx} file found in {.path {normalizePath(dirname)}}.",
+      "!" = "No {.val *_matrice.xlsx} file found in {.path {dirname}}.",
       "i" = "See {.fn Rsequoia2::create_matrice} to generate one."
     ))
   }
@@ -68,7 +68,7 @@ read_matrice <- function(dirname = "."){
   # Multiple files
   if (length(m_path) > 1) {
     cli::cli_abort(c(
-      "!" = "Multiple {.val *_matrice.xlsx} files found in {.path {normalizePath(dirname)}}.",
+      "!" = "Multiple {.val *_matrice.xlsx} files found in {.path {dirname}}.",
       "x" = "Only one matrice file is allowed.",
       "v" = "Files found: {paste(basename(m_path), collapse = ', ')}"
     ))

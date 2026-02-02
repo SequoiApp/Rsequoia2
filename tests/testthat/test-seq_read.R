@@ -17,7 +17,10 @@ test_that("seq_read() reads raster layers", {
 
   with_seq_cache({
     r <- terra::rast(nrows = 5, ncols = 5, vals = 1:25)
-    seq_write(r, "irc", seq_cache)
+
+    # Raster should be save as tiff so gdal can understand drive = GTIFF not MEM
+    tmp <- file.path(seq_cache, "IRC.tif")
+    terra::writeRaster(r, tmp, overwrite = TRUE)
 
     r_read <- seq_read("irc", seq_cache)
 

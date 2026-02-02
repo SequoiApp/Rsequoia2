@@ -20,10 +20,12 @@ fake_matrice <- function(
 }
 
 test_that("read_matrice() errors when no *_matrice.xlsx file", {
+  dir <- file.path(tempdir(), "tmp")
   expect_error(
-    read_matrice(tempdir()),
+    read_matrice(dir),
     "See .*Rsequoia2::create_matrice.* to generate one"
-  )
+  ) |> suppressMessages()
+  on.exit(unlink(dir, recursive = TRUE, force = TRUE), add = TRUE)
 })
 
 test_that("read_matrice() errors when multiple *_matrice.xlsx files", {

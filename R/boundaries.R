@@ -94,7 +94,7 @@ seq_boundaries <- function(
   o_line <- seq_write2(owner_line, "v.seq.owner.line", id)
   o_point <- seq_write2(owner_point, "v.seq.owner.point", id)
 
-  return(c(f_poly, f_line, f_point, o_poly, o_line , o_point) |> as.list())
+  return(invisible(c(f_poly, f_line, f_point, o_poly, o_line , o_point) |> as.list()))
 
 }
 

@@ -293,6 +293,6 @@ seq_vege <- function(
   }
   vege_point <- seq_write2(vege_point, "v.vege.point", id)
 
-  return(c(vege_poly, vege_line, vege_point) |> as.list())
+  return(invisible(c(vege_poly, vege_line, vege_point) |> as.list()))
 }
 

@@ -189,5 +189,5 @@ seq_mnhn <- function(
     }
   }
 
-  return(path)
+  return(invisible(path))
 }

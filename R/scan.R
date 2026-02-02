@@ -255,6 +255,6 @@ seq_scan <- function(
   }
 
   names(paths) <- type[seq_along(paths)]
-  return(paths)
+  return(invisible(paths))
 }
 

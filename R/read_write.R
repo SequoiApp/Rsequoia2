@@ -175,7 +175,7 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
 
     cfg <- list(
       datatype = "FLT4S",
-      gdal = c(gdal_base, "COMPRESS=DEFLATE")
+      gdal = c(gdal_base, "COMPRESS=DEFLATE", "PREDICTOR=3")
     )
     if (is_rgb) {
       cfg <- list(
