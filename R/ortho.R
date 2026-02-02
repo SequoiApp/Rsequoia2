@@ -91,7 +91,7 @@ get_ortho <- function(
       crs = crs,
       filename = file,
       overwrite = TRUE,
-      verbose = FALSE) |> suppressWarnings()
+      verbose = TRUE) |> suppressWarnings()
 
     files <- c(files, file)
   }

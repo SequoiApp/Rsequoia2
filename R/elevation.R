@@ -39,15 +39,15 @@ get_dem <- function(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE) {
 
     file <- sprintf(file.path(tmp, sprintf("r_%03d.tif", i)))
 
-    happign::get_wms_raster(
-      x[i, ],
+    r <- happign::get_wms_raster(
+      x_env[i, ],
       layer = "ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES",
       rgb = FALSE,
       res = res,
       crs = crs,
       filename = file,
       overwrite = TRUE,
-      verbose = FALSE) |> suppressWarnings()
+      verbose = TRUE) |> suppressWarnings()
 
     files <- c(files, file)
   }
@@ -96,14 +96,14 @@ get_dsm <- function(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE) {
     file <- sprintf(file.path(tmp, sprintf("r_%03d.tif", i)))
 
     happign::get_wms_raster(
-      x[i, ],
+      x_env[i, ],
       layer = "ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES.MNS",
       rgb = FALSE,
       res = res,
       crs = crs,
       filename = file,
       overwrite = TRUE,
-      verbose = FALSE) |> suppressWarnings()
+      verbose = TRUE) |> suppressWarnings()
 
     files <- c(files, file)
   }
