@@ -20,7 +20,7 @@ seq_read <- function(key, dirname = ".", verbose = FALSE) {
   type <- layer_info$type
 
   # recursive search on layer name only
-  # \\. is necessary to avoid multi match on UA SEQ_UA_poly.geojson & SEQ_UA_poly_20260116T135813.geojson
+  # \\. is necessary to avoid multi match on UA SEQ_UA_poly.gpkg & SEQ_UA_poly_20260116T135813.gpkg
   path <- list.files(
     path = dirname,
     pattern = filename,
