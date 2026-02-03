@@ -80,6 +80,7 @@ parse_rp <- function(pdf){
   df$idu <- paste0(df$insee, df$prefix, df$section, df$numero)
   df$source <- basename(pdf)
 
+  cog <- get_cog(verbose = FALSE)
   m_all <- df |>
     merge(cog$com[, c("COM", "NCC_COM", "DEP")], by.x = "insee", by.y = "COM") |>
     merge(cog$dep[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
