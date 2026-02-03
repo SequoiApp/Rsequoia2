@@ -13,7 +13,7 @@ download_brgm(
 )
 }
 \arguments{
-\item{dep}{\code{character} or \code{numeric}; Department code (see \link[happign:dep_2025]{happign::dep_2025}).}
+\item{dep}{\code{character} or \code{numeric}; Department code (see \code{\link[=get_cog]{get_cog()}}).}
 
 \item{source}{\code{character} Source use to download geology from BRGM. Must be one of:
 \itemize{

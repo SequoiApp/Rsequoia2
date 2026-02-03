@@ -81,9 +81,9 @@ parse_rp <- function(pdf){
   df$source <- basename(pdf)
 
   m_all <- df |>
-    merge(happign::com_2025[happign::com_2025$TYPECOM == "COM", c("COM", "NCC_COM", "DEP")], by.x = "insee", by.y = "COM") |>
-    merge(happign::dep_2025[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
-    merge(happign::reg_2025[, c("REG", "NCC_REG")], all.x = TRUE) |>
+    merge(cog$com[, c("COM", "NCC_COM", "DEP")], by.x = "insee", by.y = "COM") |>
+    merge(cog$dep[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
+    merge(cog$reg[, c("REG", "NCC_REG")], all.x = TRUE)
     field_rename() |>
     field_order("parca")
 

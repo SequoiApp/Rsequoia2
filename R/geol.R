@@ -5,7 +5,7 @@
 #'
 #' Existing ZIP files are never re-downloaded.
 #'
-#' @param dep `character` or `numeric`; Department code (see [happign::dep_2025]).
+#' @param dep `character` or `numeric`; Department code (see [Rsequoia2::get_cog()]).
 #' @param source `character` Source use to download geology from BRGM. Must be one of:
 #'   - `"carhab"` : geological data used to created the `CarHab` dataset ;
 #'   - `"bdcharm50"` : geological maps, vectorized and harmonised at 1:50,000 scale.
@@ -41,13 +41,13 @@ download_brgm <- function(dep, source = "carhab", cache = NULL, verbose = FALSE,
   }
 
   dep <- pad_left(dep, 2)
-  all_dep <- happign::dep_2025
+  all_dep <- get_cog(verbose = FALSE)$dep
   if (length(dep)) {
     valid_dep <- dep %in% all_dep$DEP
     if (!all(valid_dep)) {
       cli::cli_abort(c(
         "x" = "Invalid department code: {.val {dep}}",
-        "i" = "See {.run happign::dep_2025$DEP} for valid department code."
+        "i" = "See {.run get_cog()$dep} for valid department code."
       ))
     }
   }
@@ -90,7 +90,7 @@ download_brgm <- function(dep, source = "carhab", cache = NULL, verbose = FALSE,
 #'
 #' @inheritParams download_brgm
 #' @param deps `character` or `numeric`; One or sevral french
-#' department code (see [happign::dep_2025]).
+#' department code (see [Rsequoia2::get_cog()]).
 #'
 #' @return An `sf` object containing the geology features for all requested
 #' departments.

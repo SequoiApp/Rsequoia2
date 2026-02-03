@@ -8,7 +8,7 @@ get_legal_entity(x, cache = NULL, verbose = TRUE)
 }
 \arguments{
 \item{x}{\code{character}; Code(s) INSEE or code(s) department (see
-\link[happign:com_2025]{happign::com_2025} or \link[happign:dep_2025]{happign::dep_2025})}
+[Rsequoia2::get_cog())}
 
 \item{cache}{\code{character}; Storage directory. Defaults to the user cache
 directory (see \code{\link[tools:userdir]{tools::R_user_dir()}}).}

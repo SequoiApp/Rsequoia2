@@ -6,7 +6,7 @@ fake_brgm_zip <- function(dep, source, cache){
   dir.create(sf_path)
 
   if (source == "carhab"){
-    all_dep <- happign::dep_2025
+    all_dep <- get_cog(verbose = FALSE)$dep
     dep_name <- all_dep[all_dep$DEP == dep, c("DEP", "NCC_DEP")]
     zip_name <- sprintf("CARHAB_%s.zip", paste(dep_name, collapse = "_"))
     sf::write_sf(Rsequoia2:::seq_poly, file.path(sf_path, "CarHab.shp"), quiet = TRUE)

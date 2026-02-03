@@ -71,7 +71,7 @@ globalVariables(c(
 #' @inheritParams download_legal_entity
 #'
 #' @param x `character`; Code(s) INSEE or code(s) department (see
-#' [happign::com_2025] or [happign::dep_2025])
+#' [Rsequoia2::get_cog())
 #'
 #' @importFrom cli cli_alert_info cli_abort cli_alert_success cli_alert_warning
 #' @importFrom utils read.csv2
@@ -94,7 +94,7 @@ get_legal_entity <- function(
   code_dep <- pad_left(x[nchar(x) <= 3], 2)
 
   if (length(code_insee)) {
-    all_insee <- happign::com_2025$COM
+    all_insee <- get_cog(verbose = FALSE)$com$COM
     valid_insee <- code_insee %in% all_insee
     if (!all(valid_insee)) {
       bad_vals <- code_insee[!valid_insee]
@@ -103,7 +103,7 @@ get_legal_entity <- function(
   }
 
   if (length(code_dep)) {
-    all_dep <- happign::dep_2025$DEP
+    all_dep <- get_cog(verbose = FALSE)$dep$DEP
     valid_dep <- code_dep %in% all_dep
     if (!all(valid_dep)) {
       bad_vals <- code_dep[!valid_dep]
@@ -295,6 +295,8 @@ normalize_legal_entity <- function(legal_entity, verbose = FALSE){
 
   if (verbose) cli_alert_info("Generating matrice...")
 
+  cog <- get_cog(verbose = FALSE)
+
   matrice <- legal_entity |>
     transform(
       "idu" = legal_entity[[le_idu]],
@@ -306,9 +308,9 @@ normalize_legal_entity <- function(legal_entity, verbose = FALSE){
       "contenance" = legal_entity[[le_cad_area]] / 10000,
       "source" = "https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales"
     ) |>
-    merge(happign::com_2025[happign::com_2025$TYPECOM == "COM", c("COM", "NCC_COM", "DEP")], by.x = le_insee, by.y = "COM") |>
-    merge(happign::dep_2025[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
-    merge(happign::reg_2025[, c("REG", "NCC_REG")], all.x = TRUE) |>
+    merge(cog$com[, c("COM", "NCC_COM", "DEP")], by.x = le_insee, by.y = "COM") |>
+    merge(cog$dep[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
+    merge(cog$reg[, c("REG", "NCC_REG")], all.x = TRUE) |>
     seq_normalize("parca")
 
   return(matrice)

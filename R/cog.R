@@ -39,7 +39,7 @@ get_cog <- function(cache = NULL, update = FALSE, verbose = TRUE) {
     return(lapply(paths, readRDS))
   }
 
-  if (verbose) cli::cli_alert_info("Downloading COG datasets…")
+  if (verbose) cli::cli_alert_info("Downloading COG datasets...")
 
   df <- dg_get_dataset("58c984b088ee386cdb1261f3")
   r <- df$resources
@@ -58,12 +58,12 @@ get_cog <- function(cache = NULL, update = FALSE, verbose = TRUE) {
   }
 
   # Communes
-  com <- read_latest("Liste des communes")
+  com <- read_latest("Liste des communes, arrondissements municipaux")
   com <- suffix_cols(com, c("TNCC", "NCC", "NCCENR", "LIBELLE"), "COM")
   com <- com[com$TYPECOM == "COM", ]
 
   # Départements
-  dep <- read_latest("Liste des départements")
+  dep <- read_latest("Liste des d.{1}partements") #.{1} avoid ascii
   dep <- suffix_cols(
     dep,
     c("CHEFLIEU", "TNCC", "NCC", "NCCENR", "LIBELLE"),
@@ -71,7 +71,7 @@ get_cog <- function(cache = NULL, update = FALSE, verbose = TRUE) {
   )
 
   # Régions
-  reg <- read_latest("Liste des régions")
+  reg <- read_latest("Liste des r.{1}gions") #.{1} avoid ascii
   reg <- suffix_cols(
     reg,
     c("CHEFLIEU", "TNCC", "NCC", "NCCENR", "LIBELLE"),
