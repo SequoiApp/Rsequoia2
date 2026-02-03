@@ -16,9 +16,7 @@ get_legal_entity(x, cache = NULL, verbose = TRUE)
 - x:
 
   `character`; Code(s) INSEE or code(s) department (see
-  [happign::com_2025](https://paul-carteron.github.io/happign/reference/com_2025.html)
-  or
-  [happign::dep_2025](https://paul-carteron.github.io/happign/reference/dep_2025.html))
+  \[Rsequoia2::get_cog())
 
 - cache:
 

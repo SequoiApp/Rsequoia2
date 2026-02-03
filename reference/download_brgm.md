@@ -20,7 +20,7 @@ download_brgm(
 - dep:
 
   `character` or `numeric`; Department code (see
-  [happign::dep_2025](https://paul-carteron.github.io/happign/reference/dep_2025.html)).
+  [`get_cog()`](https://mucau.github.io/Rsequoia2/reference/get_cog.md)).
 
 - source:
 
