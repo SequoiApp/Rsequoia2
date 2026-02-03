@@ -99,7 +99,7 @@ get_lieux_dits <- function(idu){
   idu_parts <- idu_split(idu)
   insee <- unique(idu_parts$insee)
   urls <- paste0("https://cadastre.data.gouv.fr/bundler/cadastre-etalab/communes/",
-                 insee,"/gpkg/lieux_dits")
+                 insee,"/geojson/lieux_dits")
 
   lieux_dits <- lapply(urls, sf::read_sf)
   lieux_dits <- do.call(rbind, lieux_dits)

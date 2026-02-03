@@ -48,7 +48,7 @@ get_cog <- function(cache = NULL, update = FALSE, verbose = TRUE) {
 
   read_latest <- function(pattern) {
     url <- r[grepl(pattern, r$title), "url"][[1]]
-    read.csv(url, fileEncoding = "UTF-8", encoding = "UTF-8")
+    utils::read.csv(url, fileEncoding = "UTF-8", encoding = "UTF-8")
   }
 
   suffix_cols <- function(x, cols, suffix) {
