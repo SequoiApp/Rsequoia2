@@ -64,14 +64,11 @@ insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
 #> ℹ Downloading legal entity datasets...
-#> ⠙ 3 extracted | 105 MB ( 28 MB/s) | 3.7s
-#> ⠹ 6 extracted | 325 MB ( 62 MB/s) | 5.3s
-#> ⠸ 20 extracted | 901 MB (109 MB/s) | 8.2s
-#> ⠼ 37 extracted | 1.5 GB (131 MB/s) | 11.3s
-#> ⠙ 6 extracted | 222 MB ( 49 MB/s) | 4.5s
-#> ⠹ 16 extracted | 558 MB ( 74 MB/s) | 7.6s
-#> ⠸ 31 extracted | 1.2 GB (112 MB/s) | 10.6s
-#> ⠼ 45 extracted | 1.8 GB (133 MB/s) | 13.5s
+#> ⠙ 11 extracted | 499 MB (203 MB/s) | 2.5s
+#> ⠹ 29 extracted | 1.2 GB (228 MB/s) | 5.5s
+#> ⠙ 24 extracted | 911 MB (236 MB/s) | 3.9s
+#> ⠹ 34 extracted | 1.3 GB (186 MB/s) | 6.9s
+#> ⠸ 50 extracted | 2.0 GB (204 MB/s) | 9.9s
 #> ✔ Data available at: /home/runner/.cache/R/Rsequoia2
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
