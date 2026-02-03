@@ -24,6 +24,9 @@
 - [`get_chm()`](https://mucau.github.io/Rsequoia2/reference/get_chm.md)
   : Compute Canopy Height Model (CHM)
 
+- [`get_cog()`](https://mucau.github.io/Rsequoia2/reference/get_cog.md)
+  : Get COG administrative datasets
+
 - [`get_com_line()`](https://mucau.github.io/Rsequoia2/reference/get_com_line.md)
   : Retrieve and assemble commune boundary lines around an area
 
