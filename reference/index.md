@@ -42,6 +42,15 @@
 - [`get_dem()`](https://mucau.github.io/Rsequoia2/reference/get_dem.md)
   : Download Digital Elevation Model (DEM) raster from IGN RGEAlti
 
+- [`get_drias_abstract()`](https://mucau.github.io/Rsequoia2/reference/get_drias_abstract.md)
+  : Summarize a DRIAS index by period and month
+
+- [`get_drias_metadata()`](https://mucau.github.io/Rsequoia2/reference/get_drias_metadata.md)
+  : Parse DRIAS metadata from a text file
+
+- [`get_drias_table()`](https://mucau.github.io/Rsequoia2/reference/get_drias_table.md)
+  : Parse DRIAS raw data from a text file
+
 - [`get_dsm()`](https://mucau.github.io/Rsequoia2/reference/get_dsm.md)
   : Download Digital Surface Model (DSM) raster from IGN RGEAlti
 
