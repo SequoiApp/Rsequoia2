@@ -9,8 +9,8 @@
 #'   \itemize{
 #'     \item `"ser"`: sylvo-écorégions
 #'     \item `"ser_ar"`: sylvo-écorégions (aggregated regions)
-#'     \item `"rfn"`: réseau forestier national
-#'     \item `"rfd"`: réseau forestier départemental
+#'     \item `"rfn"`: région forestière nationale
+#'     \item `"rfd"`: région forestière départementale
 #'     \item `"zp"`: zones de production
 #'   }
 #' @param cache A character string defining the cache directory.
