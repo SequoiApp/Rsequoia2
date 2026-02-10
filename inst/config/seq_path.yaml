@@ -31,3 +31,4 @@ path:
   ifn: "2_VECTOR/IFN"
   altimetrie: "3_RASTER/ALTIMETRIE"
   imagerie: "3_RASTER/IMAGERIE"
+  meteo: "4_AUTRES/METEO"

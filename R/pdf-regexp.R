@@ -84,7 +84,7 @@ parse_rp <- function(pdf){
   m_all <- df |>
     merge(cog$com[, c("COM", "NCC_COM", "DEP")], by.x = "insee", by.y = "COM") |>
     merge(cog$dep[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
-    merge(cog$reg[, c("REG", "NCC_REG")], all.x = TRUE)
+    merge(cog$reg[, c("REG", "NCC_REG")], all.x = TRUE) |>
     field_rename() |>
     field_order("parca")
 

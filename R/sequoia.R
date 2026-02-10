@@ -36,11 +36,11 @@ sequoia <- function(path = NULL, overwrite = FALSE) {
 
   # MAIN MENU ---
   actions <- list(
-    "Create MATRICE" = function() {
+    "Create MATRICE (vierge)" = function() {
       identifiant <- readline("Choose the forest identifiant: ")
       create_matrice(dirname = path, id = identifiant, overwrite = overwrite)
     },
-    "Create MATRICE (from RP)" = function() menu_rp(path, overwrite),
+    "Create MATRICE (from RP pdf)" = function() menu_rp(path, overwrite),
     "Create MATRICE (legal entity)" = function() menu_legal_entity(path, overwrite),
     "Download PARCA" = function() seq_parca(path, overwrite = overwrite),
     "Create UA & BOUNDARIES" = function() {

@@ -142,7 +142,7 @@ seq_patrimony <- function(
         "{length(valid)} non-empty layer{?s} found: {.val {valid}}"
       )
     } else {
-      cli::cli_warn("All layers are empty.")
+      cli::cli_alert_warning("All layers are empty.")
     }
   }
 

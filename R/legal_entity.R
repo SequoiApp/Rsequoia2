@@ -25,7 +25,8 @@
 download_legal_entity <- function(cache = NULL, verbose = TRUE) {
 
   if (is.null(cache)){
-    cache <- tools::R_user_dir("Rsequoia2", which = "cache")
+    cache <- tools::R_user_dir("Rsequoia2", which = "cache") |>
+      file.path("legal_entity")
     dir.create(cache, recursive = TRUE, showWarnings = FALSE)
   }
 

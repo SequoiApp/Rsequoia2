@@ -180,7 +180,7 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
     if (is_rgb) {
       cfg <- list(
         datatype = "INT1U",
-        gdal = c(gdal_base, "COMPRESS=JPEG", "JPEG_QUALITY=85", "PHOTOMETRIC=RGB")
+        gdal = c(gdal_base, "COMPRESS=JPEG", "JPEG_QUALITY=100", "PHOTOMETRIC=RGB")
       )
     }
 
