@@ -20,44 +20,76 @@
 #' The function primarily calls other Rsequoia2 functions.
 #'
 #' @export
-sequoia <- function(path = NULL, overwrite = FALSE) {
+sequoia <- function(overwrite = FALSE) {
 
-  if (is.null(path)){
-    path <- if (rstudioapi::isAvailable()) {
-      rstudioapi::selectDirectory()
-    } else {
-      readline("Enter directory path: ")
-    }
-  }
-
-  if (is.null(path) | path == "") cli_abort("No selection.")
-
-  cli_alert_info("You choose folder: {.file {normalizePath(path)}}")
-
-  # MAIN MENU ---
   actions <- list(
-    "Create MATRICE (vierge)" = function() {
-      identifiant <- readline("Choose the forest identifiant: ")
-      create_matrice(dirname = path, id = identifiant, overwrite = overwrite)
+    "Sélectionner dossier sequoia" = function() {
+
+      p <- rstudioapi::selectDirectory(
+        caption = "Sélectionner dossier sequoia",
+        path = getOption("seq_dir_path", getwd())
+      )
+
+      options(seq_dir_path = p)
     },
-    "Create MATRICE (from RP pdf)" = function() menu_rp(path, overwrite),
-    "Create MATRICE (legal entity)" = function() menu_legal_entity(path, overwrite),
-    "Download PARCA" = function() seq_parca(path, overwrite = overwrite),
-    "Create UA & BOUNDARIES" = function() {
+    "Créer MATRICE (vierge)" = function() {
+
+      path <- getOption("seq_dir_path", getwd())
+      if (is.null(path))
+        cli::cli_abort("Veuillez d'abord sélectionner un dossier sequoia.")
+
+      id <- readline("Identifiant de la forêt : ")
+
+      create_matrice(dirname = path, id = id, overwrite = overwrite)
+
+    },
+    "Créer MATRICE (depuis PDF RP)" = function() menu_rp(path, overwrite),
+    "Créer MATRICE (personne morale)" = function() menu_legal_entity(path, overwrite),
+    "Télécharger PARCA" = function() seq_parca(path, overwrite = overwrite),
+    "Créer UA & LIMITES" = function() {
       seq_parca_to_ua(path, overwrite = overwrite)
       seq_boundaries(path, overwrite = overwrite)
     },
-    "Correct UA & PARCELS" = function() {
+    "Corriger UA & PARCELLES" = function() {
       seq_ua(path, overwrite = TRUE)
       seq_parcels(path, overwrite = TRUE)
     },
-    "Download DATA" = function() menu_data(path, overwrite = overwrite)
+    "Télécharger DONNÉES" = function() menu_data(path, overwrite)
   )
 
-  choice <- utils::menu(names(actions))
-  actions[[choice]]()
+  repeat {
 
-  return(invisible(path))
+    cli::cli_h1("Menu Sequoia")
+
+    path <- getOption("seq_dir_path")
+    if (is.null(path)) {
+      cli::cli_alert_warning("Aucun dossier sélectionné.")
+    } else {
+      cli::cli_alert_info("Dossier sélectionné: {.file {normalizePath(path)}}"
+      )
+    }
+
+    choice <- menu(names(actions))
+
+    withCallingHandlers(
+
+      tryCatch(
+        actions[[choice]](),
+
+        error = function(e) {
+          cli::cli_alert_danger(e$message)
+        }
+
+      ),
+
+      warning = function(w) {
+        cli::cli_alert_warning(w$message)
+        invokeRestart("muffleWarning")
+      }
+
+    )
+
+  }
 }
 
 #' Interactive legal-entity menu
@@ -71,7 +103,29 @@ sequoia <- function(path = NULL, overwrite = FALSE) {
 #'
 #' @noRd
 menu_rp <- function(path, overwrite){
-  files <- utils::choose.files()
+  files <- character()
+  repeat {
+    last_path <- path
+    f <- rstudioapi::selectFile(
+      caption = "Sélectionner Relevé de propriété",
+      path = getOption("last_pdf_path", path),
+      filter = "PDF files (*.pdf)"
+    )
+
+    if (!nzchar(f)) break
+
+    files <- c(files, f)
+    base::options(last_pdf_path = dirname(f))
+
+    another <- rstudioapi::showQuestion(
+      title = "Select files",
+      message = "Select another file?",
+      cancel = "No"
+    )
+
+    if (!another) break
+  }
+
   rp <- lapply(files, parse_rp)
   m <- do.call(rbind, lapply(rp, `[[`, "m"))
   m_all <- do.call(rbind, lapply(rp, `[[`, "m_all"))
@@ -84,13 +138,10 @@ menu_rp <- function(path, overwrite){
     "Total area: {format(round(s, 2), nsmall = 2)} ha"
   ))
 
-  switch(utils::menu(
-    c("Check parca ?", "Cancel")),
-         {
-           parca_geom <- get_parca(m$IDU, verbose = TRUE)
-           parca <- merge(parca_geom[ , "IDU"], m) |> seq_normalize("parca")
-         }
-  )
+  parca_geom <- get_parca(m$IDU, verbose = TRUE)
+  parca <- merge(parca_geom[ , "IDU"], m) |> seq_normalize("parca")
+
+  cli::cli_alert_info("Plotting parca...")
 
   tmap::tmap_mode("view")
   print(tmap::qtm(parca))
@@ -172,7 +223,17 @@ menu_legal_entity <- function(path, overwrite){
 
 }
 
+#' Interactive data menu
+#'
+#' Prompts the user for available data.
+#'
+#' @details
+#' This function is interactive and intended for manual use only.
+#'
+#' @noRd
 menu_data <- function(path, overwrite){
+
+  cli::cli_h1("Menu data")
 
   seq_functions <- list(
     "Communes"      = function() try(seq_com(path, overwrite = overwrite)),
