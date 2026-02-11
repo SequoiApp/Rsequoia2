@@ -23,7 +23,8 @@ Imports:
     sf,
     terra,
     units,
-    yaml
+    yaml,
+    tmap
 Remotes:
     github::mucau/frheritage
 Suggests: 
