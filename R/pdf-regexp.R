@@ -59,16 +59,15 @@ parse_rp <- function(pdf){
 
   prf_df <- Filter(Negate(is.null), prf_df)
   df <- do.call(rbind, prf_df)
-  df[, c("an", "rivoli", "fp", "s_par", "gr", "classe")] <- NULL
+  df[, c("an", "rivoli", "fp", "s_par", "gr")] <- NULL
 
   fill_down <- function(x) {
-    ok <- !is.na(x)
+    ok <- !is.na(x) & x != ""
     idx <- which(ok)
     x[idx[cumsum(ok)]]
   }
 
   cols_to_fill <- c("prefix", "section", "numero", "lieu_dit")
-
   df[cols_to_fill] <- lapply(df[cols_to_fill], fill_down)
 
   df$com <- pad_left(com, 3)
