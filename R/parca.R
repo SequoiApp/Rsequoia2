@@ -285,6 +285,37 @@ seq_parca <- function(
     overwrite = overwrite
   )
 
+  # rewrite matrice properly
+  date_str <- format(Sys.time(), "%Y%m%dT%H%M%S")
+  m_path <- list.files(
+    dirname,
+    pattern = "_matrice\\.xlsx$",
+    ignore.case = TRUE,
+    full.names = TRUE,
+    recursive = TRUE
+  )
+  secure_m_path <- sprintf(
+    "%s_%s.%s",
+    tools::file_path_sans_ext(m_path),
+    date_str,
+    tools::file_ext(m_path)
+  )
+  file.rename(m_path, secure_m_path)
+  seq_write(
+    sf::st_drop_geometry(seq_parca),
+    "matrice",
+    dirname,
+    id = id,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+
+  if (verbose) {
+    cli::cli_alert_success(
+      "UA also saved as {.file {basename(secure_ua_path)}} for safety."
+    )
+  }
+
   return(invisible(parca_path))
 }
 
