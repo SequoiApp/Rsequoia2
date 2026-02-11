@@ -113,7 +113,7 @@ drias_read_table <- function(txt) {
   }
 
   # Read drias data ----
-  drias <- read.table(
+  drias <- utils::read.table(
     txt,
     sep = ";",
     header = FALSE,
@@ -160,8 +160,8 @@ drias_ombro <- function(txt){
 
   drias_meta <- drias_read_metadata(txt)
   drias <- drias_read_table(txt) |>
-    merge(drias_meta$horizon, by.x = "PERIODE", by.y = "code") |>
-    transform(PERIODE = sprintf("%s-%s", start, end))
+    merge(drias_meta$horizon, by.x = "PERIODE", by.y = "code")
+  drias$PERIODE <- sprintf("%s-%s", drias$start, drias$end)
 
   # p: precipitation
   month <- "MOIS"
@@ -218,8 +218,8 @@ drias_etp <- function(txt){
 
   drias_meta <- drias_read_metadata(txt)
   drias <- drias_read_table(txt) |>
-    merge(drias_meta$horizon, by.x = "PERIODE", by.y = "code") |>
-    transform(PERIODE = sprintf("%s-%s", start, end))
+    merge(drias_meta$horizon, by.x = "PERIODE", by.y = "code")
+  drias$PERIODE <- sprintf("%s-%s", drias$start, drias$end)
 
   # p: precipitation
   month <- "MOIS"

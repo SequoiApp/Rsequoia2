@@ -29,8 +29,7 @@ Remotes:
     github::mucau/frheritage
 Suggests: 
     rstudioapi,
-    testthat (>= 3.3.0),
-    tmap
+    testthat (>= 3.3.0)
 Config/testthat/edition: 3
 Depends: R (>= 4.1.0)
 Config/Needs/website: rmarkdown

@@ -3,18 +3,7 @@
 #' Launches the main interactive workflow for Rsequoia2, allowing the user to
 #' select a project folder and choose among map layer creation or cartographic tools.
 #'
-#' @param path `character` Optional. Path to the project folder. If not
-#' provided, the user will be prompted to enter it interactively.
 #' @param overwrite `logical` If `TRUE`, file is overwritten.
-#'
-#' @details
-#' The function opens interactive menus to guide the user through tasks such as:
-#' \itemize{
-#'   \item Creating map layers (MATRICE, PARCA, UA, UA finalization)
-#'   \item Cartographic tools (currently not implemented)
-#' }
-#' The user must make selections at each step; cancelling or leaving a selection
-#' empty will stop the function.
 #'
 #' @return Invisibly returns `path`.
 #' The function primarily calls other Rsequoia2 functions.
@@ -23,30 +12,30 @@
 sequoia <- function(overwrite = FALSE) {
 
   actions <- list(
-    "Sélectionner dossier sequoia" = function() {
+    "Selectionner dossier sequoia" = function() {
 
       p <- rstudioapi::selectDirectory(
-        caption = "Sélectionner dossier sequoia",
+        caption = "Selectionner dossier sequoia",
         path = getOption("seq_dir_path", getwd())
       )
 
       options(seq_dir_path = p)
     },
-    "Créer MATRICE (vierge)" = function() {
+    "Creer MATRICE (vierge)" = function() {
 
       path <- getOption("seq_dir_path", getwd())
       if (is.null(path))
-        cli::cli_abort("Veuillez d'abord sélectionner un dossier sequoia.")
+        cli::cli_abort("Veuillez d'abord selectionner un dossier sequoia.")
 
-      id <- readline("Identifiant de la forêt : ")
+      id <- readline("Identifiant de la foret : ")
 
       create_matrice(dirname = path, id = id, overwrite = overwrite)
 
     },
-    "Créer MATRICE (depuis PDF RP)" = function() menu_rp(path, overwrite),
-    "Créer MATRICE (personne morale)" = function() menu_legal_entity(path, overwrite),
-    "Télécharger PARCA" = function() seq_parca(path, overwrite = overwrite),
-    "Créer UA & LIMITES" = function() {
+    "Creer MATRICE (depuis PDF RP)" = function() menu_rp(path, overwrite),
+    "Creer MATRICE (personne morale)" = function() menu_legal_entity(path, overwrite),
+    "Telecharger PARCA" = function() seq_parca(path, overwrite = overwrite),
+    "Creer UA & LIMITES" = function() {
       seq_parca_to_ua(path, overwrite = overwrite)
       seq_boundaries(path, overwrite = overwrite)
     },
@@ -54,8 +43,8 @@ sequoia <- function(overwrite = FALSE) {
       seq_ua(path, overwrite = TRUE)
       seq_parcels(path, overwrite = TRUE)
     },
-    "Télécharger DONNÉES" = function() menu_data(path, overwrite),
-    "Générer une synthèse" = function() seq_summary(path, overwrite = overwrite)
+    "Telecharger DONNeES" = function() menu_data(path, overwrite),
+    "Generer une synthese" = function() seq_summary(path, overwrite = overwrite)
   )
 
   repeat {
@@ -64,13 +53,13 @@ sequoia <- function(overwrite = FALSE) {
 
     path <- getOption("seq_dir_path")
     if (is.null(path)) {
-      cli::cli_alert_warning("Aucun dossier sélectionné.")
+      cli::cli_alert_warning("Aucun dossier selectionne.")
     } else {
-      cli::cli_alert_info("Dossier sélectionné: {.file {normalizePath(path)}}"
+      cli::cli_alert_info("Dossier selectionne: {.file {normalizePath(path)}}"
       )
     }
 
-    choice <- menu(names(actions))
+    choice <- utils::menu(names(actions))
 
     withCallingHandlers(
 
@@ -108,7 +97,7 @@ menu_rp <- function(path, overwrite){
   repeat {
     last_path <- path
     f <- rstudioapi::selectFile(
-      caption = "Sélectionner Relevé de propriété",
+      caption = "Selectionner Releve de propriete",
       path = getOption("last_pdf_path", path),
       filter = "PDF files (*.pdf)"
     )
