@@ -315,10 +315,15 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
 
   # SAVE
   filename <- dirname |> file.path(seq_layer("summary")$filename)
-
+  secure_filename <- sprintf(
+    "%s_%s.%s",
+    tools::file_path_sans_ext(filename),
+    format(Sys.time(), "%Y%m%dT%H%M%S"),
+    tools::file_ext(filename)
+  )
   seq_xlsx(
     tables,
-    filename = filename,
+    filename = secure_filename,
     data_table = TRUE,
     overwrite = overwrite,
     verbose = verbose

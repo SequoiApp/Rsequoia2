@@ -54,7 +54,8 @@ sequoia <- function(overwrite = FALSE) {
       seq_ua(path, overwrite = TRUE)
       seq_parcels(path, overwrite = TRUE)
     },
-    "Télécharger DONNÉES" = function() menu_data(path, overwrite)
+    "Télécharger DONNÉES" = function() menu_data(path, overwrite),
+    "Générer une synthèse" = function() seq_summary(path, overwrite = overwrite)
   )
 
   repeat {
