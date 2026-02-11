@@ -53,7 +53,7 @@ test_that("seq_patrimony() doesn't write when no data found", {
     patrimony_path <- seq_patrimony(dirname = seq_cache, key = "imdn", verbose = FALSE)
     expect_length(patrimony_path, 0)
 
-    expect_warning(
+    expect_message(
       seq_patrimony(dirname = seq_cache, key = "imdn", verbose = TRUE),
       "All layers are empty"
     ) |> suppressMessages()

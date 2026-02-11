@@ -1,4 +1,3 @@
-# get_pedolygy test ----
 test_that("get_pedology() returns sf with expected fields and values", {
   skip_on_cran()
   skip_on_ci()

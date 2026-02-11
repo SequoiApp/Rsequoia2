@@ -17,109 +17,70 @@
 #' }
 #'
 #' @export
-get_drias_metadata <- function(txt) {
+drias_read_metadata <- function(txt) {
 
-  # Check txt
+  # Check txt input ----
   if (!is.character(txt)) {
-    cli::cli_abort(
-      "{.arg txt} must be a character string (path to a DRIAS file).",
-      class = "drias_invalid_txt"
-    )
+    cli::cli_abort("{.arg txt} must be a character string (path to a DRIAS file).")
   }
 
   if (length(txt) != 1L) {
-    cli::cli_abort(
-      "{.arg txt} must be a single file path (length 1).",
-      class = "drias_invalid_txt"
-    )
+    cli::cli_abort("{.arg txt} must be a single file path (length 1).")
   }
 
   if (is.na(txt) || !nzchar(txt)) {
-    cli::cli_abort(
-      "{.arg txt} must be a non-empty character string.",
-      class = "drias_invalid_txt"
-    )
+    cli::cli_abort("{.arg txt} must be a non-empty character string.")
   }
 
   if (!file.exists(txt)) {
-    cli::cli_abort(
-      "File not found: {.file {txt}}",
-      class = "drias_file_not_found"
+    cli::cli_abort("File not found: {.file {txt}}")
+  }
+
+  lines <- readLines(txt, encoding = "ISO-8859-1", warn = FALSE)
+
+  # Helpers ----
+  clean <- \(x) trimws(sub("^#+", "", x))
+
+  extract_value <- \(key) {
+    x <- grep(paste0("^#\\s*", key), lines, value = TRUE)
+    clean(sub(".*:\\s*", "", x))
+  }
+
+  extract_block <- \(start, end) {
+    i <- grep(start, lines)[1]
+    j <- grep(end, lines)[1]
+    if (is.na(i) || is.na(j)) return(character())
+    x <- clean(lines[(i+1):(j-1)])
+    x[nzchar(x) & !grepl("^-{3,}$", x)]
+  }
+
+  split_keyval <- \(x) {
+    data.frame(
+      code = sub(" *:.*$", "", x),
+      description = sub("^.*: *", "", x),
+      stringsAsFactors = FALSE
     )
   }
 
-  # Read txt
-  lines <- readLines(txt, encoding = "UTF-8", warn = FALSE)
-
-  # Helper functions
-  # Remove leading '#' and trim whitespace
-  clean_line <- function(x) trimws(sub("^#+", "", x))
-
-  # Identify separator lines (e.g. '-----')
-  is_separator <- function(x) grepl("^-{3,}$", x)
-
-  # Extract a metadata value from a key
-  extract_value <- function(key) {
-    line <- lines[grepl(paste0("^#\\s*", key), lines)]
-    clean_line(sub(paste0(".*", key, "\\s*:\\s*"), "", line))
-  }
-
-  # Extract a block of lines between two section headers
-  extract_block <- function(start, end) {
-    idx_start <- which(grepl(start, lines))
-    idx_end   <- which(grepl(end, lines))
-    if (!length(idx_start) || !length(idx_end)) return(character(0))
-    block <- lines[(idx_start[1] + 1):(idx_end[1] - 1)]
-    block <- clean_line(block)
-    block[nzchar(block) & !is_separator(block)]
-  }
-
-  # Simple metadata
-
-  date_extraction <- extract_value("Date d'extraction")
-  producteur      <- extract_value("Producteur")
-  experience      <- extract_value("Experience")
-  modele          <- extract_value("Modele")
-
-  # Scenario
-
-  scen_lines <- extract_block("Scenario", "Horizons")
-
-  scenario <- list(
-    code = sub(" *:.*$", "", scen_lines),
-    description = sub("^.*: *", "", scen_lines)
+  horizon_metadata <- data.frame(
+    code = c("H1", "H2", "H3"),
+    start = c(2021, 2041, 2071),
+    end = c(2050, 2070, 2100)
   )
 
-  # Horizons
+  horizon <- extract_block("Horizons", "Type d'indice") |>
+    split_keyval() |>
+    merge(horizon_metadata)
 
-  h_lines <- extract_block("Horizons", "Type d'indice")
-
-  horizons <- data.frame(
-    code = sub(" *:.*$", "", h_lines),
-    libelle = sub("^.*: *", "", h_lines),
-    stringsAsFactors = FALSE
-  )
-
-  # Indices
-
-  i_lines <- extract_block("Indices", "Format des enregistrements")
-
-  indices <- data.frame(
-    code = sub(" *:.*$", "", i_lines),
-    description = sub("^.*: *", "", i_lines),
-    stringsAsFactors = FALSE
-  )
-
-  # Output
-
+  # Extraction ----
   list(
-    date_extraction = date_extraction,
-    producteur = producteur,
-    experience = experience,
-    modele = modele,
-    scenario = scenario,
-    horizons = horizons,
-    indices = indices
+    date_extraction = extract_value("Date d'extraction"),
+    producteur = extract_value("Producteur"),
+    experience = extract_value("Experience"),
+    modele = extract_value("Modele"),
+    scenario = split_keyval(extract_block("Scenario", "Horizons")),
+    horizon = horizon,
+    indices = split_keyval(extract_block("Indices", "Format des enregistrements"))
   )
 }
 
@@ -132,146 +93,158 @@ get_drias_metadata <- function(txt) {
 #' @return A `data.frame` containing raw data.
 #'
 #' @export
-get_drias_table <- function(txt) {
+drias_read_table <- function(txt) {
 
-  # Check txt
+  # Check txt input ----
   if (!is.character(txt)) {
-    cli::cli_abort(
-      "{.arg txt} must be a character string (path to a DRIAS file).",
-      class = "drias_invalid_txt"
-    )
+    cli::cli_abort("{.arg txt} must be a character string (path to a DRIAS file).")
   }
 
   if (length(txt) != 1L) {
-    cli::cli_abort(
-      "{.arg txt} must be a single file path (length 1).",
-      class = "drias_invalid_txt"
-    )
+    cli::cli_abort("{.arg txt} must be a single file path (length 1).")
   }
 
   if (is.na(txt) || !nzchar(txt)) {
-    cli::cli_abort(
-      "{.arg txt} must be a non-empty character string.",
-      class = "drias_invalid_txt"
-    )
+    cli::cli_abort("{.arg txt} must be a non-empty character string.")
   }
 
   if (!file.exists(txt)) {
-    cli::cli_abort(
-      "File not found: {.file {txt}}",
-      class = "drias_file_not_found"
-    )
+    cli::cli_abort("File not found: {.file {txt}}")
   }
 
-  # Read metadata and extract expected column names
-  meta <- get_drias_metadata(txt)
-  indices <- meta$indices
-
-  if (!is.data.frame(indices) || !"code" %in% names(indices)) {
-    cli::cli_abort(
-      "Invalid metadata structure: {.field indices} must contain a {.field code} column.",
-      class = "drias_invalid_metadata"
-    )
-  }
-
-  colnames_expected <- c("Point", "Latitude", "Longitude",
-                         "Contexte", "Periode", "Mois",
-                         indices$code)
-
-  if (anyNA(colnames_expected) || any(!nzchar(colnames_expected))) {
-    cli::cli_abort(
-      "Invalid index codes detected in metadata.",
-      class = "drias_invalid_metadata"
-    )
-  }
-
-  if (anyDuplicated(colnames_expected)) {
-    cli::cli_abort(
-      "Duplicate index codes detected in metadata.",
-      class = "drias_invalid_metadata"
-    )
-  }
-
-  # Read data table (comments ignored by read.table)
-  tables <- utils::read.table(
+  # Read drias data ----
+  drias <- read.table(
     txt,
     sep = ";",
     header = FALSE,
-    stringsAsFactors = FALSE
+    stringsAsFactors = FALSE,
+    fileEncoding = "ISO-8859-1"
   )
-  tables <- tables[, !sapply(tables, function(x) all(is.na(x)))]
 
-  # Structural validation
-  if (ncol(tables) != length(colnames_expected)) {
-    cli::cli_abort(
-      "Column count mismatch: data has {ncol(tables)} columns, metadata defines {length(colnames_expected)} indices.",
-      class = "drias_table_mismatch"
-    )
+  # Find colnames ----
+  lines <- readLines(txt, encoding = "ISO-8859-1", warn = FALSE)
+  header_idx <- grep("^# Point;", lines)
+
+  if (length(header_idx) == 0){
+    cli::cli_abort("No colname line starting with '# Point;' found.")
   }
 
-  names(tables) <- colnames_expected
+  colnames <- strsplit(sub("^#\\s*", "", lines[header_idx]), ";")[[1]] |>
+    iconv(from = "UTF-8", to = "ASCII//TRANSLIT") |>
+    toupper()
+  names(drias) <- colnames
 
-  tables
+  # Format drias ----
+  drias <- drias[, colSums(!is.na(drias)) > 0, drop = FALSE]
+
+  return(drias)
 }
 
-#' Summarize a DRIAS index by period and month
+#' Compute ombrothermic climatology summaries
 #'
-#' Compute a summary (mean, sum, etc.) of a specific DRIAS index
-#' for two periods (H1 and H3) by month and calculate the difference.
+#' Computes monthly ombrothermic summaries from DRIAS extraction
 #'
-#' @param tables A data.frame returned by `get_drias_table()`.
-#'   Must contain columns `Periode`, `Mois` (between 1 and 12) and the target index.
-#' @param field Character. Name of the index to summarize (e.g., "NORTAV").
-#' @param fun Function to summarize the values (default: `mean`).
+#' @param txt `character` string. Path to a DRIAS `.txt` file.
 #'
-#' @return A data.frame with columns:
-#' \describe{
-#'   \item{Mois}{Month number (between 1 and 12).}
-#'   \item{H1_FIELD}{Summary of H1 period for the selected index.}
-#'   \item{H3_FIELD}{Summary of H3 period for the selected index.}
-#'   \item{EC_FIELD}{Difference H3 - H1 for the selected index.}
+#' @return
+#' A `data.frame` containing monthly averages of temperature and precipitation
+#' for each period.
+#'
+#' @examples
+#' \dontrun{
+#' ombro <- drias_ombro(clim)
 #' }
+#'
 #' @export
-get_drias_abstract <- function(tables, field, fun = mean) {
-  # Check that the field exists
-  if (!field %in% names(tables)) {
-    cli::cli_abort("Field {.val {field}} not found in tables", class = "drias_missing_field")
-  }
-  if (!"Periode" %in% names(tables)) {
-    cli::cli_abort("tables must have column 'Periode'", class = "drias_missing_col")
-  }
-  if (!"Mois" %in% names(tables)) {
-    cli::cli_abort("tables must have column 'Mois'", class = "drias_missing_col")
-  }
+drias_ombro <- function(txt){
 
-  # Aggregate values by Periode and Mois
-  res <- aggregate(
-    tables[[field]],
-    by = list(Periode = tables$Periode, Mois = tables$Mois),
-    FUN = fun,
+  drias_meta <- drias_read_metadata(txt)
+  drias <- drias_read_table(txt) |>
+    merge(drias_meta$horizon, by.x = "PERIODE", by.y = "code") |>
+    transform(PERIODE = sprintf("%s-%s", start, end))
+
+  # p: precipitation
+  month <- "MOIS"
+  tmoy <- "NORTAV"
+  tmin <- "NORTNAV"
+  tmax <- "NORTXAV"
+  p_mm <- "NORRR"
+
+  # remove vars all equal to zero to avoid bad mean
+  vars <- c(tmoy, tmin, tmax, p_mm)
+  keep <- sapply(
+    split(drias[vars], drias$POINT),
+    function(df_point) all(colSums(df_point != 0, na.rm = TRUE) > 0)
+  )
+  drias <- drias[drias$POINT %in% names(keep)[keep], ]
+
+  ombro <- aggregate(
+    drias[vars],
+    by = drias[c(month, "PERIODE")],
+    FUN = mean,
     na.rm = TRUE
   )
-  names(res)[3] <- "Value"
 
-  # Extract H1 and H3 values
-  H1_vals <- res$Value[res$Periode == "H1"]
-  H3_vals <- res$Value[res$Periode == "H3"]
+  ombro <- ombro[, c("PERIODE", month, tmoy, tmin, tmax, p_mm)]
 
-  # Check that H1 and H3 have the same length
-  if (length(H1_vals) != length(H3_vals)) {
-    cli::cli_abort(
-      "Mismatch between H1 and H3 periods: H1 length = {length(H1_vals)}, H3 length = {length(H3_vals)}",
-      class = "drias_period_mismatch"
-    )
-  }
+  return(ombro)
+}
 
-  # Create final data.frame with field suffixes
-  df <- data.frame(
-    Mois = unique(res$Mois)
+#' Compute monthly precipitation, evapotranspiration and water balance from DRIAS projections
+#'
+#' Reads a DRIAS climate projection `.txt` file and computes the mean monthly
+#' precipitation (P), potential evapotranspiration (ETP), and water balance (P − ETP)
+#' for each projection period.
+#'
+#' Invalid climate points (where precipitation or evapotranspiration are entirely
+#' equal to zero across all months) are automatically excluded to avoid biased averages.
+#'
+#' @param txt `character(1)`. Path to a DRIAS `.txt` file downloaded from the
+#' [DRIAS portal](https://www.drias-climat.fr/)
+#'
+#' @return A `data.frame` with one row per month and period
+#' @seealso
+#' [drias_read_table()], [drias_read_metadata()], [drias_ombro()]
+#'
+#' @examples
+#' \dontrun{
+#' txt <- "indicesRACMO22E_CNRM-CM5.txt"
+#' etp <- drias_etp(txt)
+#' head(etp)
+#' }
+#'
+#' @export
+drias_etp <- function(txt){
+
+  drias_meta <- drias_read_metadata(txt)
+  drias <- drias_read_table(txt) |>
+    merge(drias_meta$horizon, by.x = "PERIODE", by.y = "code") |>
+    transform(PERIODE = sprintf("%s-%s", start, end))
+
+  # p: precipitation
+  month <- "MOIS"
+  etp_mm <- "NORETPC"
+  p_mm <- "NORRR"
+  p_etp <- "P-ETP"
+  # remove vars all equal to zero to avoid bad mean
+  vars <- c(etp_mm, p_mm)
+
+  keep <- sapply(
+    split(drias[vars], drias$POINT),
+    function(df_point) all(colSums(df_point != 0, na.rm = TRUE) > 0)
   )
-  df[[paste0("H1_", field)]] <- H1_vals
-  df[[paste0("H3_", field)]] <- H3_vals
-  df[[paste0("EC_", field)]] <- H3_vals - H1_vals
 
-  return(df)
+  drias <- drias[drias$POINT %in% names(keep)[keep], ]
+
+  etp <- aggregate(
+    drias[vars],
+    by = drias[c(month, "PERIODE")],
+    FUN = mean,
+    na.rm = TRUE
+  )
+
+  etp[p_etp] <- etp[p_mm] - etp[etp_mm]
+  etp <- etp[, c("PERIODE", month, p_mm, etp_mm, p_etp)]
+
+  return(etp)
 }

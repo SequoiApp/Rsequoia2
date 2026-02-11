@@ -6,6 +6,7 @@ test_that("seq_ifn() returns existing paths", {
 
     local_mocked_bindings(
       get_ifn   = function(...) poly,
+      get_ser_pdf = function(...) "ser_pdf_path",
       seq_write = function(...) {
         path <- tempfile(fileext = ".gpkg")
         file.create(path)
@@ -31,6 +32,7 @@ test_that("seq_ifn() calls seq_write once per output", {
 
     local_mocked_bindings(
       get_ifn = function(...) poly,
+      get_ser_pdf = function(...) "ser_pdf_path",
       seq_write = function(...) {
         called <<- called + 1L
         path <- tempfile(fileext = ".gpkg")
@@ -58,6 +60,7 @@ test_that("seq_ifn() respects types argument", {
         seen <<- c(seen, type)
         poly
       },
+      get_ser_pdf = function(...) "ser_pdf_path",
       seq_write = function(...) tempfile(fileext = ".gpkg")
     )
 
@@ -74,6 +77,7 @@ test_that("seq_ifn() writes nothing when no features exist", {
 
     local_mocked_bindings(
       get_ifn = function(...) NULL,
+      get_ser_pdf = function(...) "ser_pdf_path",
       seq_write = function(...) {
         called <<- called + 1
       }
@@ -97,6 +101,7 @@ test_that("seq_ifn() returns only written layers when some types are empty", {
         if (type == "ser") return(poly)
         NULL
       },
+      get_ser_pdf = function(...) "ser_pdf_path",
       seq_write = function(...) tempfile(fileext = ".gpkg")
     )
 

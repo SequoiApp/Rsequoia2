@@ -14,8 +14,8 @@ Must be one of:
 \itemize{
 \item \code{"ser"}: sylvo-écorégions
 \item \code{"ser_ar"}: sylvo-écorégions (aggregated regions)
-\item \code{"rfn"}: réseau forestier national
-\item \code{"rfd"}: réseau forestier départemental
+\item \code{"rfn"}: région forestière nationale
+\item \code{"rfd"}: région forestière départementale
 \item \code{"zp"}: zones de production
 }}
 

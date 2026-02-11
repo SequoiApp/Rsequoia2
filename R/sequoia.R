@@ -186,6 +186,7 @@ menu_data <- function(path, overwrite){
     "Toponyme"      = function() try(seq_toponyme(path, overwrite = overwrite)),
     "Hydrology"     = function() try(seq_hydro(path, overwrite = overwrite)),
     "Vegetation"    = function() try(seq_vege(path, overwrite = overwrite)),
+    "Climate"       = function() try(seq_climate(path, overwrite = overwrite)),
     "Contour lines" = function() try(seq_curves(path, overwrite = overwrite)),
     "IFN"           = function() try(seq_ifn(path, overwrite = overwrite)),
     "GPU"           = function() try(seq_gpu(path, overwrite = overwrite)),

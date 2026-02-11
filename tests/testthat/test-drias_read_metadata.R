@@ -1,4 +1,4 @@
-test_that("get_drias_metadata works on a local temporary file", {
+test_that("drias_read_metadata works on a local temporary file", {
 
   txt <- tempfile(fileext = ".txt")
   on.exit(unlink(txt))
@@ -30,48 +30,48 @@ test_that("get_drias_metadata works on a local temporary file", {
     useBytes = TRUE
   )
 
-  meta <- get_drias_metadata(txt)
+  meta <- drias_read_metadata(txt)
 
   expect_type(meta, "list")
-  expect_named(
-    meta,
-    c(
-      "date_extraction",
-      "producteur",
-      "experience",
-      "modele",
-      "scenario",
-      "horizons",
-      "indices"
+  expect_named(meta,
+    c("date_extraction", "producteur", "experience", "modele",
+      "scenario", "horizon", "indices"
     )
   )
 
   expect_equal(meta$producteur, "MF-DCSC")
   expect_equal(meta$scenario$code, "RCP8.5")
-  expect_equal(nrow(meta$horizons), 3L)
-  expect_true(all(meta$horizons$code %in% c("H1", "H2", "H3")))
-  expect_true(all(meta$indices$code %in% c("NORTAV", "NORTR")))
+  expect_equal(nrow(meta$horizon), 3L)
+  expect_all_true(meta$horizon$code %in% c("H1", "H2", "H3"))
+  expect_all_true(meta$indices$code %in% c("NORTAV", "NORTR"))
 })
 
 test_that("txt validation fails early and cleanly", {
 
-  expect_error(
-    get_drias_metadata(42),
-    class = "drias_invalid_txt"
+  expect_error(drias_read_metadata(42), "must be a character string")
+  expect_error(drias_read_metadata(NA_character_), "must be a non-empty character")
+  expect_error(drias_read_metadata(""), "must be a non-empty character string")
+  expect_error(drias_read_metadata("does_not_exist.txt"),"File not found")
+
+})
+
+test_that("missing sections do not crash", {
+
+  txt <- tempfile(fileext = ".txt")
+  on.exit(unlink(txt))
+
+  writeLines(
+    c(
+      "# Date d'extraction : 22/12/2025",
+      "# Producteur : MF-DCSC"
+    ),
+    txt
   )
 
-  expect_error(
-    get_drias_metadata(NA_character_),
-    class = "drias_invalid_txt"
-  )
+  meta <- drias_read_metadata(txt)
 
-  expect_error(
-    get_drias_metadata(""),
-    class = "drias_invalid_txt"
-  )
-
-  expect_error(
-    get_drias_metadata("does_not_exist.txt"),
-    class = "drias_file_not_found"
-  )
+  expect_type(meta, "list")
+  expect_true(is.data.frame(meta$scenario))
+  expect_true(is.data.frame(meta$horizon))
+  expect_true(is.data.frame(meta$indices))
 })

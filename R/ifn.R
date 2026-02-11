@@ -287,14 +287,14 @@ seq_ifn <- function(
       next
     }
 
-    out[[type]] <- quiet(seq_write(
+    out[[type]] <- seq_write(
       region,
       type_key[[type]],
       dirname   = dirname,
       id        = id,
       verbose   = verbose,
       overwrite = overwrite
-    ))
+    )
 
     if (type == "ser"){
       get_ser_pdf(
