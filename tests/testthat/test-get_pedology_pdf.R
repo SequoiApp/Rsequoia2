@@ -1,94 +1,110 @@
-test_that("get_pedology_pdf() errors when id_ucs is missing", {
+test_that("get_pedology_pdf() validates id_ucs", {
 
-  pedology <- data.frame(foo = 1:3)
+  expect_error(get_pedology_pdf(NULL), "must be a non-empty vector")
+  expect_error(get_pedology_pdf(character(0)),"must be a non-empty vector")
 
-  expect_error(
-    get_pedology_pdf(pedology, verbose = FALSE),
-    "id_ucs"
-  )
 })
 
-test_that("get_pedology_pdf() returns NULL when no valid id_ucs", {
+test_that("get_pedology_pdf() downloads files", {
 
-  pedology <- data.frame(id_ucs = c(NA, NA))
+  cache <- file.path(tempdir(), "pedology_pdf")
+  dir.create(cache, showWarnings = FALSE)
+  on.exit(unlink(cache, recursive = TRUE), add = TRUE)
 
-  res <- get_pedology_pdf(pedology, verbose = FALSE)
-
-  expect_null(res)
-})
-
-test_that("get_pedology_pdf() creates output directory if missing", {
-
-  pedology <- data.frame(id_ucs = "A12")
-  tmp <- tempfile()
-
+  tracker <- list(called = 0)
   local_mocked_bindings(
-    download.file = function(...) NULL,
-    .package = "utils"
-  )
-
-  expect_false(dir.exists(tmp))
-
-  get_pedology_pdf(pedology, out_dir = tmp, verbose = FALSE)
-
-  expect_true(dir.exists(tmp))
-})
-
-test_that("get_pedology_pdf() skips download if file exists and overwrite = FALSE", {
-
-  pedology <- data.frame(id_ucs = "B34")
-  tmp <- tempdir()
-  file <- file.path(tmp, "id_ucs_B34.pdf")
-  file.create(file)
-
-  called <- FALSE
-
-  local_mocked_bindings(
-    download.file = function(...) {
-      called <<- TRUE
-    },
-    .package = "utils"
-  )
-
-  get_pedology_pdf(pedology, out_dir = tmp, overwrite = FALSE, verbose = FALSE)
-
-  expect_false(called)
-})
-
-test_that("get_pedology_pdf() downloads when overwrite = TRUE", {
-
-  pedology <- data.frame(id_ucs = "C56")
-  tmp <- tempdir()
-  file <- file.path(tmp, "id_ucs_C56.pdf")
-  file.create(file)
-
-  called <- FALSE
-
-  local_mocked_bindings(
-    download.file = function(url, destfile, ...) {
-      called <<- TRUE
+    curl_download = function(url, destfile, ...){
+      tracker$called <<- tracker$called + 1
       file.create(destfile)
     },
-    .package = "utils"
+    .package = "curl"
   )
 
-  get_pedology_pdf(pedology, out_dir = tmp, overwrite = TRUE, verbose = FALSE)
+  ids <- c("A", "B")
+  paths <- get_pedology_pdf(ids, dirname = cache, verbose = FALSE)
 
-  expect_true(called)
-  expect_true(file.exists(file))
+  expect_length(paths, 2)
+  expect_true(all(file.exists(paths)))
+  expect_named(paths, paste0("id_ucs_", ids))
+  expect_equal(tracker$called, 2)
+
 })
 
-test_that("get_pedology_pdf() handles download errors gracefully", {
+test_that("get_pedology_pdf() removes duplicate ids", {
 
-  pedology <- data.frame(id_ucs = "D78")
-  tmp <- tempdir()
+  cache <- file.path(tempdir(), "pedology_pdf")
+  dir.create(cache, showWarnings = FALSE)
+  on.exit(unlink(cache, recursive = TRUE), add = TRUE)
+
+  tracker <- list(called = 0)
 
   local_mocked_bindings(
-    download.file = function(...) stop("network error"),
-    .package = "utils"
+    curl_download = function(url, destfile, ...){
+      tracker$called <<- tracker$called + 1
+      file.create(destfile)
+    },
+    .package = "curl"
   )
 
-  expect_silent(
-    get_pedology_pdf(pedology, out_dir = tmp, verbose = FALSE)
-  )
+  paths <- get_pedology_pdf(c("A", "A"), dirname = cache, verbose = FALSE)
+  expect_length(paths, 1)
+  expect_equal(tracker$called, 1)
+
 })
+
+test_that("get_pedology_pdf() handles download errors", {
+
+  cache <- file.path(tempdir(), "pedology_pdf")
+  dir.create(cache, showWarnings = FALSE)
+  on.exit(unlink(cache, recursive = TRUE), add = TRUE)
+
+  local_mocked_bindings(
+    curl_download = function(...) stop("download failed"),
+    .package = "curl"
+  )
+
+  expect_message(
+    get_pedology_pdf("A", dirname = cache, verbose = FALSE),
+    "Failed to download"
+  )
+
+})
+
+test_that("get_pedology_pdf() verbose prints message", {
+
+  cache <- file.path(tempdir(), "pedology_pdf")
+  dir.create(cache, showWarnings = FALSE)
+  on.exit(unlink(cache, recursive = TRUE), add = TRUE)
+
+  local_mocked_bindings(
+    curl_download = function(...) "filepath",
+    .package = "curl"
+  )
+
+  expect_message(
+    get_pedology_pdf("A", dirname = cache, verbose = TRUE),
+    "UCS A saved"
+  )
+
+})
+
+test_that("get_pedology_pdf() quiet is silent", {
+
+  cache <- file.path(tempdir(), "pedology_pdf")
+  dir.create(cache, showWarnings = FALSE)
+  on.exit(unlink(cache, recursive = TRUE), add = TRUE)
+
+  local_mocked_bindings(
+    curl_download = function(url, destfile, ...){
+      file.create(destfile)
+    },
+    .package = "curl"
+  )
+
+  expect_no_message(
+    get_pedology_pdf("A", dirname = cache, verbose = FALSE)
+  )
+
+})
+
+

@@ -23,9 +23,8 @@ get_pedology <- function(x) {
   x <- sf::st_transform(x, crs)
 
   # retrieve toponymic point
-  pedology <- happign::get_wfs(
-    x, "INRA.CARTE.SOLS:geoportail_vf", verbose = FALSE
-  ) |> sf::st_transform(crs)
+  pedology <- happign::get_wfs(x, "INRA.CARTE.SOLS:geoportail_vf", verbose = FALSE) |>
+    sf::st_transform(crs)
 
   if (!nrow(pedology)) {
     return(NULL)
@@ -58,11 +57,9 @@ get_pedology <- function(x) {
 #' Downloads pedological PDF documents associated with UCS identifiers
 #' from the INRA soil map repository.
 #'
-#' @param pedology An object (typically an `sf` object get by `get_pedology()`)
-#' containing an `id_ucs` field used to identify pedology reports.
-#' @param out_dir Output directory where PDF files are saved.
-#' @param overwrite `logical`; whether to overwrite existing files.
-#'   Defaults to `FALSE`.
+#' @param id_ucs `character` used to identify pedology reports.
+#' @param dirname `character`; directory where the PDF will be saved. Defaults to
+#' [tools::R_user_dir()]
 #' @param verbose `logical`. If `TRUE`, display progress messages.
 #'
 #' @return
@@ -81,73 +78,43 @@ get_pedology <- function(x) {
 #' @seealso [get_pedology()]
 #'
 #' @export
-get_pedology_pdf <- function(pedology,
-                             out_dir   = "pedology_pdf",
-                             overwrite = FALSE,
-                             verbose   = TRUE) {
+get_pedology_pdf <- function(id_ucs, dirname = NULL, verbose = TRUE) {
 
-  # Input checks ----
-  if (!"id_ucs" %in% names(pedology)) {
-    cli::cli_abort("Field {.field id_ucs} is missing from the input object.")
+  if (is.null(dirname)) {
+    dirname <- tools::R_user_dir("Rsequoia2", which = "data")
+  }
+  dir.create(dirname, recursive = TRUE, showWarnings = FALSE)
+
+  id_ucs <- unique(id_ucs)
+  if (is.null(id_ucs) || length(id_ucs) == 0) {
+    cli::cli_abort("{.arg id_ucs} must be a non-empty vector.")
   }
 
-  id_ucs <- unique(pedology$id_ucs[!is.na(pedology$id_ucs)])
+  base_url <- "https://data.geopf.fr/annexes/ressources/INRA_carte_des_sols/INRA"
 
-  if (length(id_ucs) == 0) {
-    if (verbose) {
-      cli::cli_alert_warning("No valid {.field id_ucs} found.")
-    }
-    return(invisible(NULL))
-  }
-
-  # Output directory ----
-  if (!dir.exists(out_dir)) {
-    dir.create(out_dir, recursive = TRUE)
-    if (verbose) {
-      cli::cli_alert_success("Created directory {.path {out_dir}}.")
-    }
-  }
-
-  base_url <- "https://data.geopf.fr/annexes/ressources/INRA_carte_des_sols/INRA/"
-
-  if (verbose) {
-    cli::cli_h1("Downloading pedology PDFs")
-  }
-
-  # Download loop ----
+  paths <- c()
   for (id in id_ucs) {
 
-    file_name <- paste0("id_ucs_", id, ".pdf")
-    url       <- paste0(base_url, file_name)
-    destfile  <- file.path(out_dir, file_name)
+    filename <- sprintf("id_ucs_%s.pdf", id)
 
-    if (file.exists(destfile) && !overwrite) {
-      if (verbose) {
-        cli::cli_alert_info("Already exists: {.file {file_name}}")
-      }
-      next
-    }
-
-    if (verbose) {
-      cli::cli_alert("Downloading {.file {file_name}}")
-    }
+    url <- file.path(base_url, filename)
+    filepath <- file.path(dirname, filename)
 
     tryCatch(
-      utils::download.file(
-        url      = url,
-        destfile = destfile,
-        mode     = "wb",
-        quiet    = TRUE
-      ),
-      error = function(e) {
-        if (verbose) {
-          cli::cli_alert_danger("Failed to download {.file {file_name}}")
+      {
+        curl::curl_download(url, filepath, quiet = !verbose)
+        paths <- c(paths, setNames(filepath, tools::file_path_sans_ext(filename)))
+        if (verbose){
+          cli::cli_alert_success("UCS {id} saved to: {.path {dirname}}")
         }
+      },
+      error = function(e) {
+        cli::cli_alert_warning("Failed to download {.file {filename}}")
       }
     )
   }
 
-  invisible(normalizePath(out_dir))
+  return(invisible(paths))
 }
 
 #' Generate pedology polygon layer and associated PDF reports
@@ -182,11 +149,7 @@ get_pedology_pdf <- function(pedology,
 #' [get_pedology()], [get_pedology_pdf()], [seq_write()]
 #'
 #' @export
-seq_pedology <- function(
-    dirname   = ".",
-    verbose   = TRUE,
-    overwrite = FALSE
-) {
+seq_pedology <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
 
   # Read project area (PARCA) ----
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
@@ -214,10 +177,9 @@ seq_pedology <- function(
     )
 
     get_pedology_pdf(
-      pedology  = pedo,
-      out_dir   = dirname,
-      overwrite = overwrite,
-      verbose   = verbose
+      id_ucs = pedo$id_ucs,
+      dirname = dirname(pedo_path),
+      verbose = verbose
     )
   }
 

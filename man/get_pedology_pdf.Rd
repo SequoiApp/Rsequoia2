@@ -4,21 +4,13 @@
 \alias{get_pedology_pdf}
 \title{Download pedology PDF reports from INRA soil maps}
 \usage{
-get_pedology_pdf(
-  pedology,
-  out_dir = "pedology_pdf",
-  overwrite = FALSE,
-  verbose = TRUE
-)
+get_pedology_pdf(id_ucs, dirname = NULL, verbose = TRUE)
 }
 \arguments{
-\item{pedology}{An object (typically an \code{sf} object get by \code{get_pedology()})
-containing an \code{id_ucs} field used to identify pedology reports.}
+\item{id_ucs}{\code{character} used to identify pedology reports.}
 
-\item{out_dir}{Output directory where PDF files are saved.}
-
-\item{overwrite}{\code{logical}; whether to overwrite existing files.
-Defaults to \code{FALSE}.}
+\item{dirname}{\code{character}; directory where the PDF will be saved. Defaults to
+\code{\link[tools:userdir]{tools::R_user_dir()}}}
 
 \item{verbose}{\code{logical}. If \code{TRUE}, display progress messages.}
 }
