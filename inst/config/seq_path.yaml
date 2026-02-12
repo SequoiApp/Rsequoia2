@@ -13,6 +13,7 @@ namespace:
   v.hydro: "vectoriel"
   v.toponyme: "vectoriel"
   v.curves: "vectoriel"
+  v.access: "access"
   v.prsf: "vectoriel"
   r.alt: "altimetrie"
   r.ortho: "imagerie"
@@ -32,3 +33,4 @@ path:
   altimetrie: "3_RASTER/ALTIMETRIE"
   imagerie: "3_RASTER/IMAGERIE"
   meteo: "4_AUTRES/METEO"
+  access: "4_AUTRES/ACCESS"

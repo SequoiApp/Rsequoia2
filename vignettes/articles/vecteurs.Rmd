@@ -93,8 +93,6 @@ idu <- c(
 
 parca <- get_parca(idu) |> transform(IDENTIFIANT = "BRIN")
 
-forest <- dissolve(parca, tol = 5.5)
-
 tm_shape(parca)+
   tm_borders(col = "blue", lwd = 2)+
 tm_shape(forest)+
