@@ -53,13 +53,15 @@ download_brgm <- function(dep, source = "carhab", cache = NULL, verbose = FALSE,
   }
 
   if (is.null(cache)){
-    cache <- tools::R_user_dir("Rsequoia2", which = "cache")
+    cache <- tools::R_user_dir("Rsequoia2", which = "cache") |>
+      file.path("geology")
     dir.create(cache, recursive = TRUE, showWarnings = FALSE)
   }
 
   zip_name <- sprintf("GEO050K_HARM_%s.zip", pad_left(dep, 3))
   if (source == "carhab"){
     dep_name <- all_dep[all_dep$DEP == dep, c("DEP", "NCC_DEP")]
+    dep_name <- gsub("\\s", "-", dep_name)
     zip_name <- sprintf("CARHAB_%s.zip", paste(dep_name, collapse = "_"))
   }
 

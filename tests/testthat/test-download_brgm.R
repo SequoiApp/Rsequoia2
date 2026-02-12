@@ -121,6 +121,25 @@ test_that("download_brgm() builds correct ZIP name", {
   expect_match(basename(carhab_path), "^CARHAB_08_ARDENNES\\.zip$")
 })
 
+test_that("download_brgm() handle ZIP name with space when carhab", {
+
+  brgm_cache <- file.path(tempdir(), "brgm")
+  dir.create(brgm_cache)
+  on.exit(unlink(brgm_cache, recursive = TRUE))
+
+  local_mocked_bindings(
+    curl_download = function(url, destfile, quiet) file.create(destfile),
+    .package = "curl"
+  )
+
+  carhab_path <- download_brgm(35, cache = brgm_cache, source = "carhab", verbose = FALSE)
+  expect_match(basename(carhab_path), "35_ILLE-ET-VILAINE")
+
+  carhab_path <- download_brgm(22, cache = brgm_cache, source = "carhab", verbose = FALSE)
+  expect_match(basename(carhab_path), "22_COTES-D-ARMOR")
+
+})
+
 test_that("download_brgm() emits messages when verbose = TRUE", {
 
   brgm_cache <- file.path(tempdir(), "brgm")
