@@ -28,7 +28,7 @@ seq_climate <- function(dirname = ".", cache = NULL, verbose = TRUE, overwrite =
 
   meteo_dir <- file.path(dirname, "4_METEO")
   dir.create(meteo_dir, showWarnings = FALSE, recursive = TRUE)
-  filepath <- file.path(meteo_dir, sprintf("%s_CLIMAT_MF.xlsx", id))
+  filepath <- file.path(meteo_dir, sprintf("%s_CLIMAT.xlsx", id))
 
   # Fiche climatologique
   pdf_path <- mf_get_climate_fiche(parca, dirname = meteo_dir, verbose = verbose)
@@ -39,7 +39,7 @@ seq_climate <- function(dirname = ".", cache = NULL, verbose = TRUE, overwrite =
   ombro <- mf_ombro(raw_clim, periods = c(30, 5))
   precipitation <- mf_precipitation(raw_clim)
 
-  wb <- openxlsx2::wb_load(system.file("xlsx/CLIMAT_MF.xlsx", package = "Rsequoia2"))
+  wb <- openxlsx2::wb_load(system.file("xlsx/CLIMAT.xlsx", package = "Rsequoia2"))
 
   if (verbose) {cli_alert_info("Writing Meteo-France data to: {.path {filepath}}")}
 
@@ -67,6 +67,9 @@ seq_climate <- function(dirname = ".", cache = NULL, verbose = TRUE, overwrite =
       openxlsx2::wb_clean_sheet(sheet = 7, styles = FALSE) |>
       openxlsx2::wb_clean_sheet(sheet = 8, styles = FALSE)
   } else {
+
+    if (verbose) {cli_alert_info("Writing DRIAS data to: {.path {filepath}}")}
+
     txt <- txt[1]  # ensure single file
     drias_metadata <- drias_read_metadata(txt)
     drias_raw <- drias_read_table(txt)

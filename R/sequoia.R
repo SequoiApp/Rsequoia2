@@ -43,7 +43,7 @@ sequoia <- function(overwrite = FALSE) {
       seq_ua(path, overwrite = TRUE)
       seq_parcels(path, overwrite = TRUE)
     },
-    "Telecharger DONNeES" = function() menu_data(path, overwrite),
+    "Telecharger DONNEES" = function() menu_data(path, overwrite),
     "Generer une synthese" = function() seq_summary(path, overwrite = overwrite)
   )
 
@@ -128,7 +128,33 @@ menu_rp <- function(path, overwrite){
     "Total area: {format(round(s, 2), nsmall = 2)} ha"
   ))
 
-  parca_geom <- get_parca(m$IDU, verbose = TRUE)
+  identifiant <- readline("Choose the forest identifiant: ")
+  owner <- readline("Choose the forest owner: ")
+  m$IDENTIFIANT <- identifiant
+  m$OWNER <- owner
+  m_path <- file.path(path, paste0(identifiant, "_matrice.xlsx"))
+  seq_xlsx(
+    x = list("MATRICE" = m),
+    filename = m_path,
+    overwrite = overwrite
+  )
+
+  m_all$IDENTIFIANT <- identifiant
+  m_all$OWNER <- owner
+  seq_xlsx(
+    x = list("MATRICE" = m_all),
+    filename = file.path(path, paste0(identifiant, "_matrice_detail.xlsx")),
+    overwrite = overwrite
+  )
+
+  parca_geom <- tryCatch({get_parca(m$IDU, verbose = TRUE)},
+    error = function(e) {
+      cli::cli_abort(c(
+        "x" = "Failed to retrieve PARCA geometry: {conditionMessage(e)}",
+        "i" = "Please correct those IDU in: {.path {m_path}}"
+      ))
+    }
+  )
   parca <- merge(parca_geom[ , "IDU"], m) |> seq_normalize("parca")
 
   cli::cli_alert_info("Plotting parca...")
@@ -136,27 +162,6 @@ menu_rp <- function(path, overwrite){
   tmap::tmap_mode("view")
   print(tmap::qtm(parca))
 
-  switch(utils::menu(c("Confirm and continue", "Cancel")),
-         {
-           identifiant <- readline("Choose the forest identifiant: ")
-           owner <- readline("Choose the forest owner: ")
-           m$IDENTIFIANT <- identifiant
-           m$OWNER <- owner
-           seq_xlsx(
-             x = list("MATRICE" = m),
-             filename = file.path(path, paste0(identifiant, "_matrice.xlsx")),
-             overwrite = overwrite
-           )
-
-           m_all$IDENTIFIANT <- identifiant
-           m_all$OWNER <- owner
-           seq_xlsx(
-             x = list("MATRICE" = m_all),
-             filename = file.path(path, paste0(identifiant, "_matrice_detail.xlsx")),
-             overwrite = overwrite
-           )
-         }
-  )
 
   return(NULL)
 
