@@ -67,9 +67,9 @@ Une fois le fichier chargé, vous pouvez utiliser la fonction utilitaire `search
 
 Cette fonction applique une normalisation ce qui rend la recherche robuste aux différences d'accents, de ponctuation, d'espacement et de casse., par exemple :
 
-- "État / Forêts" → "ETATFORETS"
-- " Le Bois-de l'Orme " → "LEBOISDELORME"
-- "Société du Chêne" → "SOCIETEDUCHENE"
+- "État / Forêts" -> "ETATFORETS"
+- " Le Bois-de l'Orme " -> "LEBOISDELORME"
+- "Société du Chêne" -> "SOCIETEDUCHENE"
 
 L'exemple ci-dessous permet d'identifier tous les GFA (« Groupements Fonciers Agricoles »).
 

@@ -47,11 +47,11 @@ Il est composé :
 
 Par exemple : `29158000AX0696`
 
-- `"29"`   → Code du département (2 chiffres)  
-- `"158"`  → Code de la commune (3 chiffres)  
-- `"000"`  → Préfixe / code abs (3 chiffres)  
-- `"AX"`   → Section (2 caractères)  
-- `"0696"` → Numéro de parcelle (4 chiffres)  
+- `"29"`   -> Code du département (2 chiffres)  
+- `"158"`  -> Code de la commune (3 chiffres)  
+- `"000"`  -> Préfixe / code abs (3 chiffres)  
+- `"AX"`   -> Section (2 caractères)  
+- `"0696"` -> Numéro de parcelle (4 chiffres)  
 
 ```{r single_idu, fig.height = 3.5}
 idu <- c("29158000AX0696") 

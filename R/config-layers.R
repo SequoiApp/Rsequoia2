@@ -18,8 +18,8 @@
 #' short, semantic identifier for internal use.
 #'
 #' ```
-#' "v.seq.parca.poly" → "parca"
-#' "r.ortho.irc"      → "irc"
+#' "v.seq.parca.poly" -> "parca"
+#' "r.ortho.irc"      -> "irc"
 #' ```
 #'
 #' If multiple full keys reduce to the same name, the function aborts to
@@ -60,7 +60,7 @@ get_keys <- function(pattern = NULL, reduce = TRUE, filepath = NULL){
   # Filter matching keys
   keys <- grep(pattern, names(cfg), value = TRUE)
 
-  # No match → informative abort
+  # No match -> informative abort
   if (length(keys) == 0){
     red_warn <- cli::combine_ansi_styles("red", "bold")
     cli::cli_abort(c(

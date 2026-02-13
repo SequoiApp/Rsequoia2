@@ -74,7 +74,7 @@ test_that("get_aspect() does NOT aggregate when resolution >= agg", {
   skip_on_os("mac")
 
   dem <- terra::rast(nrows=2, ncols=2, xmin=0, xmax=20, ymin=0, ymax=20, crs="epsg:2154")
-  # resolution = 10m >= agg = 5 → no aggregation
+  # resolution = 10m >= agg = 5 -> no aggregation
 
   aspect <- get_aspect(dem = dem, agg = 5, verbose = FALSE)
 

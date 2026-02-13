@@ -76,7 +76,7 @@ test_that("get_chm() clamps negative values in DEM/DSM to 0", {
 
   chm <- get_chm(dem = dem, dsm = dsm)
 
-  expect_equal(as.numeric(chm[]), 0)   # dsm=0, dem=0 → CHM=0
+  expect_equal(as.numeric(chm[]), 0)   # dsm=0, dem=0 -> CHM=0
 })
 
 test_that("get_chm() sets CHM below minmax[1] to NA", {

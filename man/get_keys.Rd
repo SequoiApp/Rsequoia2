@@ -31,8 +31,8 @@ Configuration keys typically follow a three/four-part structure such as
 split on \code{"."} and only the third element is returned (s). This provides a
 short, semantic identifier for internal use.
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{"v.seq.parca.poly" → "parca"
-"r.ortho.irc"      → "irc"
+\if{html}{\out{<div class="sourceCode">}}\preformatted{"v.seq.parca.poly" -> "parca"
+"r.ortho.irc"      -> "irc"
 }\if{html}{\out{</div>}}
 
 If multiple full keys reduce to the same name, the function aborts to

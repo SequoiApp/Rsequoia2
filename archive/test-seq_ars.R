@@ -50,7 +50,7 @@ test_that("seq_ars() returns NULL and warns when all layers are empty", {
   openxlsx2::write_xlsx(m, m_path)
   parca_path <- seq_write(fake_parca(), "parca", dirname = d)
 
-  # mock get_ars() → always returns NULL
+  # mock get_ars() -> always returns NULL
   local_mocked_bindings(
     get_ars = function(x, key, buffer) NULL
   )
@@ -103,7 +103,7 @@ test_that("seq_ars() handles case where only captage has data", {
   openxlsx2::write_xlsx(m, m_path)
   parca_path <- seq_write(fake_parca(), "parca", dirname = d)
 
-  # mock: captage → sf, ppi/ppe/ppr → NULL
+  # mock: captage -> sf, ppi/ppe/ppr -> NULL
   local_mocked_bindings(
     get_ars = function(x, key, buffer) {
       if (key == "captage") fake_geom(key) else NULL
@@ -130,7 +130,7 @@ test_that("seq_ars() handles case where only perimetre has data", {
   openxlsx2::write_xlsx(m, m_path)
   parca_path <- seq_write(fake_parca(), "parca", dirname = d)
 
-  # mock: captage → sf, ppi/ppe/ppr → NULL
+  # mock: captage -> sf, ppi/ppe/ppr -> NULL
   local_mocked_bindings(
     get_ars = function(x, key, buffer) {
       if (key != "captage") fake_geom(key) else NULL
