@@ -8,7 +8,7 @@ Authors@R: c(
 Description: Provides tools to help French forest managers retrieve,
     process, and create spatial datasets related to forestry management.
 License: GPL (>= 3)
-URL: https://mucau.github.io/Rsequoia2/
+URL: https://sequoiapp.github.io/Rsequoia2/
 Depends: 
     R (>= 4.1.0)
 Imports: 

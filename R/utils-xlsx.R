@@ -27,7 +27,6 @@
 #' wb <- style_table(wb, "Data", df)
 #' wb_save(wb, "styled.xlsx")
 #' }
-#'
 style_table <- function(wb, sheet, df, numfmt = "0.00"){
 
   wb_dims_wrapper <- function(...) {

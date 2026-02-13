@@ -1,5 +1,5 @@
 ---
-title: "Sequoia"
+title: "Sequoia (FR)"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Sequoia (FR)}

@@ -9,3 +9,4 @@
 ^archive$
 ^vignettes/articles/
 ^data-raw$
+^README\.Rmd$

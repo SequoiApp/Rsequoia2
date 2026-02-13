@@ -30,7 +30,7 @@ to accents, punctuation, spacing irregularities and case differences.
 
 \strong{Examples of normalization:}
 \itemize{
-\item \code{"État / Forets"} -> \code{"ETATFORETS"}
+\item \code{"Etat / Forets"} -> \code{"ETATFORETS"}
 \item \code{"  Le Bois-de l'Orme  "} -> \code{"LEBOISDELORME"}
 \item \code{"Societe du Chene"} -> \code{"SOCIETEDUCHENE"}
 }

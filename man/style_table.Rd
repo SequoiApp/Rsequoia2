@@ -34,5 +34,4 @@ wb <- wb |>
 wb <- style_table(wb, "Data", df)
 wb_save(wb, "styled.xlsx")
 }
-
 }

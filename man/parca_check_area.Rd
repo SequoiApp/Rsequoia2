@@ -10,7 +10,7 @@ parca_check_area(parca, atol = 500, rtol = 0.05, verbose = TRUE)
 \item{parca}{\code{sf} Object from \code{\link[=seq_parca]{seq_parca()}} representing cadastral
 parcels.}
 
-\item{atol}{\code{numeric} Absolute difference tolerance in m². Default to \verb{500m}.}
+\item{atol}{\code{numeric} Absolute difference tolerance in m2. Default to \verb{500m}.}
 
 \item{rtol}{\code{numeric} Relative difference. Default to \code{0.05}}
 
@@ -19,11 +19,11 @@ parcels.}
 \value{
 The input \code{parca} with four additional fields:
 \code{AREA_SIG} (cartographic area in ha),
-\code{ATOL_AREA} (absolute difference in m²),
+\code{ATOL_AREA} (absolute difference in m2),
 \code{RTOL_AREA} (relative difference),
 \code{CHECK_AREA} (logical flag).
 }
 \description{
-This function compares cadastral areas (in m²) with
+This function compares cadastral areas (in m2) with
 cartographic areas computed from geometry (\code{\link[sf:geos_measures]{sf::st_area()}}).
 }
