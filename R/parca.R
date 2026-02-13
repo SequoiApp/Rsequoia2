@@ -321,18 +321,18 @@ seq_parca <- function(
 
 #' Check inconsistencies between cadastral and cartographic areas
 #'
-#' This function compares cadastral areas (in m²) with
+#' This function compares cadastral areas (in m2) with
 #' cartographic areas computed from geometry ([sf::st_area()]).
 #'
 #' @param parca `sf` Object from [Rsequoia2::seq_parca()] representing cadastral
 #' parcels.
-#' @param atol `numeric` Absolute difference tolerance in m². Default to `500m`.
+#' @param atol `numeric` Absolute difference tolerance in m2. Default to `500m`.
 #' @param rtol `numeric` Relative difference. Default to `0.05`
 #' @param verbose `logical` If `TRUE`, display messages.
 #'
 #' @return The input `parca` with four additional fields:
 #'   `AREA_SIG` (cartographic area in ha),
-#'   `ATOL_AREA` (absolute difference in m²),
+#'   `ATOL_AREA` (absolute difference in m2),
 #'   `RTOL_AREA` (relative difference),
 #'   `CHECK_AREA` (logical flag).
 #'

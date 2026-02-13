@@ -107,7 +107,7 @@ test_that("get_vege_point() returns empty when area is too small", {
   fv <- sf::st_as_sf(
     sf::st_sfc(
       sf::st_polygon(list(
-        rbind(c(0,0), c(1,0), c(1,1), c(0,1), c(0,0))  # 1 m²
+        rbind(c(0,0), c(1,0), c(1,1), c(0,1), c(0,0))  # 1 m2
       )),
       crs = 2154
     )
