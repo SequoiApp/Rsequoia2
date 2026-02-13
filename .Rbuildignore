@@ -7,5 +7,5 @@
 ^pkgdown$
 ^LICENSE\.md$
 ^archive$
-^vignettes/articles$
+^vignettes/articles/
 ^data-raw$

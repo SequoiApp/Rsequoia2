@@ -28,6 +28,7 @@
 #' plot(st_geometry(x), col = "red", lwd =2, add = TRUE, pch = 19, cex = 2)
 #'
 #' }
+#' @export
 get_mnhn <- function(
     x,
     key,

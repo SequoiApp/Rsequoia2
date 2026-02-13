@@ -5,7 +5,6 @@ vignette: >
   %\VignetteIndexEntry{Sequoia (FR)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-lang: fr
 ---
 
 ```{r}

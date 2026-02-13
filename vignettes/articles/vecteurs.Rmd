@@ -94,9 +94,7 @@ idu <- c(
 parca <- get_parca(idu) |> transform(IDENTIFIANT = "BRIN")
 
 tm_shape(parca)+
-  tm_borders(col = "blue", lwd = 2)+
-tm_shape(forest)+
-  tm_borders(col = "red", lwd = 2)
+  tm_borders(col = "blue", lwd = 2)
 	
 ```
 
@@ -111,10 +109,10 @@ La fonction `get_mnhn()` permet de télécharger un zonnage environnemtal en s'a
 
 ```{r mnhm, fig.height = 3.5}
 
-znieff1 <- get_mnhn(x = forest, key = "znieff1", buffer = 500)
-znieff2 <- get_mnhn(x = forest, key = "znieff2", buffer = 500)
+znieff1 <- get_mnhn(x = parca, key = "znieff1", buffer = 500)
+znieff2 <- get_mnhn(x = parca, key = "znieff2", buffer = 500)
 
-tm_shape(forest) +
+tm_shape(parca) +
   tm_borders(col = "black", lwd = 2) +
 tm_shape(znieff2) +
   tm_polygons(col = "green", fill_alpha = 0.4) +
