@@ -1,7 +1,7 @@
 
-#' Get nearest Météo-France stations
+#' Get nearest Meteo-France stations
 #'
-#' Finds the nearest meteorological stations from Météo-France to the provided
+#' Finds the nearest meteorological stations from Meteo-France to the provided
 #' spatial geometry.
 #'
 #' @param x `sf` or `sfc`.
@@ -35,7 +35,7 @@ mf_get_nearest_station <- function(x, n = 1, verbose = TRUE){
 
 #' Download climatological station fiche
 #'
-#' Downloads the climatological fiche (PDF) of the nearest Météo-France station
+#' Downloads the climatological fiche (PDF) of the nearest Meteo-France station
 #' to the provided geometry.
 #'
 #' The fiche contains station metadata and long-term climatological summaries.
@@ -74,7 +74,7 @@ mf_get_climate_fiche <- function(x, dirname = NULL, verbose = TRUE) {
   return(dirname |> setNames("fiche.meteo") |> invisible())
 }
 
-#' Download monthly climatology from Météo-France
+#' Download monthly climatology from Meteo-France
 #'
 #' Downloads monthly climatological data for the *3 nearest meteorological stations*.
 #'

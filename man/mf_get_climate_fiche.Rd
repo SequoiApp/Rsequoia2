@@ -18,7 +18,7 @@ mf_get_climate_fiche(x, dirname = NULL, verbose = TRUE)
 Path to the downloaded PDF
 }
 \description{
-Downloads the climatological fiche (PDF) of the nearest Météo-France station
+Downloads the climatological fiche (PDF) of the nearest Meteo-France station
 to the provided geometry.
 }
 \details{

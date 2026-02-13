@@ -159,9 +159,9 @@ get_legal_entity <- function(
 #' to accents, punctuation, spacing irregularities and case differences.
 #'
 #' **Examples of normalization:**
-#'   - `"État / Forêts"` -> `"ETATFORETS"`
+#'   - `"État / Forets"` -> `"ETATFORETS"`
 #'   - `"  Le Bois-de l'Orme  "` -> `"LEBOISDELORME"`
-#'   - `"Société du Chêne"` -> `"SOCIETEDUCHENE"`
+#'   - `"Societe du Chene"` -> `"SOCIETEDUCHENE"`
 #'
 #' @return A `data.frame`.
 #'

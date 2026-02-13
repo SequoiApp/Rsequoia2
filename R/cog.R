@@ -62,7 +62,7 @@ get_cog <- function(cache = NULL, update = FALSE, verbose = TRUE) {
   com <- suffix_cols(com, c("TNCC", "NCC", "NCCENR", "LIBELLE"), "COM")
   com <- com[com$TYPECOM == "COM", ]
 
-  # Départements
+  # Departements
   dep <- read_latest("Liste des d.{1}partements") #.{1} avoid ascii
   dep <- suffix_cols(
     dep,
@@ -70,7 +70,7 @@ get_cog <- function(cache = NULL, update = FALSE, verbose = TRUE) {
     "DEP"
   )
 
-  # Régions
+  # Regions
   reg <- read_latest("Liste des r.{1}gions") #.{1} avoid ascii
   reg <- suffix_cols(
     reg,

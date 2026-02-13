@@ -16,7 +16,7 @@ and administrative codes.
 }
 \description{
 \code{parse_rp()} extracts and parses non-built parcels from a French cadastral
-property record PDF (Relevé de Propriété - RP).
+property record PDF (Releve de Propriete - RP).
 }
 \details{
 The function reads the PDF, identifies main parcels and detail rows,

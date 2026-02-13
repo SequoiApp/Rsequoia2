@@ -64,7 +64,7 @@ test_that("envelope() supports zero buffer distance", {
 
   result <- envelope(pts, dist = 0)
 
-  # buffer(0) peut produire un GEOMETRYCOLLECTION -> on teste juste validité
+  # buffer(0) peut produire un GEOMETRYCOLLECTION -> on teste juste validite
   expect_s3_class(result, "sf")
   expect_true(all(sf::st_is_valid(result)))
 })

@@ -21,7 +21,7 @@ starting with \code{A}, \code{E}, \code{N}, or departmental roads numbered > 900
 as well as major slip roads)
 \item \code{RD} = Departmental road (numbered roads starting with \code{D})
 \item \code{RC} = Communal road (other paved roads)
-\item \code{RF} = Forest or gravel road (unpaved / empierrée)
+\item \code{RF} = Forest or gravel road (unpaved / empierree)
 \item \code{PN} = Natural path (tracks, trails, footpaths)
 }
 \item \code{NATURE} - Original BDTOPO road nature (surface / usage description)

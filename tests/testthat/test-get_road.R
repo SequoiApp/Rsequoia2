@@ -14,7 +14,7 @@ test_that("get_road() returns NULL when WFS returns no features", {
 test_that("get_road() classifies revetue roads correctly", {
 
   tr_mock <- sf::st_sf(
-    nature = c("Route à 1 chaussée", "Route à 1 chaussée"),
+    nature = c("Route a 1 chaussee", "Route a 1 chaussee"),
     importance = c(3, 3),
     cpx_numero = c("N12", "D45"),
     cpx_toponyme_route_nommee = c(NA, "Route de Test"),

@@ -12,10 +12,10 @@ get_ifn(x, type = c("ser", "ser_ar", "rfn", "rfd", "zp"), cache = NULL)
 \item{type}{A character string specifying the IFN regional dataset to use.
 Must be one of:
 \itemize{
-\item \code{"ser"}: sylvo-écorégions
-\item \code{"ser_ar"}: sylvo-écorégions (aggregated regions)
-\item \code{"rfn"}: région forestière nationale
-\item \code{"rfd"}: région forestière départementale
+\item \code{"ser"}: sylvo-ecoregions
+\item \code{"ser_ar"}: sylvo-ecoregions (aggregated regions)
+\item \code{"rfn"}: region forestiere nationale
+\item \code{"rfd"}: region forestiere departementale
 \item \code{"zp"}: zones de production
 }}
 

@@ -19,7 +19,7 @@ fake_data <- function(dep) {
     "15_null" = NA,
     "nature" = c("L - Landes", "T - Terre", "T - Terre"),
     "contenance" = c("1", "1", "1"),
-    "type" = c("P - Propriétaire", "P - Propriétaire", "P - Propriétaire"),
+    "type" = c("P - Proprietaire", "P - Proprietaire", "P - Proprietaire"),
     "19_null" = NA,
     "20_null" = NA,
     "21_null" = NA,

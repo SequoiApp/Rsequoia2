@@ -2,7 +2,7 @@
 % Please edit documentation in R/meteo-france.R
 \name{mf_get_climatology}
 \alias{mf_get_climatology}
-\title{Download monthly climatology from Météo-France}
+\title{Download monthly climatology from Meteo-France}
 \usage{
 mf_get_climatology(x, cache = NULL, verbose = TRUE)
 }

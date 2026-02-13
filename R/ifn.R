@@ -7,10 +7,10 @@
 #' @param type A character string specifying the IFN regional dataset to use.
 #'   Must be one of:
 #'   \itemize{
-#'     \item `"ser"`: sylvo-écorégions
-#'     \item `"ser_ar"`: sylvo-écorégions (aggregated regions)
-#'     \item `"rfn"`: région forestière nationale
-#'     \item `"rfd"`: région forestière départementale
+#'     \item `"ser"`: sylvo-ecoregions
+#'     \item `"ser_ar"`: sylvo-ecoregions (aggregated regions)
+#'     \item `"rfn"`: region forestiere nationale
+#'     \item `"rfd"`: region forestiere departementale
 #'     \item `"zp"`: zones de production
 #'   }
 #' @param cache A character string defining the cache directory.

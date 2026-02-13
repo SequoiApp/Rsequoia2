@@ -21,7 +21,7 @@ test_that("drias_read_metadata works on a local temporary file", {
       "# Type d'indice",
       "# Indices",
       "# NORTAV : Temperature moyenne journaliere (°C)",
-      "# NORTR  : Precipitations journalières moyennes (mm)",
+      "# NORTR  : Precipitations journalieres moyennes (mm)",
       "# -----------------------------------------------------------------------------",
       "# Format des enregistrements",
       "Point;Latitude;Longitude;NORTAV;NORTR;"

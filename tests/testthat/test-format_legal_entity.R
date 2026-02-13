@@ -9,7 +9,7 @@ fake_data <- function(dep) {
     "surf_tot" = c("1", "1", "1"),
     "nature" = c("L - Landes", "T - Terre", "T - Terre"),
     "contenance" = c("1", "1", "1"),
-    "type" = "P - Propriétaire",
+    "type" = "P - Proprietaire",
     "prop" = "PROP"
   )
 }

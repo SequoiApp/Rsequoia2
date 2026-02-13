@@ -2,7 +2,7 @@
 % Please edit documentation in R/meteo-france.R
 \name{mf_get_nearest_station}
 \alias{mf_get_nearest_station}
-\title{Get nearest Météo-France stations}
+\title{Get nearest Meteo-France stations}
 \usage{
 mf_get_nearest_station(x, n = 1, verbose = TRUE)
 }
@@ -17,6 +17,6 @@ mf_get_nearest_station(x, n = 1, verbose = TRUE)
 An \code{sf} object containing the nearest meteorological stations.
 }
 \description{
-Finds the nearest meteorological stations from Météo-France to the provided
+Finds the nearest meteorological stations from Meteo-France to the provided
 spatial geometry.
 }

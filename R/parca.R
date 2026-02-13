@@ -113,7 +113,7 @@ get_lieux_dits <- function(idu){
 #'
 #' Downloads parcel geometries from the Etalab cadastre API and optionally
 #' replaces them with higher-quality BDP geometries when available.
-#' Lieux-dits and administrative attributes (commune, département, région)
+#' Lieux-dits and administrative attributes (commune, departement, region)
 #' are joined automatically.
 #'
 #' @param idu `character` Vector of IDU identifiers.
@@ -124,7 +124,7 @@ get_lieux_dits <- function(idu){
 #' @importFrom stats setNames
 #'
 #' @details
-#' The BDP ("Base de Données Parcellaire") is an older IGN product that is no
+#' The BDP ("Base de Donnees Parcellaire") is an older IGN product that is no
 #' longer updated. It was originally derived from Etalab cadastral parcels,
 #' but the geometries were manually corrected by IGN to better match reality
 #'

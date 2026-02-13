@@ -12,7 +12,7 @@
 #'       as well as major slip roads)
 #'     - `RD` = Departmental road (numbered roads starting with `D`)
 #'     - `RC` = Communal road (other paved roads)
-#'     - `RF` = Forest or gravel road (unpaved / empierrée)
+#'     - `RF` = Forest or gravel road (unpaved / empierree)
 #'     - `PN` = Natural path (tracks, trails, footpaths)
 #'   * `NATURE` - Original BDTOPO road nature (surface / usage description)
 #'   * `NAME` - Road identifier, taken from `cpx_numero` when available,
@@ -94,7 +94,7 @@ get_road <- function(x){
 
   type_synth[is_RN] <- "RN"
 
-  ## RD : routes départementales
+  ## RD : routes departementales
   is_RD <- is.na(type_synth) &
     revetement == "revetue" &
     grepl("^D", num)
