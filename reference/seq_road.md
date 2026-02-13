@@ -29,22 +29,22 @@ seq_road(dirname = ".", verbose = TRUE, overwrite = FALSE)
 ## Value
 
 Invisibly returns a named list of file paths written by
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md).
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
 Returns `NULL` invisibly when no road features are found.
 
 ## Details
 
 Road features are retrieved using
-[`get_road()`](https://mucau.github.io/Rsequoia2/reference/get_road.md).
+[`get_road()`](https://sequoiapp.github.io/Rsequoia2/reference/get_road.md).
 
 If no road features are found, the function returns `NULL` invisibly and
 no file is written.
 
 When features are present, the layer is written to disk using
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
 with the key `"v.road.topo.line"`.
 
 ## See also
 
-[`get_road()`](https://mucau.github.io/Rsequoia2/reference/get_road.md),
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
+[`get_road()`](https://sequoiapp.github.io/Rsequoia2/reference/get_road.md),
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)

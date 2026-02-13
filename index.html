@@ -36,11 +36,11 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="articles/analysis_units.html">Analysis units</a></li>
-    <li><a class="dropdown-item" href="articles/cadastral-parcels-fr.html">Parcelles Cadastrales</a></li>
+    <li><a class="dropdown-item" href="articles/cadastral-parcels-fr.html">Parcelles Cadastrales (FR)</a></li>
     <li><a class="dropdown-item" href="articles/cadastral-parcels-legal-entity-fr.html">Parcelles cadastrales - Personne morale (FR)</a></li>
     <li><a class="dropdown-item" href="articles/cadastral-parcels-legal-entity.html">Cadastral parcels - legal entity (FR)</a></li>
     <li><a class="dropdown-item" href="articles/cadastral-parcels.html">Cadastral parcels</a></li>
-    <li><a class="dropdown-item" href="articles/sequoia-fr.html">Sequoia</a></li>
+    <li><a class="dropdown-item" href="articles/sequoia-fr.html">Sequoia (FR)</a></li>
     <li><a class="dropdown-item" href="articles/sequoia.html">Sequoia</a></li>
     <li><a class="dropdown-item" href="articles/vecteurs.html">Téléchargement de données</a></li>
   </ul>
@@ -68,15 +68,15 @@
 </h2>
 <p>You can install the development version of Rsequoia2 from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"SequoiApp/Rsequoia2"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"SequoiApp/Rsequoia2"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quick-execution">Quick execution<a class="anchor" aria-label="anchor" href="#quick-execution"></a>
 </h2>
 <p>For a quick package execution, try:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mucau.github.io/Rsequoia2/">Rsequoia2</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sequoiapp.github.io/Rsequoia2/">Rsequoia2</a></span><span class="op">)</span></span>
 <span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sequoia.html">sequoia</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The <code><a href="reference/sequoia.html">sequoia()</a></code> function launches the main interactive workflow for <code>Rsequoia2</code>.</p>
 </div>
@@ -115,7 +115,7 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
-<li><a href="https://github.com/mucau/Rsequoia2/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/mucau/Rsequoia2/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://github.com/mucau/Rsequoia2/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/SequoiApp/Rsequoia2/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 

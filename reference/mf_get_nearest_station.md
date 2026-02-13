@@ -1,6 +1,6 @@
-# Get nearest Météo-France stations
+# Get nearest Meteo-France stations
 
-Finds the nearest meteorological stations from Météo-France to the
+Finds the nearest meteorological stations from Meteo-France to the
 provided spatial geometry.
 
 ## Usage

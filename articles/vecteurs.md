@@ -98,7 +98,7 @@ tm_shape(parca)+
 ## 2. ENVIRONNEMENT
 
 La fonction
-[`get_mnhn()`](https://mucau.github.io/Rsequoia2/reference/get_mnhn.md)
+[`get_mnhn()`](https://sequoiapp.github.io/Rsequoia2/reference/get_mnhn.md)
 permet de télécharger un zonnage environnemtal en s’articulant autour de
 trois arguments : - `x` correspond au `sf` de la zone d’étude; - `key`
 corespond à la clé (= type) du zonage recherché (ex: `"zps"`); -

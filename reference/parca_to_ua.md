@@ -13,7 +13,7 @@ parca_to_ua(parca)
 - parca:
 
   `sf` Object from
-  [`seq_parca()`](https://mucau.github.io/Rsequoia2/reference/seq_parca.md)
+  [`seq_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parca.md)
   containing cadastral parcels.
 
 ## Value

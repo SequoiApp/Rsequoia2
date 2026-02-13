@@ -26,5 +26,5 @@ seq1_update(dirname = ".", verbose = TRUE, overwrite = FALSE)
 ## Value
 
 Invisibly returns a named vector of file paths written by
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md).
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
 Returns `NULL` invisibly when no layer are found.

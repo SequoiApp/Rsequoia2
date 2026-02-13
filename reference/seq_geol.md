@@ -38,7 +38,7 @@ An invisible `sf` object containing the merged geology layer.
 
 Created layer and its *QML style file* are automatically written to the
 project directory using
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md).
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
 
 **Difference between BRGM and CARHAB data**
 

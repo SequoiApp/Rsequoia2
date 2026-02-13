@@ -28,22 +28,22 @@ seq_vides(dirname = ".", verbose = TRUE, overwrite = FALSE)
 ## Value
 
 Invisibly returns a named list of file paths written by
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md).
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
 Returns `NULL` invisibly when no features are found.
 
 ## Details
 
 Cadastral gaps are retrieved using
-[`get_vides()`](https://mucau.github.io/Rsequoia2/reference/get_vides.md).
+[`get_vides()`](https://sequoiapp.github.io/Rsequoia2/reference/get_vides.md).
 
 If no features are found, the function returns `NULL` invisibly and no
 file is written.
 
 When features are present, the layer is written to disk using
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
 with the key `"v.cad.vides.poly"`.
 
 ## See also
 
-[`get_vides()`](https://mucau.github.io/Rsequoia2/reference/get_vides.md),
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
+[`get_vides()`](https://sequoiapp.github.io/Rsequoia2/reference/get_vides.md),
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)

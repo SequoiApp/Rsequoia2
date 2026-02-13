@@ -37,9 +37,9 @@ get_chm(x = NULL, dem = NULL, dsm = NULL, minmax = c(0, 50), ...)
 - ...:
 
   Additional parameters passed to
-  [`get_dem()`](https://mucau.github.io/Rsequoia2/reference/get_dem.md)
+  [`get_dem()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dem.md)
   and
-  [`get_dem()`](https://mucau.github.io/Rsequoia2/reference/get_dem.md)
+  [`get_dem()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dem.md)
   when `x` is supplied.
 
 ## Value
@@ -49,9 +49,9 @@ A `SpatRaster` containing the CHM.
 ## Details
 
 When `x` is provided, both DEM and DSM are automatically fetched via
-[`get_dem()`](https://mucau.github.io/Rsequoia2/reference/get_dem.md)
+[`get_dem()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dem.md)
 and
-[`get_dsm()`](https://mucau.github.io/Rsequoia2/reference/get_dsm.md).
+[`get_dsm()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dsm.md).
 When `x` is not provided, both `dem` and `dsm` must be manually
 supplied.
 

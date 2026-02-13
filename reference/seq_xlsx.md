@@ -2,7 +2,7 @@
 
 Creates a new Excel workbook, adds each element of a named list of data
 frames as a separate sheet, writes the data, and applies
-[`style_table()`](https://mucau.github.io/Rsequoia2/reference/style_table.md)
+[`style_table()`](https://sequoiapp.github.io/Rsequoia2/reference/style_table.md)
 to each sheet.
 
 ## Usage

@@ -57,5 +57,5 @@ configuration (see `files_structure.yaml`).
 
 ## See also
 
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md),
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md),
 [`happign::get_apicarto_gpu()`](https://paul-carteron.github.io/happign/reference/get_apicarto_gpu.html)

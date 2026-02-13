@@ -29,9 +29,9 @@ avoid biased averages.
 
 ## See also
 
-[`drias_read_table()`](https://mucau.github.io/Rsequoia2/reference/drias_read_table.md),
-[`drias_read_metadata()`](https://mucau.github.io/Rsequoia2/reference/drias_read_metadata.md),
-[`drias_ombro()`](https://mucau.github.io/Rsequoia2/reference/drias_ombro.md)
+[`drias_read_table()`](https://sequoiapp.github.io/Rsequoia2/reference/drias_read_table.md),
+[`drias_read_metadata()`](https://sequoiapp.github.io/Rsequoia2/reference/drias_read_metadata.md),
+[`drias_ombro()`](https://sequoiapp.github.io/Rsequoia2/reference/drias_ombro.md)
 
 ## Examples
 

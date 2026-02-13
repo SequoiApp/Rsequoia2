@@ -41,4 +41,4 @@ is handled via the `cli` package and can be silenced by setting
 
 ## See also
 
-[`get_pedology()`](https://mucau.github.io/Rsequoia2/reference/get_pedology.md)
+[`get_pedology()`](https://sequoiapp.github.io/Rsequoia2/reference/get_pedology.md)

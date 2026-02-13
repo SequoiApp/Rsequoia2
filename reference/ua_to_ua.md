@@ -20,7 +20,7 @@ ua_to_ua(ua, parca, verbose = TRUE)
 - parca:
 
   `sf` object, typically produced by
-  [`seq_parca()`](https://mucau.github.io/Rsequoia2/reference/seq_parca.md),
+  [`seq_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parca.md),
   containing cadastral parcels.
 
 - verbose:

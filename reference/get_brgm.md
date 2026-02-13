@@ -20,7 +20,7 @@ get_brgm(
 - deps:
 
   `character` or `numeric`; One or sevral french department code (see
-  [`get_cog()`](https://mucau.github.io/Rsequoia2/reference/get_cog.md)).
+  [`get_cog()`](https://sequoiapp.github.io/Rsequoia2/reference/get_cog.md)).
 
 - source:
 
@@ -58,7 +58,7 @@ Multiple departments are combined into a single `sf` object.
 For each department:
 
 - The corresponding BRGM ZIP archive is obtained via
-  [`download_brgm()`](https://mucau.github.io/Rsequoia2/reference/download_brgm.md)
+  [`download_brgm()`](https://sequoiapp.github.io/Rsequoia2/reference/download_brgm.md)
   ;
 
 - The geology shapefile (`S_FGEOL_*.shp`) is imported ;

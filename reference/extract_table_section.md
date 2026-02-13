@@ -18,7 +18,7 @@ extract_table_section(page_data, non_anchor, has_total)
 - non_anchor:
 
   Anchor row from
-  [`identify_non_anchors()`](https://mucau.github.io/Rsequoia2/reference/identify_non_anchors.md)
+  [`identify_non_anchors()`](https://sequoiapp.github.io/Rsequoia2/reference/identify_non_anchors.md)
 
 - has_total:
 

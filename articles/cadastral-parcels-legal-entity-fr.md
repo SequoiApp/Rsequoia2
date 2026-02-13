@@ -34,7 +34,7 @@ personne morale.
 ### Trouver une personne morale
 
 La fonction
-[`get_legal_entity()`](https://mucau.github.io/Rsequoia2/reference/get_legal_entity.md)
+[`get_legal_entity()`](https://sequoiapp.github.io/Rsequoia2/reference/get_legal_entity.md)
 télécharge et formate les données cadastrales pour s’intégrer dans un
 processus Sequoia..
 
@@ -51,12 +51,11 @@ insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
 #> ℹ Downloading legal entity datasets...
-#> ⠙ 6 extracted | 309 MB (137 MB/s) | 2.2s
-#> ⠹ 20 extracted | 930 MB (177 MB/s) | 5.2s
-#> ⠸ 41 extracted | 1.5 GB (187 MB/s) | 8.3s
-#> ⠙ 21 extracted | 812 MB (165 MB/s) | 4.9s
-#> ⠹ 35 extracted | 1.4 GB (179 MB/s) | 7.8s
-#> ⠸ 51 extracted | 2.0 GB (187 MB/s) | 10.9s
+#> ⠙ 7 extracted | 349 MB ( 84 MB/s) | 4.2s
+#> ⠹ 14 extracted | 650 MB (113 MB/s) | 5.8s
+#> ⠸ 33 extracted | 1.4 GB (160 MB/s) | 8.8s
+#> ⠙ 23 extracted | 859 MB (205 MB/s) | 4.2s
+#> ⠹ 40 extracted | 1.6 GB (225 MB/s) | 7.2s
 #> ✔ Data available at: /home/runner/.cache/R/Rsequoia2/legal_entity
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
@@ -97,7 +96,7 @@ head(legal_entity_cp)
 ### Rechercher un propriétaire
 
 Une fois le fichier chargé, vous pouvez utiliser la fonction utilitaire
-[`search_legal_entity()`](https://mucau.github.io/Rsequoia2/reference/search_legal_entity.md).
+[`search_legal_entity()`](https://sequoiapp.github.io/Rsequoia2/reference/search_legal_entity.md).
 
 Cette fonction applique une normalisation ce qui rend la recherche
 robuste aux différences d’accents, de ponctuation, d’espacement et de
@@ -117,7 +116,7 @@ unique(search_mat$PROPRIETAIRE)
 #> [1] "GFA DE LA TORCHE" "GFA ADPF"
 ```
 
-[`search_legal_entity()`](https://mucau.github.io/Rsequoia2/reference/search_legal_entity.md)
+[`search_legal_entity()`](https://sequoiapp.github.io/Rsequoia2/reference/search_legal_entity.md)
 support plusieurs propriétaires:
 
 ``` r
@@ -153,11 +152,11 @@ unique(search_mat[,c("PROPRIETAIRE", "LIEU_DIT")])
 Le jeu de données des personnes morales ne contient pas de géométrie. Il
 sert à générer une matrice Excel (`*_matrice.xlsx`) nécessaire au
 démarrage d’un processus Sequoia. La fonction
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
 permet de créer ce fichier.
 
 Le `data.frame` retourné par
-[`get_legal_entity()`](https://mucau.github.io/Rsequoia2/reference/get_legal_entity.md)
+[`get_legal_entity()`](https://sequoiapp.github.io/Rsequoia2/reference/get_legal_entity.md)
 est déjà formaté pour Sequoia, incluant la colonne `"IDENTIFIANT"`.
 
 Il est recommandé de renseigner cette colonne directement dans R avant
@@ -181,7 +180,7 @@ seq_parca(seq_dir)
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 13 features saved to 1_SEQUOIA/MY_FOREST_SEQ_PARCA_poly.gpkg.
 #> ✔ Table "x.seq.matrice" saved to MY_FOREST_MATRICE.xlsx.
-#> ✔ UA also saved as MY_FOREST_MATRICE_20260213T104319.xlsx for safety.
+#> ✔ UA also saved as MY_FOREST_MATRICE_20260213T110733.xlsx for safety.
 parca <- seq_read("parca", seq_dir)
 
 tm_tiles("OpenStreetMap")+

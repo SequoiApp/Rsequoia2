@@ -27,22 +27,22 @@ seq_curves(dirname = ".", verbose = TRUE, overwrite = FALSE)
 ## Value
 
 Invisibly returns a named list of file paths written by
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md).
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
 Returns `NULL` invisibly when no hypsometric curves features are found.
 
 ## Details
 
 Hypsometric curves line features are retrieved using
-[`get_curves()`](https://mucau.github.io/Rsequoia2/reference/get_curves.md).
+[`get_curves()`](https://sequoiapp.github.io/Rsequoia2/reference/get_curves.md).
 
 If no hypsometric curves features are found, the function returns `NULL`
 invisibly and no file is written.
 
 When features are present, the layer is written to disk using
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
 with the key `"v.curves.line"`.
 
 ## See also
 
-[`get_curves()`](https://mucau.github.io/Rsequoia2/reference/get_curves.md),
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
+[`get_curves()`](https://sequoiapp.github.io/Rsequoia2/reference/get_curves.md),
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)

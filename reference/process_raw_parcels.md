@@ -14,7 +14,7 @@ process_raw_parcels(df)
 - df:
 
   Raw `data.frame` from
-  [`get_raw_parcels()`](https://mucau.github.io/Rsequoia2/reference/get_raw_parcels.md)
+  [`get_raw_parcels()`](https://sequoiapp.github.io/Rsequoia2/reference/get_raw_parcels.md)
 
 ## Value
 

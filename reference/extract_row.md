@@ -1,7 +1,7 @@
 # Extract complete row from line data
 
 Applies
-[`extract_column()`](https://mucau.github.io/Rsequoia2/reference/extract_column.md)
+[`extract_column()`](https://sequoiapp.github.io/Rsequoia2/reference/extract_column.md)
 to all columns to build a complete data row.
 
 ## Usage
@@ -19,7 +19,7 @@ extract_row(line_data, col_positions)
 - col_positions:
 
   List from
-  [`define_column_positions()`](https://mucau.github.io/Rsequoia2/reference/define_column_positions.md)
+  [`define_column_positions()`](https://sequoiapp.github.io/Rsequoia2/reference/define_column_positions.md)
 
 ## Value
 

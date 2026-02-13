@@ -13,12 +13,12 @@ extract_rows(table_data, col_positions)
 - table_data:
 
   A `data.frame` from
-  [`group_lines_by_y()`](https://mucau.github.io/Rsequoia2/reference/group_lines_by_y.md)
+  [`group_lines_by_y()`](https://sequoiapp.github.io/Rsequoia2/reference/group_lines_by_y.md)
 
 - col_positions:
 
   List from
-  [`define_column_positions()`](https://mucau.github.io/Rsequoia2/reference/define_column_positions.md)
+  [`define_column_positions()`](https://sequoiapp.github.io/Rsequoia2/reference/define_column_positions.md)
 
 ## Value
 

@@ -1,4 +1,4 @@
-# Download monthly climatology from Météo-France
+# Download monthly climatology from Meteo-France
 
 Downloads monthly climatological data for the *3 nearest meteorological
 stations*.

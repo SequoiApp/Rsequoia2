@@ -1,7 +1,7 @@
 # Load table definitions from the Sequoia configuration
 
 Internal helper used by
-[`seq_normalize()`](https://mucau.github.io/Rsequoia2/reference/seq_normalize.md)
+[`seq_normalize()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_normalize.md)
 to determine which fields belong to a given table. Table definitions are
 stored in `inst/config/seq_tables.yaml`.
 

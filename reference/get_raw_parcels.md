@@ -18,4 +18,4 @@ get_raw_parcels(pdf)
 ## Value
 
 A `data.frame` with raw parcel data, column names from
-[`define_column_positions()`](https://mucau.github.io/Rsequoia2/reference/define_column_positions.md)
+[`define_column_positions()`](https://sequoiapp.github.io/Rsequoia2/reference/define_column_positions.md)

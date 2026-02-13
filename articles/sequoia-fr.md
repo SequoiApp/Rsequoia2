@@ -1,4 +1,4 @@
-# Sequoia
+# Sequoia (FR)
 
 ``` r
 knitr::opts_chunk$set(
@@ -48,7 +48,7 @@ Un processus Sequoia comprend toujours les étapes suivantes :
 
 Pour vous guider a travers ces différentes étapes, `Rsequoia2` propose
 la fonction
-[`sequoia()`](https://mucau.github.io/Rsequoia2/reference/sequoia.md).
+[`sequoia()`](https://sequoiapp.github.io/Rsequoia2/reference/sequoia.md).
 Cette dernière ouvre un menu dans la console pour faciliter l’accès aux
 fonctionnalités.
 
@@ -100,17 +100,17 @@ seq_parca()
 fonctions `seq_*` :
 
 - Données environnementales du MNHN
-  ([`seq_mnhn()`](https://mucau.github.io/Rsequoia2/reference/seq_mnhn.md));
+  ([`seq_mnhn()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_mnhn.md));
 - Données altimétriques de l’IGN
-  ([`seq_elevation()`](https://mucau.github.io/Rsequoia2/reference/seq_elevation.md));
+  ([`seq_elevation()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_elevation.md));
 - Orthophotographies de l’IGN
-  ([`seq_ortho()`](https://mucau.github.io/Rsequoia2/reference/seq_ortho.md));
+  ([`seq_ortho()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_ortho.md));
 - Données géologiques du BRGM
-  ([`seq_geol()`](https://mucau.github.io/Rsequoia2/reference/seq_geol.md));
+  ([`seq_geol()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_geol.md));
 - Données hydrologiques de la BD Topo IGN
-  ([`seq_hydro()`](https://mucau.github.io/Rsequoia2/reference/seq_hydro.md));
+  ([`seq_hydro()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_hydro.md));
 - Données patrimoniales de l’Atlas du Patrimoine
-  ([`seq_patrimony()`](https://mucau.github.io/Rsequoia2/reference/seq_patrimony.md));
+  ([`seq_patrimony()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_patrimony.md));
 - …
 
 Exemple :
@@ -204,8 +204,8 @@ seq_layer("geol")
 #### Fonctions `seq_*`
 
 Toutes les fonctions principales commencent par `seq_*` (ex :
-[`seq_geol()`](https://mucau.github.io/Rsequoia2/reference/seq_geol.md),
-[`seq_prsf()`](https://mucau.github.io/Rsequoia2/reference/seq_prsf.md),
+[`seq_geol()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_geol.md),
+[`seq_prsf()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_prsf.md),
 …).
 
 Ces fonctions ont toutes le même fonctionnement :
@@ -219,5 +219,5 @@ Ces fonctions ont toutes le même fonctionnement :
 
 Pour les utilisateurs avancés, chaque fonction `seq_*` possède un
 équivalent `get_*` (ex : `get_geol()`,
-[`get_prsf()`](https://mucau.github.io/Rsequoia2/reference/get_prsf.md),
+[`get_prsf()`](https://sequoiapp.github.io/Rsequoia2/reference/get_prsf.md),
 …) utilisable indépendamment du workflow Sequoia.

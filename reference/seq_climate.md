@@ -1,6 +1,6 @@
 # Generate meteorological outputs
 
-Downloads and formats meteorological data from Météo-France and DRIAS.
+Downloads and formats meteorological data from Meteo-France and DRIAS.
 This includes download of the nearest climatological station fiche
 (PDF), ombrothermic summaries, precipitation statistics. Results are
 written to an Excel workbook based on the internal template

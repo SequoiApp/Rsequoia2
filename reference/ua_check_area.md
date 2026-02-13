@@ -14,13 +14,13 @@ ua_check_area(ua, parca, verbose = FALSE)
 - ua:
 
   `sf` Object from
-  [`parca_to_ua()`](https://mucau.github.io/Rsequoia2/reference/parca_to_ua.md)
+  [`parca_to_ua()`](https://sequoiapp.github.io/Rsequoia2/reference/parca_to_ua.md)
   containing analysis units
 
 - parca:
 
   `sf` Object from
-  [`seq_parca()`](https://mucau.github.io/Rsequoia2/reference/seq_parca.md)
+  [`seq_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parca.md)
   containing cadastral parcels.
 
 - verbose:

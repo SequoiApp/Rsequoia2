@@ -45,4 +45,4 @@ is handled via the `cli` package and can be silenced by setting
 
 ## See also
 
-[`get_ifn()`](https://mucau.github.io/Rsequoia2/reference/get_ifn.md)
+[`get_ifn()`](https://sequoiapp.github.io/Rsequoia2/reference/get_ifn.md)

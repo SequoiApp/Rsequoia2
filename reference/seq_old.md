@@ -28,22 +28,22 @@ seq_old(dirname = ".", verbose = TRUE, overwrite = FALSE)
 ## Value
 
 Invisibly returns a named list of file paths written by
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md).
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
 Returns `NULL` invisibly when no OLD features are found.
 
 ## Details
 
 OLD features are retrieved using
-[`get_old()`](https://mucau.github.io/Rsequoia2/reference/get_old.md).
+[`get_old()`](https://sequoiapp.github.io/Rsequoia2/reference/get_old.md).
 
 If no OLD features are found, the function returns `NULL` invisibly and
 no file is written.
 
 When features are present, the layer is written to disk using
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
 with the key `"v.old.poly"`.
 
 ## See also
 
-[`get_prsf()`](https://mucau.github.io/Rsequoia2/reference/get_prsf.md),
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
+[`get_prsf()`](https://sequoiapp.github.io/Rsequoia2/reference/get_prsf.md),
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)

@@ -45,29 +45,29 @@ seq_mnhn(
 ## Value
 
 A named list of file paths written by
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md),
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md),
 one per layer.
 
 ## Details
 
 This function is a convenience wrapper looping over
-[`get_mnhn()`](https://mucau.github.io/Rsequoia2/reference/get_mnhn.md),
+[`get_mnhn()`](https://sequoiapp.github.io/Rsequoia2/reference/get_mnhn.md),
 allowing the user to download all products in one call and automatically
 write them to the project directory using
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md).
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
 
 For each value in `key`, the function attempts to query the
 corresponding MNHN layer using
-[`get_mnhn()`](https://mucau.github.io/Rsequoia2/reference/get_mnhn.md).
+[`get_mnhn()`](https://sequoiapp.github.io/Rsequoia2/reference/get_mnhn.md).
 
 - If the layer contains features, it is written to the project directory
   via
-  [`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
+  [`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
   and recorded as a successful download.
 
 - If the layer contains no features, it is skipped and marked as empty.
 
 ## See also
 
-[`get_mnhn()`](https://mucau.github.io/Rsequoia2/reference/get_mnhn.md),
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
+[`get_mnhn()`](https://sequoiapp.github.io/Rsequoia2/reference/get_mnhn.md),
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)

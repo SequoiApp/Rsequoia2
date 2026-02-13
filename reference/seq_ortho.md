@@ -60,18 +60,18 @@ seq_ortho(
 ## Value
 
 A named list of file paths written by
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md),
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md),
 one per `type`.
 
 ## Details
 
 This function is a convenience wrapper looping over
-[`get_ortho()`](https://mucau.github.io/Rsequoia2/reference/get_ortho.md),
+[`get_ortho()`](https://sequoiapp.github.io/Rsequoia2/reference/get_ortho.md),
 allowing the user to download both products in one call and
 automatically write them to the project directory using
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md).
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
 
 ## See also
 
-[`get_ortho()`](https://mucau.github.io/Rsequoia2/reference/get_ortho.md),
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
+[`get_ortho()`](https://sequoiapp.github.io/Rsequoia2/reference/get_ortho.md),
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)

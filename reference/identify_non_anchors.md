@@ -14,7 +14,7 @@ identify_non_anchors(all_visual_data)
 - all_visual_data:
 
   A `data.frame` from
-  [`extract_visual_data()`](https://mucau.github.io/Rsequoia2/reference/extract_visual_data.md)
+  [`extract_visual_data()`](https://sequoiapp.github.io/Rsequoia2/reference/extract_visual_data.md)
 
 ## Value
 

@@ -20,13 +20,13 @@ get_ifn(x, type = c("ser", "ser_ar", "rfn", "rfd", "zp"), cache = NULL)
   A character string specifying the IFN regional dataset to use. Must be
   one of:
 
-  - `"ser"`: sylvo-écorégions
+  - `"ser"`: sylvo-ecoregions
 
-  - `"ser_ar"`: sylvo-écorégions (aggregated regions)
+  - `"ser_ar"`: sylvo-ecoregions (aggregated regions)
 
-  - `"rfn"`: région forestière nationale
+  - `"rfn"`: region forestiere nationale
 
-  - `"rfd"`: région forestière départementale
+  - `"rfd"`: region forestiere departementale
 
   - `"zp"`: zones de production
 

@@ -63,18 +63,18 @@ seq_scan(
 ## Value
 
 A named list of file paths written by
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md),
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md),
 one per `type`.
 
 ## Details
 
 This function is a convenience wrapper looping over
-[`get_scan()`](https://mucau.github.io/Rsequoia2/reference/get_scan.md),
+[`get_scan()`](https://sequoiapp.github.io/Rsequoia2/reference/get_scan.md),
 allowing the user to download several scanned map products in one call
 and automatically write them to the project directory using
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md).
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
 
 ## See also
 
-[`get_scan()`](https://mucau.github.io/Rsequoia2/reference/get_scan.md),
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
+[`get_scan()`](https://sequoiapp.github.io/Rsequoia2/reference/get_scan.md),
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)

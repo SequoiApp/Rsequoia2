@@ -37,5 +37,5 @@ standardized `sf` object of type `POINT`.
 
 ## See also
 
-[`get_vege_poly()`](https://mucau.github.io/Rsequoia2/reference/get_vege_poly.md),
-[`get_vege_line()`](https://mucau.github.io/Rsequoia2/reference/get_vege_line.md)
+[`get_vege_poly()`](https://sequoiapp.github.io/Rsequoia2/reference/get_vege_poly.md),
+[`get_vege_line()`](https://sequoiapp.github.io/Rsequoia2/reference/get_vege_line.md)

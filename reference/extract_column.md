@@ -17,7 +17,7 @@ extract_column(line_data, col_name, col_positions)
 - col_name:
 
   `character`. Column name from
-  [`define_column_positions()`](https://mucau.github.io/Rsequoia2/reference/define_column_positions.md)
+  [`define_column_positions()`](https://sequoiapp.github.io/Rsequoia2/reference/define_column_positions.md)
 
 - col_positions:
 

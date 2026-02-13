@@ -33,7 +33,7 @@ SSPF polygon and line layers.
 ## Details
 
 Created layers are automatically written to the project directory using
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md),
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md),
 respecting the `dirname`, `overwrite`, and `verbose` parameters.
 
 The function performs two levels of spatial aggregation ande create 4

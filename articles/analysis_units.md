@@ -108,7 +108,7 @@ units of analysis), according to logical steps.
 
 This segmentation can only be performed using GIS software. We strongly
 recommend the [Quntum GIS
-suite](https://mucau.github.io/Rsequoia2/articles/%60r%20qgis%60).
+suite](https://sequoiapp.github.io/Rsequoia2/articles/%60r%20qgis%60).
 
 As segmentation steps, we recommend :
 
@@ -124,7 +124,7 @@ table.
 
 When you have finish to segmentize the *AU* layer, you can get validate
 the *UA* layer by running
-[`seq_ua()`](https://mucau.github.io/Rsequoia2/reference/seq_ua.md).
+[`seq_ua()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_ua.md).
 
 **/!\\** *The AU* layer must be closed on your GIS software before
 running !

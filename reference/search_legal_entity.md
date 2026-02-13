@@ -39,11 +39,11 @@ differences.
 
 **Examples of normalization:**
 
-- `"État / Forêts"` -\> `"ETATFORETS"`
+- `"Etat / Forets"` -\> `"ETATFORETS"`
 
 - `" Le Bois-de l'Orme "` -\> `"LEBOISDELORME"`
 
-- `"Société du Chêne"` -\> `"SOCIETEDUCHENE"`
+- `"Societe du Chene"` -\> `"SOCIETEDUCHENE"`
 
 ## Examples
 

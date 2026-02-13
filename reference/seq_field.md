@@ -1,7 +1,7 @@
 # Load field definitions from the Sequoia configuration
 
 Internal helper used by
-[`seq_normalize()`](https://mucau.github.io/Rsequoia2/reference/seq_normalize.md)
+[`seq_normalize()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_normalize.md)
 to access field metadata defined in `inst/config/seq_fields.yaml`. When
 `field` is `NULL`, the full configuration list is returned. Otherwise,
 the corresponding field definition is extracted.

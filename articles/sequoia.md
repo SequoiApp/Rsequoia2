@@ -60,7 +60,7 @@ setwd(sequoia_dir)
 
 All data downloaded by `Rsequoia2` are based on cadastral parcels
 (parca). The first mandatory step is therefore to download them using
-[`seq_parca()`](https://mucau.github.io/Rsequoia2/reference/seq_parca.md).
+[`seq_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parca.md).
 
 ``` r
 seq_parca()
@@ -89,7 +89,7 @@ The next step after downloading **parca** and the additional datasets is
 to create the analysis units.
 
 This layer is generated using
-[`seq_parca_to_ua()`](https://mucau.github.io/Rsequoia2/reference/seq_parca_to_ua.md).
+[`seq_parca_to_ua()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parca_to_ua.md).
 Your task is to segment the layer so that it reflects the actual forest
 structure.
 
@@ -109,7 +109,7 @@ everything is correct (and, more importantly, that nothing was
 accidently corrupted). Some additional processing is also required to
 properly finalize this layer.
 
-[`seq_ua()`](https://mucau.github.io/Rsequoia2/reference/seq_ua.md)
+[`seq_ua()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_ua.md)
 performs a series of checks and corrections to validate and finalize the
 UA layer:
 
@@ -134,7 +134,7 @@ seq_ua()
 Last but not least, the final step is to generate tables that help users
 better understand and write their forest management document.
 
-[`seq_summary()`](https://mucau.github.io/Rsequoia2/reference/seq_summary.md)
+[`seq_summary()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_summary.md)
 produces a set of opinionated summary tables derived from the UA layer.
 
 ``` r
@@ -150,7 +150,7 @@ layers and their metadata. For example, the key `"r.sol.geol"` refers to
 the geological raster layer named `GEOL.tif`.
 
 All available keys can be listed with
-[`seq_key()`](https://mucau.github.io/Rsequoia2/reference/seq_key.md).
+[`seq_key()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_key.md).
 To access metadata for a specific layer, use `seq_layer("r.sol.geol")`.
 
 Note that full keys are not always required: `seq_layer("geol")` also
@@ -159,8 +159,8 @@ works.
 ### `seq_*` functions
 
 All main functions in `Rsequoia2` start with `seq_*`
-(e.g. [`seq_geol()`](https://mucau.github.io/Rsequoia2/reference/seq_geol.md),
-[`seq_prsf()`](https://mucau.github.io/Rsequoia2/reference/seq_prsf.md),
+(e.g. [`seq_geol()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_geol.md),
+[`seq_prsf()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_prsf.md),
 …).
 
 These functions: - Read the project cadastral parcels to defined area of
@@ -170,13 +170,13 @@ stored.
 
 Note: for advanced users, each `seq_*` function has an equivalent
 `get_*` function (e.g. `get_geol()`,
-[`get_prsf()`](https://mucau.github.io/Rsequoia2/reference/get_prsf.md),
+[`get_prsf()`](https://sequoiapp.github.io/Rsequoia2/reference/get_prsf.md),
 …). These can be used independently of the Sequoia workflow.
 
 ### Cheat code !
 
 For those who made it to the end, `Rsequoia2` provides a wrapper
 function to guide you through the entire workflow:
-[`sequoia()`](https://mucau.github.io/Rsequoia2/reference/sequoia.md).
+[`sequoia()`](https://sequoiapp.github.io/Rsequoia2/reference/sequoia.md).
 
 Have fun !

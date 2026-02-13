@@ -35,7 +35,7 @@ get_aspect(x = NULL, dem = NULL, agg = 5, verbose = TRUE, ...)
 - ...:
 
   Additional parameters passed to
-  [`get_dem()`](https://mucau.github.io/Rsequoia2/reference/get_dem.md)
+  [`get_dem()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dem.md)
   when `x` is supplied.
 
 ## Value
@@ -45,7 +45,7 @@ A `SpatRaster` containing aspect values in degrees.
 ## Details
 
 When `x` is provided, the DEM is obtained with
-[`get_dem()`](https://mucau.github.io/Rsequoia2/reference/get_dem.md),
+[`get_dem()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dem.md),
 using by default a resolution equal to `agg`. When `x` is not provided,
 a DEM must be supplied via `dem`.
 

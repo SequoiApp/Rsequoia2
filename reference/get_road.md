@@ -30,7 +30,7 @@ standardized fields, including:
 
   - `RC` = Communal road (other paved roads)
 
-  - `RF` = Forest or gravel road (unpaved / empierrée)
+  - `RF` = Forest or gravel road (unpaved / empierree)
 
   - `PN` = Natural path (tracks, trails, footpaths)
 

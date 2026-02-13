@@ -27,7 +27,7 @@ Rsequoia2.
 
 `Rsequoia2` allow user to download cadastral parcels from IDU with the
 function
-[`get_parca()`](https://mucau.github.io/Rsequoia2/reference/get_parca.md).
+[`get_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/get_parca.md).
 
 Rq : IDU is a 14-character code that uniquely identifies one cadastral
 parcel in France build with departement code (2 char), commune code (3
@@ -39,7 +39,7 @@ from and for Rsequoia2.
 
 `Rsequoia2` allow user to download cadastral parcels from IDU with the
 function
-[`get_parca()`](https://mucau.github.io/Rsequoia2/reference/get_parca.md).
+[`get_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/get_parca.md).
 
 *Rq :* IDU is a 14-character code that uniquely identifies one cadastral
 parcel in France
@@ -60,7 +60,7 @@ tm_shape(cp)+
 tm_layout(bg = F)
 ```
 
-![](cadastral-parcels_files/figure-html/single_idu-1.png)[`get_parca()`](https://mucau.github.io/Rsequoia2/reference/get_parca.md)
+![](cadastral-parcels_files/figure-html/single_idu-1.png)[`get_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/get_parca.md)
 is vectorized so multiple idu can be used
 
 ``` r
@@ -76,7 +76,7 @@ tm_shape(cp)+
 ![](cadastral-parcels_files/figure-html/multiple_idu-1.png) \# BDP and
 Lieu-dit
 
-[`get_parca()`](https://mucau.github.io/Rsequoia2/reference/get_parca.md)
+[`get_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/get_parca.md)
 come with two arguments : `bdp_geom` & `lieu_dit`
 
 ### `bdp_geom` - BD Parcellaire :
@@ -90,7 +90,7 @@ Using BDP data may therefore improve spatial accuracy, although it does
 not guarantee perfect alignment with the legal cadastral limits.
 
 To use BDP geometries in
-[`get_parca()`](https://mucau.github.io/Rsequoia2/reference/get_parca.md),
+[`get_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/get_parca.md),
 set `bdp_geom = TRUE`; when BDP geometry exists for a given IDU, it
 automatically replaces the Etalab geometry.
 
@@ -121,7 +121,7 @@ By default, Etalab cadastral parcels do not include lieu-dit
 information. However, a separate dataset exists, and retrieving lieu-dit
 requires performing a spatial join between the two sources.
 
-[`get_parca()`](https://mucau.github.io/Rsequoia2/reference/get_parca.md)
+[`get_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/get_parca.md)
 can handle this automatically when: `lieu_dit = TRUE`
 
 \*/!\* Note that this spatial join may be time-consuming for large
@@ -145,19 +145,19 @@ tm_shape(with_lieu_dit)+
 works in Sequoia?
 
 As shown earlier,
-[`get_parca()`](https://mucau.github.io/Rsequoia2/reference/get_parca.md)
+[`get_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/get_parca.md)
 retrieves cadastral parcels directly from their IDU. However, listing
 all IDUs manually inside R is often impractical and Sequoia users rarely
 work with IDUs directly.
 
 Instead, cadastral parcels are provided through a Sequoia Excel matrix
 (\*\_matrice.xlsx), and the function
-[`seq_parca()`](https://mucau.github.io/Rsequoia2/reference/seq_parca.md)
+[`seq_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parca.md)
 automatically retrieves all parcels based on this matrix.
 
 A typical workflow is therefore: - Create or fill an Excel matrix ; -
 Call
-[`seq_parca()`](https://mucau.github.io/Rsequoia2/reference/seq_parca.md)
+[`seq_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parca.md)
 ; - Let Sequoia handle everything else
 
 The following sections explain how to prepare the matrix and how Sequoia
@@ -186,7 +186,7 @@ my_forest_dir <- file.path(tempdir(), "MY_FOREST")
 dir.create(my_forest_dir)
 
 matrice_path <- create_matrice(my_forest_dir, id = "MY_FOREST")
-#> ✔ Excel file created at: /tmp/RtmpFmD0fP/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/RtmpTJlu7q/MY_FOREST/MY_FOREST_matrice.xlsx
 ```
 
 You can then manually fill the Excel file.
@@ -194,7 +194,7 @@ You can then manually fill the Excel file.
 ### 2. Running the Sequoia parcel retrieval
 
 Once the matrix is prepared, the entire cadastral workflow is handled by
-[`seq_parca()`](https://mucau.github.io/Rsequoia2/reference/seq_parca.md).
+[`seq_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parca.md).
 
 This function: - Reads the Excel matrix; - Builds IDUs from matrix; -
 Downloads cadastral parcels : BDP geometry is used when available
@@ -206,7 +206,7 @@ with the package.
 
 This mirrors what a user would do in practice: place a correctly
 formatted “\*\_matrice.xlsx” file inside a Sequoia directory, then let
-[`seq_parca()`](https://mucau.github.io/Rsequoia2/reference/seq_parca.md)
+[`seq_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parca.md)
 process it.
 
 #### Step 1 - Set up a Sequoia directory and copy the example matrix into it
@@ -229,7 +229,7 @@ parca_path <- seq_parca(sequoia_dir)
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 9 features saved to 1_SEQUOIA/ECKMUHL_SEQ_PARCA_poly.gpkg.
 #> ✔ Table "x.seq.matrice" saved to ECKMUHL_MATRICE.xlsx.
-#> ✔ UA also saved as ECKMUHL_matrice_20260213T104434.xlsx for safety.
+#> ✔ UA also saved as ECKMUHL_matrice_20260213T110841.xlsx for safety.
 
 # directly read parca form parca path
 parca <- read_sf(parca_path)

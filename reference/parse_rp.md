@@ -1,7 +1,7 @@
 # Parse a French cadastral property record (RP) PDF
 
 `parse_rp()` extracts and parses non-built parcels from a French
-cadastral property record PDF (Relevé de Propriété - RP).
+cadastral property record PDF (Releve de Propriete - RP).
 
 ## Usage
 

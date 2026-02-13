@@ -22,7 +22,7 @@ An `sf` object containing forest vegetation line features.
 
 The function derives forest vegetation linear features from vegetation
 polygons obtained with
-[`get_vege_poly()`](https://mucau.github.io/Rsequoia2/reference/get_vege_poly.md).
+[`get_vege_poly()`](https://sequoiapp.github.io/Rsequoia2/reference/get_vege_poly.md).
 
 GIS workflow :
 

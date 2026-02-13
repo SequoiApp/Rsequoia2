@@ -27,16 +27,16 @@ seq_graphic_road(dirname = ".", verbose = TRUE, overwrite = FALSE)
 ## Value
 
 Invisibly returns a named list of file paths written by
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md).
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
 Returns `NULL` invisibly when no features are created.
 
 ## Details
 
 Features are created from a completed cadastral gaps layer obtained by
 using
-[`seq_vides()`](https://mucau.github.io/Rsequoia2/reference/seq_vides.md).
+[`seq_vides()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_vides.md).
 
 ## See also
 
-[`seq_vides()`](https://mucau.github.io/Rsequoia2/reference/seq_vides.md),
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
+[`seq_vides()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_vides.md),
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)

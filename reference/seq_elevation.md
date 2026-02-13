@@ -51,37 +51,37 @@ seq_elevation(
 ## Value
 
 A named list of file paths written by
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md),
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md),
 one per `type`.
 
 ## Details
 
 This function is a high-level convenience wrapper around:
 
-- [`get_dem()`](https://mucau.github.io/Rsequoia2/reference/get_dem.md) -
+- [`get_dem()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dem.md) -
   Digital Elevation Model
 
-- [`get_dsm()`](https://mucau.github.io/Rsequoia2/reference/get_dsm.md) -
+- [`get_dsm()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dsm.md) -
   Digital Surface Model
 
-- [`get_chm()`](https://mucau.github.io/Rsequoia2/reference/get_chm.md) -
+- [`get_chm()`](https://sequoiapp.github.io/Rsequoia2/reference/get_chm.md) -
   Canopy Height Model
 
-- [`get_slope()`](https://mucau.github.io/Rsequoia2/reference/get_slope.md) -
+- [`get_slope()`](https://sequoiapp.github.io/Rsequoia2/reference/get_slope.md) -
   Slope raster
 
-- [`get_aspect()`](https://mucau.github.io/Rsequoia2/reference/get_aspect.md) -
+- [`get_aspect()`](https://sequoiapp.github.io/Rsequoia2/reference/get_aspect.md) -
   Aspect raster
 
 It automatically reads the project's `parca` layer, downloads the
 necessary elevation data for its extent (with an optional buffer),
 computes all derived products, and saves them using
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md).
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
 
 ## See also
 
-[`get_dem()`](https://mucau.github.io/Rsequoia2/reference/get_dem.md),
-[`get_dsm()`](https://mucau.github.io/Rsequoia2/reference/get_dsm.md),
-[`get_chm()`](https://mucau.github.io/Rsequoia2/reference/get_chm.md),
-[`get_slope()`](https://mucau.github.io/Rsequoia2/reference/get_slope.md),
-[`get_aspect()`](https://mucau.github.io/Rsequoia2/reference/get_aspect.md)
+[`get_dem()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dem.md),
+[`get_dsm()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dsm.md),
+[`get_chm()`](https://sequoiapp.github.io/Rsequoia2/reference/get_chm.md),
+[`get_slope()`](https://sequoiapp.github.io/Rsequoia2/reference/get_slope.md),
+[`get_aspect()`](https://sequoiapp.github.io/Rsequoia2/reference/get_aspect.md)

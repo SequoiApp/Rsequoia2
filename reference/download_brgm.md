@@ -20,7 +20,7 @@ download_brgm(
 - dep:
 
   `character` or `numeric`; Department code (see
-  [`get_cog()`](https://mucau.github.io/Rsequoia2/reference/get_cog.md)).
+  [`get_cog()`](https://sequoiapp.github.io/Rsequoia2/reference/get_cog.md)).
 
 - source:
 

@@ -13,7 +13,7 @@ mf_precipitation(clim)
 - clim:
 
   `data.frame` Raw climatology data from
-  [`mf_get_climatology()`](https://mucau.github.io/Rsequoia2/reference/mf_get_climatology.md).
+  [`mf_get_climatology()`](https://sequoiapp.github.io/Rsequoia2/reference/mf_get_climatology.md).
 
 ## Value
 

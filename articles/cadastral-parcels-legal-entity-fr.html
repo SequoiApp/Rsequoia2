@@ -34,11 +34,11 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/analysis_units.html">Analysis units</a></li>
-    <li><a class="dropdown-item" href="../articles/cadastral-parcels-fr.html">Parcelles Cadastrales</a></li>
+    <li><a class="dropdown-item" href="../articles/cadastral-parcels-fr.html">Parcelles Cadastrales (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/cadastral-parcels-legal-entity-fr.html">Parcelles cadastrales - Personne morale (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/cadastral-parcels-legal-entity.html">Cadastral parcels - legal entity (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/cadastral-parcels.html">Cadastral parcels</a></li>
-    <li><a class="dropdown-item" href="../articles/sequoia-fr.html">Sequoia</a></li>
+    <li><a class="dropdown-item" href="../articles/sequoia-fr.html">Sequoia (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/sequoia.html">Sequoia</a></li>
     <li><a class="dropdown-item" href="../articles/vecteurs.html">Téléchargement de données</a></li>
   </ul>
@@ -71,7 +71,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mucau.github.io/Rsequoia2/">Rsequoia2</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sequoiapp.github.io/Rsequoia2/">Rsequoia2</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Attempting to load the package cache ... No cache found.</span></span>
 <span><span class="co">#&gt; Will try to reconfigure qgisprocess and build new cache ...</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-tmap/tmap" class="external-link">tmap</a></span><span class="op">)</span></span>
@@ -111,12 +111,11 @@ dans plusieurs communes du département.</p>
 <span></span>
 <span><span class="va">legal_entity_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_legal_entity.html">get_legal_entity</a></span><span class="op">(</span><span class="va">insee</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading legal entity datasets...</span></span>
-<span><span class="co">#&gt; ⠙ 6 extracted | 309 MB (137 MB/s) | 2.2s</span></span>
-<span><span class="co">#&gt; ⠹ 20 extracted | 930 MB (177 MB/s) | 5.2s</span></span>
-<span><span class="co">#&gt; ⠸ 41 extracted | 1.5 GB (187 MB/s) | 8.3s</span></span>
-<span><span class="co">#&gt; ⠙ 21 extracted | 812 MB (165 MB/s) | 4.9s</span></span>
-<span><span class="co">#&gt; ⠹ 35 extracted | 1.4 GB (179 MB/s) | 7.8s</span></span>
-<span><span class="co">#&gt; ⠸ 51 extracted | 2.0 GB (187 MB/s) | 10.9s</span></span>
+<span><span class="co">#&gt; ⠙ 7 extracted | 349 MB ( 84 MB/s) | 4.2s</span></span>
+<span><span class="co">#&gt; ⠹ 14 extracted | 650 MB (113 MB/s) | 5.8s</span></span>
+<span><span class="co">#&gt; ⠸ 33 extracted | 1.4 GB (160 MB/s) | 8.8s</span></span>
+<span><span class="co">#&gt; ⠙ 23 extracted | 859 MB (205 MB/s) | 4.2s</span></span>
+<span><span class="co">#&gt; ⠹ 40 extracted | 1.6 GB (225 MB/s) | 7.2s</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Data available at: <span style="color: #0000BB;">/home/runner/.cache/R/Rsequoia2/legal_entity</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Reading CSV files...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Preparing CSV files...</span></span>
@@ -229,7 +228,7 @@ manuelle dans Excel.</p>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> No area inconsistencies (cadastre vs GIS) detected.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Layer <span style="color: #0000BB;">"v.seq.parca.poly"</span> with 13 features saved to <span style="color: #0000BB;">1_SEQUOIA/MY_FOREST_SEQ_PARCA_poly.gpkg</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Table <span style="color: #0000BB;">"x.seq.matrice"</span> saved to <span style="color: #0000BB;">MY_FOREST_MATRICE.xlsx</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> UA also saved as <span style="color: #0000BB;">MY_FOREST_MATRICE_20260213T104319.xlsx</span> for safety.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> UA also saved as <span style="color: #0000BB;">MY_FOREST_MATRICE_20260213T110733.xlsx</span> for safety.</span></span>
 <span><span class="va">parca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/seq_read.html">seq_read</a></span><span class="op">(</span><span class="st">"parca"</span>, <span class="va">seq_dir</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_basemap.html" class="external-link">tm_tiles</a></span><span class="op">(</span><span class="st">"OpenStreetMap"</span><span class="op">)</span><span class="op">+</span></span>

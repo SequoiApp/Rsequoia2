@@ -36,7 +36,7 @@ consistency.
 The function works by:
 
 1.  Checking UG consistency with
-    [`ua_check_ug()`](https://mucau.github.io/Rsequoia2/reference/ua_check_ug.md).
+    [`ua_check_ug()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_check_ug.md).
 
 2.  Identifying the dominant row per UG (largest total surface).
 

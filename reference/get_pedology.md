@@ -26,8 +26,8 @@ The function retrieves pedology polygon features from the
 `INRA.CARTE.SOLS:geoportail_vf` layer intersecting the input geometry
 `x`. The resulting geometries are intersected with `x`, cast to
 polygons, and surface attributes are computed using
-[`ua_generate_area()`](https://mucau.github.io/Rsequoia2/reference/ua_generate_area.md).
+[`ua_generate_area()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_generate_area.md).
 
 ## See also
 
-[`ua_generate_area()`](https://mucau.github.io/Rsequoia2/reference/ua_generate_area.md)
+[`ua_generate_area()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_generate_area.md)

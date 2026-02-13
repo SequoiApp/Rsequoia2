@@ -40,7 +40,7 @@ The output file is automatically written into the working directory
 defined by `dirname`.
 
 **`bdp_geom`** The use and behaviour of `bdp_geom` are described in
-[`get_parca()`](https://mucau.github.io/Rsequoia2/reference/get_parca.md).
+[`get_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/get_parca.md).
 
 **Automatic "lieu-dit" completion** If the function detects rows in the
 matrice where the field `"LIEU_DIT"` is missing, the corresponding

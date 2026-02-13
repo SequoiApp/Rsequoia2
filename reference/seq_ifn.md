@@ -39,17 +39,17 @@ seq_ifn(
 ## Value
 
 Invisibly returns a named list of file paths written by
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md).
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
 Returns `NULL` invisibly if no regional layer is written.
 
 ## Details
 
 Regional datasets are retrieved using
-[`get_ifn()`](https://mucau.github.io/Rsequoia2/reference/get_ifn.md)
+[`get_ifn()`](https://sequoiapp.github.io/Rsequoia2/reference/get_ifn.md)
 based on the project area defined by the PARCA polygon.
 
 Each regional layer is written to disk using
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
 with a dedicated output key corresponding to the requested region type.
 
 If no feature is found for a given type, the corresponding layer is not
@@ -57,5 +57,5 @@ written.
 
 ## See also
 
-[`get_ifn()`](https://mucau.github.io/Rsequoia2/reference/get_ifn.md),
-[`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
+[`get_ifn()`](https://sequoiapp.github.io/Rsequoia2/reference/get_ifn.md),
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)

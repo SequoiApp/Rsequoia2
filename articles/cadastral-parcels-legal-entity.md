@@ -34,7 +34,7 @@ owner.
 
 ### Retrieve legal entity owner
 
-[`get_legal_entity()`](https://mucau.github.io/Rsequoia2/reference/get_legal_entity.md)
+[`get_legal_entity()`](https://sequoiapp.github.io/Rsequoia2/reference/get_legal_entity.md)
 function download and prepare data as a Sequoia matrice.
 
 There is a cache system to this function to avoid downloading each time.
@@ -92,7 +92,7 @@ head(legal_entity_cp)
 ### Search legal entity owner
 
 After loading the file you can use helpers
-[`search_legal_entity()`](https://mucau.github.io/Rsequoia2/reference/search_legal_entity.md).
+[`search_legal_entity()`](https://sequoiapp.github.io/Rsequoia2/reference/search_legal_entity.md).
 
 This helpers relies on a text-normalization applied to both the inputs
 and the corresponding columns of the matrice. This makes the search
@@ -108,7 +108,7 @@ unique(search_mat$PROPRIETAIRE)
 #> [1] "GFA DE LA TORCHE" "GFA ADPF"
 ```
 
-[`search_legal_entity()`](https://mucau.github.io/Rsequoia2/reference/search_legal_entity.md)
+[`search_legal_entity()`](https://sequoiapp.github.io/Rsequoia2/reference/search_legal_entity.md)
 can also support multiple search pattern:
 
 ``` r
@@ -143,11 +143,11 @@ unique(search_mat[,c("PROPRIETAIRE", "LIEU_DIT")])
 Note that *the legal entity dataset doesn’t provide geometry !* It’s
 used to generate an excel matrice (“\*\_matrice.xlsx”) to start a
 Sequoia process.
-[`seq_xlsx()`](https://mucau.github.io/Rsequoia2/reference/seq_xlsx.md)
+[`seq_xlsx()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_xlsx.md)
 function can be used to generate it.
 
 Notice that the `data.frame` generated with
-[`get_legal_entity()`](https://mucau.github.io/Rsequoia2/reference/get_legal_entity.md)
+[`get_legal_entity()`](https://sequoiapp.github.io/Rsequoia2/reference/get_legal_entity.md)
 is already formated for Sequoia process. This mean you have the
 `"IDENTIFIANT"` columns. To avoid filling it in excel, we encouraged you
 to do it before saving.
@@ -169,7 +169,7 @@ seq_parca(seq_dir)
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 13 features saved to 1_SEQUOIA/MY_FOREST_SEQ_PARCA_poly.gpkg.
 #> ✔ Table "x.seq.matrice" saved to MY_FOREST_MATRICE.xlsx.
-#> ✔ UA also saved as MY_FOREST_MATRICE_20260213T104348.xlsx for safety.
+#> ✔ UA also saved as MY_FOREST_MATRICE_20260213T110758.xlsx for safety.
 parca <- seq_read("parca", seq_dir)
 
 tm_tiles("OpenStreetMap")+

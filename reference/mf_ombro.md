@@ -14,7 +14,7 @@ mf_ombro(clim, periods = c(30, 5))
 - clim:
 
   `data.frame` Raw climatology data from
-  [`mf_get_climatology()`](https://mucau.github.io/Rsequoia2/reference/mf_get_climatology.md)
+  [`mf_get_climatology()`](https://sequoiapp.github.io/Rsequoia2/reference/mf_get_climatology.md)
 
 - periods:
 

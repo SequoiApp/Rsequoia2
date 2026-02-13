@@ -1,6 +1,6 @@
 # Download climatological station fiche
 
-Downloads the climatological fiche (PDF) of the nearest Météo-France
+Downloads the climatological fiche (PDF) of the nearest Meteo-France
 station to the provided geometry.
 
 ## Usage

@@ -1,4 +1,4 @@
-# Parcelles Cadastrales
+# Parcelles Cadastrales (FR)
 
 ``` r
 library(Rsequoia2)
@@ -17,7 +17,7 @@ Cette vignette montre comment récupérer des parcelles cadastrales avec
 
 `Rsequoia2` permet de télécharger les parcelles cadastrales à partir de
 leur IDU à l’aide de la fonction
-[`get_parca()`](https://mucau.github.io/Rsequoia2/reference/get_parca.md).
+[`get_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/get_parca.md).
 
 *Remarque :* L’IDU est un code à 14 caractères qui identifie de manière
 unique une parcelle cadastrale en France.
@@ -51,7 +51,7 @@ tm_layout(bg = F)
 
 ![](cadastral-parcels-fr_files/figure-html/single_idu-1.png)
 
-[`get_parca()`](https://mucau.github.io/Rsequoia2/reference/get_parca.md)
+[`get_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/get_parca.md)
 est vectorisé donc plusieurs idu peuvent être fournis.
 
 ``` r
@@ -68,7 +68,7 @@ tm_shape(cp)+
 
 ## BDP et lieux-dits
 
-[`get_parca()`](https://mucau.github.io/Rsequoia2/reference/get_parca.md)
+[`get_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/get_parca.md)
 propose deux arguments : `bdp_geom` et `lieu_dit`.
 
 ### `bdp_geom` - BD Parcellaire
@@ -85,7 +85,7 @@ sans toutefois garantir une correspondance parfaite avec les limites
 cadastrales légales.
 
 Pour utiliser les géométries issues de la BDP avec
-[`get_parca()`](https://mucau.github.io/Rsequoia2/reference/get_parca.md),
+[`get_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/get_parca.md),
 définissez l’argument `bdp_geom = TRUE`. Lorsque la géométrie BDP existe
 pour un IDU donné, elle remplace automatiquement la géométrie Etalab
 correspondante.
@@ -116,7 +116,7 @@ récupérées correspondent bien à la zone géographique attendue.
 
 Par défaut, les parcelles cadastrales Etalab ne contiennent pas
 l’information de lieu-dit. Cependant, un jeu de données existe, et
-[`get_parca()`](https://mucau.github.io/Rsequoia2/reference/get_parca.md)
+[`get_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/get_parca.md)
 permet d’intersecter cette couche lorsque que `lieu-dit = TRUE`
 
 \*/!\* : cette jointure spatiale peut être relativement longue pour un
@@ -141,7 +141,7 @@ tm_shape(with_lieu_dit)+
 ## Fonctionnement dans un processus Sequoia
 
 Comme présenté précédemment,
-[`get_parca()`](https://mucau.github.io/Rsequoia2/reference/get_parca.md)
+[`get_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/get_parca.md)
 permet de récupérer directement les parcelles cadastrales à partir de
 leur IDU. Cependant, renseigner manuellement tous les IDU dans R est
 souvent peu pratique, et les utilisateurs de Sequoia travaillent
@@ -149,7 +149,7 @@ rarement directement avec ces identifiants.
 
 À la place, les parcelles cadastrales sont définies à partir d’une
 matrice Excel Sequoia (`*_matrice.xlsx`), et la fonction
-[`seq_parca()`](https://mucau.github.io/Rsequoia2/reference/seq_parca.md)
+[`seq_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parca.md)
 récupère automatiquement l’ensemble des parcelles à partir de cette
 matrice.
 
@@ -157,7 +157,7 @@ Un workflow typique est donc le suivant :
 
 - Créer ou compléter la matrice Excel ;
 - Appeler
-  [`seq_parca()`](https://mucau.github.io/Rsequoia2/reference/seq_parca.md)
+  [`seq_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parca.md)
   ;
 - Laisser Sequoia gérer automatiquement le reste.
 
@@ -189,14 +189,14 @@ my_forest_dir <- file.path(tempdir(), "MY_FOREST")
 dir.create(my_forest_dir)
 
 matrice_path <- create_matrice(my_forest_dir, id = "MY_FOREST")
-#> ✔ Excel file created at: /tmp/Rtmp3QmhVz/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/RtmpoC3vw2/MY_FOREST/MY_FOREST_matrice.xlsx
 ```
 
 ### 2. Récupération des parcelles avec Sequoia
 
 Une fois la matrice préparée, l’ensemble du processus cadastral est pris
 en charge par
-[`seq_parca()`](https://mucau.github.io/Rsequoia2/reference/seq_parca.md).
+[`seq_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parca.md).
 
 Cette fonction :
 
@@ -232,7 +232,7 @@ parca_path <- seq_parca(sequoia_dir)
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 9 features saved to 1_SEQUOIA/ECKMUHL_SEQ_PARCA_poly.gpkg.
 #> ✔ Table "x.seq.matrice" saved to ECKMUHL_MATRICE.xlsx.
-#> ✔ UA also saved as ECKMUHL_matrice_20260213T104226.xlsx for safety.
+#> ✔ UA also saved as ECKMUHL_matrice_20260213T110642.xlsx for safety.
 
 # lecture directe depuis le chemin retourné
 parca <- read_sf(parca_path)
