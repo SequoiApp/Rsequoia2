@@ -54,6 +54,5 @@ test_that("seq_geol() works for one dep", {
     path <- layer_info$path
     expect_length(list.files(file.path(seq_cache, path), pattern = "\\.qml$"), 1)
   })
+
 })
-
-

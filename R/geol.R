@@ -193,7 +193,8 @@ seq_geol <- function(dirname = ".", cache = NULL, verbose = TRUE, overwrite = FA
 
   # BDCHARM50 QML ----
   if (is.null(cache)){
-    cache <- tools::R_user_dir("Rsequoia2", which = "cache")
+    cache <- tools::R_user_dir("Rsequoia2", which = "cache") |>
+      file.path("geology")
     dir.create(cache, recursive = TRUE, showWarnings = FALSE)
   }
 
