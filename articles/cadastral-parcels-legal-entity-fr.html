@@ -111,11 +111,10 @@ dans plusieurs communes du département.</p>
 <span></span>
 <span><span class="va">legal_entity_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_legal_entity.html">get_legal_entity</a></span><span class="op">(</span><span class="va">insee</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading legal entity datasets...</span></span>
-<span><span class="co">#&gt; ⠙ 7 extracted | 349 MB ( 84 MB/s) | 4.2s</span></span>
-<span><span class="co">#&gt; ⠹ 14 extracted | 650 MB (113 MB/s) | 5.8s</span></span>
-<span><span class="co">#&gt; ⠸ 33 extracted | 1.4 GB (160 MB/s) | 8.8s</span></span>
-<span><span class="co">#&gt; ⠙ 23 extracted | 859 MB (205 MB/s) | 4.2s</span></span>
-<span><span class="co">#&gt; ⠹ 40 extracted | 1.6 GB (225 MB/s) | 7.2s</span></span>
+<span><span class="co">#&gt; ⠙ 17 extracted | 825 MB (255 MB/s) | 3.2s</span></span>
+<span><span class="co">#&gt; ⠹ 39 extracted | 1.5 GB (215 MB/s) | 7s</span></span>
+<span><span class="co">#&gt; ⠙ 28 extracted | 1.0 GB (254 MB/s) | 4.1s</span></span>
+<span><span class="co">#&gt; ⠹ 46 extracted | 1.9 GB (263 MB/s) | 7.1s</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Data available at: <span style="color: #0000BB;">/home/runner/.cache/R/Rsequoia2/legal_entity</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Reading CSV files...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Preparing CSV files...</span></span>
@@ -228,7 +227,7 @@ manuelle dans Excel.</p>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> No area inconsistencies (cadastre vs GIS) detected.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Layer <span style="color: #0000BB;">"v.seq.parca.poly"</span> with 13 features saved to <span style="color: #0000BB;">1_SEQUOIA/MY_FOREST_SEQ_PARCA_poly.gpkg</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Table <span style="color: #0000BB;">"x.seq.matrice"</span> saved to <span style="color: #0000BB;">MY_FOREST_MATRICE.xlsx</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> UA also saved as <span style="color: #0000BB;">MY_FOREST_MATRICE_20260213T110733.xlsx</span> for safety.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> UA also saved as <span style="color: #0000BB;">MY_FOREST_MATRICE_20260213T140411.xlsx</span> for safety.</span></span>
 <span><span class="va">parca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/seq_read.html">seq_read</a></span><span class="op">(</span><span class="st">"parca"</span>, <span class="va">seq_dir</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_basemap.html" class="external-link">tm_tiles</a></span><span class="op">(</span><span class="st">"OpenStreetMap"</span><span class="op">)</span><span class="op">+</span></span>
