@@ -32,18 +32,18 @@ A `data.frame`.
 
 ## Details
 
-The search relies on a text–normalization step applied to both the
+The search relies on a text-normalization step applied to both the
 inputs and the corresponding columns of the matrice. This makes the
 search robust to accents, punctuation, spacing irregularities and case
 differences.
 
 **Examples of normalization:**
 
-- `"État / Forêts"` → `"ETATFORETS"`
+- `"État / Forêts"` -\> `"ETATFORETS"`
 
-- `" Le Bois-de l'Orme "` → `"LEBOISDELORME"`
+- `" Le Bois-de l'Orme "` -\> `"LEBOISDELORME"`
 
-- `"Société du Chêne"` → `"SOCIETEDUCHENE"`
+- `"Société du Chêne"` -\> `"SOCIETEDUCHENE"`
 
 ## Examples
 

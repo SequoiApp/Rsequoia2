@@ -3,10 +3,14 @@
 <url><loc>https://mucau.github.io/Rsequoia2/CODE_OF_CONDUCT.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/LICENSE.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/articles/analysis_units.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/articles/cadastral-parcels-fr.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/articles/cadastral-parcels-legal-entity-fr.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/articles/cadastral-parcels-legal-entity.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/articles/cadastral-parcels.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/articles/index.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/articles/sequoia-fr.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/articles/sequoia.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/articles/vecteurs.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/authors.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/index.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/create_empty_sf.html</loc></url>
@@ -14,6 +18,10 @@
 <url><loc>https://mucau.github.io/Rsequoia2/reference/define_column_positions.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/download_brgm.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/download_legal_entity.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/drias_etp.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/drias_ombro.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/drias_read_metadata.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/drias_read_table.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/extract_column.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/extract_row.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/extract_rows.html</loc></url>
@@ -21,6 +29,7 @@
 <url><loc>https://mucau.github.io/Rsequoia2/reference/extract_visual_data.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/filter_column_headers.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/format_legal_entity.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/get_accessibility.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_aspect.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_brgm.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_chm.html</loc></url>
@@ -30,9 +39,6 @@
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_com_poly.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_curves.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_dem.html</loc></url>
-<url><loc>https://mucau.github.io/Rsequoia2/reference/get_drias_abstract.html</loc></url>
-<url><loc>https://mucau.github.io/Rsequoia2/reference/get_drias_metadata.html</loc></url>
-<url><loc>https://mucau.github.io/Rsequoia2/reference/get_drias_table.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_dsm.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_hydro_line.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/get_hydro_point.html</loc></url>
@@ -75,6 +81,11 @@
 <url><loc>https://mucau.github.io/Rsequoia2/reference/idu_split.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/index.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/is_valid_row.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/mf_get_climate_fiche.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/mf_get_climatology.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/mf_get_nearest_station.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/mf_ombro.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/mf_precipitation.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/normalize_legal_entity.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/pad_left.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/parca_check_area.html</loc></url>
@@ -91,6 +102,7 @@
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq1_update.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_access.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_boundaries.html</loc></url>
+<url><loc>https://mucau.github.io/Rsequoia2/reference/seq_climate.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_com.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_curves.html</loc></url>
 <url><loc>https://mucau.github.io/Rsequoia2/reference/seq_elevation.html</loc></url>

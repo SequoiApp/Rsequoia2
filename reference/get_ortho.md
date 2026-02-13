@@ -29,9 +29,9 @@ get_ortho(
 
   `character`; Type of orthophoto to download. Must be one of:
 
-  - `"rgb"` — true-color orthophoto
+  - `"rgb"` - true-color orthophoto
 
-  - `"irc"` — near-infrared orthophoto
+  - `"irc"` - near-infrared orthophoto
 
 - buffer:
 

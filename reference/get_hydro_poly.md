@@ -18,7 +18,7 @@ get_hydro_poly(x)
 
 An `sf` object containing hydrographic polygons with two fields:
 
-- `TYPE` — hydrographic class
+- `TYPE` - hydrographic class
 
   - `RSO` = Reservoir or water tower
 
@@ -26,9 +26,9 @@ An `sf` object containing hydrographic polygons with two fields:
 
   - `SFI` = Intermittent hydrographic surface
 
-- `NATURE` — Original BDTOPO nature field
+- `NATURE` - Original BDTOPO nature field
 
-- `NAME` — Official hydrographic name (when available)
+- `NAME` - Official hydrographic name (when available)
 
 ## Details
 

@@ -19,7 +19,7 @@ get_road(x)
 An `sf` object of type `LINESTRING` containing road sections with
 standardized fields, including:
 
-- `TYPE` — Road section type code, deduced from surface, numbering and
+- `TYPE` - Road section type code, deduced from surface, numbering and
   importance attributes:
 
   - `RN` = National road (autoroutes, European roads, numbered roads
@@ -34,12 +34,12 @@ standardized fields, including:
 
   - `PN` = Natural path (tracks, trails, footpaths)
 
-- `NATURE` — Original BDTOPO road nature (surface / usage description)
+- `NATURE` - Original BDTOPO road nature (surface / usage description)
 
-- `NAME` — Road identifier, taken from `cpx_numero` when available,
+- `NAME` - Road identifier, taken from `cpx_numero` when available,
   otherwise from `cpx_toponyme_route_nommee`
 
-- `SOURCE` — Data source (`BDTOPO V3`)
+- `SOURCE` - Data source (`BDTOPO V3`)
 
 ## Details
 

@@ -35,7 +35,7 @@ Invisibly returns a named list of file paths written by
 The access point layer is an empty layer : user must point access
 themselves. The layer is written to disk using
 [`seq_write()`](https://mucau.github.io/Rsequoia2/reference/seq_write.md)
-with the key `"v.acces.point"`.
+with the key `"v.access.entry.point"`.
 
 ## See also
 

@@ -40,8 +40,8 @@ three/four-part structure such as `"v.seq.parca.poly"` or
 only the third element is returned (s). This provides a short, semantic
 identifier for internal use.
 
-    "v.seq.parca.poly" → "parca"
-    "r.ortho.irc"      → "irc"
+    "v.seq.parca.poly" -> "parca"
+    "r.ortho.irc"      -> "irc"
 
 If multiple full keys reduce to the same name, the function aborts to
 prevent ambiguity.

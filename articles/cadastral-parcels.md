@@ -186,7 +186,7 @@ my_forest_dir <- file.path(tempdir(), "MY_FOREST")
 dir.create(my_forest_dir)
 
 matrice_path <- create_matrice(my_forest_dir, id = "MY_FOREST")
-#> ✔ Excel file created at: /tmp/RtmpekGmAZ/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/RtmpFmD0fP/MY_FOREST/MY_FOREST_matrice.xlsx
 ```
 
 You can then manually fill the Excel file.
@@ -209,7 +209,7 @@ formatted “\*\_matrice.xlsx” file inside a Sequoia directory, then let
 [`seq_parca()`](https://mucau.github.io/Rsequoia2/reference/seq_parca.md)
 process it.
 
-#### Step 1 — Set up a Sequoia directory and copy the example matrix into it
+#### Step 1 - Set up a Sequoia directory and copy the example matrix into it
 
 ``` r
 matrice <- read_xlsx(system.file("extdata/ECKMUHL_matrice.xlsx", package = "Rsequoia2"))
@@ -220,7 +220,7 @@ dir.create(sequoia_dir)
 write_xlsx(matrice, file.path(sequoia_dir, "ECKMUHL_matrice.xlsx"))
 ```
 
-#### Step 2 — Run seq_parca() and load the resulting parcels
+#### Step 2 - Run seq_parca() and load the resulting parcels
 
 ``` r
 parca_path <- seq_parca(sequoia_dir)
@@ -228,6 +228,8 @@ parca_path <- seq_parca(sequoia_dir)
 #> ✔ 9 of 9 ETALAB geom successfully replaced with BDP geom.
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 9 features saved to 1_SEQUOIA/ECKMUHL_SEQ_PARCA_poly.gpkg.
+#> ✔ Table "x.seq.matrice" saved to ECKMUHL_MATRICE.xlsx.
+#> ✔ UA also saved as ECKMUHL_matrice_20260213T104434.xlsx for safety.
 
 # directly read parca form parca path
 parca <- read_sf(parca_path)

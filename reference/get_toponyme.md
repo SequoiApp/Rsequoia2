@@ -26,7 +26,7 @@ get_toponyme(x, verbose = verbose)
 An `sf` object containing toponymic point features with standardized
 attribute fields:
 
-- `TYPE` — Toponym class
+- `TYPE` - Toponym class
 
   - `HYD` = Hydrographic toponym
 
@@ -34,11 +34,11 @@ attribute fields:
 
   - `TYP` = Other toponyms
 
-- `NATURE` — Original BDTOPO object nature
+- `NATURE` - Original BDTOPO object nature
 
-- `NAME` — Official toponym name (when available)
+- `NAME` - Official toponym name (when available)
 
-- `SOURCE` — Data source identifier (`IGNF_BDTOPO_V3`)
+- `SOURCE` - Data source identifier (`IGNF_BDTOPO_V3`)
 
 ## Details
 

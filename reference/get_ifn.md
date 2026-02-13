@@ -24,9 +24,9 @@ get_ifn(x, type = c("ser", "ser_ar", "rfn", "rfd", "zp"), cache = NULL)
 
   - `"ser_ar"`: sylvo-écorégions (aggregated regions)
 
-  - `"rfn"`: réseau forestier national
+  - `"rfn"`: région forestière nationale
 
-  - `"rfd"`: réseau forestier départemental
+  - `"rfd"`: région forestière départementale
 
   - `"zp"`: zones de production
 

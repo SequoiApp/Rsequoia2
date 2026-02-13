@@ -19,7 +19,7 @@ get_infra_poly(x)
 An `sf` object of type `POLYGON` containing infrastructure features with
 standardized fields, including:
 
-- `TYPE` — Infrastructure type code:
+- `TYPE` - Infrastructure type code:
 
   - `BAT` = Building
 
@@ -31,13 +31,13 @@ standardized fields, including:
 
   - `SPO` = Sports ground
 
-  - `VIL` = Urbanized area (importance 1–2)
+  - `VIL` = Urbanized area (importance 1-2)
 
   - `HAB` = Residential area
 
-- `NAME` — Toponym when available
+- `NAME` - Toponym when available
 
-- `SOURCE` — Data source (`IGNF_BDTOPO_V3`)
+- `SOURCE` - Data source (`IGNF_BDTOPO_V3`)
 
 ## Details
 

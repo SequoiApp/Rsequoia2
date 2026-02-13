@@ -19,7 +19,7 @@ get_infra_line(x)
 An `sf` object of type `LINESTRING` containing linear infrastructure
 features with standardized fields, including:
 
-- `TYPE` — Infrastructure type code:
+- `TYPE` - Infrastructure type code:
 
   - `CST` = Linear construction
 
@@ -29,11 +29,11 @@ features with standardized fields, including:
 
   - `VFE` = Railway line
 
-- `NAME` — Toponym when available
+- `NAME` - Toponym when available
 
-- `NATURE` — Additional attribute (e.g. voltage for power lines)
+- `NATURE` - Additional attribute (e.g. voltage for power lines)
 
-- `SOURCE` — Data source (`IGNF_BDTOPO_V3`)
+- `SOURCE` - Data source (`IGNF_BDTOPO_V3`)
 
 ## Details
 

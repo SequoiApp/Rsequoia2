@@ -19,7 +19,7 @@ get_infra_point(x)
 An `sf` object of type `POINT` containing point infrastructure features
 with standardized fields, including:
 
-- `TYPE` — Infrastructure type code derived from BDTOPO nature values:
+- `TYPE` - Infrastructure type code derived from BDTOPO nature values:
 
   - `PYL` = Pylon / antenna
 
@@ -37,9 +37,9 @@ with standardized fields, including:
 
   - `ORO` = Other orographic detail
 
-- `NAME` — Toponym when available
+- `NAME` - Toponym when available
 
-- `SOURCE` — Data source (`IGNF_BDTOPO_V3`)
+- `SOURCE` - Data source (`IGNF_BDTOPO_V3`)
 
 ## Details
 

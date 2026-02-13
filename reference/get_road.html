@@ -19,9 +19,13 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/analysis_units.html">Analysis units</a></li>
-    <li><a class="dropdown-item" href="../articles/cadastral-parcels-legal-entity.html">Cadastral parcels - legal entity</a></li>
+    <li><a class="dropdown-item" href="../articles/cadastral-parcels-fr.html">Parcelles Cadastrales</a></li>
+    <li><a class="dropdown-item" href="../articles/cadastral-parcels-legal-entity-fr.html">Parcelles cadastrales - Personne morale (FR)</a></li>
+    <li><a class="dropdown-item" href="../articles/cadastral-parcels-legal-entity.html">Cadastral parcels - legal entity (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/cadastral-parcels.html">Cadastral parcels</a></li>
+    <li><a class="dropdown-item" href="../articles/sequoia-fr.html">Sequoia</a></li>
     <li><a class="dropdown-item" href="../articles/sequoia.html">Sequoia</a></li>
+    <li><a class="dropdown-item" href="../articles/vecteurs.html">Téléchargement de données</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -58,7 +62,7 @@
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>An <code>sf</code> object of type <code>LINESTRING</code> containing road sections
-with standardized fields, including:</p><ul><li><p><code>TYPE</code> — Road section type code, deduced from surface, numbering
+with standardized fields, including:</p><ul><li><p><code>TYPE</code> - Road section type code, deduced from surface, numbering
 and importance attributes:</p><ul><li><p><code>RN</code> = National road (autoroutes, European roads, numbered roads
 starting with <code>A</code>, <code>E</code>, <code>N</code>, or departmental roads numbered &gt; 900,
 as well as major slip roads)</p></li>
@@ -67,10 +71,10 @@ as well as major slip roads)</p></li>
 <li><p><code>RF</code> = Forest or gravel road (unpaved / empierrée)</p></li>
 <li><p><code>PN</code> = Natural path (tracks, trails, footpaths)</p></li>
 </ul></li>
-<li><p><code>NATURE</code> — Original BDTOPO road nature (surface / usage description)</p></li>
-<li><p><code>NAME</code> — Road identifier, taken from <code>cpx_numero</code> when available,
+<li><p><code>NATURE</code> - Original BDTOPO road nature (surface / usage description)</p></li>
+<li><p><code>NAME</code> - Road identifier, taken from <code>cpx_numero</code> when available,
 otherwise from <code>cpx_toponyme_route_nommee</code></p></li>
-<li><p><code>SOURCE</code> — Data source (<code>BDTOPO V3</code>)</p></li>
+<li><p><code>SOURCE</code> - Data source (<code>BDTOPO V3</code>)</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

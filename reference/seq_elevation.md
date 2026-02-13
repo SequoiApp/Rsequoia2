@@ -58,20 +58,20 @@ one per `type`.
 
 This function is a high-level convenience wrapper around:
 
-- [`get_dem()`](https://mucau.github.io/Rsequoia2/reference/get_dem.md)
-  — Digital Elevation Model
+- [`get_dem()`](https://mucau.github.io/Rsequoia2/reference/get_dem.md) -
+  Digital Elevation Model
 
-- [`get_dsm()`](https://mucau.github.io/Rsequoia2/reference/get_dsm.md)
-  — Digital Surface Model
+- [`get_dsm()`](https://mucau.github.io/Rsequoia2/reference/get_dsm.md) -
+  Digital Surface Model
 
-- [`get_chm()`](https://mucau.github.io/Rsequoia2/reference/get_chm.md)
-  — Canopy Height Model
+- [`get_chm()`](https://mucau.github.io/Rsequoia2/reference/get_chm.md) -
+  Canopy Height Model
 
-- [`get_slope()`](https://mucau.github.io/Rsequoia2/reference/get_slope.md)
-  — Slope raster
+- [`get_slope()`](https://mucau.github.io/Rsequoia2/reference/get_slope.md) -
+  Slope raster
 
-- [`get_aspect()`](https://mucau.github.io/Rsequoia2/reference/get_aspect.md)
-  — Aspect raster
+- [`get_aspect()`](https://mucau.github.io/Rsequoia2/reference/get_aspect.md) -
+  Aspect raster
 
 It automatically reads the project's `parca` layer, downloads the
 necessary elevation data for its extent (with an optional buffer),

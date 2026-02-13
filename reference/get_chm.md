@@ -1,6 +1,6 @@
 # Compute Canopy Height Model (CHM)
 
-Computes a **Canopy Height Model** (CHM = DSM − DEM) either by:
+Computes a **Canopy Height Model** (CHM = DSM - DEM) either by:
 
 - downloading the necessary DEM and DSM from IGN WMS services using `x`,
   or

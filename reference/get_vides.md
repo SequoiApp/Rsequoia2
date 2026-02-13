@@ -20,10 +20,10 @@ get_vides(x)
 An `sf` object of type `POLYGON` containing cadastral gaps with
 standardized fields, including:
 
-- `TYPE` — Empty, to complete
+- `TYPE` - Empty, to complete
 
-- `NATURE` — Empty
+- `NATURE` - Empty
 
-- `NAME` — Empty, to complete
+- `NAME` - Empty, to complete
 
-- `SOURCE` — Empty
+- `SOURCE` - Empty

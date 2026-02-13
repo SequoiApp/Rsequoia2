@@ -52,7 +52,7 @@ setwd(sequoia_dir)
 `Rsequoia2` provides several ways to generate this fundamental file:
 
 - A manually filled Excel file (see Cadastral Parcels article)
-- Using legal-entity open data (see Cadastral Parcels – Legal Entity
+- Using legal-entity open data (see Cadastral Parcels - Legal Entity
   article)
 - Generating the file from DGFiP PDF matrices
 

@@ -40,8 +40,8 @@ stating that a forest split by a path or narrow road is legally
 considered a single continuous stand
 
 To reflect this, small linear gaps are removed using the sequence
-*buffer → union → unbuffer*, applied with the distance given by `tol`.
-Any gap narrower than `2 * tol` is closed.
+*buffer -\> union -\> unbuffer*, applied with the distance given by
+`tol`. Any gap narrower than `2 * tol` is closed.
 
 **Output layers** The function produces six layers:
 

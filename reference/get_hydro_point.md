@@ -20,15 +20,15 @@ get_hydro_point(x)
 
 An `sf` object containing hydrographic point features with four fields:
 
-- `TYPE` — hydrographic class
+- `TYPE` - hydrographic class
 
   - `MAR` = Pond
 
-- `NATURE` — Original BDTOPO nature field
+- `NATURE` - Original BDTOPO nature field
 
-- `NAME` — Official hydrographic name (when available)
+- `NAME` - Official hydrographic name (when available)
 
-- `ROTATION` — Rotation or orientation
+- `ROTATION` - Rotation or orientation
 
 ## Details
 

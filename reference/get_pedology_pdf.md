@@ -6,29 +6,19 @@ the INRA soil map repository.
 ## Usage
 
 ``` r
-get_pedology_pdf(
-  pedology,
-  out_dir = "pedology_pdf",
-  overwrite = FALSE,
-  verbose = TRUE
-)
+get_pedology_pdf(id_ucs, dirname = NULL, verbose = TRUE)
 ```
 
 ## Arguments
 
-- pedology:
+- id_ucs:
 
-  An object (typically an `sf` object get by
-  [`get_pedology()`](https://mucau.github.io/Rsequoia2/reference/get_pedology.md))
-  containing an `id_ucs` field used to identify pedology reports.
+  `character` used to identify pedology reports.
 
-- out_dir:
+- dirname:
 
-  Output directory where PDF files are saved.
-
-- overwrite:
-
-  `logical`; whether to overwrite existing files. Defaults to `FALSE`.
+  `character`; directory where the PDF will be saved. Defaults to
+  [`tools::R_user_dir()`](https://rdrr.io/r/tools/userdir.html)
 
 - verbose:
 

@@ -29,9 +29,9 @@ seq_ortho(
   `character` One or several orthophoto types to download. Must be one
   or both of:
 
-  - `"rgb"` — true-color orthophoto
+  - `"rgb"` - true-color orthophoto
 
-  - `"irc"` — near-infrared orthophoto
+  - `"irc"` - near-infrared orthophoto
 
 - buffer:
 

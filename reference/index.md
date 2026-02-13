@@ -15,6 +15,22 @@
   : Download and cache cadastral data for legal entities ("Personnes
   Morales")
 
+- [`drias_etp()`](https://mucau.github.io/Rsequoia2/reference/drias_etp.md)
+  : Compute monthly precipitation, evapotranspiration and water balance
+  from DRIAS projections
+
+- [`drias_ombro()`](https://mucau.github.io/Rsequoia2/reference/drias_ombro.md)
+  : Compute ombrothermic climatology summaries
+
+- [`drias_read_metadata()`](https://mucau.github.io/Rsequoia2/reference/drias_read_metadata.md)
+  : Parse DRIAS metadata from a text file
+
+- [`drias_read_table()`](https://mucau.github.io/Rsequoia2/reference/drias_read_table.md)
+  : Parse DRIAS raw data from a text file
+
+- [`get_accessibility()`](https://mucau.github.io/Rsequoia2/reference/get_accessibility.md)
+  : Retrieve forest accessibility features (porter or skidder)
+
 - [`get_aspect()`](https://mucau.github.io/Rsequoia2/reference/get_aspect.md)
   : Compute a Aspect Raster from a DEM
 
@@ -41,15 +57,6 @@
 
 - [`get_dem()`](https://mucau.github.io/Rsequoia2/reference/get_dem.md)
   : Download Digital Elevation Model (DEM) raster from IGN RGEAlti
-
-- [`get_drias_abstract()`](https://mucau.github.io/Rsequoia2/reference/get_drias_abstract.md)
-  : Summarize a DRIAS index by period and month
-
-- [`get_drias_metadata()`](https://mucau.github.io/Rsequoia2/reference/get_drias_metadata.md)
-  : Parse DRIAS metadata from a text file
-
-- [`get_drias_table()`](https://mucau.github.io/Rsequoia2/reference/get_drias_table.md)
-  : Parse DRIAS raw data from a text file
 
 - [`get_dsm()`](https://mucau.github.io/Rsequoia2/reference/get_dsm.md)
   : Download Digital Surface Model (DSM) raster from IGN RGEAlti
@@ -155,6 +162,21 @@
 
   Retrieve cadastral gaps around the *PARCA*
 
+- [`mf_get_climate_fiche()`](https://mucau.github.io/Rsequoia2/reference/mf_get_climate_fiche.md)
+  : Download climatological station fiche
+
+- [`mf_get_climatology()`](https://mucau.github.io/Rsequoia2/reference/mf_get_climatology.md)
+  : Download monthly climatology from Météo-France
+
+- [`mf_get_nearest_station()`](https://mucau.github.io/Rsequoia2/reference/mf_get_nearest_station.md)
+  : Get nearest Météo-France stations
+
+- [`mf_ombro()`](https://mucau.github.io/Rsequoia2/reference/mf_ombro.md)
+  : Compute ombrothermic climatology summaries
+
+- [`mf_precipitation()`](https://mucau.github.io/Rsequoia2/reference/mf_precipitation.md)
+  : Compute annual precipitation summaries
+
 - [`parca_check_area()`](https://mucau.github.io/Rsequoia2/reference/parca_check_area.md)
   : Check inconsistencies between cadastral and cartographic areas
 
@@ -197,6 +219,9 @@
   :
 
   Create *FOREST* and *OWNER* object from *PARCA* for a Sequoia project
+
+- [`seq_climate()`](https://mucau.github.io/Rsequoia2/reference/seq_climate.md)
+  : Generate meteorological outputs
 
 - [`seq_com()`](https://mucau.github.io/Rsequoia2/reference/seq_com.md)
   : Generates commune polygon, line and point layers for a Sequoia

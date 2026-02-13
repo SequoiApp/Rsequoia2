@@ -1,14 +1,4 @@
-# Cadastral parcels - legal entity
-
-``` r
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  out.width = "100%",
-  dpi = 300,
-  fig.width = 7.2916667,
-  comment = "#>"
-)
-```
+# Cadastral parcels - legal entity (FR)
 
 ``` r
 library(Rsequoia2)
@@ -63,12 +53,6 @@ selected dep(s) if owner have cadastral parcels accros multiple commune.
 insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
-#> ℹ Downloading legal entity datasets...
-#> ⠙ 21 extracted | 979 MB (206 MB/s) | 4.7s
-#> ⠙ 11 extracted | 416 MB (179 MB/s) | 2.3s
-#> ⠹ 29 extracted | 1.1 GB (203 MB/s) | 5.4s
-#> ⠸ 43 extracted | 1.7 GB (208 MB/s) | 8.4s
-#> ✔ Data available at: /home/runner/.cache/R/Rsequoia2
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
 #> ℹ Generating matrice...
@@ -110,7 +94,7 @@ head(legal_entity_cp)
 After loading the file you can use helpers
 [`search_legal_entity()`](https://mucau.github.io/Rsequoia2/reference/search_legal_entity.md).
 
-This helpers relies on a text–normalization applied to both the inputs
+This helpers relies on a text-normalization applied to both the inputs
 and the corresponding columns of the matrice. This makes the search
 robust to accents, punctuation, spacing irregularities and case
 differences.
@@ -184,6 +168,8 @@ seq_parca(seq_dir)
 #> ✔ 12 of 13 ETALAB geom successfully replaced with BDP geom.
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 13 features saved to 1_SEQUOIA/MY_FOREST_SEQ_PARCA_poly.gpkg.
+#> ✔ Table "x.seq.matrice" saved to MY_FOREST_MATRICE.xlsx.
+#> ✔ UA also saved as MY_FOREST_MATRICE_20260213T104348.xlsx for safety.
 parca <- seq_read("parca", seq_dir)
 
 tm_tiles("OpenStreetMap")+

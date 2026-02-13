@@ -20,17 +20,17 @@ get_hydro_line(x)
 
 An `sf` object containing hydrographic line features with four fields:
 
-- `TYPE` — hydrographic class
+- `TYPE` - hydrographic class
 
   - `RUP` = Permanent hydrographic line
 
   - `RUI` = Intermittent hydrographic line
 
-- `NATURE` — Original BDTOPO nature field
+- `NATURE` - Original BDTOPO nature field
 
-- `NAME` — Official hydrographic name (when available)
+- `NAME` - Official hydrographic name (when available)
 
-- `OFFSET` — Offset information
+- `OFFSET` - Offset information
 
 ## Details
 
