@@ -13,16 +13,16 @@ get_infra_line(x)
 An \code{sf} object of type \code{LINESTRING} containing linear
 infrastructure features with standardized fields, including:
 \itemize{
-\item \code{TYPE} — Infrastructure type code:
+\item \code{TYPE} - Infrastructure type code:
 \itemize{
 \item \code{CST} = Linear construction
 \item \code{LEL} = Power line
 \item \code{ORO} = Orographic line
 \item \code{VFE} = Railway line
 }
-\item \code{NAME} — Toponym when available
-\item \code{NATURE} — Additional attribute (e.g. voltage for power lines)
-\item \code{SOURCE} — Data source (\code{IGNF_BDTOPO_V3})
+\item \code{NAME} - Toponym when available
+\item \code{NATURE} - Additional attribute (e.g. voltage for power lines)
+\item \code{SOURCE} - Data source (\code{IGNF_BDTOPO_V3})
 }
 }
 \description{

@@ -12,14 +12,14 @@ get_hydro_poly(x)
 \value{
 An \code{sf} object containing hydrographic polygons with two fields:
 \itemize{
-\item \code{TYPE} — hydrographic class
+\item \code{TYPE} - hydrographic class
 \itemize{
 \item \code{RSO} = Reservoir or water tower
 \item \code{SFP} = Permanent hydrographic surface
 \item \code{SFI} = Intermittent hydrographic surface
 }
-\item \code{NATURE} — Original BDTOPO nature field
-\item \code{NAME} — Official hydrographic name (when available)
+\item \code{NATURE} - Original BDTOPO nature field
+\item \code{NAME} - Official hydrographic name (when available)
 }
 }
 \description{

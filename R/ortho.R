@@ -7,8 +7,8 @@
 #'
 #' @param x `sf` or `sfc`; Geometry located in France.
 #' @param type `character`; Type of orthophoto to download. Must be one of:
-#'   - `"rgb"` — true-color orthophoto
-#'   - `"irc"` — near-infrared orthophoto
+#'   - `"rgb"` - true-color orthophoto
+#'   - `"irc"` - near-infrared orthophoto
 #' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
 #' the download area.
 #' @param zoom `integer` between 0 and 21. The smaller the zoom level, the less
@@ -121,8 +121,8 @@ get_ortho <- function(
 #'
 #' @param type `character` One or several orthophoto types to download.
 #' Must be one or both of:
-#'   - `"rgb"` — true-color orthophoto
-#'   - `"irc"` — near-infrared orthophoto
+#'   - `"rgb"` - true-color orthophoto
+#'   - `"irc"` - near-infrared orthophoto
 #'
 #' @return A named list of file paths written by [seq_write()], one per `type`.
 #'

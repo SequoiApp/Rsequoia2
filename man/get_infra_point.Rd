@@ -13,7 +13,7 @@ get_infra_point(x)
 An \code{sf} object of type \code{POINT} containing point infrastructure
 features with standardized fields, including:
 \itemize{
-\item \code{TYPE} — Infrastructure type code derived from BDTOPO nature values:
+\item \code{TYPE} - Infrastructure type code derived from BDTOPO nature values:
 \itemize{
 \item \code{PYL} = Pylon / antenna
 \item \code{CLO} = Steeple
@@ -24,8 +24,8 @@ features with standardized fields, including:
 \item \code{GOU} = Sinkhole
 \item \code{ORO} = Other orographic detail
 }
-\item \code{NAME} — Toponym when available
-\item \code{SOURCE} — Data source (\code{IGNF_BDTOPO_V3})
+\item \code{NAME} - Toponym when available
+\item \code{SOURCE} - Data source (\code{IGNF_BDTOPO_V3})
 }
 }
 \description{

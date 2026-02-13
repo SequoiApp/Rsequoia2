@@ -15,7 +15,7 @@ A \code{data.frame} with one row per month and period
 }
 \description{
 Reads a DRIAS climate projection \code{.txt} file and computes the mean monthly
-precipitation (P), potential evapotranspiration (ETP), and water balance (P − ETP)
+precipitation (P), potential evapotranspiration (ETP), and water balance (P - ETP)
 for each projection period.
 }
 \details{

@@ -10,13 +10,13 @@
 #'
 #' @return An `sf` object containing toponymic point features with standardized
 #' attribute fields:
-#'   * `TYPE` — Toponym class
+#'   * `TYPE` - Toponym class
 #'     - `HYD` = Hydrographic toponym
 #'     - `VEG` = Vegetation-related toponym
 #'     - `TYP` = Other toponyms
-#'   * `NATURE` — Original BDTOPO object nature
-#'   * `NAME` — Official toponym name (when available)
-#'   * `SOURCE` — Data source identifier (`IGNF_BDTOPO_V3`)
+#'   * `NATURE` - Original BDTOPO object nature
+#'   * `NAME` - Official toponym name (when available)
+#'   * `SOURCE` - Data source identifier (`IGNF_BDTOPO_V3`)
 #'
 #' @details
 #' The function creates a 1000 m fetch_envelope buffer around the input geometry `x`

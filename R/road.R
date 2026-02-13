@@ -5,7 +5,7 @@
 #'
 #' @return An `sf` object of type `LINESTRING` containing road sections
 #'   with standardized fields, including:
-#'   * `TYPE` — Road section type code, deduced from surface, numbering
+#'   * `TYPE` - Road section type code, deduced from surface, numbering
 #'     and importance attributes:
 #'     - `RN` = National road (autoroutes, European roads, numbered roads
 #'       starting with `A`, `E`, `N`, or departmental roads numbered > 900,
@@ -14,10 +14,10 @@
 #'     - `RC` = Communal road (other paved roads)
 #'     - `RF` = Forest or gravel road (unpaved / empierrée)
 #'     - `PN` = Natural path (tracks, trails, footpaths)
-#'   * `NATURE` — Original BDTOPO road nature (surface / usage description)
-#'   * `NAME` — Road identifier, taken from `cpx_numero` when available,
+#'   * `NATURE` - Original BDTOPO road nature (surface / usage description)
+#'   * `NAME` - Road identifier, taken from `cpx_numero` when available,
 #'     otherwise from `cpx_toponyme_route_nommee`
-#'   * `SOURCE` — Data source (`BDTOPO V3`)
+#'   * `SOURCE` - Data source (`BDTOPO V3`)
 #'
 #' @details
 #' The function retrieves road section layer from
@@ -401,10 +401,10 @@ seq_road <- function(
 #'
 #' @return An `sf` object of type `POLYGON` containing cadastral gaps
 #'   with standardized fields, including:
-#'   * `TYPE` — Empty, to complete
-#'   * `NATURE` — Empty
-#'   * `NAME` — Empty, to complete
-#'   * `SOURCE` — Empty
+#'   * `TYPE` - Empty, to complete
+#'   * `NATURE` - Empty
+#'   * `NAME` - Empty, to complete
+#'   * `SOURCE` - Empty
 #'
 #' @export
 get_vides <- function(x){

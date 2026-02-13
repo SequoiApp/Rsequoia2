@@ -12,14 +12,14 @@ get_hydro_line(x)
 \value{
 An \code{sf} object containing hydrographic line features with four fields:
 \itemize{
-\item \code{TYPE} — hydrographic class
+\item \code{TYPE} - hydrographic class
 \itemize{
 \item \code{RUP} = Permanent hydrographic line
 \item \code{RUI} = Intermittent hydrographic line
 }
-\item \code{NATURE} — Original BDTOPO nature field
-\item \code{NAME} — Official hydrographic name (when available)
-\item \code{OFFSET} — Offset information
+\item \code{NATURE} - Original BDTOPO nature field
+\item \code{NAME} - Official hydrographic name (when available)
+\item \code{OFFSET} - Offset information
 }
 }
 \description{

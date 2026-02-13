@@ -3,12 +3,12 @@
 #' @param x An `sf` object used as the input area.
 #'
 #' @return An `sf` object containing hydrographic polygons with two fields:
-#'   * `TYPE` — hydrographic class
+#'   * `TYPE` - hydrographic class
 #'     - `RSO` = Reservoir or water tower
 #'     - `SFP` = Permanent hydrographic surface
 #'     - `SFI` = Intermittent hydrographic surface
-#'   * `NATURE` — Original BDTOPO nature field
-#'   * `NAME` — Official hydrographic name (when available)
+#'   * `NATURE` - Original BDTOPO nature field
+#'   * `NAME` - Official hydrographic name (when available)
 #'
 #' @details
 #' The function retrieves BDTOPO layers within a 1000 m convex buffer
@@ -87,12 +87,12 @@ get_hydro_poly <- function(x){
 #' @param x An `sf` object used as the input area.
 #'
 #' @return An `sf` object containing hydrographic line features with four fields:
-#'   * `TYPE` — hydrographic class
+#'   * `TYPE` - hydrographic class
 #'     - `RUP` = Permanent hydrographic line
 #'     - `RUI` = Intermittent hydrographic line
-#'   * `NATURE` — Original BDTOPO nature field
-#'   * `NAME` — Official hydrographic name (when available)
-#'   * `OFFSET` — Offset information
+#'   * `NATURE` - Original BDTOPO nature field
+#'   * `NAME` - Official hydrographic name (when available)
+#'   * `OFFSET` - Offset information
 #'
 #' @details
 #' The function retrieves BDTOPO hydrographic line segments
@@ -155,11 +155,11 @@ get_hydro_line <- function(x){
 #' @param x An `sf` object used as the input area.
 #'
 #' @return An `sf` object containing hydrographic point features with four fields:
-#'   * `TYPE` — hydrographic class
+#'   * `TYPE` - hydrographic class
 #'     - `MAR` = Pond
-#'   * `NATURE` — Original BDTOPO nature field
-#'   * `NAME` — Official hydrographic name (when available)
-#'   * `ROTATION` — Rotation or orientation
+#'   * `NATURE` - Original BDTOPO nature field
+#'   * `NAME` - Official hydrographic name (when available)
+#'   * `ROTATION` - Rotation or orientation
 #'
 #' @details
 #' The function retrieves BDTOPO hydrographic point details

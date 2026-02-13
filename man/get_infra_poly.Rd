@@ -13,18 +13,18 @@ get_infra_poly(x)
 An \code{sf} object of type \code{POLYGON} containing infrastructure
 features with standardized fields, including:
 \itemize{
-\item \code{TYPE} — Infrastructure type code:
+\item \code{TYPE} - Infrastructure type code:
 \itemize{
 \item \code{BAT} = Building
 \item \code{CIM} = Cemetery
 \item \code{CST} = Surface construction
 \item \code{AER} = Aerodrome runway
 \item \code{SPO} = Sports ground
-\item \code{VIL} = Urbanized area (importance 1–2)
+\item \code{VIL} = Urbanized area (importance 1-2)
 \item \code{HAB} = Residential area
 }
-\item \code{NAME} — Toponym when available
-\item \code{SOURCE} — Data source (\code{IGNF_BDTOPO_V3})
+\item \code{NAME} - Toponym when available
+\item \code{SOURCE} - Data source (\code{IGNF_BDTOPO_V3})
 }
 }
 \description{

@@ -154,7 +154,7 @@ get_legal_entity <- function(
 #' @importFrom cli cli_abort
 #'
 #' @details
-#' The search relies on a text–normalization step applied to both the inputs and
+#' The search relies on a text-normalization step applied to both the inputs and
 #' the corresponding columns of the matrice. This makes the search robust
 #' to accents, punctuation, spacing irregularities and case differences.
 #'

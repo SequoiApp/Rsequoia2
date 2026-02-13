@@ -15,15 +15,15 @@ get_toponyme(x, verbose = verbose)
 An \code{sf} object containing toponymic point features with standardized
 attribute fields:
 \itemize{
-\item \code{TYPE} — Toponym class
+\item \code{TYPE} - Toponym class
 \itemize{
 \item \code{HYD} = Hydrographic toponym
 \item \code{VEG} = Vegetation-related toponym
 \item \code{TYP} = Other toponyms
 }
-\item \code{NATURE} — Original BDTOPO object nature
-\item \code{NAME} — Official toponym name (when available)
-\item \code{SOURCE} — Data source identifier (\code{IGNF_BDTOPO_V3})
+\item \code{NATURE} - Original BDTOPO object nature
+\item \code{NAME} - Official toponym name (when available)
+\item \code{SOURCE} - Data source identifier (\code{IGNF_BDTOPO_V3})
 }
 }
 \description{

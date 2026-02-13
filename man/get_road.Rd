@@ -13,7 +13,7 @@ get_road(x)
 An \code{sf} object of type \code{LINESTRING} containing road sections
 with standardized fields, including:
 \itemize{
-\item \code{TYPE} — Road section type code, deduced from surface, numbering
+\item \code{TYPE} - Road section type code, deduced from surface, numbering
 and importance attributes:
 \itemize{
 \item \code{RN} = National road (autoroutes, European roads, numbered roads
@@ -24,10 +24,10 @@ as well as major slip roads)
 \item \code{RF} = Forest or gravel road (unpaved / empierrée)
 \item \code{PN} = Natural path (tracks, trails, footpaths)
 }
-\item \code{NATURE} — Original BDTOPO road nature (surface / usage description)
-\item \code{NAME} — Road identifier, taken from \code{cpx_numero} when available,
+\item \code{NATURE} - Original BDTOPO road nature (surface / usage description)
+\item \code{NAME} - Road identifier, taken from \code{cpx_numero} when available,
 otherwise from \code{cpx_toponyme_route_nommee}
-\item \code{SOURCE} — Data source (\verb{BDTOPO V3})
+\item \code{SOURCE} - Data source (\verb{BDTOPO V3})
 }
 }
 \description{

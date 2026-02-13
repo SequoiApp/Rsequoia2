@@ -48,9 +48,9 @@ La **Direction Générale des Finances Publiques** (DGFiP) met à disposition un
 
 La fonction `get_legal_entity()` télécharge et formate les données cadastrales pour s'intégrer dans un processus Sequoia.. 
 
-Les données peuvent être chargées à partir d’un code département ou d’un code INSEE.
+Les données peuvent être chargées à partir d'un code département ou d'un code INSEE.
 
-Le chargement par département peut être plus long, mais il permet d’identifier automatiquement les parcelles d’un propriétaire situées dans plusieurs communes du département.
+Le chargement par département peut être plus long, mais il permet d'identifier automatiquement les parcelles d'un propriétaire situées dans plusieurs communes du département.
 
 ```{r get_legal_entity}
 # cp: cadastrals parcels
@@ -65,13 +65,13 @@ head(legal_entity_cp)
 
 Une fois le fichier chargé, vous pouvez utiliser la fonction utilitaire `search_legal_entity()`.
 
-Cette fonction applique une normalisation ce qui rend la recherche robuste aux différences d’accents, de ponctuation, d’espacement et de casse., par exemple :
+Cette fonction applique une normalisation ce qui rend la recherche robuste aux différences d'accents, de ponctuation, d'espacement et de casse., par exemple :
 
 - "État / Forêts" → "ETATFORETS"
 - " Le Bois-de l'Orme " → "LEBOISDELORME"
 - "Société du Chêne" → "SOCIETEDUCHENE"
 
-L’exemple ci-dessous permet d’identifier tous les GFA (« Groupements Fonciers Agricoles »).
+L'exemple ci-dessous permet d'identifier tous les GFA (« Groupements Fonciers Agricoles »).
 
 ```{r search_legal_entity}
 search_mat <- search_legal_entity(legal_entity_cp, prop = "gfa")
@@ -97,11 +97,11 @@ unique(search_mat[,c("PROPRIETAIRE", "LIEU_DIT")])
 
 ## Enregistrer la matrice pour démarrer un processus Sequoia
 
-Le jeu de données des personnes morales ne contient pas de géométrie. Il sert à générer une matrice Excel (`*_matrice.xlsx`) nécessaire au démarrage d’un processus Sequoia. La fonction `seq_write()` permet de créer ce fichier.
+Le jeu de données des personnes morales ne contient pas de géométrie. Il sert à générer une matrice Excel (`*_matrice.xlsx`) nécessaire au démarrage d'un processus Sequoia. La fonction `seq_write()` permet de créer ce fichier.
 
 Le `data.frame` retourné par `get_legal_entity()` est déjà formaté pour Sequoia, incluant la colonne `"IDENTIFIANT"`.
 
-Il est recommandé de renseigner cette colonne directement dans R avant d’enregistrer la matrice, afin d’éviter toute modification manuelle dans Excel.
+Il est recommandé de renseigner cette colonne directement dans R avant d'enregistrer la matrice, afin d'éviter toute modification manuelle dans Excel.
 
 ```{r save_legal_entity}
 id <- "MY_FOREST"

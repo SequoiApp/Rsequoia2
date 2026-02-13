@@ -14,7 +14,7 @@
 #' Four ARS layers are currently supported:
 #'
 #' - **`captage`**: Drinking-water abstraction points declared by partner
-#' organisations (collectivités, services d’eau). These represent the physical
+#' organisations (collectivités, services d'eau). These represent the physical
 #' points where water is captured for human consumption.
 #' - **`ppi`** : The most restrictive protection zone, directly surrounding the
 #' captage, usually fenced and strictly controlled("Périmètre de Protection Immédiate")

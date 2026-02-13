@@ -28,15 +28,15 @@ tmap_options(scale = 0.75)
 
 # Sequoia
 
-## Qu’est-ce que Sequoia
+## Qu'est-ce que Sequoia
 
-Sequoia est une approche de la gestion forestière, reposant sur des choix assumés afin de guider l’utilisateur vers des pratiques cohérentes et reproductibles. Son objectif est de
+Sequoia est une approche de la gestion forestière, reposant sur des choix assumés afin de guider l'utilisateur vers des pratiques cohérentes et reproductibles. Son objectif est de
 
 - Faciliter le téléchargement des données nécessaires à la gestion forestière ;
 - Normaliser les données (nommage et structure) ;
-- Faciliter l’exploration et l’analyse de ces données.
+- Faciliter l'exploration et l'analyse de ces données.
 
-## Qu’est-ce que le processus Sequoia
+## Qu'est-ce que le processus Sequoia
 
 Un processus Sequoia comprend toujours les étapes suivantes :
 
@@ -44,8 +44,8 @@ Un processus Sequoia comprend toujours les étapes suivantes :
 - Création d'une matrice cadastrales ;
 - Téléchargement des parcelles cadastrales ;
 - Téléchargement des données utiles à la gestion forestière ;
-- Analyse SIG pour créer des unités d’analyse ;
-- Génération des couches de gestion à partir des unités d’analyse.
+- Analyse SIG pour créer des unités d'analyse ;
+- Génération des couches de gestion à partir des unités d'analyse.
 
 Pour vous guider a travers ces différentes étapes, `Rsequoia2` propose la fonction `sequoia()`. Cette dernière ouvre un menu dans la console pour faciliter l'accès aux fonctionnalités.
 
@@ -56,7 +56,7 @@ sequoia()
 Amusez-vous bien !
 ### Définir un répertoire
 
-Toutes les fonctions principale de `Rsequoia2` disposent de l’argument `dirname = "."`, ce qui signifie qu’elles utilisent par défaut le répertoire de travail courant. Il est recommandé de créer un répertoire dédié et de le définir comme répertoire de travail de la session R.
+Toutes les fonctions principale de `Rsequoia2` disposent de l'argument `dirname = "."`, ce qui signifie qu'elles utilisent par défaut le répertoire de travail courant. Il est recommandé de créer un répertoire dédié et de le définir comme répertoire de travail de la session R.
 
 Dans cet exemple, une forêt nommée `"ECKMUHL"` est utilisée :
 
@@ -72,8 +72,8 @@ setwd(sequoia_dir)
 
 `Rsequoia2` propose plusieurs méthodes pour générer ce fichier :
 
-- Création d'une matrice vierge complétée manuellement (voir l’article Parcelles cadastrales);
-- Recherche des parcelles pour les personne morale et génération automatique de la matrice (voir l’article Parcelles cadastrales – Personnes morales);
+- Création d'une matrice vierge complétée manuellement (voir l'article Parcelles cadastrales);
+- Recherche des parcelles pour les personne morale et génération automatique de la matrice (voir l'article Parcelles cadastrales - Personnes morales);
 - Convertion des matrices PDF de la DGFiP en fichier excel
 
 ### Télécharger la géométrie des parcelles cadastrales
@@ -89,11 +89,11 @@ seq_parca()
 `Rsequoia2` propose de nombreux jeux de données, téléchargeables via les fonctions `seq_*` :
 
 - Données environnementales du MNHN (`seq_mnhn()`);
-- Données altimétriques de l’IGN (`seq_elevation()`);
-- Orthophotographies de l’IGN (`seq_ortho()`);
+- Données altimétriques de l'IGN (`seq_elevation()`);
+- Orthophotographies de l'IGN (`seq_ortho()`);
 - Données géologiques du BRGM (`seq_geol()`);
 - Données hydrologiques de la BD Topo IGN (`seq_hydro()`);
-- Données patrimoniales de l’Atlas du Patrimoine (`seq_patrimony()`);
+- Données patrimoniales de l'Atlas du Patrimoine (`seq_patrimony()`);
 - ...
 
 Exemple :
@@ -102,9 +102,9 @@ Exemple :
 seq_mnhn()
 ```
 
-### Unités d’analyse
+### Unités d'analyse
 
-L’étape suivante, après le téléchargement du parca et des jeux de données complémentaires, consiste à créer les unités d’analyse.
+L'étape suivante, après le téléchargement du parca et des jeux de données complémentaires, consiste à créer les unités d'analyse.
 
 Cette couche est générée avec :
 
@@ -112,13 +112,13 @@ Cette couche est générée avec :
 seq_parca_to_ua()
 ```
 
-La couche UA doit alors être travailer sur un logiciel SIG pour qu’elle reflète fidèlement la structure forestière réelle.
+La couche UA doit alors être travailer sur un logiciel SIG pour qu'elle reflète fidèlement la structure forestière réelle.
 
 Ce travail est souvent réalisé en deux étapes :
 - Une photo-interpétation ;
 - Une phase terrain pour préciser
 
-Pour plus de détails, consultez l’article sur les unités d’analyse.
+Pour plus de détails, consultez l'article sur les unités d'analyse.
 
 ### Finalisation de la couche
 
@@ -140,7 +140,7 @@ Cette fonction effectue une série de vérifications et de corrections :
 
 ### Synthèse
 
-La dernière étape consiste à générer des tableaux de synthèse facilitant l’analyse et la rédaction du document de gestion forestière :
+La dernière étape consiste à générer des tableaux de synthèse facilitant l'analyse et la rédaction du document de gestion forestière :
 
 ```{r eval=FALSE}
 seq_summary()
@@ -162,7 +162,7 @@ Toutes les clés disponibles peuvent être listées avec :
 seq_key()
 ```
 
-Pour accéder aux métadonnées d’une couche spécifique :
+Pour accéder aux métadonnées d'une couche spécifique :
 
 ```{r eval=FALSE}
 seq_layer("r.sol.geol")
@@ -180,7 +180,7 @@ Toutes les fonctions principales commencent par `seq_*` (ex : `seq_geol()`, `seq
 
 Ces fonctions ont toutes le même fonctionnement :
 
-- Elles lisent les parcelles cadastrales du projet pour définir l’emprise d’étude ;
+- Elles lisent les parcelles cadastrales du projet pour définir l'emprise d'étude ;
 - Elles téléchargent les données nécessaires ;
 - Elles les enregistrent selon la configuration standardisée (nom et extension) ;
 - Elles renvoient le ou les chemins vers les fichiers générés.

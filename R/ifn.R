@@ -100,7 +100,7 @@ get_ifn <- function(x,
     return(NULL)
   }
 
-  # subset only — no reprojection here
+  # subset only - no reprojection here
   ifn <- ifn[rowSums(idx) > 0, , drop = FALSE]
 
   ifn

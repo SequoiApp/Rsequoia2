@@ -4,16 +4,16 @@
 #'
 #' @return An `sf` object of type `POLYGON` containing infrastructure
 #'   features with standardized fields, including:
-#'   * `TYPE` — Infrastructure type code:
+#'   * `TYPE` - Infrastructure type code:
 #'     - `BAT` = Building
 #'     - `CIM` = Cemetery
 #'     - `CST` = Surface construction
 #'     - `AER` = Aerodrome runway
 #'     - `SPO` = Sports ground
-#'     - `VIL` = Urbanized area (importance 1–2)
+#'     - `VIL` = Urbanized area (importance 1-2)
 #'     - `HAB` = Residential area
-#'   * `NAME` — Toponym when available
-#'   * `SOURCE` — Data source (`IGNF_BDTOPO_V3`)
+#'   * `NAME` - Toponym when available
+#'   * `SOURCE` - Data source (`IGNF_BDTOPO_V3`)
 #'
 #' @details
 #' The function retrieves several polygon infrastructure layers from
@@ -170,14 +170,14 @@ get_infra_poly <- function(x) {
 #'
 #' @return An `sf` object of type `LINESTRING` containing linear
 #'   infrastructure features with standardized fields, including:
-#'   * `TYPE` — Infrastructure type code:
+#'   * `TYPE` - Infrastructure type code:
 #'     - `CST` = Linear construction
 #'     - `LEL` = Power line
 #'     - `ORO` = Orographic line
 #'     - `VFE` = Railway line
-#'   * `NAME` — Toponym when available
-#'   * `NATURE` — Additional attribute (e.g. voltage for power lines)
-#'   * `SOURCE` — Data source (`IGNF_BDTOPO_V3`)
+#'   * `NAME` - Toponym when available
+#'   * `NATURE` - Additional attribute (e.g. voltage for power lines)
+#'   * `SOURCE` - Data source (`IGNF_BDTOPO_V3`)
 #'
 #' @details
 #' The function retrieves linear infrastructure layers from the IGN
@@ -300,7 +300,7 @@ get_infra_line <- function(x) {
 #'
 #' @return An `sf` object of type `POINT` containing point infrastructure
 #'   features with standardized fields, including:
-#'   * `TYPE` — Infrastructure type code derived from BDTOPO nature values:
+#'   * `TYPE` - Infrastructure type code derived from BDTOPO nature values:
 #'     - `PYL` = Pylon / antenna
 #'     - `CLO` = Steeple
 #'     - `CRX` = Cross or calvary
@@ -309,8 +309,8 @@ get_infra_line <- function(x) {
 #'     - `GRO` = Cave
 #'     - `GOU` = Sinkhole
 #'     - `ORO` = Other orographic detail
-#'   * `NAME` — Toponym when available
-#'   * `SOURCE` — Data source (`IGNF_BDTOPO_V3`)
+#'   * `NAME` - Toponym when available
+#'   * `SOURCE` - Data source (`IGNF_BDTOPO_V3`)
 #'
 #' @details
 #' The function retrieves point infrastructure layers from the IGN

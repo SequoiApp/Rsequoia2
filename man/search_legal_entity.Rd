@@ -24,7 +24,7 @@ This function allows searching for parcels in a forest matrix based on
 owner names or location (lieu-dit).
 }
 \details{
-The search relies on a text–normalization step applied to both the inputs and
+The search relies on a text-normalization step applied to both the inputs and
 the corresponding columns of the matrice. This makes the search robust
 to accents, punctuation, spacing irregularities and case differences.
 

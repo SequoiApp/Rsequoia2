@@ -12,13 +12,13 @@ get_hydro_point(x)
 \value{
 An \code{sf} object containing hydrographic point features with four fields:
 \itemize{
-\item \code{TYPE} — hydrographic class
+\item \code{TYPE} - hydrographic class
 \itemize{
 \item \code{MAR} = Pond
 }
-\item \code{NATURE} — Original BDTOPO nature field
-\item \code{NAME} — Official hydrographic name (when available)
-\item \code{ROTATION} — Rotation or orientation
+\item \code{NATURE} - Original BDTOPO nature field
+\item \code{NAME} - Official hydrographic name (when available)
+\item \code{ROTATION} - Rotation or orientation
 }
 }
 \description{

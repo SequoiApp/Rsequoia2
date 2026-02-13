@@ -67,7 +67,7 @@ head(legal_entity_cp)
 
 After loading the file you can use helpers `search_legal_entity()`. 
 
-This helpers relies on a text–normalization applied to both the inputs and the corresponding columns of the matrice. This makes the search robust to accents, punctuation, spacing irregularities and case differences.
+This helpers relies on a text-normalization applied to both the inputs and the corresponding columns of the matrice. This makes the search robust to accents, punctuation, spacing irregularities and case differences.
 
 Below we search all GFA ("Groupement Foncier Agricole").
 

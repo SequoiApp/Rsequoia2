@@ -14,10 +14,10 @@ It must contain a source field with \code{bdp} or \code{etalab} value.}
 An \code{sf} object of type \code{POLYGON} containing cadastral gaps
 with standardized fields, including:
 \itemize{
-\item \code{TYPE} — Empty, to complete
-\item \code{NATURE} — Empty
-\item \code{NAME} — Empty, to complete
-\item \code{SOURCE} — Empty
+\item \code{TYPE} - Empty, to complete
+\item \code{NATURE} - Empty
+\item \code{NAME} - Empty, to complete
+\item \code{SOURCE} - Empty
 }
 }
 \description{

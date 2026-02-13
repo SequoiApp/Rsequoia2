@@ -145,7 +145,7 @@ The following sections explain how to prepare the matrix and how Sequoia process
 The Excel matrix must contain the following columns:
 
 - IDENTIFIANT: Identifier of the forest (usually the forest name)
-- PROPRIETAIRE: Owner’s name
+- PROPRIETAIRE: Owner's name
 - INSEE: Commune INSEE code
 - PREFIXE: Prefix of the cadastral parcel
 - SECTION: Cadastral section
@@ -183,7 +183,7 @@ To illustrate this workflow, we use an internal example matrix shipped with the 
 
 This mirrors what a user would do in practice: place a correctly formatted "*_matrice.xlsx" file inside a Sequoia directory, then let `seq_parca()` process it.
 
-### Step 1 — Set up a Sequoia directory and copy the example matrix into it
+### Step 1 - Set up a Sequoia directory and copy the example matrix into it
 
 ```{r generate_matrice}
 matrice <- read_xlsx(system.file("extdata/ECKMUHL_matrice.xlsx", package = "Rsequoia2"))
@@ -194,7 +194,7 @@ dir.create(sequoia_dir)
 write_xlsx(matrice, file.path(sequoia_dir, "ECKMUHL_matrice.xlsx"))
 ```
 
-### Step 2 — Run seq_parca() and load the resulting parcels
+### Step 2 - Run seq_parca() and load the resulting parcels
 
 ```{r seq_parca, fig.height = 3.5}
 parca_path <- seq_parca(sequoia_dir)

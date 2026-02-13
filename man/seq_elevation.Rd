@@ -41,11 +41,11 @@ Sequoia project directory.
 \details{
 This function is a high-level convenience wrapper around:
 \itemize{
-\item \code{\link[=get_dem]{get_dem()}} — Digital Elevation Model
-\item \code{\link[=get_dsm]{get_dsm()}} — Digital Surface Model
-\item \code{\link[=get_chm]{get_chm()}} — Canopy Height Model
-\item \code{\link[=get_slope]{get_slope()}} — Slope raster
-\item \code{\link[=get_aspect]{get_aspect()}} — Aspect raster
+\item \code{\link[=get_dem]{get_dem()}} - Digital Elevation Model
+\item \code{\link[=get_dsm]{get_dsm()}} - Digital Surface Model
+\item \code{\link[=get_chm]{get_chm()}} - Canopy Height Model
+\item \code{\link[=get_slope]{get_slope()}} - Slope raster
+\item \code{\link[=get_aspect]{get_aspect()}} - Aspect raster
 }
 
 It automatically reads the project's \code{parca} layer, downloads the necessary

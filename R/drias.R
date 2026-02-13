@@ -193,7 +193,7 @@ drias_ombro <- function(txt){
 #' Compute monthly precipitation, evapotranspiration and water balance from DRIAS projections
 #'
 #' Reads a DRIAS climate projection `.txt` file and computes the mean monthly
-#' precipitation (P), potential evapotranspiration (ETP), and water balance (P − ETP)
+#' precipitation (P), potential evapotranspiration (ETP), and water balance (P - ETP)
 #' for each projection period.
 #'
 #' Invalid climate points (where precipitation or evapotranspiration are entirely

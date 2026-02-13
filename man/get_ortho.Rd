@@ -19,8 +19,8 @@ get_ortho(
 
 \item{type}{\code{character}; Type of orthophoto to download. Must be one of:
 \itemize{
-\item \code{"rgb"} — true-color orthophoto
-\item \code{"irc"} — near-infrared orthophoto
+\item \code{"rgb"} - true-color orthophoto
+\item \code{"irc"} - near-infrared orthophoto
 }}
 
 \item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge

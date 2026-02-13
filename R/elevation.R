@@ -119,7 +119,7 @@ get_dsm <- function(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE) {
 
 #' Compute Canopy Height Model (CHM)
 #'
-#' Computes a **Canopy Height Model** (CHM = DSM − DEM) either by:
+#' Computes a **Canopy Height Model** (CHM = DSM - DEM) either by:
 #'   - downloading the necessary DEM and DSM from IGN WMS services using `x`, or
 #'   - using DEM and DSM rasters directly supplied by the user.
 #'
@@ -342,11 +342,11 @@ get_aspect <- function(x = NULL, dem = NULL, agg = 5, verbose = TRUE, ...){
 #' Sequoia project directory.
 #'
 #' This function is a high-level convenience wrapper around:
-#' - [get_dem()] — Digital Elevation Model
-#' - [get_dsm()] — Digital Surface Model
-#' - [get_chm()] — Canopy Height Model
-#' - [get_slope()] — Slope raster
-#' - [get_aspect()] — Aspect raster
+#' - [get_dem()] - Digital Elevation Model
+#' - [get_dsm()] - Digital Surface Model
+#' - [get_chm()] - Canopy Height Model
+#' - [get_slope()] - Slope raster
+#' - [get_aspect()] - Aspect raster
 #'
 #' It automatically reads the project's `parca` layer, downloads the necessary
 #' elevation data for its extent (with an optional buffer), computes all derived

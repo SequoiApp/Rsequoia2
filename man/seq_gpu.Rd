@@ -22,7 +22,7 @@ GPU layers written to disk. Layers with no intersecting features
 are not included.
 }
 \description{
-Retrievesapplicable GPU (Geoportail de l’Urbanisme) layers intersecting
+Retrievesapplicable GPU (Geoportail de l'Urbanisme) layers intersecting
 and surrounding the project area, and writes the resulting layer to disk.
 }
 \details{

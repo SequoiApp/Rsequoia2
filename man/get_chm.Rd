@@ -25,7 +25,7 @@ only when \code{x} is \code{NULL}.}
 A \code{SpatRaster} containing the CHM.
 }
 \description{
-Computes a \strong{Canopy Height Model} (CHM = DSM − DEM) either by:
+Computes a \strong{Canopy Height Model} (CHM = DSM - DEM) either by:
 \itemize{
 \item downloading the necessary DEM and DSM from IGN WMS services using \code{x}, or
 \item using DEM and DSM rasters directly supplied by the user.

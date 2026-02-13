@@ -48,7 +48,7 @@ test_that("get_chm() calls get_dem() and get_dsm() when x is provided", {
   expect_named(chm, "chm")
 })
 
-test_that("get_chm() computes DSM − DEM in manual mode", {
+test_that("get_chm() computes DSM - DEM in manual mode", {
 
   skip_on_os("mac")
 

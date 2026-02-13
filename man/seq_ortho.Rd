@@ -21,8 +21,8 @@ Defaults to the current working directory.}
 \item{type}{\code{character} One or several orthophoto types to download.
 Must be one or both of:
 \itemize{
-\item \code{"rgb"} — true-color orthophoto
-\item \code{"irc"} — near-infrared orthophoto
+\item \code{"rgb"} - true-color orthophoto
+\item \code{"irc"} - near-infrared orthophoto
 }}
 
 \item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
