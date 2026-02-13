@@ -2,7 +2,7 @@
 title: "Téléchargement de données"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Analysis units}
+  %\VignetteIndexEntry{Téléchargement de données}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

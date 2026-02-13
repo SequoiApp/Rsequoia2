@@ -1,0 +1,221 @@
+---
+title: "Parcelles Cadastrales"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Parcelles Cadastrales (FR)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  out.width = "100%",
+  dpi = 300,
+  fig.width = 7.2916667,
+  comment = "#>"
+)
+```
+
+```{r, echo = FALSE, message = FALSE}
+library(tmap)
+tmap_options(scale = 0.75)
+```
+
+```{r package}
+library(Rsequoia2)
+library(tmap)
+library(openxlsx2)
+library(sf)
+```
+
+Cette vignette montre comment récupérer des parcelles cadastrales avec `Rsequoia2`.
+
+#  Fonctionnement
+
+`Rsequoia2` permet de télécharger les parcelles cadastrales à partir de leur IDU à l’aide de la fonction `get_parca()`.
+
+*Remarque :* L’IDU est un code à 14 caractères qui identifie de manière unique une parcelle cadastrale en France.
+
+Il est composé :
+
+- du code département (2 caractères)
+- du code commune (3 caractères)
+- du préfixe (3 caractères)
+- de la section (2 caractères)
+- du numéro de parcelle (4 caractères)
+
+Par exemple : `29158000AX0696`
+
+- `"29"`   → Code du département (2 chiffres)  
+- `"158"`  → Code de la commune (3 chiffres)  
+- `"000"`  → Préfixe / code abs (3 chiffres)  
+- `"AX"`   → Section (2 caractères)  
+- `"0696"` → Numéro de parcelle (4 chiffres)  
+
+```{r single_idu, fig.height = 3.5}
+idu <- c("29158000AX0696") 
+
+cp <- get_parca(idu)
+
+tm_tiles("OpenStreetMap")+
+tm_shape(cp)+
+  tm_borders(col = "red", lwd = 2)+
+tm_layout(bg = F)
+	
+```
+
+`get_parca()` est vectorisé donc plusieurs idu peuvent être fournis.
+
+```{r multiple_idu, fig.height = 3.5}
+idus <- paste0("29158000AX0", 696:704)
+
+cp <- get_parca(idus)
+
+tm_tiles("OpenStreetMap")+
+tm_shape(cp)+
+  tm_borders(col = "firebrick", lwd = 2)
+
+```
+
+# BDP et lieux-dits
+
+`get_parca()` propose deux arguments : `bdp_geom` et `lieu_dit`.
+
+## `bdp_geom` - BD Parcellaire
+
+La BDP (Base de Données Parcellaire) est un ancien produit de l’IGN qui n’est aujourd’hui plus maintenu.
+
+Elle a été initialement construite à partir des parcelles cadastrales Etalab, mais de nombreuses géométries ont été corrigées manuellement par l’IGN afin de mieux correspondre aux limites observées sur le terrain.
+
+L’utilisation de la BDP peut ainsi améliorer la précision géométrique, sans toutefois garantir une correspondance parfaite avec les limites cadastrales légales.
+
+Pour utiliser les géométries issues de la BDP avec `get_parca()`, définissez l’argument `bdp_geom = TRUE`. Lorsque la géométrie BDP existe pour un IDU donné, elle remplace automatiquement la géométrie Etalab correspondante.
+
+```{r etalab_vs_bdp, fig.height = 3.5}
+idus <- paste0("545400000C0", 101:109)
+
+etalab <- get_parca(idus, bdp_geom = FALSE)
+bdp <- get_parca(idus, bdp_geom = TRUE)
+
+tm_tiles("OpenStreetMap")+
+tm_shape(etalab)+
+  tm_borders(col = "firebrick", lwd = 2)+
+tm_shape(bdp)+
+  tm_borders(col = "blue", lwd = 2)
+
+```
+
+## `lieu-dit` - Lieu-dit
+
+Un lieu-dit est un nom de localisation associé à une parcelle cadastrale.
+Bien qu’il ne soit pas indispensable pour les traitements cadastraux, il est souvent utile pour vérifier que les parcelles récupérées correspondent bien à la zone géographique attendue.
+
+Par défaut, les parcelles cadastrales Etalab ne contiennent pas l’information de lieu-dit.
+Cependant, un jeu de données existe, et `get_parca()` permet d'intersecter cette couche lorsque que `lieu-dit = TRUE`
+
+*/!\* : cette jointure spatiale peut être relativement longue pour un grand nombre de parcelles.
+
+```{r lieu_dit, fig.height = 3.5}
+idus <- paste0("29158000BD00", c(10:12, 14:19, 21:25, 29, 31:36, 38, 39, 41, 43:60))
+
+with_lieu_dit <- get_parca(idus, lieu_dit = TRUE)
+
+tm_tiles("OpenStreetMap")+
+tm_shape(with_lieu_dit)+
+  tm_polygons(
+    fill = "LIEU_DIT",
+    fill.legend = tm_legend(position = c("right", "bottom")))
+
+```
+
+# Fonctionnement dans un processus Sequoia
+
+Comme présenté précédemment, `get_parca()` permet de récupérer directement les parcelles cadastrales à partir de leur IDU.
+Cependant, renseigner manuellement tous les IDU dans R est souvent peu pratique, et les utilisateurs de Sequoia travaillent rarement directement avec ces identifiants.
+
+À la place, les parcelles cadastrales sont définies à partir d’une matrice Excel Sequoia (`*_matrice.xlsx`), et la fonction `seq_parca()` récupère automatiquement l’ensemble des parcelles à partir de cette matrice.
+
+Un workflow typique est donc le suivant :
+
+- Créer ou compléter la matrice Excel ;
+- Appeler `seq_parca()` ;
+- Laisser Sequoia gérer automatiquement le reste.
+
+## 1. Création de la matrice Excel
+
+La matrice Excel doit contenir les colonnes suivantes :
+
+- **IDENTIFIANT** : Identifiant de la forêt (généralement le nom de la forêt)
+- **PROPRIETAIRE** : Nom du propriétaire
+- **INSEE** : Code INSEE de la commune
+- **PREFIXE** : Préfixe cadastral
+- **SECTION** : Section cadastrale
+- **NUMERO** : Numéro de parcelle
+- **LIEU_DIT** : Nom du lieu-dit (optionnel)
+
+**Règles à respecter :**
+
+- Le nom du fichier doit se terminer par `_matrice.xlsx`
+- Un seul fichier `*_matrice.xlsx` doit être présent dans le répertoire Sequoia
+- La matrice doit contenir un seul IDENTIFIANT unique
+
+Afin d’éviter toute erreur de format, vous pouvez générer une matrice vide avec :
+
+```{r create_matrice}
+my_forest_dir <- file.path(tempdir(), "MY_FOREST")
+dir.create(my_forest_dir)
+
+matrice_path <- create_matrice(my_forest_dir, id = "MY_FOREST")
+```
+
+## 2. Récupération des parcelles avec Sequoia
+
+Une fois la matrice préparée, l’ensemble du processus cadastral est pris en charge par `seq_parca()`.
+
+Cette fonction :
+
+- Lit la matrice Excel ;
+- Construit les IDU à partir des informations de la matrice ;
+- Télécharge les parcelles cadastrales : la géométrie BDP est utilisée lorsqu’elle est disponible (`bdp_geom = TRUE`) ;
+- Récupère les lieux-dits manquants (`lieu_dit = TRUE`) ;
+- Remplace la matrice initiale par le résultat dans le répertoire Sequoia ;
+- Créer une sauvegarde de la matrice initiale
+
+Pour illustrer ce workflow, une matrice exemple est fournie dans `Rsequoia2`.
+
+### Étape 1 — Créer un répertoire Sequoia et y copier la matrice exemple
+
+```{r}
+matrice <- read_xlsx(system.file("extdata/ECKMUHL_matrice.xlsx", package = "Rsequoia2"))
+
+sequoia_dir <- file.path(tempdir(), "ECKMUHL")
+dir.create(sequoia_dir)
+
+write_xlsx(matrice, file.path(sequoia_dir, "ECKMUHL_matrice.xlsx"))
+```
+
+### Étape 2 — Exécuter `seq_parca()` et charger les parcelles
+
+```{r}
+parca_path <- seq_parca(sequoia_dir)
+
+# lecture directe depuis le chemin retourné
+parca <- read_sf(parca_path)
+
+# ou utilisation de seq_read avec un répertoire personnalisé
+parca <- seq_read("parca", dirname = sequoia_dir)
+
+tm_tiles("OpenStreetMap") +
+tm_shape(parca) +
+  tm_borders(col = "firebrick", lwd = 2)
+```
+
+
+```{r clean_sequoie_dir, include=FALSE}
+unlink(sequoia_dir, recursive = TRUE, force = TRUE)
+unlink(my_forest_dir, recursive = TRUE, force = TRUE)
+```
+
+
+

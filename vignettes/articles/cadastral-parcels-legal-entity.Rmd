@@ -1,13 +1,13 @@
 ---
-title: "Cadastral parcels - legal entity"
+title: "Cadastral parcels - legal entity (FR)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Cadastral parcels - legal entity}
+  %\VignetteIndexEntry{Cadastral parcels - legal entity (FR)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   out.width = "100%",
