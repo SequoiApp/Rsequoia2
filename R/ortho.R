@@ -41,6 +41,7 @@
 #'
 #' }
 #'
+#' @export
 get_ortho <- function(
     x,
     type = c("irc", "rgb"),
@@ -128,6 +129,7 @@ get_ortho <- function(
 #'
 #' @seealso [get_ortho()], [seq_write()]
 #'
+#' @export
 seq_ortho <- function(
     dirname = ".",
     type = c("irc", "rgb"),

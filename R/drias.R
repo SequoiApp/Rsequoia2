@@ -248,3 +248,75 @@ drias_etp <- function(txt){
 
   return(etp)
 }
+
+#' Generate DRIAS climate projection outputs
+#'
+#' Reads, formats, and exports climate projection data from DRIAS.
+#' The function expects a DRIAS projection `.txt` file located in the
+#' `4_METEO` directory of the Sequoia project. It extracts metadata,
+#' raw climatology, ombrothermic summaries, and evapotranspiration (ETP)
+#' indicators. Results are written to an Excel workbook based on the
+#' internal template `CLIMAT_DRIAS.xlsx`.
+#'
+#' @inheritParams seq_write
+#'
+#' @details
+#' The function looks for a single `.txt` file in the `4_METEO` directory.
+#' This file must be downloaded beforehand from the DRIAS portal
+#' (https://drias-climat.fr/).
+#'
+#' @return
+#' A named `character` vector:
+#' - `"drias"`: Path to the generated Excel workbook
+#'
+#' @export
+seq_drias <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
+
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  identifier <- seq_field("identifier")$name
+  id <- unique(parca[[identifier]])
+
+  if (verbose){
+    cli::cli_h1("CLIMATE DRIAS")
+  }
+
+  meteo_dir <- file.path(dirname, "4_METEO")
+  dir.create(meteo_dir, showWarnings = FALSE, recursive = TRUE)
+  filepath <- file.path(meteo_dir, sprintf("%s_CLIMAT_DRIAS.xlsx", id)) |>
+    setNames("drias")
+
+  wb <- openxlsx2::wb_load(system.file("xlsx/CLIMAT_DRIAS.xlsx", package = "Rsequoia2"))
+
+  # Drias
+  txt <- list.files(meteo_dir, pattern = ".txt", full.names = TRUE)
+  if (length(txt) == 0){
+    cli::cli_abort(
+      "No DRIAS {.file .txt} file found in: {.path {meteo_dir}}."
+    )
+  }
+
+  if (verbose) {cli_alert_info("Writing DRIAS data to: {.path {filepath}}")}
+
+  txt <- txt[1]  # ensure single file
+  drias_metadata <- drias_read_metadata(txt)
+  drias_raw <- drias_read_table(txt)
+  drias_ombro <- drias_ombro(txt)
+  drias_etp <- drias_etp(txt)
+
+  wb <- openxlsx2::wb_clean_sheet(wb, sheet = 1, styles = FALSE) |>
+    openxlsx2::wb_add_data(sheet = 1, drias_metadata$indices)
+
+  wb <- openxlsx2::wb_clean_sheet(wb, sheet = 2, styles = FALSE) |>
+    openxlsx2::wb_add_data(sheet = 2, drias_raw)
+
+  wb <- openxlsx2::wb_clean_sheet(wb, sheet = 3, dims = "A1:F60", styles = FALSE) |>
+    openxlsx2::wb_add_data(sheet = 3, drias_ombro)
+
+  wb <- openxlsx2::wb_clean_sheet(wb, sheet = 4, dims = "A1:E60", styles = FALSE) |>
+    openxlsx2::wb_add_data(sheet = 4, drias_etp)
+
+  openxlsx2::wb_save(wb, file = filepath,  overwrite = overwrite)
+
+  return(invisible(filepath))
+}
+

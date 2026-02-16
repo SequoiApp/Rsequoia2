@@ -110,7 +110,7 @@ menu_rp <- function(path, overwrite){
     another <- rstudioapi::showQuestion(
       title = "Select files",
       message = "Select another file?",
-      cancel = "No"
+      cancel = "Termine"
     )
 
     if (!another) break
@@ -161,7 +161,6 @@ menu_rp <- function(path, overwrite){
 
   tmap::tmap_mode("view")
   print(tmap::qtm(parca))
-
 
   return(NULL)
 
@@ -242,7 +241,8 @@ menu_data <- function(path, overwrite){
     "Toponyme"      = function() try(seq_toponyme(path, overwrite = overwrite)),
     "Hydrology"     = function() try(seq_hydro(path, overwrite = overwrite)),
     "Vegetation"    = function() try(seq_vege(path, overwrite = overwrite)),
-    "Climate"       = function() try(seq_climate(path, overwrite = overwrite)),
+    "Meteo-France"  = function() try(seq_meteo_france(path, overwrite = overwrite)),
+    "Drias"  = function() try(seq_drias(path, overwrite = overwrite)),
     "Contour lines" = function() try(seq_curves(path, overwrite = overwrite)),
     "IFN"           = function() try(seq_ifn(path, overwrite = overwrite)),
     "GPU"           = function() try(seq_gpu(path, overwrite = overwrite)),
