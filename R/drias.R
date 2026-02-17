@@ -63,14 +63,10 @@ drias_read_metadata <- function(txt) {
   }
 
   horizon_metadata <- data.frame(
-    code = c("H1", "H2", "H3"),
-    start = c(2021, 2041, 2071),
-    end = c(2050, 2070, 2100)
+    code = c("H0", "H1", "H2", "H3"),
+    start = c(1976, 2021, 2041, 2071),
+    end = c(2005, 2050, 2070, 2100)
   )
-
-  horizon <- extract_block("Horizons", "Type d'indice") |>
-    split_keyval() |>
-    merge(horizon_metadata)
 
   # Extraction ----
   list(
@@ -79,14 +75,14 @@ drias_read_metadata <- function(txt) {
     experience = extract_value("Experience"),
     modele = extract_value("Modele"),
     scenario = split_keyval(extract_block("Scenario", "Horizons")),
-    horizon = horizon,
+    horizon = horizon_metadata,
     indices = split_keyval(extract_block("Indices", "Format des enregistrements"))
   )
 }
 
 #' Parse DRIAS raw data from a text file
 #'
-#' Extracts raw data from a DRIAS text file.
+#' Extracts raw data from a DRIAS text file and recompute reference period.
 #'
 #' @param txt `character` string. Path to a DRIAS `.txt` file.
 #'
@@ -137,7 +133,28 @@ drias_read_table <- function(txt) {
   # Format drias ----
   drias <- drias[, colSums(!is.na(drias)) > 0, drop = FALSE]
 
-  return(drias)
+  # Recompute REF periode
+  drias_h1 <- drias[drias$PERIODE == "H1", ]
+  norcol <- grep("^NOR", names(drias_h1), value = TRUE)
+  acol <- paste0("A", substring(norcol, 4))
+
+  keep <- acol %in% names(drias_h1)
+  acol <- acol[keep]
+  norcol <- norcol[keep]
+
+  drias_h0 <- drias_h1[norcol] - drias_h1[acol]
+  names(drias_h0) <- norcol
+
+  drias_h0 <- cbind(
+    drias_h1[, c("POINT", "LATITUDE", "LONGITUDE", "MOIS")],
+    PERIODE = "H0",
+    drias_h0
+  )
+
+  drias <- drias[, c("POINT","LATITUDE","LONGITUDE","PERIODE","MOIS", norcol)]
+  drias_all <- rbind(drias_h0, drias)
+
+  return(drias_all)
 }
 
 #' Compute ombrothermic climatology summaries
@@ -161,7 +178,7 @@ drias_ombro <- function(txt){
   drias_meta <- drias_read_metadata(txt)
   drias <- drias_read_table(txt) |>
     merge(drias_meta$horizon, by.x = "PERIODE", by.y = "code")
-  drias$PERIODE <- sprintf("%s-%s", drias$start, drias$end)
+  drias$LABEL <- sprintf("%s-%s", drias$start, drias$end)
 
   # p: precipitation
   month <- "MOIS"
@@ -180,12 +197,12 @@ drias_ombro <- function(txt){
 
   ombro <- aggregate(
     drias[vars],
-    by = drias[c(month, "PERIODE")],
+    by = drias[c(month, "LABEL")],
     FUN = mean,
     na.rm = TRUE
   )
 
-  ombro <- ombro[, c("PERIODE", month, tmoy, tmin, tmax, p_mm)]
+  ombro <- ombro[, c("LABEL", month, tmoy, tmin, tmax, p_mm)]
 
   return(ombro)
 }
@@ -219,16 +236,16 @@ drias_etp <- function(txt){
   drias_meta <- drias_read_metadata(txt)
   drias <- drias_read_table(txt) |>
     merge(drias_meta$horizon, by.x = "PERIODE", by.y = "code")
-  drias$PERIODE <- sprintf("%s-%s", drias$start, drias$end)
+  drias$LABEL <- sprintf("%s-%s", drias$start, drias$end)
 
   # p: precipitation
   month <- "MOIS"
   etp_mm <- "NORETPC"
   p_mm <- "NORRR"
   p_etp <- "P-ETP"
+
   # remove vars all equal to zero to avoid bad mean
   vars <- c(etp_mm, p_mm)
-
   keep <- sapply(
     split(drias[vars], drias$POINT),
     function(df_point) all(colSums(df_point != 0, na.rm = TRUE) > 0)
@@ -238,13 +255,13 @@ drias_etp <- function(txt){
 
   etp <- aggregate(
     drias[vars],
-    by = drias[c(month, "PERIODE")],
+    by = drias[c(month, "LABEL")],
     FUN = mean,
     na.rm = TRUE
   )
 
   etp[p_etp] <- etp[p_mm] - etp[etp_mm]
-  etp <- etp[, c("PERIODE", month, p_mm, etp_mm, p_etp)]
+  etp <- etp[, c("LABEL", month, p_mm, etp_mm, p_etp)]
 
   return(etp)
 }
@@ -300,8 +317,22 @@ seq_drias <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
   txt <- txt[1]  # ensure single file
   drias_metadata <- drias_read_metadata(txt)
   drias_raw <- drias_read_table(txt)
-  drias_ombro <- drias_ombro(txt)
-  drias_etp <- drias_etp(txt)
+
+  drias_ombro <- tryCatch(
+    drias_ombro(txt),
+    error = function(e) cli::cli_abort(c(
+      "x" = "Cannot compute DRIAS ombroclimatic data. Insufficient data in {.file {txt}}.",
+      "i" = "Please download again and select more points on the DRIAS website."
+    ))
+  )
+
+  drias_etp <- tryCatch(
+    drias_etp(txt),
+    error = function(e) cli::cli_abort(c(
+      "x" = "Cannot compute DRIAS ETP data. Insufficient data in {.file {txt}}.",
+      "i" = "Please download again and select more points on the DRIAS website."
+    ))
+  )
 
   wb <- openxlsx2::wb_clean_sheet(wb, sheet = 1, styles = FALSE) |>
     openxlsx2::wb_add_data(sheet = 1, drias_metadata$indices)
@@ -309,10 +340,10 @@ seq_drias <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
   wb <- openxlsx2::wb_clean_sheet(wb, sheet = 2, styles = FALSE) |>
     openxlsx2::wb_add_data(sheet = 2, drias_raw)
 
-  wb <- openxlsx2::wb_clean_sheet(wb, sheet = 3, dims = "A1:F60", styles = FALSE) |>
+  wb <- openxlsx2::wb_clean_sheet(wb, sheet = 3, dims = "A1:F80", styles = FALSE) |>
     openxlsx2::wb_add_data(sheet = 3, drias_ombro)
 
-  wb <- openxlsx2::wb_clean_sheet(wb, sheet = 4, dims = "A1:E60", styles = FALSE) |>
+  wb <- openxlsx2::wb_clean_sheet(wb, sheet = 4, dims = "A1:E80", styles = FALSE) |>
     openxlsx2::wb_add_data(sheet = 4, drias_etp)
 
   openxlsx2::wb_save(wb, file = filepath,  overwrite = overwrite)

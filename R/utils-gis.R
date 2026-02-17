@@ -282,17 +282,15 @@ clean_topology <- function(sf_obj,
   sf::st_write(sf_obj, input_path, quiet = TRUE)
 
   # Run GRASS v.clean via QGIS
-  quiet(
-    qgisprocess::qgis_run_algorithm(
+  qgisprocess::qgis_run_algorithm(
       "grass:v.clean",
-      input  = input_path,
-      type   = "area",
-      tool   = tool,
+      input = input_path,
+      type = "area",
+      tool = tool,
       output = output_path,
       GRASS_SNAP_TOLERANCE_PARAMETER = snap_tolerance,
-      GRASS_MIN_AREA_PARAMETER       = min_area
-    )
-  )
+      GRASS_MIN_AREA_PARAMETER = min_area
+  ) |> suppressMessages()
 
   # Read result and ensure validity
   cleaned_sf <- sf::st_read(output_path, quiet = TRUE, stringsAsFactors = FALSE)

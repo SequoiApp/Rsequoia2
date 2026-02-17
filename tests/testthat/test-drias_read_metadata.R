@@ -41,8 +41,8 @@ test_that("drias_read_metadata works on a local temporary file", {
 
   expect_equal(meta$producteur, "MF-DCSC")
   expect_equal(meta$scenario$code, "RCP8.5")
-  expect_equal(nrow(meta$horizon), 3L)
-  expect_all_true(meta$horizon$code %in% c("H1", "H2", "H3"))
+  expect_equal(nrow(meta$horizon), 4L)
+  expect_all_true(meta$horizon$code %in% c("H0", "H1", "H2", "H3"))
   expect_all_true(meta$indices$code %in% c("NORTAV", "NORTR"))
 })
 

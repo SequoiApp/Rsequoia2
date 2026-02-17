@@ -13,5 +13,5 @@ drias_read_table(txt)
 A \code{data.frame} containing raw data.
 }
 \description{
-Extracts raw data from a DRIAS text file.
+Extracts raw data from a DRIAS text file and recompute reference period.
 }

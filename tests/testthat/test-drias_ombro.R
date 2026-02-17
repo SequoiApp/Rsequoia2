@@ -32,10 +32,10 @@ test_that("drias_ombro computes monthly means correctly", {
   expect_s3_class(res, "data.frame")
 
   expect_named(
-    res, c("PERIODE", "MOIS", "NORTAV", "NORTNAV", "NORTXAV", "NORRR")
+    res, c("LABEL", "MOIS", "NORTAV", "NORTNAV", "NORTXAV", "NORRR")
   )
 
-  expect_equal(unique(res$PERIODE), "2021-2050")
+  expect_equal(unique(res$LABEL), "2021-2050")
 
   expect_equal(res$NORTAV, rep(10, 12))
   expect_equal(res$NORTNAV, rep(5, 12))
@@ -135,6 +135,6 @@ test_that("output structure is correct", {
 
   expect_true(is.data.frame(res))
   expect_equal(nrow(res), 12)
-  expect_true(all(c("PERIODE", "MOIS") %in% names(res)))
+  expect_true(all(c("LABEL", "MOIS") %in% names(res)))
 })
 

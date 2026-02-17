@@ -31,7 +31,7 @@ test_that("drias_etp computes precipitation, ETP and water balance correctly", {
 
   expect_named(
     res,
-    c("PERIODE", "MOIS", "NORRR", "NORETPC", "P-ETP")
+    c("LABEL", "MOIS", "NORRR", "NORETPC", "P-ETP")
   )
 
   expect_equal(res$NORRR, rep(50, 12))
@@ -147,7 +147,7 @@ test_that("output structure is stable", {
 
   expect_named(
     res,
-    c("PERIODE", "MOIS", "NORRR", "NORETPC", "P-ETP")
+    c("LABEL", "MOIS", "NORRR", "NORETPC", "P-ETP")
   )
 })
 
