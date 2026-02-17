@@ -89,6 +89,10 @@ test_that("download_brgm() skips download when file already exists", {
 
 test_that("download_brgm() errors on invalid input", {
 
+  local_mocked_bindings(
+    get_cog = function(...) list(dep = data.frame(DEP = "29", NCC_DEP = "FINISTERE"))
+  )
+
   expect_error(download_brgm(dep = 1, source = "bad_source"))
 
   expect_error(download_brgm(dep = 1:2), "must contain exactly one element")
