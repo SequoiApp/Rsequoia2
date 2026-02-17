@@ -34,7 +34,7 @@ test_that("get_brgm() works for one dep", {
     download_brgm = function(dep, ...) fake_brgm_zip(dep, cache = cache)
   )
 
-  brgm <- get_brgm(deps = dep, source = "bdcharm50", cache = cache, verbose = FALSE)
+  brgm <- get_brgm(deps = 29, source = "bdcharm50", cache = cache, verbose = FALSE)
 
   expect_s3_class(brgm, "sf")
   expect_shape(brgm, dim = c(1, 2))
