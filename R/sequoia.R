@@ -44,12 +44,19 @@ sequoia <- function(overwrite = FALSE) {
       seq_parcels(path, overwrite = TRUE)
     },
     "Telecharger DONNEES" = function() menu_data(path, overwrite),
-    "Generer une synthese" = function() seq_summary(path, overwrite = overwrite)
+    "Generer une synthese" = function() seq_summary(path, overwrite = overwrite),
+    "Mettre à jour un ancien dossier" = function(){
+      p <- rstudioapi::selectDirectory(
+        caption = "Selectionner ancien dossier sequoia"
+      )
+      seq1_update(p, overwrite = overwrite)
+    }
   )
 
   repeat {
 
     cli::cli_h1("Menu Sequoia")
+    cli::cli_alert_info("Appuyez sur {.key Esc} pour quitter le menu.")
 
     path <- getOption("seq_dir_path")
     if (is.null(path)) {
@@ -252,13 +259,18 @@ menu_data <- function(path, overwrite){
     "Scan"          = function() try(seq_scan(path, overwrite = overwrite))
   )
 
-  # 2. Actions reuse seq_functions
   actions <- c(
-    list(
-      "All" = function() {
+    "All" = function() {
         lapply(seq_functions, function(f) try(f()))
-      }
-    ),
+      },
+    "Multi" = function(){
+      cli::cli_alert_info("Entrez les numeros separes par des virgules (ex: {.val 1,3,5})")
+      input <- readline("Selection: ")
+      idx <- as.integer(trimws(strsplit(input, ",")[[1]]))
+      idx <- idx[!is.na(idx)]
+      idx <- idx[idx %in% 3:length(seq_functions)] - 2
+      lapply(seq_functions[idx], function(f) try(f()))
+    },
     seq_functions
   )
 
