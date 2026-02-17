@@ -55,7 +55,7 @@ get_parca_etalab <- function(idu){
 
   urls <- sprintf(url, unique(idu_parts$insee))
 
-  etalab <- lapply(urls, read_sf)
+  etalab <- lapply(urls, sf::read_sf)
   etalab <- do.call(rbind, etalab)
 
   invalid_idu <- !idu %in% etalab$id

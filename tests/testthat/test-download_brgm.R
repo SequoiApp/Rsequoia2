@@ -15,6 +15,10 @@ test_that("download_brgm() downloads when file is missing", {
     .package = "curl"
   )
 
+  local_mocked_bindings(
+    get_cog = function(...) list(dep = data.frame(DEP = "29", NCC_DEP = "FINISTERE"))
+  )
+
   zip_path <- download_brgm(dep = "29", source = "carhab", cache = brgm_cache, verbose = FALSE)
 
   expect_true(tracker$called)
@@ -38,6 +42,10 @@ test_that("download_brgm() properly change source", {
       file.create(destfile)
     },
     .package = "curl"
+  )
+
+  local_mocked_bindings(
+    get_cog = function(...) list(dep = data.frame(DEP = "29", NCC_DEP = "FINISTERE"))
   )
 
   zip_path <- download_brgm(dep = "29", source = "bdcharm50", cache = brgm_cache, verbose = FALSE)
@@ -68,6 +76,10 @@ test_that("download_brgm() skips download when file already exists", {
     .package = "curl"
   )
 
+  local_mocked_bindings(
+    get_cog = function(...) list(dep = data.frame(DEP = "29", NCC_DEP = "FINISTERE"))
+  )
+
   out <- download_brgm(dep = "29", cache = brgm_cache, verbose = FALSE)
 
   expect_false(tracker$called)
@@ -92,10 +104,13 @@ test_that("download_brgm() respects cache argument", {
   dir.create(brgm_cache)
   on.exit(unlink(brgm_cache, recursive = TRUE))
 
-
   local_mocked_bindings(
     curl_download = function(url, destfile, quiet) file.create(destfile),
     .package = "curl"
+  )
+
+  local_mocked_bindings(
+    get_cog = function(...) list(dep = data.frame(DEP = "29", NCC_DEP = "FINISTERE"))
   )
 
   zip_path <- download_brgm("29", cache = brgm_cache, verbose = FALSE)
@@ -112,6 +127,10 @@ test_that("download_brgm() builds correct ZIP name", {
   local_mocked_bindings(
     curl_download = function(url, destfile, quiet) file.create(destfile),
     .package = "curl"
+  )
+
+  local_mocked_bindings(
+    get_cog = function(...) list(dep = data.frame(DEP = "08", NCC_DEP = "ARDENNES"))
   )
 
   bdcharm50_path <- download_brgm(8, cache = brgm_cache, source = "bdcharm50", verbose = FALSE)
@@ -132,6 +151,13 @@ test_that("download_brgm() handle ZIP name with space when carhab", {
     .package = "curl"
   )
 
+  local_mocked_bindings(
+    get_cog = function(...) list(dep = data.frame(
+      DEP = c("35", "22"),
+      NCC_DEP = c("ILLE ET VILAINE", "COTES D ARMOR")
+      ))
+  )
+
   carhab_path <- download_brgm(35, cache = brgm_cache, source = "carhab", verbose = FALSE)
   expect_match(basename(carhab_path), "35_ILLE-ET-VILAINE")
 
@@ -149,6 +175,10 @@ test_that("download_brgm() emits messages when verbose = TRUE", {
   local_mocked_bindings(
     curl_download = function(url, destfile, quiet) file.create(destfile),
     .package = "curl"
+  )
+
+  local_mocked_bindings(
+    get_cog = function(...) list(dep = data.frame(DEP = "29", NCC_DEP = "FINISTERE"))
   )
 
   expect_message(
@@ -175,6 +205,10 @@ test_that("download_brgm() overwrites existing ZIP when overwrite=TRUE", {
       file.create(destfile)
     },
     .package = "curl"
+  )
+
+  local_mocked_bindings(
+    get_cog = function(...) list(dep = data.frame(DEP = "29", NCC_DEP = "FINISTERE"))
   )
 
   # Call overwrite = TRUE

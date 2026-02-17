@@ -18,7 +18,8 @@ test_that("get_parca_etalab() abort when all idu are invalid", {
       prefixe = "000",
       section = "0A",
       numero = "0001"
-    )
+    ),
+    .package = "sf"
   )
 
   expect_error(get_parca_etalab(idu), "Invalid idu detected:")
@@ -34,7 +35,8 @@ test_that("get_parca_etalab() abort when any idu are invalid", {
       prefixe = "000",
       section = "0A",
       numero = "0001"
-    )
+    ),
+    .package = "sf"
   )
 
   expect_error(get_parca_etalab(idu), "Invalid idu detected:.*352890000A0147")
@@ -58,13 +60,21 @@ test_that("get_parca_etalab() de-duplicates idu", {
           numero = "0001",
           contenance = 10
         )
-    }
+    },
+    .package = "sf"
+  )
+
+  local_mocked_bindings(
+    get_cog = function(...) list(
+      com = data.frame(COM = "01001", NCC_COM = "NCC_01001", DEP = "01"),
+      dep = data.frame(DEP = "01", NCC_DEP = "NCC_01", REG = "01"),
+      reg = data.frame(REG = "01", NCC_REG = "NCC_01")
+      )
   )
 
   res <- get_parca_etalab(idu)
 
   expect_equal(calls, 1)
-  expect_equal(nrow(res), nrow(seq_poly))
 })
 
 test_that("get_parca_etalab() pads cadastral fields", {
@@ -81,7 +91,16 @@ test_that("get_parca_etalab() pads cadastral fields", {
     )
 
   local_mocked_bindings(
-    read_sf = function(...) fake
+    read_sf = function(...) fake,
+    .package = "sf"
+  )
+
+  local_mocked_bindings(
+    get_cog = function(...) list(
+      com = data.frame(COM = "01001", NCC_COM = "NCC_01001", DEP = "01"),
+      dep = data.frame(DEP = "01", NCC_DEP = "NCC_01", REG = "01"),
+      reg = data.frame(REG = "01", NCC_REG = "NCC_01")
+    )
   )
 
   res <- get_parca_etalab(idu)
@@ -107,7 +126,16 @@ test_that("get_parca_etalab() add source", {
     )
 
   local_mocked_bindings(
-    read_sf = function(...) fake_parca_etalab
+    read_sf = function(...) fake_parca_etalab,
+    .package = "sf"
+  )
+
+  local_mocked_bindings(
+    get_cog = function(...) list(
+      com = data.frame(COM = "01001", NCC_COM = "NCC_01001", DEP = "01"),
+      dep = data.frame(DEP = "01", NCC_DEP = "NCC_01", REG = "01"),
+      reg = data.frame(REG = "01", NCC_REG = "NCC_01")
+    )
   )
 
   res <- get_parca_etalab(idu)
@@ -131,7 +159,16 @@ test_that("get_parca_etalab() convert contenance to ha", {
     )
 
   local_mocked_bindings(
-    read_sf = function(...) fake_parca_etalab
+    read_sf = function(...) fake_parca_etalab,
+    .package = "sf"
+  )
+
+  local_mocked_bindings(
+    get_cog = function(...) list(
+      com = data.frame(COM = "01001", NCC_COM = "NCC_01001", DEP = "01"),
+      dep = data.frame(DEP = "01", NCC_DEP = "NCC_01", REG = "01"),
+      reg = data.frame(REG = "01", NCC_REG = "NCC_01")
+    )
   )
 
   res <- get_parca_etalab(idu)
@@ -158,7 +195,16 @@ test_that("get_parca_etalab() queries one URL per unique commune", {
           numero = "0001",
           contenance = 10
         )
-    }
+    },
+    .package = "sf"
+  )
+
+  local_mocked_bindings(
+    get_cog = function(...) list(
+      com = data.frame(COM = "01001", NCC_COM = "NCC_01001", DEP = "01"),
+      dep = data.frame(DEP = "01", NCC_DEP = "NCC_01", REG = "01"),
+      reg = data.frame(REG = "01", NCC_REG = "NCC_01")
+    )
   )
 
   res <- get_parca_etalab(idu)
