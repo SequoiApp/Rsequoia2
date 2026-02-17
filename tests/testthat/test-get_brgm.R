@@ -30,8 +30,10 @@ test_that("get_brgm() works for one dep", {
   dir.create(cache)
   on.exit(unlink(cache, recursive = TRUE), add = TRUE)
 
-  dep <- 29
-  dep29 <- fake_brgm_zip(dep, cache = cache)
+  local_mocked_bindings(
+    download_brgm = function(dep, ...) fake_brgm_zip(dep, cache = cache)
+  )
+
   brgm <- get_brgm(deps = dep, source = "bdcharm50", cache = cache, verbose = FALSE)
 
   expect_s3_class(brgm, "sf")
@@ -44,8 +46,9 @@ test_that("get_brgm() works for multiple dep", {
   dir.create(cache)
   on.exit(unlink(cache, recursive = TRUE), add = TRUE)
 
-  dep1 <- fake_brgm_zip(1, cache = cache)
-  dep2 <- fake_brgm_zip(2, cache = cache)
+  local_mocked_bindings(
+    download_brgm = function(dep, ...) fake_brgm_zip(dep, cache = cache)
+  )
 
   brgm <- get_brgm(deps = 1:2, source = "bdcharm50", cache = cache, verbose = FALSE)
 
