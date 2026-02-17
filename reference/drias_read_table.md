@@ -1,6 +1,6 @@
 # Parse DRIAS raw data from a text file
 
-Extracts raw data from a DRIAS text file.
+Extracts raw data from a DRIAS text file and recompute reference period.
 
 ## Usage
 

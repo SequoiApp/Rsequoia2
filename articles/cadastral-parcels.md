@@ -186,7 +186,7 @@ my_forest_dir <- file.path(tempdir(), "MY_FOREST")
 dir.create(my_forest_dir)
 
 matrice_path <- create_matrice(my_forest_dir, id = "MY_FOREST")
-#> ✔ Excel file created at: /tmp/RtmpC1wtdM/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/Rtmpel4p4O/MY_FOREST/MY_FOREST_matrice.xlsx
 ```
 
 You can then manually fill the Excel file.
@@ -229,7 +229,7 @@ parca_path <- seq_parca(sequoia_dir)
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 9 features saved to 1_SEQUOIA/ECKMUHL_SEQ_PARCA_poly.gpkg.
 #> ✔ Table "x.seq.matrice" saved to ECKMUHL_MATRICE.xlsx.
-#> ✔ UA also saved as ECKMUHL_matrice_20260213T160300.xlsx for safety.
+#> ✔ UA also saved as ECKMUHL_matrice_20260217T110810.xlsx for safety.
 
 # directly read parca form parca path
 parca <- read_sf(parca_path)

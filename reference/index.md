@@ -220,15 +220,15 @@
 
   Create *FOREST* and *OWNER* object from *PARCA* for a Sequoia project
 
-- [`seq_climate()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_climate.md)
-  : Generate meteorological outputs
-
 - [`seq_com()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_com.md)
   : Generates commune polygon, line and point layers for a Sequoia
   project.
 
 - [`seq_curves()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_curves.md)
   : Generate hypsometric curves line layer for a Sequoia project
+
+- [`seq_drias()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_drias.md)
+  : Generate DRIAS climate projection outputs
 
 - [`seq_elevation()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_elevation.md)
   : Download and Compute Elevation Products for a Sequoia Project
@@ -258,6 +258,9 @@
 
 - [`seq_layer()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_layer.md)
   : Retrieve layer metadata from the Sequoia configuration
+
+- [`seq_meteo_france()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_meteo_france.md)
+  : Download Meteo-France meteorological data for a sequoia process
 
 - [`seq_mnhn()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_mnhn.md)
   : Download MNHN vector layers for a Sequoia project
