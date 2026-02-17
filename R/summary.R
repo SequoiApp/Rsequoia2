@@ -64,7 +64,6 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
 
   # PF_PARCA
   parca_col <- c("com_name", "insee", "prefix", "section", "number")
-
   pf_by_parca <- sum_surf_by(ua, "pcl_code", parca_col) |>
     order_by("pcl_code", "insee", "prefix", "section", "number")
   tables$PF_PARCA <- pf_by_parca
@@ -106,7 +105,11 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
     order_by("std_type") |>
     pivot("pcl_code", "std_type", direction = "wide") |>
     order_by("pcl_code")
-  pf_by_plt$TOTAL <- rowSums(pf_by_plt[, -1], na.rm = T)
+
+  nb_pplmt <- ncol(pf_by_plt) - 1
+  if (nb_pplmt > 1){
+    pf_by_plt$TOTAL <- rowSums(pf_by_plt[, -1], na.rm = T)
+  }
   tables$PF_PLT <- pf_by_plt
 
   # PLT_PF
@@ -114,7 +117,7 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
     order_by("pcl_code") |>
     pivot("std_type", "pcl_code", direction = "wide") |>
     order_by("std_type")
-  plt_by_pf$TOTAL <- rowSums(plt_by_pf[, -1], na.rm = T)
+  pf_by_plt$TOTAL <- rowSums(plt_by_pf[, -1], na.rm = T)
   tables$PLT_PF <- plt_by_pf
 
   # GESTION
@@ -128,7 +131,11 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
     order_by("std_type") |>
     pivot("treatment", "std_type", direction = "wide") |>
     order_by("treatment")
-  gestion_by_plt$TOTAL <- rowSums(gestion_by_plt[, -1], na.rm = T)
+
+  nb_gestion <- ncol(gestion_by_plt) - 1
+  if (nb_gestion > 1){
+    gestion_by_plt$TOTAL <- rowSums(gestion_by_plt[, -1], na.rm = T)
+  }
   tables$GESTION_PLT <- gestion_by_plt
 
   # PLT_GESTION

@@ -45,7 +45,7 @@ sequoia <- function(overwrite = FALSE) {
     },
     "Telecharger DONNEES" = function() menu_data(path, overwrite),
     "Generer une synthese" = function() seq_summary(path, overwrite = overwrite),
-    "Mettre à jour un ancien dossier" = function(){
+    "Mettre a jour un ancien dossier" = function(){
       p <- rstudioapi::selectDirectory(
         caption = "Selectionner ancien dossier sequoia"
       )
@@ -249,7 +249,7 @@ menu_data <- function(path, overwrite){
     "Hydrology"     = function() try(seq_hydro(path, overwrite = overwrite)),
     "Vegetation"    = function() try(seq_vege(path, overwrite = overwrite)),
     "Meteo-France"  = function() try(seq_meteo_france(path, overwrite = overwrite)),
-    "Drias"  = function() try(seq_drias(path, overwrite = overwrite)),
+    "Drias"         = function() try(seq_drias(path, overwrite = overwrite)),
     "Contour lines" = function() try(seq_curves(path, overwrite = overwrite)),
     "IFN"           = function() try(seq_ifn(path, overwrite = overwrite)),
     "GPU"           = function() try(seq_gpu(path, overwrite = overwrite)),
