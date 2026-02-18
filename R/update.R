@@ -108,12 +108,33 @@ update_parca <- function(parca, id){
   dep_code_field <- seq_field("dep_code")$name
   com_code_field <- seq_field("com_code")$name
   insee_field <- seq_field("insee")$name
+  idu_field <- seq_field("idu")$name
+  prefix_field <- seq_field("prefix")$name
+  section_field <- seq_field("section")$name
+  number_field <- seq_field("number")$name
+  gis_area_field <- seq_field("gis_area")$name
+  source_field <- seq_field("source")$name
 
   norm_parca <- seq_normalize(parca, "parca")
   norm_parca[[id_field]] <- id
-  norm_parca[[insee_field]] <- paste0(norm_parca[[dep_code_field]],
-                                      norm_parca[[com_code_field]])
-  norm_parca
+
+  norm_parca[[idu_field]] <- idu_build(
+    pad_left(norm_parca[[dep_code_field]], 2),
+    pad_left(norm_parca[[com_code_field]], 3),
+    pad_left(norm_parca[[prefix_field]], 3),
+    pad_left(norm_parca[[section_field]], 2),
+    pad_left(norm_parca[[number_field]], 4)
+  )
+
+  norm_parca[[insee_field]] <- idu_split(norm_parca[[idu_field]])$insee
+
+  norm_parca[[gis_area_field]] <- sf::st_area(norm_parca) |>
+    units::set_units("ha") |>
+    as.numeric()
+
+  norm_parca[[source_field]] <- "update from Rsequoia1"
+
+  return(norm_parca)
 }
 
 #' Update `R_SEQUOIA` _UA_ layer to `Rsequoia2`
@@ -127,23 +148,47 @@ update_parca <- function(parca, id){
 #' @export
 update_ua <- function(ua, id){
   id_field <- seq_field("identifier")$name
+  is_wooded <- seq_field("is_wooded")$name
+  gis_area_field <- seq_field("gis_area")$name
+  source_field <- seq_field("source")$name
+
   dep_code_field <- seq_field("dep_code")$name
   com_code_field <- seq_field("com_code")$name
   insee_field <- seq_field("insee")$name
-  is_wooded <- seq_field("is_wooded")$name
+  idu_field <- seq_field("idu")$name
+  prefix_field <- seq_field("prefix")$name
+  section_field <- seq_field("section")$name
+  number_field <- seq_field("number")$name
 
   if ("OCCUP_SOL" %in% names(ua)){
-    ua[[is_wooded]] <- ifelse(!is.na(ua$OCCUP_SOL),
-                              ifelse(ua$OCCUP_SOL == "BOISEE", TRUE, FALSE),
-                              NA)
+    ua[[is_wooded]] <- ifelse(
+      !is.na(ua$OCCUP_SOL),
+      ifelse(ua$OCCUP_SOL == "BOISEE", TRUE, FALSE),
+      NA
+    )
   }
 
   norm_ua <- seq_normalize(ua, "ua")
 
   norm_ua[[id_field]] <- id
-  norm_ua[[insee_field]] <- paste0(norm_ua[[dep_code_field]],
-                                   norm_ua[[com_code_field]])
-  norm_ua
+
+  norm_ua[[idu_field]] <- idu_build(
+    pad_left(norm_ua[[dep_code_field]], 2),
+    pad_left(norm_ua[[com_code_field]], 3),
+    pad_left(norm_ua[[prefix_field]], 3),
+    pad_left(norm_ua[[section_field]], 2),
+    pad_left(norm_ua[[number_field]], 4)
+  )
+
+  norm_ua[[insee_field]] <- idu_split(norm_ua[[idu_field]])$insee
+
+  norm_ua[[gis_area_field]] <- sf::st_area(norm_ua) |>
+    units::set_units("ha") |>
+    as.numeric()
+
+  norm_ua[[source_field]] <- "update from Rsequoia1"
+
+  return(norm_ua)
 }
 
 #' Update `R_SEQUOIA` _UA_ layer to `Rsequoia2`
@@ -175,10 +220,10 @@ update_infra <- function(x) {
   type_field <- seq_field("type")$name
 
   map <- c(
-    "BT"     = "BAT",
-    "SP"     = "SPO",
-    "RESO"   = "RSO",
-    "SURFO"  = "SFP",
+    "BT" = "BAT",
+    "SP" = "SPO",
+    "RESO" = "RSO",
+    "SURFO" = "SFP",
     "SFO" = "SFP",
     "SURFOi" = "SFI",
     "LE" = "LEL",
