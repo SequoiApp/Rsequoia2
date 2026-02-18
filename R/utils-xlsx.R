@@ -172,6 +172,7 @@ seq_xlsx <- function(..., filename, data_table = FALSE, overwrite = FALSE, verbo
       wb <- wb_add_data(wb, sheet, x = df, na.strings = "")
     }
     wb <- style_table(wb, sheet, df)
+    wb <- wb_freeze_pane(wb, sheet, first_row = TRUE)
   }
 
   wb_save(wb, filename, overwrite)
