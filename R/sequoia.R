@@ -248,6 +248,7 @@ menu_data <- function(path, overwrite){
     "Toponyme"      = function() try(seq_toponyme(path, overwrite = overwrite)),
     "Hydrology"     = function() try(seq_hydro(path, overwrite = overwrite)),
     "Vegetation"    = function() try(seq_vege(path, overwrite = overwrite)),
+    "Accessibility" = function() try(seq_access(path, overwrite = overwrite)),
     "Meteo-France"  = function() try(seq_meteo_france(path, overwrite = overwrite)),
     "Drias"         = function() try(seq_drias(path, overwrite = overwrite)),
     "Contour lines" = function() try(seq_curves(path, overwrite = overwrite)),
