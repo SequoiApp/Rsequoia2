@@ -1,4 +1,4 @@
-mchtest_that("seq_geol() works for one dep", {
+test_that("seq_geol() works for one dep", {
 
   with_seq_cache({
     brgm_cache <- file.path(tempdir(), "brgm")
