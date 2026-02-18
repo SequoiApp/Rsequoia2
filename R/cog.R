@@ -86,5 +86,5 @@ get_cog <- function(cache = NULL, update = FALSE, verbose = TRUE) {
     cli::cli_alert_success("COG cached in {.path {normalizePath(cog_dir)}}")
   }
 
-  list(com = com, dep = dep, reg = reg)
+  return(list(com = com, dep = dep, reg = reg) |> invisible())
 }

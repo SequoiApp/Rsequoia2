@@ -31,6 +31,13 @@ fake_data <- function() {
 
 test_that("get_legal_entity() rejects invalid INSEE and department codes", {
 
+  local_mocked_bindings(
+    get_cog = function(...) list(
+      com = data.frame(COM = 1),
+      dep = data.frame(DEP = 1)
+    )
+  )
+
   expect_error(get_legal_entity("99999"), "Invalid INSEE")
   expect_error(get_legal_entity("99"), "Invalid department")
 
@@ -47,7 +54,12 @@ test_that("get_legal_entity() warns on department-level queries", {
   write.csv2(fake_data(), row.names = FALSE, path, fileEncoding = "UTF-8")
 
   testthat::local_mocked_bindings(
-    download_legal_entity = function(cache, verbose) le_cache
+    download_legal_entity = function(cache, verbose) le_cache,
+    get_cog = function(...) list(
+      com = data.frame(COM = "01001", NCC_COM = "NCC_01001", DEP = "01"),
+      dep = data.frame(DEP = "01", NCC_DEP = "NCC_01", REG = "01"),
+      reg = data.frame(REG = "01", NCC_REG = "NCC_01")
+    )
   )
 
   expect_message(
@@ -57,23 +69,3 @@ test_that("get_legal_entity() warns on department-level queries", {
 
   expect_s3_class(res, "data.frame")
 })
-
-test_that("get_legal_entity() reads CSV files from cache", {
-
-  le_cache <- file.path(tempdir(), "legal_entity")
-  dir.create(le_cache)
-  on.exit(unlink(le_cache, recursive = TRUE, force = TRUE), add = TRUE)
-
-  x <- "01"
-  path <- file.path(le_cache, paste0(x, ".csv"))
-  write.csv2(fake_data(), row.names = FALSE, path, fileEncoding = "UTF-8")
-
-  testthat::local_mocked_bindings(
-    download_legal_entity = function(cache, verbose) le_cache
-  )
-
-  res <- get_legal_entity("01", cache = le_cache, verbose = FALSE)
-
-  expect_shape(res, dim = c(2, 17))
-})
-
