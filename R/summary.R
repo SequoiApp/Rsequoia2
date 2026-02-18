@@ -117,7 +117,7 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
     order_by("pcl_code") |>
     pivot("std_type", "pcl_code", direction = "wide") |>
     order_by("std_type")
-  pf_by_plt$TOTAL <- rowSums(plt_by_pf[, -1], na.rm = T)
+  plt_by_pf$TOTAL <- rowSums(plt_by_pf[, -1], na.rm = T)
   tables$PLT_PF <- plt_by_pf
 
   # GESTION
