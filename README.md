@@ -19,8 +19,8 @@ You can install the development version of Rsequoia2 from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-pak::pak("SequoiApp/Rsequoia2")
+# install.packages("devtools")
+devtools::install_github("SequoiApp/Rsequoia2")
 ```
 
 ## Quick execution
