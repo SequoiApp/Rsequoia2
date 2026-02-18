@@ -111,7 +111,7 @@ seq_access <- function(
   if (!is.null(porteur)){
     porteur <- porteur |>
       sf::st_transform(sf::st_crs(parca)) |>
-      sf::st_intersection(parca |> sf::st_geometry()) |>
+      sf::st_intersection(parca |> sf::st_geometry() |> sf::st_union()) |>
       suppressWarnings()
     porteur[[id_field]] <- id
     porteur <- seq_write(
@@ -130,7 +130,7 @@ seq_access <- function(
   if (!is.null(skidder)){
     skidder <- skidder |>
       sf::st_transform(sf::st_crs(parca)) |>
-      sf::st_intersection(parca |> sf::st_geometry()) |>
+      sf::st_intersection(parca |> sf::st_geometry() |> sf::st_union()) |>
       suppressWarnings()
     skidder[[id_field]] <- id
     skidder <- seq_write(
