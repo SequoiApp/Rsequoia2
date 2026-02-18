@@ -312,7 +312,7 @@ seq_parca <- function(
 
   if (verbose) {
     cli::cli_alert_success(
-      "UA also saved as {.file {basename(secure_m_path)}} for safety."
+      "{.file _matrice.xlsx} also saved as {.file {basename(secure_m_path)}} for safety."
     )
   }
 
