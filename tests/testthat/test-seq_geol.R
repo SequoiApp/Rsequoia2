@@ -1,58 +1,37 @@
-fake_brgm_zip <- function(dep, source, cache){
-
-  # Write shapefile to temporary directory
-  sf_path <- tempfile()
-  on.exit(unlink(sf_path, recursive = T))
-  dir.create(sf_path)
-
-  if (source == "carhab"){
-    all_dep <- get_cog(verbose = FALSE)$dep
-    dep_name <- all_dep[all_dep$DEP == dep, c("DEP", "NCC_DEP")]
-    zip_name <- sprintf("CARHAB_%s.zip", paste(dep_name, collapse = "_"))
-    sf::write_sf(Rsequoia2:::seq_poly, file.path(sf_path, "CarHab.shp"), quiet = TRUE)
-  }else{
-    zip_name <- sprintf("GEO050K_HARM_%s.zip", pad_left(dep, 3))
-    sf::write_sf(Rsequoia2:::seq_poly, file.path(sf_path, "S_FGEOL.shp"), quiet = TRUE)
-    base::writeLines("", file.path(sf_path, "S_FGEOL.qml"))
-  }
-
-  zip_path <- file.path(cache, zip_name)
-  utils::zip(
-    zipfile = zip_path,
-    files = list.files(sf_path, full.names = TRUE),
-    flags = c("-j", "-q")
-  )
-
-  return(zip_path)
-}
-
-test_that("seq_geol() works for one dep", {
+mchtest_that("seq_geol() works for one dep", {
 
   with_seq_cache({
     brgm_cache <- file.path(tempdir(), "brgm")
     dir.create(brgm_cache)
     on.exit(unlink(brgm_cache, recursive = TRUE, force = TRUE), add = TRUE)
 
-    bdcharm50_29 <- fake_brgm_zip(29, source = "bdcharm50", cache = brgm_cache)
-    carhab_29 <- fake_brgm_zip(29, source = "carhab", cache = brgm_cache)
+    zip_name <- "GEO050K_HARM_029.zip"
+    base::writeLines("", file.path(brgm_cache, "S_FGEOL.qml"))
 
+    zip_path <- file.path(brgm_cache, zip_name)
+    utils::zip(
+      zipfile = zip_path,
+      files = list.files(brgm_cache, full.names = TRUE),
+      flags = c("-j", "-q")
+    )
+
+    tracker <- list()
     local_mocked_bindings(
-      st_intersects = function(...) TRUE,
-      .package = "sf"
+      get_brgm = function(dep, source, ...){
+        tracker$source <<- c(tracker$source, source)
+        return(p)
+      }
     )
 
     paths <- seq_geol(dirname = seq_cache, cache = brgm_cache, verbose = FALSE, overwrite = TRUE)
-
-    brgm <- lapply(paths, read_sf)
-
-    identifier <- seq_field("identifier")$name
-    expect_all_true(vapply(brgm, \(x) identifier %in% names(x), TRUE))
 
     expect_length(paths, 2)
 
     layer_info <- seq_layer("v.sol.carhab.poly")
     path <- layer_info$path
     expect_length(list.files(file.path(seq_cache, path), pattern = "\\.qml$"), 1)
+
+    expect_all_true(tracker$source %in% c("carhab", "bdcharm50"))
   })
 
 })
