@@ -29,7 +29,7 @@ test_that("get_ser_pdf() creates output directory if missing", {
 
   expect_false(dir.exists(tmp))
 
-  get_ser_pdf(ser, out_dir = tmp, verbose = FALSE)
+  get_ser_pdf(ser, dirname = tmp, verbose = FALSE)
 
   expect_true(dir.exists(tmp))
 })
@@ -50,7 +50,7 @@ test_that("get_ser_pdf() skips download if file exists and overwrite = FALSE", {
     .package = "utils"
   )
 
-  get_ser_pdf(ser, out_dir = tmp, overwrite = FALSE, verbose = FALSE)
+  get_ser_pdf(ser, dirname = tmp, overwrite = FALSE, verbose = FALSE)
 
   expect_false(called)
 })
@@ -72,7 +72,7 @@ test_that("get_ser_pdf() downloads when overwrite = TRUE", {
     .package = "utils"
   )
 
-  get_ser_pdf(ser, out_dir = tmp, overwrite = TRUE, verbose = FALSE)
+  get_ser_pdf(ser, dirname = tmp, overwrite = TRUE, verbose = FALSE)
 
   expect_true(called)
   expect_true(file.exists(file))
@@ -89,7 +89,7 @@ test_that("get_ser_pdf() handles download errors gracefully", {
   )
 
   expect_silent(
-    get_ser_pdf(ser, out_dir = tmp, verbose = FALSE)
+    get_ser_pdf(ser, dirname = tmp, verbose = FALSE)
   )
 })
 
@@ -107,7 +107,7 @@ test_that("get_ser_pdf() downloads each unique codeser only once", {
     .package = "utils"
   )
 
-  get_ser_pdf(ser, out_dir = tmp, verbose = FALSE)
+  get_ser_pdf(ser, dirname = tmp, verbose = FALSE)
 
   expect_equal(calls, 1)
 })

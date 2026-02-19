@@ -34,9 +34,11 @@
 #' geometry modification (e.g. clipping) is applied.
 #'
 #' @export
-get_ifn <- function(x,
-                    type = c("ser", "ser_ar", "rfn", "rfd", "zp"),
-                    cache = NULL) {
+get_ifn <- function(
+    x,
+    type = c("ser", "ser_ar", "rfn", "rfd", "zp"),
+    cache = NULL
+    ) {
 
   # type check
   if (length(type) != 1 || !type %in% c("ser", "ser_ar", "rfn", "rfd", "zp")) {
@@ -48,7 +50,8 @@ get_ifn <- function(x,
 
   # cache dir
   if (is.null(cache)) {
-    cache <- tools::R_user_dir("Rsequoia2", which = "cache")
+    cache <- tools::R_user_dir("Rsequoia2", which = "cache") |>
+      file.path("ifn")
   }
   dir.create(cache, showWarnings = FALSE, recursive = TRUE)
 
@@ -113,7 +116,7 @@ get_ifn <- function(x,
 #'
 #' @param ser An object (typically an `sf` object get by `get_ifn("ser")`)
 #' containing an `codeser` field used to identify sylvoecoregion reports.
-#' @param out_dir Output directory where PDF files are saved.
+#' @param dirname Output directory where PDF files are saved.
 #' @param overwrite `logical`; whether to overwrite existing files.
 #'   Defaults to `FALSE`.
 #' @param verbose `logical`. If `TRUE`, display progress messages.
@@ -134,10 +137,11 @@ get_ifn <- function(x,
 #' @seealso [get_ifn()]
 #'
 #' @export
-get_ser_pdf <- function(ser,
-                        out_dir   = "ser_pdf",
-                        overwrite = FALSE,
-                        verbose   = TRUE) {
+get_ser_pdf <- function(
+    ser,
+    dirname = NULL,
+    overwrite = FALSE,
+    verbose = TRUE) {
 
   # Input checks ----
   if (!"codeser" %in% names(ser)) {
@@ -154,12 +158,11 @@ get_ser_pdf <- function(ser,
   }
 
   # Output directory ----
-  if (!dir.exists(out_dir)) {
-    dir.create(out_dir, recursive = TRUE)
-    if (verbose) {
-      cli::cli_alert_success("Created directory {.path {out_dir}}.")
-    }
+  if (is.null(dirname)) {
+    dirname <- tools::R_user_dir("Rsequoia2", which = "data") |>
+      file.path("ifn")
   }
+  dir.create(dirname, recursive = TRUE, showWarnings = FALSE)
 
   base_url <- "https://inventaire-forestier.ign.fr/IMG/pdf/"
 
@@ -175,7 +178,7 @@ get_ser_pdf <- function(ser,
                         substr(code, 2, 3),
                         ".pdf")
     url       <- paste0(base_url, file_name)
-    destfile  <- file.path(out_dir, file_name)
+    destfile  <- file.path(dirname, file_name)
 
     if (file.exists(destfile) && !overwrite) {
       if (verbose) {
@@ -203,7 +206,7 @@ get_ser_pdf <- function(ser,
     )
   }
 
-  invisible(normalizePath(out_dir))
+  invisible(normalizePath(dirname))
 }
 
 #' Generate regional layers for a Sequoia project
@@ -299,7 +302,7 @@ seq_ifn <- function(
     if (type == "ser"){
       get_ser_pdf(
         region,
-        out_dir   = "ser_pdf",
+        dirname   = file.path(dirname, seq_layer("v.ifn.ser.poly")$path),
         overwrite = overwrite,
         verbose   = verbose
       )

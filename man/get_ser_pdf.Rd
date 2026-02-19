@@ -4,13 +4,13 @@
 \alias{get_ser_pdf}
 \title{Download sylvoecoregion PDF reports from INF repository}
 \usage{
-get_ser_pdf(ser, out_dir = "ser_pdf", overwrite = FALSE, verbose = TRUE)
+get_ser_pdf(ser, dirname = NULL, overwrite = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{ser}{An object (typically an \code{sf} object get by \code{get_ifn("ser")})
 containing an \code{codeser} field used to identify sylvoecoregion reports.}
 
-\item{out_dir}{Output directory where PDF files are saved.}
+\item{dirname}{Output directory where PDF files are saved.}
 
 \item{overwrite}{\code{logical}; whether to overwrite existing files.
 Defaults to \code{FALSE}.}

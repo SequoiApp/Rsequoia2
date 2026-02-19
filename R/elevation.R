@@ -393,16 +393,22 @@ seq_elevation <- function(
   }
 
   # DEM ----
+
   dem <- seq_get_or_read(
     "r.alt.mnt",
-    function() {get_dem(parca, buffer = buffer, res = res, crs = crs, verbose = verbose)},
+    function(){
+      get_dem(parca, buffer = buffer, res = res, crs = crs, verbose = verbose) |>
+        seq_retry(verbose = verbose)
+    },
     id = id
   )
 
   # DSM ----
   dsm <- seq_get_or_read(
     "r.alt.mns",
-    function() {get_dsm(parca, buffer = buffer, res = res, crs = crs, verbose = verbose)},
+    function() {
+      get_dsm(parca, buffer = buffer, res = res, crs = crs, verbose = verbose) |>
+        seq_retry(verbose = verbose)},
     id = id
   )
 

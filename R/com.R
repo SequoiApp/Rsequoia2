@@ -79,7 +79,7 @@ get_com_line <- function(x, graphic = FALSE, verbose = TRUE) {
 
     if (nrow(line) == 0){
       if (verbose){
-        cli::cli_aler_warning("No intersection between COMS_TOPO_line and area of interest.")
+        cli::cli_alert_warning("No intersection between COMS_TOPO_line and area of interest.")
       }
       return(NULL)
     }
@@ -125,7 +125,7 @@ get_com_point <- function(x, graphic = FALSE, verbose = TRUE) {
                                    of_largest_polygon = FALSE))
     if (nrow(point) == 0) {
       if (verbose){
-        cli::cli_aler_warning("No intersection between COMS_TOPO_point and area of interest.")
+        cli::cli_alert_warning("No intersection between COMS_TOPO_point and area of interest.")
       }
       return(NULL)
     }
