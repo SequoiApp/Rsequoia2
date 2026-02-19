@@ -186,7 +186,7 @@ my_forest_dir <- file.path(tempdir(), "MY_FOREST")
 dir.create(my_forest_dir)
 
 matrice_path <- create_matrice(my_forest_dir, id = "MY_FOREST")
-#> ✔ Excel file created at: /tmp/RtmpEVprS1/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/RtmpIREh2C/MY_FOREST/MY_FOREST_matrice.xlsx
 ```
 
 You can then manually fill the Excel file.
@@ -225,11 +225,11 @@ write_xlsx(matrice, file.path(sequoia_dir, "ECKMUHL_matrice.xlsx"))
 ``` r
 parca_path <- seq_parca(sequoia_dir)
 #> ℹ Downloading BDP from IGN...
-#> Warning: BDP not available, ETALAB geom only is used.
+#> ✔ 9 of 9 ETALAB geom successfully replaced with BDP geom.
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 9 features saved to 1_SEQUOIA/ECKMUHL_SEQ_PARCA_poly.gpkg.
 #> ✔ Table "x.seq.matrice" saved to ECKMUHL_MATRICE.xlsx.
-#> ✔ _matrice.xlsx also saved as ECKMUHL_matrice_20260219T082433.xlsx for safety.
+#> ✔ _matrice.xlsx also saved as ECKMUHL_matrice_20260219T145052.xlsx for safety.
 
 # directly read parca form parca path
 parca <- read_sf(parca_path)

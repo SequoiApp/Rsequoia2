@@ -6,7 +6,7 @@ repository.
 ## Usage
 
 ``` r
-get_ser_pdf(ser, out_dir = "ser_pdf", overwrite = FALSE, verbose = TRUE)
+get_ser_pdf(ser, dirname = NULL, overwrite = FALSE, verbose = TRUE)
 ```
 
 ## Arguments
@@ -16,7 +16,7 @@ get_ser_pdf(ser, out_dir = "ser_pdf", overwrite = FALSE, verbose = TRUE)
   An object (typically an `sf` object get by `get_ifn("ser")`)
   containing an `codeser` field used to identify sylvoecoregion reports.
 
-- out_dir:
+- dirname:
 
   Output directory where PDF files are saved.
 

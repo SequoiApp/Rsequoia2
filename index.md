@@ -19,7 +19,7 @@ For a quick package execution, try:
 
 ``` r
 library(Rsequoia2)
-path <- sequoia()
+sequoia()
 ```
 
 The
