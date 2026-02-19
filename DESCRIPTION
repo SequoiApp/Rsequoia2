@@ -14,7 +14,7 @@ Depends:
 Imports: 
     archive,
     cli,
-    curl,
+    curl (>= 7.0.0),
     frheritage,
     happign,
     jsonlite,
