@@ -168,6 +168,9 @@
 - [`mf_get_climatology()`](https://sequoiapp.github.io/Rsequoia2/reference/mf_get_climatology.md)
   : Download monthly climatology from Meteo-France
 
+- [`mf_get_metadata()`](https://sequoiapp.github.io/Rsequoia2/reference/mf_get_metadata.md)
+  : Get Météo-France Dataset Metadata
+
 - [`mf_get_nearest_station()`](https://sequoiapp.github.io/Rsequoia2/reference/mf_get_nearest_station.md)
   : Get nearest Meteo-France stations
 
