@@ -51,11 +51,9 @@ insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
 #> ℹ Downloading legal entity datasets...
-#> ⠙ 16 extracted | 730 MB (253 MB/s) | 2.9s
-#> ⠹ 43 extracted | 1.6 GB (267 MB/s) | 5.9s
-#> ⠙ 13 extracted | 462 MB (207 MB/s) | 2.2s
-#> ⠹ 29 extracted | 1.1 GB (189 MB/s) | 5.8s
-#> ⠸ 42 extracted | 1.7 GB (208 MB/s) | 8.2s
+#> ⠙ 21 extracted | 953 MB (296 MB/s) | 3.2s
+#> ⠙ 25 extracted | 942 MB (278 MB/s) | 3.4s
+#> ⠹ 47 extracted | 1.9 GB (300 MB/s) | 6.4s
 #> ✔ Data available at: /home/runner/.cache/R/Rsequoia2/legal_entity
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
@@ -180,7 +178,7 @@ seq_parca(seq_dir)
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 13 features saved to 1_SEQUOIA/MY_FOREST_SEQ_PARCA_poly.gpkg.
 #> ✔ Table "x.seq.matrice" saved to MY_FOREST_MATRICE.xlsx.
-#> ✔ _matrice.xlsx also saved as MY_FOREST_MATRICE_20260218T132832.xlsx for safety.
+#> ✔ _matrice.xlsx also saved as MY_FOREST_MATRICE_20260219T082318.xlsx for safety.
 parca <- seq_read("parca", seq_dir)
 
 tm_tiles("OpenStreetMap")+
