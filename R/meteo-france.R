@@ -74,6 +74,41 @@ mf_get_climate_fiche <- function(x, dirname = NULL, verbose = TRUE) {
   return(dirname |> setNames("fiche.meteo") |> invisible())
 }
 
+#' Get Météo-France Dataset Metadata
+#'
+#' Downloads and parses the metadata describing variables from the
+#' Météo-France monthly climate dataset ("MENSQ").
+#'
+#' The function retrieves the `descriptif_champs` resource from the
+#' corresponding data.gouv.fr dataset and returns a structured table
+#' containing variable names and their descriptions.
+#'
+#' @return A `data.frame` with two columns
+#'
+#' @examples
+#' \dontrun{
+#' meta <- mf_get_metadata()
+#' head(meta)
+#' }
+#'
+#' @export
+mf_get_metadata <- function(){
+
+  all_resource <- dg_get_dataset("6569b3d7d193b4daf2b43edc")$resource
+  url <- all_resource$url[grepl("descriptif_champs", all_resource$title)][[1]]
+
+  txt <- readLines(url, encoding = "UTF-8", warn = FALSE)
+  stop_line <- grep("^NBJBROU", txt)
+  txt_clean <- txt[seq_len(stop_line)]
+
+  mf_metadata <- do.call(rbind, strsplit(txt_clean, " : ", fixed = TRUE)) |>
+    as.data.frame(stringsAsFactors = FALSE) |>
+    setNames(c("variable", "description"))
+
+  return(mf_metadata)
+
+}
+
 #' Download monthly climatology from Meteo-France
 #'
 #' Downloads monthly climatological data for the *3 nearest meteorological stations*.
@@ -294,10 +329,15 @@ seq_meteo_france <- function(
   ombro <- mf_ombro(raw_clim, periods = c(30, 5))
   precipitation <- mf_precipitation(raw_clim)
 
+  # Metadat
+  mf_metadata <- mf_get_metadata()
+
   wb <- openxlsx2::wb_load(system.file("xlsx/CLIMAT_MF.xlsx", package = "Rsequoia2"))
 
   if (verbose) {cli_alert_info("Writing Meteo-France data to: {.path {filepath}}")}
 
+  wb <- openxlsx2::wb_clean_sheet(wb, sheet = 1, styles = FALSE) |>
+    openxlsx2::wb_add_data(sheet = 1, mf_metadata)
   wb <- openxlsx2::wb_clean_sheet(wb, sheet = 2, styles = FALSE) |>
     openxlsx2::wb_add_data(sheet = 2, raw_clim)
   wb <- openxlsx2::wb_clean_sheet(wb, sheet = 3, dims = "A1:F30", styles = FALSE) |>
