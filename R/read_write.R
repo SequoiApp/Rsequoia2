@@ -36,10 +36,21 @@ seq_read <- function(key, dirname = ".", verbose = FALSE) {
 
   multiple_match <- length(path) > 1
   if (multiple_match) {
-    cli::cli_abort(c(
-      "!" = "Multiple layer {.file {filename}} found:",
-      "i" = cli::cli_fmt(cli::cli_ul(sprintf("{.file %s}", path)))
-    ))
+    withCallingHandlers({
+      cli::cli_abort(c(
+        "!" = "Multiple layer {.file {filename}} found:",
+        "i" = cli::cli_fmt(cli::cli_ul(sprintf("{.file %s}", path)))
+      ))
+    },
+    error = function(e) {
+      if (any(grepl("\\.gpkg-(shm|wal)$", path))) {
+        ua_filename <- seq_layer("ua")$filename
+        cli::cli_abort(c(
+          "x" = "Cannot access {.file {ua_filename}} because it is currently open in QGIS.",
+          "i" = "Close the file in QGIS and try again."
+        ))
+      }
+    })
   }
 
   is_vector <- (type == "vect")
