@@ -76,6 +76,13 @@ get_com_line <- function(x, graphic = FALSE, verbose = TRUE) {
   if (graphic){
     convex <- envelope(x, 500)
     line <- sf::st_intersection(line, convex) |> suppressWarnings()
+
+    if (nrow(line) == 0){
+      if (verbose){
+        cli::cli_aler_warning("No intersection between COMS_TOPO_line and area of interest.")
+      }
+      return(NULL)
+    }
   }
 
   return(invisible(line))
@@ -116,6 +123,12 @@ get_com_point <- function(x, graphic = FALSE, verbose = TRUE) {
     convex <- envelope(x, 500)
     point <- quiet(sf::st_centroid(sf::st_intersection(poly, convex),
                                    of_largest_polygon = FALSE))
+    if (nrow(point) == 0) {
+      if (verbose){
+        cli::cli_aler_warning("No intersection between COMS_TOPO_point and area of interest.")
+      }
+      return(NULL)
+    }
   } else {
     point <- quiet(sf::st_centroid(poly, of_largest_polygon = FALSE))
   }
