@@ -8,7 +8,7 @@ and writes the resulting layers to disk.
 ``` r
 seq_ifn(
   dirname = ".",
-  types = c("ser", "ser_ar", "rfn", "rfd", "zp"),
+  key = get_keys("ifn"),
   verbose = TRUE,
   overwrite = FALSE
 )
@@ -21,11 +21,12 @@ seq_ifn(
   `character` Path to the project directory. Defaults to the current
   working directory.
 
-- types:
+- key:
 
-  `character` Vector of region types to retrieve. Possible values are
-  `"ser"`, `"ser_ar"`, `"rfn"`, `"rfd"` and `"zp"`. Defaults to all
-  available types.
+  `character`; List of ifn layer identifiers to download. If not
+  provided, the function uses `get_keys("ifn")` to automatically select
+  all MNHN layers defined in the Sequoia configuration
+  (`inst/config/seq_layers.yaml`)
 
 - verbose:
 
@@ -50,9 +51,9 @@ based on the project area defined by the PARCA polygon.
 
 Each regional layer is written to disk using
 [`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
-with a dedicated output key corresponding to the requested region type.
+with a dedicated output key corresponding to the requested region k.
 
-If no feature is found for a given type, the corresponding layer is not
+If no feature is found for a given k, the corresponding layer is not
 written.
 
 ## See also

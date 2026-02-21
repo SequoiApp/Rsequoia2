@@ -6,7 +6,7 @@ intersecting a given area of interest.
 ## Usage
 
 ``` r
-get_ifn(x, type = c("ser", "ser_ar", "rfn", "rfd", "zp"), cache = NULL)
+get_ifn(x, key, cache = NULL)
 ```
 
 ## Arguments
@@ -15,10 +15,10 @@ get_ifn(x, type = c("ser", "ser_ar", "rfn", "rfd", "zp"), cache = NULL)
 
   An `sf` object defining the input area of interest.
 
-- type:
+- key:
 
-  A character string specifying the IFN regional dataset to use. Must be
-  one of:
+  A `character` string specifying the IFN regional dataset to use. Must
+  be one of `get_keys("ifn")`:
 
   - `"ser"`: sylvo-ecoregions
 
