@@ -32,7 +32,8 @@ get_curves <- function(x, verbose = TRUE) {
     return(NULL)
   }
 
-  curves <- st_intersection(curves, fetch_envelope) |>
+  curves <- st_intersection(curves, fetch_envelope)|>
+    st_collection_extract("LINESTRING") |>
     st_cast("LINESTRING") |>
     suppressWarnings()
 
