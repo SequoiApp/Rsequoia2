@@ -4,8 +4,8 @@
 #' intersecting a given area of interest.
 #'
 #' @param x An `sf` object defining the input area of interest.
-#' @param type A character string specifying the IFN regional dataset to use.
-#'   Must be one of:
+#' @param key A `character` string specifying the IFN regional dataset to use.
+#'   Must be one of `get_keys("ifn")`:
 #'   \itemize{
 #'     \item `"ser"`: sylvo-ecoregions
 #'     \item `"ser_ar"`: sylvo-ecoregions (aggregated regions)
@@ -34,17 +34,15 @@
 #' geometry modification (e.g. clipping) is applied.
 #'
 #' @export
-get_ifn <- function(
-    x,
-    type = c("ser", "ser_ar", "rfn", "rfd", "zp"),
-    cache = NULL
-    ) {
+get_ifn <- function(x,
+                    key,
+                    cache = NULL) {
 
-  # type check
-  if (length(type) != 1 || !type %in% c("ser", "ser_ar", "rfn", "rfd", "zp")) {
+  # key check
+  if (length(key) != 1 || !key %in% get_keys("ifn")) {
     cli::cli_abort(c(
-      "x" = "{.arg type} is equal to {.val {format(type)}}.",
-      "i" = "{.arg type} must be one of {.val ser}, {.val ser_ar}, {.val rfn}, {.val rfd} or {.val zp}."
+      "x" = "{.arg key} is equal to {.val {format(key)}}.",
+      "i" = "{.arg key} must be one of {.val ser}, {.val ser_ar}, {.val rfn}, {.val rfd} or {.val zp}."
     ))
   }
 
@@ -64,14 +62,14 @@ get_ifn <- function(
     zp     = "https://inventaire-forestier.ign.fr/IMG/zip/zp250_shp-2.zip"
   )
 
-  url <- urls[[type]]
+  url <- urls[[key]]
 
   zipfile   <- file.path(cache, basename(url))
   unzip_dir <- tools::file_path_sans_ext(zipfile)
 
   # download / unzip
   if (!file.exists(zipfile)) {
-    cli::cli_inform("Downloading {.val {type}} data")
+    cli::cli_inform("Downloading {.val {key}} data")
     curl::curl_download(url, zipfile)
   }
 
@@ -216,9 +214,9 @@ get_ser_pdf <- function(
 #'
 #' @param dirname `character` Path to the project directory.
 #'   Defaults to the current working directory.
-#' @param types `character` Vector of region types to retrieve.
-#'   Possible values are `"ser"`, `"ser_ar"`, `"rfn"`, `"rfd"` and `"zp"`.
-#'   Defaults to all available types.
+#' @param key `character`; List of ifn layer identifiers to download. If not
+#'   provided, the function uses `get_keys("ifn")` to automatically select all
+#'   MNHN layers defined in the Sequoia configuration (`inst/config/seq_layers.yaml`)
 #' @param verbose `logical`; whether to display informational messages.
 #'   Defaults to `TRUE`.
 #' @param overwrite `logical`; whether to overwrite existing files.
@@ -229,9 +227,9 @@ get_ser_pdf <- function(
 #' project area defined by the PARCA polygon.
 #'
 #' Each regional layer is written to disk using [seq_write()] with a
-#' dedicated output key corresponding to the requested region type.
+#' dedicated output key corresponding to the requested region k.
 #'
-#' If no feature is found for a given type, the corresponding layer
+#' If no feature is found for a given k, the corresponding layer
 #' is not written.
 #'
 #' @return
@@ -243,13 +241,13 @@ get_ser_pdf <- function(
 #'
 #' @export
 seq_ifn <- function(
-    dirname   = ".",
-    types     = c("ser", "ser_ar", "rfn", "rfd", "zp"),
-    verbose   = TRUE,
+    dirname = ".",
+    key = get_keys("ifn"),
+    verbose = TRUE,
     overwrite = FALSE
 ) {
 
-  # valid types + output keys
+  # valid key + output keys
   type_key <- c(
     ser    = "v.ifn.ser.poly",
     ser_ar = "v.ifn.ser_ar.poly",
@@ -258,9 +256,9 @@ seq_ifn <- function(
     zp     = "v.ifn.zp.poly"
   )
 
-  if (!all(types %in% names(type_key))) {
+  if (!all(key %in% names(type_key))) {
     cli::cli_abort(
-      "{.arg types} must be one or more of {.val {names(type_key)}}."
+      "{.arg key} must be one or more of {.val {names(type_key)}}."
     )
   }
 
@@ -273,33 +271,33 @@ seq_ifn <- function(
   identifier <- seq_field("identifier")$name
   id <- unique(parca[[identifier]])
 
-  out <- vector("list", length(types))
-  names(out) <- types
+  out <- vector("list", length(key))
+  names(out) <- key
 
   # main loop
-  for (type in types) {
+  for (k in key) {
 
-    region <- get_ifn(parca, type = type)
+    region <- get_ifn(parca, key = k)
 
     if (is.null(region) || nrow(region) == 0) {
       if (verbose) {
         cli::cli_alert_info(
-          "No {.val {type}} features found: layer not written."
+          "No {.val {k}} features found: layer not written."
         )
       }
       next
     }
 
-    out[[type]] <- seq_write(
+    out[[k]] <- seq_write(
       region,
-      type_key[[type]],
+      type_key[[k]],
       dirname   = dirname,
       id        = id,
       verbose   = verbose,
       overwrite = overwrite
     )
 
-    if (type == "ser"){
+    if (k == "ser"){
       get_ser_pdf(
         region,
         dirname   = file.path(dirname, seq_layer("v.ifn.ser.poly")$path),
@@ -310,7 +308,7 @@ seq_ifn <- function(
 
     if (verbose) {
       cli::cli_alert_success(
-        "{.val {type}} layer written with {nrow(region)} feature{?s}."
+        "{.val {k}} layer written with {nrow(region)} feature{?s}."
       )
     }
   }

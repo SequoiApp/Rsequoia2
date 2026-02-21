@@ -40,14 +40,14 @@ test_that("get_ifn() returns sf with expected structure", {
   expect_gt(nrow(ifn), 0)
 })
 
-test_that("get_ifn() fails with invalid type", {
+test_that("get_ifn() fails with invalid key", {
 
   point <- sf::st_as_sf(
     sf::st_sfc(sf::st_point(c(0, 0)), crs = 2154)
   )
 
   expect_error(
-    get_ifn(point, type = "invalid"),
+    get_ifn(point, key = "invalid"),
     "must be one of"
   )
 })
@@ -124,7 +124,7 @@ test_that("get_ifn() assigns CRS when missing on IFN layer", {
   expect_equal(sf::st_crs(res), sf::st_crs(point))
 })
 
-test_that("get_ifn() fails when type has length > 1", {
+test_that("get_ifn() fails when key has length > 1", {
 
   point <- sf::st_as_sf(
     sf::st_sfc(sf::st_point(c(0, 0)), crs = 2154)
@@ -183,7 +183,7 @@ test_that("get_ifn() keeps CRS when identical to input", {
     .package = "sf"
   )
 
-  ifn <- get_ifn(point, type = "ser")
+  ifn <- get_ifn(point, key = "ser")
 
   expect_equal(sf::st_crs(ifn), sf::st_crs(point))
 })

@@ -6,7 +6,7 @@
 \usage{
 seq_ifn(
   dirname = ".",
-  types = c("ser", "ser_ar", "rfn", "rfd", "zp"),
+  key = get_keys("ifn"),
   verbose = TRUE,
   overwrite = FALSE
 )
@@ -15,9 +15,9 @@ seq_ifn(
 \item{dirname}{\code{character} Path to the project directory.
 Defaults to the current working directory.}
 
-\item{types}{\code{character} Vector of region types to retrieve.
-Possible values are \code{"ser"}, \code{"ser_ar"}, \code{"rfn"}, \code{"rfd"} and \code{"zp"}.
-Defaults to all available types.}
+\item{key}{\code{character}; List of ifn layer identifiers to download. If not
+provided, the function uses \code{get_keys("ifn")} to automatically select all
+MNHN layers defined in the Sequoia configuration (\code{inst/config/seq_layers.yaml})}
 
 \item{verbose}{\code{logical}; whether to display informational messages.
 Defaults to \code{TRUE}.}
@@ -38,9 +38,9 @@ Regional datasets are retrieved using \code{\link[=get_ifn]{get_ifn()}} based on
 project area defined by the PARCA polygon.
 
 Each regional layer is written to disk using \code{\link[=seq_write]{seq_write()}} with a
-dedicated output key corresponding to the requested region type.
+dedicated output key corresponding to the requested region k.
 
-If no feature is found for a given type, the corresponding layer
+If no feature is found for a given k, the corresponding layer
 is not written.
 }
 \seealso{
