@@ -125,7 +125,7 @@ ua_to_sspf <- function(ua){
 #' layer are created.
 #'
 #' @return
-#' A named list of four file paths, corresponding to the exported PF and SSPF
+#' A named list of six file paths, corresponding to the exported PF and SSPF
 #' polygon and line layers.
 #'
 seq_parcels <- function(dirname = ".", verbose = FALSE, overwrite = FALSE){
@@ -143,16 +143,22 @@ seq_parcels <- function(dirname = ".", verbose = FALSE, overwrite = FALSE){
 
   pf_poly <- ua_to_pf(ua)
   pf_line <- poly_to_line(pf_poly)
+  pf_point <- sf::st_centroid(pf_poly) |> suppressWarnings()
 
   pf_poly <- seq_write2(pf_poly, "v.seq.pf.poly", id)
   pf_line <- seq_write2(pf_line, "v.seq.pf.line", id)
+  pf_point <- seq_write2(pf_point, "v.seq.pf.point", id)
 
   sspf_poly <- ua_to_sspf(ua)
   sspf_line <- poly_to_line(sspf_poly)
+  sspf_point <- sf::st_centroid(sspf_poly) |> suppressWarnings()
 
   sspf_poly <- seq_write2(sspf_poly, "v.seq.sspf.poly", id)
   sspf_line <- seq_write2(sspf_line, "v.seq.sspf.line", id)
+  sspf_point <- seq_write2(sspf_point, "v.seq.sspf.point", id)
 
-  return(invisible(c(pf_poly, pf_line, sspf_poly, sspf_line) |> as.list()))
+  return(invisible(
+    c(pf_poly, pf_line, pf_point, sspf_poly, sspf_line, sspf_point) |> as.list()
+  ))
 
 }

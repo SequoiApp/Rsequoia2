@@ -194,6 +194,46 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
 
   pf_field <- seq_field("pcl_code")$name
 
+  # ROUTES
+  road <- safe_seq_read("v.road.topo.line", dirname = dirname)
+  road_in <- road |>
+    sf::st_intersection(ua$geom) |>
+    suppressWarnings()
+
+  if (nrow(road_in) > 1){
+    road_map <- c(
+      PN = "Pistes & layons",
+      RF = "Route empierr\u00E9e",
+      RD = "Route rev\u00EAtue",
+      RC = "Route rev\u00EAtue"
+    )
+
+    type_field <- seq_field("type")$name
+    road_in$length <- as.numeric(sf::st_length(road_in) |> units::set_units("km"))
+    road_in$cat <- road_map[road_in[[type_field]]]
+    road_in$cat[is.na(road_in$cat)] <- "Autre"
+
+    # Force levels BEFORE aggregation
+    road_in$PRIVE <- factor(
+      road_in$PRIVE,
+      levels = c(FALSE, TRUE),
+      labels = c("PUBLIQUE", "PRIVEE")
+    )
+
+    road_by_type <- stats::xtabs(length ~ cat + PRIVE, data = road_in) |>
+      as.data.frame.matrix()
+
+    road_by_type$REVETEMENT <- rownames(road_by_type)
+    rownames(road_by_type) <- NULL
+
+    road_by_type <- road_by_type[,c("REVETEMENT", "PUBLIQUE", "PRIVEE")]
+    road_by_type$TOTAL <- rowSums(road_by_type[, -1], na.rm = T)
+    surface_ha <- sum(ua$SURF_CAD, na.rm = TRUE)
+    road_by_type$KM_100HA <- road_by_type$TOTAL * 100 / surface_ha
+
+    tables$ROAD <- road_by_type
+  }
+
   # MNT
   mnt <- safe_seq_read("r.alt.mnt", dirname = dirname)
   if (!is.null(mnt)){

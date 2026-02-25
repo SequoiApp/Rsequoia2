@@ -15,7 +15,7 @@ Defaults to the current working directory.}
 \item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
 }
 \value{
-A named list of four file paths, corresponding to the exported PF and SSPF
+A named list of six file paths, corresponding to the exported PF and SSPF
 polygon and line layers.
 }
 \description{

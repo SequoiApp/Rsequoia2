@@ -393,7 +393,6 @@ seq_elevation <- function(
   }
 
   # DEM ----
-
   dem <- seq_get_or_read(
     "r.alt.mnt",
     function(){

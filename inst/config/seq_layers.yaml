@@ -25,8 +25,10 @@ v.seq.owner.point:  { name: "SEQ_OWNER_point", ext: "gpkg" }
 v.seq.owner.line:   { name: "SEQ_OWNER_line",  ext: "gpkg" }
 v.seq.owner.poly:   { name: "SEQ_OWNER_poly",  ext: "gpkg" }
 v.seq.ua.poly:      { name: "SEQ_UA_poly",     ext: "gpkg" }
+v.seq.pf.point:     { name: "SEQ_PF_point",    ext: "gpkg" }
 v.seq.pf.line:      { name: "SEQ_PF_line",     ext: "gpkg" }
 v.seq.pf.poly:      { name: "SEQ_PF_poly",     ext: "gpkg" }
+v.seq.sspf.point:   { name: "SEQ_SSPF_point",  ext: "gpkg" }
 v.seq.sspf.poly:    { name: "SEQ_SSPF_poly",   ext: "gpkg" }
 v.seq.sspf.line:    { name: "SEQ_SSPF_line",   ext: "gpkg" }
 v.seq.ame.poly:     { name: "SEQ_AME_poly",    ext: "gpkg" }
@@ -58,7 +60,7 @@ v.pat.zppa.poly:   { name: "PAT_ZPPA_poly", ext: "gpkg" }
 # GPU
 v.gpu.municipality.poly:  { name: "GPU_MUNICIPALITY_poly",  ext: "gpkg" }
 v.gpu.document.poly:      { name: "GPU_DOCUMENT_poly",      ext: "gpkg" }
-v.gpu.zone.poly:          { name: "GPU_ZONE_poly",          ext: "gpkg" }
+v.gpu.zone.poly:          { name: "GPU_ZONE_poly",        ext: "gpkg" }
 v.gpu.prescription.poly:  { name: "GPU_PRESCRIPTION_poly",  ext: "gpkg" }
 v.gpu.prescription.line:  { name: "GPU_PRESCRIPTION_line",  ext: "gpkg" }
 v.gpu.prescription.point: { name: "GPU_PRESCRIPTION_point", ext: "gpkg" }
@@ -141,8 +143,8 @@ v.access.skidder.poly: {name: "ACCESS_SKIDDER_poly", ext: "gpkg" }
 # ROAD
 v.road.topo.line:     { name: "ROAD_TOPO_line",    ext: "gpkg" }
 v.road.topo.poly:     { name: "ROAD_TOPO_poly",    ext: "gpkg" }
-v.road.graphic.line:  { name: "ROAD_GRAPH_line",   ext: "gpkg" }
-v.road.graphic.poly:  { name: "ROAD_GRAPH_poly",   ext: "gpkg" }
+v.road.graphic.line:  { name: "ROAD_GRAPHIC_line",   ext: "gpkg" }
+v.road.graphic.poly:  { name: "ROAD_GRAPHIC_poly",   ext: "gpkg" }
 
 # REGION
 v.ifn.ser.poly:    { name: "REGION_SER_poly",    ext: "gpkg" }
