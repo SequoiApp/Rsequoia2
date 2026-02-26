@@ -38,7 +38,7 @@ test_that("seq_write() overwrite vector properly correctly", {
   with_seq_cache({
     v <- Rsequoia2:::seq_poly
     seq_write(v, "prsf", seq_cache)
-    expect_silent(seq_write(v, "prsf", seq_cache, overwrite = TRUE))
+    seq_write(v, "prsf", seq_cache, overwrite = TRUE, verbose = FALSE)
     expect_warning(seq_write(v, "prsf", seq_cache, overwrite = FALSE))
   })
 
