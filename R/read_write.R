@@ -161,7 +161,16 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
       ))
     }
 
-    sf::write_sf(x, path, delete_dsn = overwrite)
+    sf::st_write(
+      x,
+      path,
+      delete_dsn = overwrite,
+      # This is already by default but explicit is better than default
+      layer_options = c(
+        "GEOMETRY_NAME=geom",
+        "SPATIAL_INDEX=YES"
+      )
+    )
 
     if (verbose) {
       cli::cli_alert_success(
