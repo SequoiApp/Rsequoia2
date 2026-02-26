@@ -4,13 +4,13 @@
 \alias{get_ifn}
 \title{Retrieve IFN regional layers by intersecting an area}
 \usage{
-get_ifn(x, type = c("ser", "ser_ar", "rfn", "rfd", "zp"), cache = NULL)
+get_ifn(x, key, cache = NULL)
 }
 \arguments{
 \item{x}{An \code{sf} object defining the input area of interest.}
 
-\item{type}{A character string specifying the IFN regional dataset to use.
-Must be one of:
+\item{key}{A \code{character} string specifying the IFN regional dataset to use.
+Must be one of \code{get_keys("ifn")}:
 \itemize{
 \item \code{"ser"}: sylvo-ecoregions
 \item \code{"ser_ar"}: sylvo-ecoregions (aggregated regions)

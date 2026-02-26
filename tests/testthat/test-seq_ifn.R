@@ -47,7 +47,7 @@ test_that("seq_ifn() calls seq_write once per output", {
   })
 })
 
-test_that("seq_ifn() respects types argument", {
+test_that("seq_ifn() respects key argument", {
   with_seq_cache({
 
     poly <- Rsequoia2:::seq_poly |>
@@ -56,15 +56,15 @@ test_that("seq_ifn() respects types argument", {
     seen <- character()
 
     local_mocked_bindings(
-      get_ifn = function(parca, type, ...) {
-        seen <<- c(seen, type)
+      get_ifn = function(parca, key, ...) {
+        seen <<- c(seen, key)
         poly
       },
       get_ser_pdf = function(...) "ser_pdf_path",
       seq_write = function(...) tempfile(fileext = ".gpkg")
     )
 
-    seq_ifn(seq_cache, types = c("ser", "zp"), verbose = FALSE)
+    seq_ifn(seq_cache, key = c("ser", "zp"), verbose = FALSE)
 
     expect_setequal(seen, c("ser", "zp"))
   })
@@ -90,32 +90,32 @@ test_that("seq_ifn() writes nothing when no features exist", {
   })
 })
 
-test_that("seq_ifn() returns only written layers when some types are empty", {
+test_that("seq_ifn() returns only written layers when some key are empty", {
   with_seq_cache({
 
     poly <- Rsequoia2:::seq_poly |>
       transform(codeser = "B33")
 
     local_mocked_bindings(
-      get_ifn = function(parca, type, ...) {
-        if (type == "ser") return(poly)
+      get_ifn = function(parca, key, ...) {
+        if (key == "ser") return(poly)
         NULL
       },
       get_ser_pdf = function(...) "ser_pdf_path",
       seq_write = function(...) tempfile(fileext = ".gpkg")
     )
 
-    out <- seq_ifn(seq_cache, types = c("ser", "rfn"), verbose = FALSE)
+    out <- seq_ifn(seq_cache, key = c("ser", "rfn"), verbose = FALSE)
 
     expect_named(out, "ser")
     expect_length(out, 1)
   })
 })
 
-test_that("seq_ifn() errors on invalid types", {
+test_that("seq_ifn() errors on invalid key", {
 
   expect_error(
-    seq_ifn(types = "invalid", verbose = FALSE),
-    "types"
+    seq_ifn(key = "invalid", verbose = FALSE),
+    "key"
   )
 })
