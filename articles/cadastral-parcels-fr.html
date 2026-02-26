@@ -257,7 +257,7 @@ vide avec :</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">my_forest_dir</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">matrice_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_matrice.html">create_matrice</a></span><span class="op">(</span><span class="va">my_forest_dir</span>, id <span class="op">=</span> <span class="st">"MY_FOREST"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Excel file created at: <span style="color: #0000BB;">/tmp/RtmpkPXppV/MY_FOREST/MY_FOREST_matrice.xlsx</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Excel file created at: <span style="color: #0000BB;">/tmp/RtmpC6NhB2/MY_FOREST/MY_FOREST_matrice.xlsx</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="récupération-des-parcelles-avec-sequoia">2. Récupération des parcelles avec Sequoia<a class="anchor" aria-label="anchor" href="#r%C3%A9cup%C3%A9ration-des-parcelles-avec-sequoia"></a>
@@ -299,9 +299,13 @@ parcelles<a class="anchor" aria-label="anchor" href="#%C3%A9tape-2---ex%C3%A9cut
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading BDP from IGN...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> 9 of 9 ETALAB geom successfully replaced with BDP geom.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> No area inconsistencies (cadastre vs GIS) detected.</span></span>
+<span><span class="co">#&gt; Writing layer `ECKMUHL_SEQ_PARCA_poly' to data source </span></span>
+<span><span class="co">#&gt;   `/tmp/RtmpC6NhB2/ECKMUHL/1_SEQUOIA/ECKMUHL_SEQ_PARCA_poly.gpkg' using driver `GPKG'</span></span>
+<span><span class="co">#&gt; options:        GEOMETRY_NAME=geom SPATIAL_INDEX=YES </span></span>
+<span><span class="co">#&gt; Writing 9 features with 17 fields and geometry type Multi Polygon.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Layer <span style="color: #0000BB;">"v.seq.parca.poly"</span> with 9 features saved to <span style="color: #0000BB;">1_SEQUOIA/ECKMUHL_SEQ_PARCA_poly.gpkg</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Table <span style="color: #0000BB;">"x.seq.matrice"</span> saved to <span style="color: #0000BB;">ECKMUHL_MATRICE.xlsx</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">_matrice.xlsx</span> also saved as <span style="color: #0000BB;">ECKMUHL_matrice_20260221T104458.xlsx</span> for safety.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">_matrice.xlsx</span> also saved as <span style="color: #0000BB;">ECKMUHL_matrice_20260226T095112.xlsx</span> for safety.</span></span>
 <span></span>
 <span><span class="co"># lecture directe depuis le chemin retourné</span></span>
 <span><span class="va">parca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="va">parca_path</span><span class="op">)</span></span>

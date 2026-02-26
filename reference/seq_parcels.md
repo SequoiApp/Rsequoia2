@@ -27,7 +27,7 @@ seq_parcels(dirname = ".", verbose = FALSE, overwrite = FALSE)
 
 ## Value
 
-A named list of four file paths, corresponding to the exported PF and
+A named list of six file paths, corresponding to the exported PF and
 SSPF polygon and line layers.
 
 ## Details

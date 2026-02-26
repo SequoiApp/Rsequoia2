@@ -167,9 +167,13 @@ seq_parca(seq_dir)
 #> ℹ Downloading BDP from IGN...
 #> ✔ 12 of 13 ETALAB geom successfully replaced with BDP geom.
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
+#> Writing layer `MY_FOREST_SEQ_PARCA_poly' to data source 
+#>   `/tmp/Rtmpzut18J/MY_FOREST/1_SEQUOIA/MY_FOREST_SEQ_PARCA_poly.gpkg' using driver `GPKG'
+#> options:        GEOMETRY_NAME=geom SPATIAL_INDEX=YES 
+#> Writing 13 features with 17 fields and geometry type Unknown (any).
 #> ✔ Layer "v.seq.parca.poly" with 13 features saved to 1_SEQUOIA/MY_FOREST_SEQ_PARCA_poly.gpkg.
 #> ✔ Table "x.seq.matrice" saved to MY_FOREST_MATRICE.xlsx.
-#> ✔ _matrice.xlsx also saved as MY_FOREST_MATRICE_20260221T104610.xlsx for safety.
+#> ✔ _matrice.xlsx also saved as MY_FOREST_MATRICE_20260226T095232.xlsx for safety.
 parca <- seq_read("parca", seq_dir)
 
 tm_tiles("OpenStreetMap")+
