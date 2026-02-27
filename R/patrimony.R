@@ -5,10 +5,9 @@
 #'
 #' @param x `sf` or `sfc`; Geometry located in France.
 #' @param key `character`; Layer to download.
-#' Must be one of from `get_keys("pat")`
+#'   Must be one of from `get_keys("pat")`
 #' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
-#' the download area.
-#' @param overwrite `logical`; If `TRUE`, file is overwritten.
+#'   the download area.
 #' @param verbose `logical`; If `TRUE`, display messages.
 #'
 #' @return `sf` object from `sf` package
@@ -19,7 +18,6 @@ get_patrimony <- function(
     x,
     key,
     buffer = 500,
-    overwrite = FALSE,
     verbose = TRUE){
 
   if (!inherits(x, c("sf", "sfc"))){

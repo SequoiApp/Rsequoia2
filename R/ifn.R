@@ -113,7 +113,7 @@ get_ifn <- function(x,
 #' from the IFN repository.
 #'
 #' @param ser An object (typically an `sf` object get by `get_ifn("ser")`)
-#' containing an `codeser` field used to identify sylvoecoregion reports.
+#'   containing an `codeser` field used to identify sylvoecoregion reports.
 #' @param dirname Output directory where PDF files are saved.
 #' @param overwrite `logical`; whether to overwrite existing files.
 #'   Defaults to `FALSE`.

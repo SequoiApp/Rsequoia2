@@ -5,8 +5,7 @@ test_that("seq_patrimony() return expected path", {
       get_patrimony = function(...) Rsequoia2:::seq_poly
     )
 
-    layer <- c("imdn", "padn")
-    patrimony_path <- seq_patrimony(dirname = seq_cache, key = layer, verbose = FALSE)
+    patrimony_path <- seq_patrimony(dirname = seq_cache, verbose = FALSE)
 
     expect_length(patrimony_path, length(layer))
     expect_all_true(file.exists(unlist(patrimony_path)))

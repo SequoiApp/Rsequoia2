@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r rmd, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   out.width = "100%",
@@ -38,7 +38,7 @@ Les fonctions se déclinent en fonctions autonomes `get_*` (où `*` correspont a
 
 Si l'utilisateur opte (et nous vous le conseillons) pour le procesus *Sequoia*, `Rsequoia2` télécharge et stocke les couches directement sur l'ordinateur.
 
-Pour clarifier l'objet et la nature de ces données et afin d'en faciliter l'usage ultérieure,  les couches téléchargées sont stockées selon leur thématiques:
+Pour clarifier l'objet et la nature de ces données et afin d'en faciliter l'usage ultérieure, les couches téléchargées sont stockées selon leur thématiques:
 
 -   **CADASTRE**: il s'agit des couches directement tirées des bases parcellaires (*PCI Etalab* ou *BD Parcelaire*).
 
@@ -56,7 +56,7 @@ Pour clarifier l'objet et la nature de ces données et afin d'en faciliter l'usa
 
 ## Zone d'étude utilisée
 
-La forêt étudié dans l'article sera la forêt de Brin, propriété de l'école forestière de Nancy, située à Brin-Sur-Seille, dans le département de Meurthe-Et-Moselle (54).
+La forêt étudiée dans l'article sera la forêt de Brin, propriété de l'école forestière de Nancy, située à Brin-Sur-Seille, dans le département de Meurthe-Et-Moselle (54).
 
 ```{r foret, fig.height = 3.5}
 idu <- c(
@@ -93,26 +93,42 @@ idu <- c(
 
 parca <- get_parca(idu) |> transform(IDENTIFIANT = "BRIN")
 
+foret <- Rsequoia2:::dissolve(parca, 5.5)
+
 tm_shape(parca)+
-  tm_borders(col = "blue", lwd = 2)
-	
+  tm_borders(col = "blue", lwd = 2)+
+tm_shape(foret)+
+  tm_borders(col = "black", lwd = 2)
 ```
 
 # 1. CADASTRE
 
 # 2. ENVIRONNEMENT
 
-La fonction `get_mnhn()` permet de télécharger un zonnage environnemtal en s'articulant autour de trois arguments :
-- `x` correspond au `sf` de la zone d'étude;
-- `key` corespond à la clé (= type) du zonage recherché (ex: `"zps"`);
-- `buffer` correspond au tempon éxécuté autour de la zone d'étude pour capter un résultat.
+```{r mnhm, include=FALSE}
+mnhn_keys <- get_keys("mnhn")
+```
 
-```{r mnhm, fig.height = 3.5}
+La fonction `get_mnhn()` permet de télécharger un zonnage environnemtal en s'articulant autour de trois arguments :
+
+-   `x` correspond au `sf` de la zone d'étude ;
+
+-   `key` corespond à la clé (= type) du zonage recherché (ex: `"zps"`). Les clés disponibles sont : `r mnhn_keys` ;
+
+-   `buffer` correspond au tempon éxécuté autour de la zone d'étude pour capter un résultat.
+
+La fonction fait appelle en interne au package [`happign`](%22https://github.com/paul-carteron/happign%22).
+
+**Exemple d'application:**
+
+Typiquement, pour connaitre la présence d'une znieff, un `buffer = 0` avec `key = znieff2` permettra d'intersecter de protection. Pour obtenir l'immeuble inscrit ou classé, il convient d'utiliser `buffer = 500` avec `key = immh`.
+
+```{r mnhm_fig, fig.height = 3.5}
 
 znieff1 <- get_mnhn(x = parca, key = "znieff1", buffer = 500)
 znieff2 <- get_mnhn(x = parca, key = "znieff2", buffer = 500)
 
-tm_shape(parca) +
+tm_shape(foret) +
   tm_borders(col = "black", lwd = 2) +
 tm_shape(znieff2) +
   tm_polygons(col = "green", fill_alpha = 0.4) +
@@ -120,14 +136,108 @@ tm_shape(znieff1) +
   tm_polygons(col = "red", fill_alpha = 0.4)
 	
 ```
-La fonction `seq_mnhm()` permet de télécharger l'ensemble des couches.
+
+Si l'utilisateur opte pour le procesus *Sequoia*, la fonction `seq_mnhm()` travaille directement avec le dossier normalisé en récupérant la couche *PARCA* comme zone d'étude. Elle télécharge l'ensemble des zonages intersectés avec `get_mnhn()` et les enregistre individuellement le dossier.
 
 # 3. IFN
 
+```{r ifn, include=FALSE}
+ifn_keys <- get_keys("ifn")
+```
+
+La fonction `get_ifn()` permet de télécharger les régions définis par l'[inventaire forestier national](%22https://inventaire-forestier.ign.fr/spip.php?rubrique267%22) en s'articulant autour de deux arguments :
+
+-   `x` correspond au `sf` de la zone d'étude ;
+
+-   `key` corespond à la clé (= type) du zonage recherché (ex: `"ser"`). Les clés disponibles sont : `r ifn_keys`.
+
+**Exemple d'application:**
+
+Typiquement, pour connaitre la sylvoécorégion de notre forêt, il suffit d'utiliser `key = ser`. Cette information est indispensable pour connaitre les [matériels forestiers de reproduction](https://agriculture.gouv.fr/materiels-forestiers-de-reproduction-arretes-regionaux-relatifs-aux-aides-de-letat-linvestissement) à utiliser localement.
+
+De même, pour connaitre la région forestière nationale, il suffit d'utiliser `key = rfn`. Cela permet de se localiser sur [Climessences](https://climessences.fr/) par exemple.
+
+------------------------------------------------------------------------
+
+La fonction `get_ser_pdf()` permet de télécharger les fiches descriptives des sylvoécorégions.
+
+Elle requiert un `sf` ou `data.frame` en argument `ser` ainsi qu'un `dirname` (le chemin du dossier) où télécharger les fiches `.pdf`.
+
+**Exemple d'application:**
+
+Ces fiches sont pratiques pour enrichir la rédaction des documents de gestion (ou simplement se documenter sur une région).
+
 # 4. PATRIMOINE
+
+```{r pat, include=FALSE}
+pat_keys <- get_keys("pat")
+```
+
+La fonction `get_patrimony()` permet d'obtenir les couches de l'[Atlas du patrimoine](%22http://atlas.patrimoines.culture.fr/atlas/trunk/static/presentation.html%22) en s'articulant autour de trois arguments :
+
+-   `x` correspond au `sf` de la zone d'étude ;
+
+-   `key` corespond à la clé (= type) du zonage recherché (ex: `"immh"`). Les clés disponibles sont : `r pat_keys` ;
+
+-   `buffer` correspond au tempon éxécuté autour de la zone d'étude pour capter un résultat.
+
+La fonction fait appelle en interne au package [`frheritage`](%22https://github.com/mucau/frheritage%22).
+
+**Exemple d'application:**
+
+Typiquement, pour connaitre la présence d'un monument historique, un `buffer = 0` avec `key = pamh` permettra d'intersecter le périmètre de protection. Pour obtenir l'immeuble inscrit ou classé, il convient d'utiliser `buffer = 500` avec `key = immh`.
+
+```{r pat_fig, fig.height = 3.5}
+
+
+```
+
+La fonction `seq_patrimony()` récupère la couche *PARCA* du dossier normalisé et l'utilise comme zone d'étude. Elle télécharge l'ensemble des couches intersectés avec `get_patrimony()` et les enregistre individuellement le dossier.
 
 # 5. SOL
 
+## 5.1 Les bases géologiques départementales du BRGM
+
+La fonction `get_brgm()` permet de télécharger depuis le BRGM :
+
+-   la [cartes géologiques départementales à 1/50 000 (Bd Charm-50)](https://infoterre.brgm.fr/formulaire/telechargement-cartes-geologiques-departementales-150-000-bd-charm-50)
+
+-   les [données géologiques dédiées au programme de Cartographie des Habitats Naturels et semi-naturels (CARHAB)](https://infoterre.brgm.fr/formulaire/telechargement-donnees-geologiques-dediees-au-programme-cartographie-habitats-naturels).
+
+La fonction s'articule essentiellement autour de deux arguments :
+
+-   `deps` correspond au département(s) ciblés par la requête ;
+
+-   `source` corespond à la clé (= type) de la couche (`"bdcharm50"`, `"carhab"`) ;
+
+Cette fonction a essentiellement pour objet de télécharger les bases départementales.
+
+## 5.2 Géologie
+
+La fonction `get_geol()` permet de récupérer les jeux de données précédents sur une zone d'étude.
+
+La fonction ajoute un argument `x` correspondant au `sf` de la zone d'étude.
+
+**Exemple d'application:**
+
+La géologie est indispensable pour établir des cartes géologiques des forêts.
+
+## 5.3 Pédologie
+
+La fonction `get_pedology()` permet de récupérer la [carte des sols](https://www.gissol.fr/donnees/carte-sur-le-geoportail-4789).
+
+Elle n'a besoin que d'un `sf` de la zone d'étude en argument `x`.
+
+**Exemple d'application:**
+
+La pédologie permet d'enrichir la rédaction des documents de gestion.
+
+----
+
+La fonction `get_pedology_pdf` permet de récupérer les fiches détaillées des ucs (exemple: [UCS 5513](https://data.geopf.fr/annexes/ressources/INRA_carte_des_sols/INRA/id_ucs_5513.pdf)). Elle requiert les identifiants des UCS en argument `id_ucs` ainsi qu'un `dirname` (le chemin du dossier) où télécharger les fiches `.pdf`.
+
 # 6. URBANISME
+
+
 
 # 7. VECTORIEL
