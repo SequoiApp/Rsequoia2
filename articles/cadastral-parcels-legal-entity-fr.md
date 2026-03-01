@@ -51,10 +51,10 @@ insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
 #> ℹ Downloading legal entity datasets...
-#> ⠙ 11 extracted | 506 MB (221 MB/s) | 2.3s
-#> ⠹ 31 extracted | 1.3 GB (249 MB/s) | 5.3s
-#> ⠙ 29 extracted | 1.1 GB (260 MB/s) | 4.2s
-#> ⠹ 48 extracted | 1.9 GB (268 MB/s) | 7.2s
+#> ⠙ 13 extracted | 610 MB (214 MB/s) | 2.9s
+#> ⠹ 32 extracted | 1.4 GB (234 MB/s) | 5.9s
+#> ⠙ 24 extracted | 890 MB (207 MB/s) | 4.3s
+#> ⠹ 41 extracted | 1.7 GB (227 MB/s) | 7.3s
 #> ✔ Data available at: /home/runner/.cache/R/Rsequoia2/legal_entity
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
@@ -177,13 +177,9 @@ seq_parca(seq_dir)
 #> ℹ Downloading BDP from IGN...
 #> ✔ 12 of 13 ETALAB geom successfully replaced with BDP geom.
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
-#> Writing layer `MY_FOREST_SEQ_PARCA_poly' to data source 
-#>   `/tmp/Rtmpcs5Rs3/MY_FOREST/1_SEQUOIA/MY_FOREST_SEQ_PARCA_poly.gpkg' using driver `GPKG'
-#> options:        GEOMETRY_NAME=geom SPATIAL_INDEX=YES 
-#> Writing 13 features with 17 fields and geometry type Unknown (any).
 #> ✔ Layer "v.seq.parca.poly" with 13 features saved to 1_SEQUOIA/MY_FOREST_SEQ_PARCA_poly.gpkg.
 #> ✔ Table "x.seq.matrice" saved to MY_FOREST_MATRICE.xlsx.
-#> ✔ _matrice.xlsx also saved as MY_FOREST_MATRICE_20260226T095159.xlsx for safety.
+#> ✔ _matrice.xlsx also saved as MY_FOREST_MATRICE_20260301T172613.xlsx for safety.
 parca <- seq_read("parca", seq_dir)
 
 tm_tiles("OpenStreetMap")+

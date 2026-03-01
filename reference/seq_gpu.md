@@ -1,13 +1,18 @@
 # Generate GPU layers for a Sequoia project
 
-Retrievesapplicable GPU (Geoportail de l'Urbanisme) layers intersecting
+Retrieves applicable GPU (Geoportail de l'Urbanisme) layers intersecting
 and surrounding the project area, and writes the resulting layer to
 disk.
 
 ## Usage
 
 ``` r
-seq_gpu(dirname = ".", verbose = TRUE, overwrite = FALSE)
+seq_gpu(
+  dirname = ".",
+  key = get_keys("gpu", reduce = FALSE),
+  verbose = TRUE,
+  overwrite = FALSE
+)
 ```
 
 ## Arguments
@@ -16,6 +21,13 @@ seq_gpu(dirname = ".", verbose = TRUE, overwrite = FALSE)
 
   Character. Root directory of the project. Defaults to the current
   directory.
+
+- key:
+
+  `character`; List of layer identifiers to download. If not provided,
+  the function uses `get_keys("gpu", reduce = FALSE)` to automatically
+  select all GPU layers defined in the Sequoia configuration
+  (`inst/config/seq_layers.yaml`)
 
 - verbose:
 

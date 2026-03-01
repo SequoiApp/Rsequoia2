@@ -48,7 +48,7 @@ selon leur thématiques:
 
 ### Zone d’étude utilisée
 
-La forêt étudié dans l’article sera la forêt de Brin, propriété de
+La forêt étudiée dans l’article sera la forêt de Brin, propriété de
 l’école forestière de Nancy, située à Brin-Sur-Seille, dans le
 département de Meurthe-Et-Moselle (54).
 
@@ -87,30 +87,55 @@ idu <- c(
 
 parca <- get_parca(idu) |> transform(IDENTIFIANT = "BRIN")
 
+foret <- Rsequoia2:::dissolve(parca, 5.5)
+
 tm_shape(parca)+
-  tm_borders(col = "blue", lwd = 2)
+  tm_borders(col = "blue", lwd = 2)+
+tm_shape(foret)+
+  tm_borders(col = "black", lwd = 2)
 ```
 
 ![](vecteurs_files/figure-html/foret-1.png)
 
-## 1. CADASTRE
+## 1. ACCESSIBILITE
 
-## 2. ENVIRONNEMENT
+## 2. CADASTRE
+
+Cette partie sera rédigée quand Mucau daignera finaliser frcadastre.
+
+## 3. ENVIRONNEMENT
 
 La fonction
 [`get_mnhn()`](https://sequoiapp.github.io/Rsequoia2/reference/get_mnhn.md)
 permet de télécharger un zonnage environnemtal en s’articulant autour de
-trois arguments : - `x` correspond au `sf` de la zone d’étude; - `key`
-corespond à la clé (= type) du zonage recherché (ex: `"zps"`); -
-`buffer` correspond au tempon éxécuté autour de la zone d’étude pour
-capter un résultat.
+trois arguments :
+
+- `x` correspond au `sf` de la zone d’étude ;
+
+- `key` corespond à la clé (= type) du zonage recherché (ex: `"zps"`).
+  Les clés disponibles sont : apb, apg, aphn, aplg, bios, unesco, cdl,
+  cen, geoparc, gsf, inpg, ospar, pgsf, pn, pn2, pnm, pnr, pprnn,
+  ramsar, rb, ripn, rnc, rncfs, rnn, rnr, sc, sic, znieff1, znieffmer1,
+  znieff2, znieffmer2, zpr, zps ;
+
+- `buffer` correspond au tempon éxécuté autour de la zone d’étude pour
+  capter un résultat.
+
+La fonction fait appelle en interne au package [`happign`](NA).
+
+**Exemple d’application:**
+
+Typiquement, pour connaitre la présence d’une znieff, un `buffer = 0`
+avec `key = znieff2` permettra d’intersecter de protection. Pour obtenir
+l’immeuble inscrit ou classé, il convient d’utiliser `buffer = 500` avec
+`key = immh`.
 
 ``` r
 
 znieff1 <- get_mnhn(x = parca, key = "znieff1", buffer = 500)
 znieff2 <- get_mnhn(x = parca, key = "znieff2", buffer = 500)
 
-tm_shape(parca) +
+tm_shape(foret) +
   tm_borders(col = "black", lwd = 2) +
 tm_shape(znieff2) +
   tm_polygons(col = "green", fill_alpha = 0.4) +
@@ -118,15 +143,218 @@ tm_shape(znieff1) +
   tm_polygons(col = "red", fill_alpha = 0.4)
 ```
 
-![](vecteurs_files/figure-html/mnhm-1.png) La fonction `seq_mnhm()`
-permet de télécharger l’ensemble des couches.
+![](vecteurs_files/figure-html/mnhm_fig-1.png)
 
-## 3. IFN
+Si l’utilisateur opte pour le procesus *Sequoia*, la fonction
+`seq_mnhm()` travaille directement avec le dossier normalisé en
+récupérant la couche *PARCA* comme zone d’étude. Elle peut télécharger
+l’ensemble des zonages intersectés en utilisant `get_mnhm()` en boucle
+avec `key = get_keys("mnhn")` (toutes les couches). Chaque couche
+intersectée est alors enregistrée individuellement dans le dossier.
 
-## 4. PATRIMOINE
+## 4. IFN
 
-## 5. SOL
+La fonction
+[`get_ifn()`](https://sequoiapp.github.io/Rsequoia2/reference/get_ifn.md)
+permet de télécharger les régions définis par l’[inventaire forestier
+national](NA) en s’articulant autour de deux arguments :
 
-## 6. URBANISME
+- `x` correspond au `sf` de la zone d’étude ;
 
-## 7. VECTORIEL
+- `key` corespond à la clé (= type) du zonage recherché (ex: `"ser"`).
+  Les clés disponibles sont : ser, ser_ar, rfn, rfd, zp.
+
+**Exemple d’application:**
+
+Typiquement, pour connaitre la sylvoécorégion de notre forêt, il suffit
+d’utiliser `key = ser`. Cette information est indispensable pour
+connaitre les [matériels forestiers de
+reproduction](https://agriculture.gouv.fr/materiels-forestiers-de-reproduction-arretes-regionaux-relatifs-aux-aides-de-letat-linvestissement)
+à utiliser localement.
+
+De même, pour connaitre la région forestière nationale, il suffit
+d’utiliser `key = rfn`. Cela permet de se localiser sur
+[Climessences](https://climessences.fr/) par exemple.
+
+------------------------------------------------------------------------
+
+La fonction
+[`get_ser_pdf()`](https://sequoiapp.github.io/Rsequoia2/reference/get_ser_pdf.md)
+permet de télécharger les fiches descriptives des sylvoécorégions
+(exemple: la [SER
+C20](https://inventaire-forestier.ign.fr/IMG/pdf/C_20.pdf)).
+
+Elle requiert les identifiants des SER en argument `id_ser` ainsi qu’un
+`dirname` (le chemin du dossier) où télécharger les fiches `.pdf`.
+
+**Exemple d’application:**
+
+Ces fiches sont pratiques pour enrichir la rédaction des documents de
+gestion (ou simplement se documenter sur une région).
+
+## 5. PATRIMOINE
+
+La fonction
+[`get_patrimony()`](https://sequoiapp.github.io/Rsequoia2/reference/get_patrimony.md)
+permet d’obtenir les couches de l’[Atlas du patrimoine](NA) en
+s’articulant autour de trois arguments :
+
+- `x` correspond au `sf` de la zone d’étude ;
+
+- `key` corespond à la clé (= type) du zonage recherché (ex: `"immh"`).
+  Les clés disponibles sont : imdn, padn, immh, pamh, imun, paun, sici,
+  sipr, lacr, zppa ;
+
+- `buffer` correspond au tempon éxécuté autour de la zone d’étude pour
+  capter un résultat.
+
+La fonction fait appelle en interne au package [`frheritage`](NA).
+
+**Exemple d’application:**
+
+Typiquement, pour connaitre la présence d’un monument historique, un
+`buffer = 0` avec `key = pamh` permettra d’intersecter le périmètre de
+protection. Pour obtenir l’immeuble inscrit ou classé, il convient
+d’utiliser `buffer = 500` avec `key = immh`.
+
+La fonction
+[`seq_patrimony()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_patrimony.md)
+récupère la couche *PARCA* du dossier normalisé et l’utilise comme zone
+d’étude.
+
+Elle peut télécharger l’ensemble des zonages intersectés en utilisant
+[`get_patrimony()`](https://sequoiapp.github.io/Rsequoia2/reference/get_patrimony.md)
+en boucle avec `key = get_keys("pat")` (toutes les couches). Chaque
+couche intersectée est alors enregistrée individuellement dans le
+dossier.
+
+## 6. SOL
+
+### 6.1 Les bases géologiques départementales du BRGM
+
+La fonction
+[`get_brgm()`](https://sequoiapp.github.io/Rsequoia2/reference/get_brgm.md)
+permet de télécharger depuis le BRGM :
+
+- la [cartes géologiques départementales à 1/50 000 (Bd
+  Charm-50)](https://infoterre.brgm.fr/formulaire/telechargement-cartes-geologiques-departementales-150-000-bd-charm-50)
+
+- les [données géologiques dédiées au programme de Cartographie des
+  Habitats Naturels et semi-naturels
+  (CARHAB)](https://infoterre.brgm.fr/formulaire/telechargement-donnees-geologiques-dediees-au-programme-cartographie-habitats-naturels).
+
+La fonction s’articule essentiellement autour de deux arguments :
+
+- `deps` correspond au département(s) ciblés par la requête ;
+
+- `source` corespond à la clé (= type) de la couche (`"bdcharm50"`,
+  `"carhab"`) ;
+
+Cette fonction a essentiellement pour objet de télécharger les bases
+départementales.
+
+### 6.2 Géologie
+
+La fonction `get_geol()` permet de récupérer les jeux de données
+précédents sur une zone d’étude.
+
+La fonction ajoute un argument `x` correspondant au `sf` de la zone
+d’étude.
+
+**Exemple d’application:**
+
+La géologie est indispensable pour établir des cartes géologiques des
+forêts.
+
+### 6.3 Pédologie
+
+La fonction
+[`get_pedology()`](https://sequoiapp.github.io/Rsequoia2/reference/get_pedology.md)
+permet de récupérer la [carte des
+sols](https://www.gissol.fr/donnees/carte-sur-le-geoportail-4789).
+
+Elle n’a besoin que d’un `sf` de la zone d’étude en argument `x`.
+
+**Exemple d’application:**
+
+La pédologie permet d’enrichir la rédaction des documents de gestion.
+
+------------------------------------------------------------------------
+
+La fonction `get_pedology_pdf` permet de récupérer les fiches détaillées
+des ucs (exemple: [UCS
+5513](https://data.geopf.fr/annexes/ressources/INRA_carte_des_sols/INRA/id_ucs_5513.pdf)).
+Elle requiert les identifiants des UCS en argument `id_ucs` ainsi qu’un
+`dirname` (le chemin du dossier) où télécharger les fiches `.pdf`.
+
+## 7. URBANISME
+
+La fonction
+[`get_gpu()`](https://sequoiapp.github.io/Rsequoia2/reference/get_gpu.md)
+permet de télécharger depuis le GPU:
+
+- Les municipalités détectées ;
+
+- Les documents d’urbanismes ;
+
+- Les zones du documents d’urbanisme (exemple: “N” pour les zones
+  naturelles) ;
+
+- Les prescriptions ponctuelles, linéaires et surfacique ;
+
+- Les assiettes (emprises surfaciques) des servitudes d’utilité
+  publiques (SUP) ;
+
+- Les generateurs (object ponctuel, linéaire ou surfacique générant les
+  assiettes) des servitudes d’utilité publiques (SUP).
+
+Comme précédement, la fonction s’articule autour des arguments: - `x`
+correspond au `sf` de la zone d’étude ;
+
+- `key` corespond à la clé (= type) du zonage recherché (ex:
+  `"v.gpu.document.poly"`). Les clés disponibles sont un peu plus
+  complexes : v.gpu.municipality.poly, v.gpu.document.poly,
+  v.gpu.zone.poly, v.gpu.prescription.poly, v.gpu.prescription.line,
+  v.gpu.prescription.point, v.gpu.supa.poly, v.gpu.supg.poly,
+  v.gpu.supg.line, v.gpu.supg.point.
+
+**Exemple d’application:**
+
+L’ubanisme est régulièrement mis de côté lors de la rédaction des
+documents de gestion. Pourant, le forestier est soumis comme chacun aux
+règlements d’ubanisme. Indiquer les prescriptions et SUP est donc
+primordial.
+
+**Attention:** Les rédacteurs des documents d’urbanismes restent des
+hommes. Des erreurs, incohérences ou ommissions ont été relevées dans
+les jeux de données testés. La prudence et la vérification des
+informations est donc préférable.
+
+------------------------------------------------------------------------
+
+La fonction
+[`seq_patrimony()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_patrimony.md)
+récupère la couche *PARCA* du dossier normalisé et l’utilise comme zone
+d’étude.
+
+Elle peut télécharger l’ensemble des zonages intersectés en utilisant
+[`get_patrimony()`](https://sequoiapp.github.io/Rsequoia2/reference/get_patrimony.md)
+en boucle avec `key = get_keys("pat")` (toutes les couches). Chaque
+couche intersectée est alors enregistrée individuellement dans le
+dossier.
+
+## 8. SECURITE
+
+## 9. VECTORIEL
+
+### 9.1 Communes
+
+### 9.2 Toponymes
+
+### 9.3 Infrastructures (hors desserte)
+
+### 9.4 Desserte
+
+### 9.2 Hydrologie
+
+### 9.6 Végétation

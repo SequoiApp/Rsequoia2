@@ -59,7 +59,8 @@ from the INRA soil map repository.</p>
 
 
 <dl><dt id="arg-id-ucs">id_ucs<a class="anchor" aria-label="anchor" href="#arg-id-ucs"></a></dt>
-<dd><p><code>character</code> used to identify pedology reports.</p></dd>
+<dd><p><code>character</code> used to identify pedology reports.
+It can be got by using <code>get_pedology()$id_ucs</code>.</p></dd>
 
 
 <dt id="arg-dirname">dirname<a class="anchor" aria-label="anchor" href="#arg-dirname"></a></dt>
@@ -78,7 +79,7 @@ from the INRA soil map repository.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The function extracts unique UCS identifiers from the <code>id_ucs</code>
+    <p>The function needs unique UCS identifiers typically got from the <code>id_ucs</code>
 field of <code>pedology</code>, builds download URLs pointing to the INRA
 soil map repository, and downloads the corresponding PDF documents.</p>
 <p>Existing files are skipped unless <code>overwrite = TRUE</code>. All user

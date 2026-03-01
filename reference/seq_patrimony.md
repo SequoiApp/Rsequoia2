@@ -40,7 +40,7 @@ seq_patrimony(
 
 - overwrite:
 
-  `logical`; If `TRUE`, file is overwritten.
+  `logical` If `TRUE`, file is overwritten.
 
 ## Value
 

@@ -6,7 +6,7 @@ expanded with a buffer.
 ## Usage
 
 ``` r
-get_patrimony(x, key, buffer = 500, overwrite = FALSE, verbose = TRUE)
+get_patrimony(x, key, buffer = 500, verbose = TRUE)
 ```
 
 ## Arguments
@@ -23,10 +23,6 @@ get_patrimony(x, key, buffer = 500, overwrite = FALSE, verbose = TRUE)
 
   `numeric`; Buffer around `x` (in **meters**) used to enlarge the
   download area.
-
-- overwrite:
-
-  `logical`; If `TRUE`, file is overwritten.
 
 - verbose:
 

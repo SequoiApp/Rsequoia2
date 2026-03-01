@@ -117,7 +117,7 @@ l’urbanisme y figurent (ex: prescriptions, SUP, etc.)</p></li>
 <div class="section level3">
 <h3 id="zone-détude-utilisée">Zone d’étude utilisée<a class="anchor" aria-label="anchor" href="#zone-d%C3%A9tude-utilis%C3%A9e"></a>
 </h3>
-<p>La forêt étudié dans l’article sera la forêt de Brin, propriété de
+<p>La forêt étudiée dans l’article sera la forêt de Brin, propriété de
 l’école forestière de Nancy, située à Brin-Sur-Seille, dans le
 département de Meurthe-Et-Moselle (54).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -155,58 +155,257 @@ département de Meurthe-Et-Moselle (54).</p>
 <span></span>
 <span><span class="va">parca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_parca.html">get_parca</a></span><span class="op">(</span><span class="va">idu</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/transform.html" class="external-link">transform</a></span><span class="op">(</span>IDENTIFIANT <span class="op">=</span> <span class="st">"BRIN"</span><span class="op">)</span></span>
 <span></span>
+<span><span class="va">foret</span> <span class="op">&lt;-</span> <span class="fu">Rsequoia2</span><span class="fu">:::</span><span class="fu">dissolve</span><span class="op">(</span><span class="va">parca</span>, <span class="fl">5.5</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">parca</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"blue"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"blue"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">+</span></span>
+<span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">foret</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vecteurs_files/figure-html/foret-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="cadastre">1. CADASTRE<a class="anchor" aria-label="anchor" href="#cadastre"></a>
+<h2 id="accessibilite">1. ACCESSIBILITE<a class="anchor" aria-label="anchor" href="#accessibilite"></a>
 </h2>
 </div>
 <div class="section level2">
-<h2 id="environnement">2. ENVIRONNEMENT<a class="anchor" aria-label="anchor" href="#environnement"></a>
+<h2 id="cadastre">2. CADASTRE<a class="anchor" aria-label="anchor" href="#cadastre"></a>
+</h2>
+<p>Cette partie sera rédigée quand Mucau daignera finaliser
+frcadastre.</p>
+</div>
+<div class="section level2">
+<h2 id="environnement">3. ENVIRONNEMENT<a class="anchor" aria-label="anchor" href="#environnement"></a>
 </h2>
 <p>La fonction <code><a href="../reference/get_mnhn.html">get_mnhn()</a></code> permet de télécharger un zonnage
-environnemtal en s’articulant autour de trois arguments : -
-<code>x</code> correspond au <code>sf</code> de la zone d’étude; -
-<code>key</code> corespond à la clé (= type) du zonage recherché (ex:
-<code>"zps"</code>); - <code>buffer</code> correspond au tempon éxécuté
-autour de la zone d’étude pour capter un résultat.</p>
+environnemtal en s’articulant autour de trois arguments :</p>
+<ul>
+<li><p><code>x</code> correspond au <code>sf</code> de la zone d’étude
+;</p></li>
+<li><p><code>key</code> corespond à la clé (= type) du zonage recherché
+(ex: <code>"zps"</code>). Les clés disponibles sont : apb, apg, aphn,
+aplg, bios, unesco, cdl, cen, geoparc, gsf, inpg, ospar, pgsf, pn, pn2,
+pnm, pnr, pprnn, ramsar, rb, ripn, rnc, rncfs, rnn, rnr, sc, sic,
+znieff1, znieffmer1, znieff2, znieffmer2, zpr, zps ;</p></li>
+<li><p><code>buffer</code> correspond au tempon éxécuté autour de la
+zone d’étude pour capter un résultat.</p></li>
+</ul>
+<p>La fonction fait appelle en interne au package <a href="%22https://github.com/paul-carteron/happign%22" class="external-link"><code>happign</code></a>.</p>
+<p><strong>Exemple d’application:</strong></p>
+<p>Typiquement, pour connaitre la présence d’une znieff, un
+<code>buffer = 0</code> avec <code>key = znieff2</code> permettra
+d’intersecter de protection. Pour obtenir l’immeuble inscrit ou classé,
+il convient d’utiliser <code>buffer = 500</code> avec
+<code>key = immh</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">znieff1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_mnhn.html">get_mnhn</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">parca</span>, key <span class="op">=</span> <span class="st">"znieff1"</span>, buffer <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
 <span><span class="va">znieff2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_mnhn.html">get_mnhn</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">parca</span>, key <span class="op">=</span> <span class="st">"znieff2"</span>, buffer <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">parca</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">foret</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">znieff2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"green"</span>, fill_alpha <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span> <span class="op">+</span></span>
 <span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">znieff1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"red"</span>, fill_alpha <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vecteurs_files/figure-html/mnhm-1.png" class="r-plt" alt="" width="100%">
-La fonction <code>seq_mnhm()</code> permet de télécharger l’ensemble des
-couches.</p>
+<p><img src="vecteurs_files/figure-html/mnhm_fig-1.png" class="r-plt" alt="" width="100%"></p>
+<p>Si l’utilisateur opte pour le procesus <em>Sequoia</em>, la fonction
+<code>seq_mnhm()</code> travaille directement avec le dossier normalisé
+en récupérant la couche <em>PARCA</em> comme zone d’étude. Elle peut
+télécharger l’ensemble des zonages intersectés en utilisant
+<code>get_mnhm()</code> en boucle avec
+<code>key = get_keys("mnhn")</code> (toutes les couches). Chaque couche
+intersectée est alors enregistrée individuellement dans le dossier.</p>
 </div>
 <div class="section level2">
-<h2 id="ifn">3. IFN<a class="anchor" aria-label="anchor" href="#ifn"></a>
+<h2 id="ifn">4. IFN<a class="anchor" aria-label="anchor" href="#ifn"></a>
+</h2>
+<p>La fonction <code><a href="../reference/get_ifn.html">get_ifn()</a></code> permet de télécharger les régions
+définis par l’<a href="%22https://inventaire-forestier.ign.fr/spip.php?rubrique267%22" class="external-link">inventaire
+forestier national</a> en s’articulant autour de deux arguments :</p>
+<ul>
+<li><p><code>x</code> correspond au <code>sf</code> de la zone d’étude
+;</p></li>
+<li><p><code>key</code> corespond à la clé (= type) du zonage recherché
+(ex: <code>"ser"</code>). Les clés disponibles sont : ser, ser_ar, rfn,
+rfd, zp.</p></li>
+</ul>
+<p><strong>Exemple d’application:</strong></p>
+<p>Typiquement, pour connaitre la sylvoécorégion de notre forêt, il
+suffit d’utiliser <code>key = ser</code>. Cette information est
+indispensable pour connaitre les <a href="https://agriculture.gouv.fr/materiels-forestiers-de-reproduction-arretes-regionaux-relatifs-aux-aides-de-letat-linvestissement" class="external-link">matériels
+forestiers de reproduction</a> à utiliser localement.</p>
+<p>De même, pour connaitre la région forestière nationale, il suffit
+d’utiliser <code>key = rfn</code>. Cela permet de se localiser sur <a href="https://climessences.fr/" class="external-link">Climessences</a> par exemple.</p>
+<hr>
+<p>La fonction <code><a href="../reference/get_ser_pdf.html">get_ser_pdf()</a></code> permet de télécharger les
+fiches descriptives des sylvoécorégions (exemple: la <a href="https://inventaire-forestier.ign.fr/IMG/pdf/C_20.pdf" class="external-link">SER
+C20</a>).</p>
+<p>Elle requiert les identifiants des SER en argument
+<code>id_ser</code> ainsi qu’un <code>dirname</code> (le chemin du
+dossier) où télécharger les fiches <code>.pdf</code>.</p>
+<p><strong>Exemple d’application:</strong></p>
+<p>Ces fiches sont pratiques pour enrichir la rédaction des documents de
+gestion (ou simplement se documenter sur une région).</p>
+</div>
+<div class="section level2">
+<h2 id="patrimoine">5. PATRIMOINE<a class="anchor" aria-label="anchor" href="#patrimoine"></a>
+</h2>
+<p>La fonction <code><a href="../reference/get_patrimony.html">get_patrimony()</a></code> permet d’obtenir les couches
+de l’<a href="%22http://atlas.patrimoines.culture.fr/atlas/trunk/static/presentation.html%22" class="external-link">Atlas
+du patrimoine</a> en s’articulant autour de trois arguments :</p>
+<ul>
+<li><p><code>x</code> correspond au <code>sf</code> de la zone d’étude
+;</p></li>
+<li><p><code>key</code> corespond à la clé (= type) du zonage recherché
+(ex: <code>"immh"</code>). Les clés disponibles sont : imdn, padn, immh,
+pamh, imun, paun, sici, sipr, lacr, zppa ;</p></li>
+<li><p><code>buffer</code> correspond au tempon éxécuté autour de la
+zone d’étude pour capter un résultat.</p></li>
+</ul>
+<p>La fonction fait appelle en interne au package <a href="%22https://github.com/mucau/frheritage%22" class="external-link"><code>frheritage</code></a>.</p>
+<p><strong>Exemple d’application:</strong></p>
+<p>Typiquement, pour connaitre la présence d’un monument historique, un
+<code>buffer = 0</code> avec <code>key = pamh</code> permettra
+d’intersecter le périmètre de protection. Pour obtenir l’immeuble
+inscrit ou classé, il convient d’utiliser <code>buffer = 500</code> avec
+<code>key = immh</code>.</p>
+<p>La fonction <code><a href="../reference/seq_patrimony.html">seq_patrimony()</a></code> récupère la couche
+<em>PARCA</em> du dossier normalisé et l’utilise comme zone d’étude.</p>
+<p>Elle peut télécharger l’ensemble des zonages intersectés en utilisant
+<code><a href="../reference/get_patrimony.html">get_patrimony()</a></code> en boucle avec
+<code>key = get_keys("pat")</code> (toutes les couches). Chaque couche
+intersectée est alors enregistrée individuellement dans le dossier.</p>
+</div>
+<div class="section level2">
+<h2 id="sol">6. SOL<a class="anchor" aria-label="anchor" href="#sol"></a>
+</h2>
+<div class="section level3">
+<h3 id="les-bases-géologiques-départementales-du-brgm">6.1 Les bases géologiques départementales du BRGM<a class="anchor" aria-label="anchor" href="#les-bases-g%C3%A9ologiques-d%C3%A9partementales-du-brgm"></a>
+</h3>
+<p>La fonction <code><a href="../reference/get_brgm.html">get_brgm()</a></code> permet de télécharger depuis le
+BRGM :</p>
+<ul>
+<li><p>la <a href="https://infoterre.brgm.fr/formulaire/telechargement-cartes-geologiques-departementales-150-000-bd-charm-50" class="external-link">cartes
+géologiques départementales à 1/50 000 (Bd Charm-50)</a></p></li>
+<li><p>les <a href="https://infoterre.brgm.fr/formulaire/telechargement-donnees-geologiques-dediees-au-programme-cartographie-habitats-naturels" class="external-link">données
+géologiques dédiées au programme de Cartographie des Habitats Naturels
+et semi-naturels (CARHAB)</a>.</p></li>
+</ul>
+<p>La fonction s’articule essentiellement autour de deux arguments :</p>
+<ul>
+<li><p><code>deps</code> correspond au département(s) ciblés par la
+requête ;</p></li>
+<li><p><code>source</code> corespond à la clé (= type) de la couche
+(<code>"bdcharm50"</code>, <code>"carhab"</code>) ;</p></li>
+</ul>
+<p>Cette fonction a essentiellement pour objet de télécharger les bases
+départementales.</p>
+</div>
+<div class="section level3">
+<h3 id="géologie">6.2 Géologie<a class="anchor" aria-label="anchor" href="#g%C3%A9ologie"></a>
+</h3>
+<p>La fonction <code>get_geol()</code> permet de récupérer les jeux de
+données précédents sur une zone d’étude.</p>
+<p>La fonction ajoute un argument <code>x</code> correspondant au
+<code>sf</code> de la zone d’étude.</p>
+<p><strong>Exemple d’application:</strong></p>
+<p>La géologie est indispensable pour établir des cartes géologiques des
+forêts.</p>
+</div>
+<div class="section level3">
+<h3 id="pédologie">6.3 Pédologie<a class="anchor" aria-label="anchor" href="#p%C3%A9dologie"></a>
+</h3>
+<p>La fonction <code><a href="../reference/get_pedology.html">get_pedology()</a></code> permet de récupérer la <a href="https://www.gissol.fr/donnees/carte-sur-le-geoportail-4789" class="external-link">carte
+des sols</a>.</p>
+<p>Elle n’a besoin que d’un <code>sf</code> de la zone d’étude en
+argument <code>x</code>.</p>
+<p><strong>Exemple d’application:</strong></p>
+<p>La pédologie permet d’enrichir la rédaction des documents de
+gestion.</p>
+<hr>
+<p>La fonction <code>get_pedology_pdf</code> permet de récupérer les
+fiches détaillées des ucs (exemple: <a href="https://data.geopf.fr/annexes/ressources/INRA_carte_des_sols/INRA/id_ucs_5513.pdf" class="external-link">UCS
+5513</a>). Elle requiert les identifiants des UCS en argument
+<code>id_ucs</code> ainsi qu’un <code>dirname</code> (le chemin du
+dossier) où télécharger les fiches <code>.pdf</code>.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="urbanisme">7. URBANISME<a class="anchor" aria-label="anchor" href="#urbanisme"></a>
+</h2>
+<p>La fonction <code><a href="../reference/get_gpu.html">get_gpu()</a></code> permet de télécharger depuis le
+GPU:</p>
+<ul>
+<li><p>Les municipalités détectées ;</p></li>
+<li><p>Les documents d’urbanismes ;</p></li>
+<li><p>Les zones du documents d’urbanisme (exemple: “N” pour les zones
+naturelles) ;</p></li>
+<li><p>Les prescriptions ponctuelles, linéaires et surfacique ;</p></li>
+<li><p>Les assiettes (emprises surfaciques) des servitudes d’utilité
+publiques (SUP) ;</p></li>
+<li><p>Les generateurs (object ponctuel, linéaire ou surfacique générant
+les assiettes) des servitudes d’utilité publiques (SUP).</p></li>
+</ul>
+<p>Comme précédement, la fonction s’articule autour des arguments: -
+<code>x</code> correspond au <code>sf</code> de la zone d’étude ;</p>
+<ul>
+<li>
+<code>key</code> corespond à la clé (= type) du zonage recherché
+(ex: <code>"v.gpu.document.poly"</code>). Les clés disponibles sont un
+peu plus complexes : v.gpu.municipality.poly, v.gpu.document.poly,
+v.gpu.zone.poly, v.gpu.prescription.poly, v.gpu.prescription.line,
+v.gpu.prescription.point, v.gpu.supa.poly, v.gpu.supg.poly,
+v.gpu.supg.line, v.gpu.supg.point.</li>
+</ul>
+<p><strong>Exemple d’application:</strong></p>
+<p>L’ubanisme est régulièrement mis de côté lors de la rédaction des
+documents de gestion. Pourant, le forestier est soumis comme chacun aux
+règlements d’ubanisme. Indiquer les prescriptions et SUP est donc
+primordial.</p>
+<p><strong>Attention:</strong> Les rédacteurs des documents d’urbanismes
+restent des hommes. Des erreurs, incohérences ou ommissions ont été
+relevées dans les jeux de données testés. La prudence et la vérification
+des informations est donc préférable.</p>
+<hr>
+<p>La fonction <code><a href="../reference/seq_patrimony.html">seq_patrimony()</a></code> récupère la couche
+<em>PARCA</em> du dossier normalisé et l’utilise comme zone d’étude.</p>
+<p>Elle peut télécharger l’ensemble des zonages intersectés en utilisant
+<code><a href="../reference/get_patrimony.html">get_patrimony()</a></code> en boucle avec
+<code>key = get_keys("pat")</code> (toutes les couches). Chaque couche
+intersectée est alors enregistrée individuellement dans le dossier.</p>
+</div>
+<div class="section level2">
+<h2 id="securite">8. SECURITE<a class="anchor" aria-label="anchor" href="#securite"></a>
 </h2>
 </div>
 <div class="section level2">
-<h2 id="patrimoine">4. PATRIMOINE<a class="anchor" aria-label="anchor" href="#patrimoine"></a>
+<h2 id="vectoriel">9. VECTORIEL<a class="anchor" aria-label="anchor" href="#vectoriel"></a>
 </h2>
+<div class="section level3">
+<h3 id="communes">9.1 Communes<a class="anchor" aria-label="anchor" href="#communes"></a>
+</h3>
 </div>
-<div class="section level2">
-<h2 id="sol">5. SOL<a class="anchor" aria-label="anchor" href="#sol"></a>
-</h2>
+<div class="section level3">
+<h3 id="toponymes">9.2 Toponymes<a class="anchor" aria-label="anchor" href="#toponymes"></a>
+</h3>
 </div>
-<div class="section level2">
-<h2 id="urbanisme">6. URBANISME<a class="anchor" aria-label="anchor" href="#urbanisme"></a>
-</h2>
+<div class="section level3">
+<h3 id="infrastructures-hors-desserte">9.3 Infrastructures (hors desserte)<a class="anchor" aria-label="anchor" href="#infrastructures-hors-desserte"></a>
+</h3>
 </div>
-<div class="section level2">
-<h2 id="vectoriel">7. VECTORIEL<a class="anchor" aria-label="anchor" href="#vectoriel"></a>
-</h2>
+<div class="section level3">
+<h3 id="desserte">9.4 Desserte<a class="anchor" aria-label="anchor" href="#desserte"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="hydrologie">9.2 Hydrologie<a class="anchor" aria-label="anchor" href="#hydrologie"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="végétation">9.6 Végétation<a class="anchor" aria-label="anchor" href="#v%C3%A9g%C3%A9tation"></a>
+</h3>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

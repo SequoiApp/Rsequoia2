@@ -61,6 +61,9 @@
 - [`get_dsm()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dsm.md)
   : Download Digital Surface Model (DSM) raster from IGN RGEAlti
 
+- [`get_gpu()`](https://sequoiapp.github.io/Rsequoia2/reference/get_gpu.md)
+  : Download GPU vector layer
+
 - [`get_hydro_line()`](https://sequoiapp.github.io/Rsequoia2/reference/get_hydro_line.md)
   : Retrieve and assemble hydrographic lines around an area
 

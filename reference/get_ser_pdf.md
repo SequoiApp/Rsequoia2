@@ -6,15 +6,15 @@ repository.
 ## Usage
 
 ``` r
-get_ser_pdf(ser, dirname = NULL, overwrite = FALSE, verbose = TRUE)
+get_ser_pdf(id_ser, dirname = NULL, overwrite = FALSE, verbose = TRUE)
 ```
 
 ## Arguments
 
-- ser:
+- id_ser:
 
-  An object (typically an `sf` object get by `get_ifn("ser")`)
-  containing an `codeser` field used to identify sylvoecoregion reports.
+  `character` used to identify pedology reports. It can be got by using
+  `get_ifn("ser")$codeser`.
 
 - dirname:
 
@@ -35,9 +35,9 @@ invisibly if no valid `id_ucs` is found.
 
 ## Details
 
-The function extracts unique SER identifiers from the `codeser` field of
-`ser`, builds download URLs pointing to the INRA soil map repository,
-and downloads the corresponding PDF documents.
+The function needs unique SER identifiers typically got from the
+`codeser` field of `ser`, builds download URLs pointing to the INRAE
+soil map repository, and downloads the corresponding PDF documents.
 
 Existing files are skipped unless `overwrite = TRUE`. All user feedback
 is handled via the `cli` package and can be silenced by setting
