@@ -5,9 +5,7 @@
 #'
 #' @param x `sf` or `sfc`; Geometry located in France.
 #' @param key `character`; Layer to download.
-#'   Must be one of from `get_keys("pat")`
-#' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
-#'   the download area.
+#'   Must be one of from `get_keys("gpu", reduce = FALSE)`
 #' @param verbose `logical`; If `TRUE`, display messages.
 #'
 #' @return `sf` object from `sf` package
@@ -16,7 +14,6 @@
 #'
 get_gpu <- function(x,
                     key,
-                    buffer = 0,
                     verbose = TRUE){
 
   if (!inherits(x, c("sf", "sfc"))){
@@ -25,6 +22,8 @@ get_gpu <- function(x,
       "i" = "{.arg x} should be of class {.cls sf} or {.cls sfc}."
     ))
   }
+
+  x <- sf::st_union(x)
 
   if (length(key) != 1) {
     cli::cli_abort(c(
@@ -93,6 +92,11 @@ get_gpu <- function(x,
 #'
 #' @param dirname Character. Root directory of the project.
 #'   Defaults to the current directory.
+#'
+#' @param key `character`; List of layer identifiers to download. If not
+#'   provided, the function uses `get_keys("gpu", reduce = FALSE)` to
+#'   automatically select all GPU layers defined in the Sequoia configuration
+#'   (`inst/config/seq_layers.yaml`)
 #' @param verbose Logical. Whether to display progress messages.
 #'   Defaults to `TRUE`.
 #' @param overwrite Logical. Whether to overwrite existing output files.
@@ -123,7 +127,12 @@ get_gpu <- function(x,
 #' @seealso [seq_write()], [happign::get_apicarto_gpu()]
 #'
 #' @export
-seq_gpu <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
+seq_gpu <- function(
+    dirname = ".",
+    key = get_keys("gpu", reduce = FALSE),
+    verbose = TRUE,
+    overwrite = FALSE
+) {
 
   # area of interest
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
@@ -135,8 +144,6 @@ seq_gpu <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
   if (verbose){
     cli::cli_h1("GPU")
   }
-
-  key <- get_keys("gpu", reduce = FALSE)
 
   paths <- vector("list", length(key))
   names(paths) <- key

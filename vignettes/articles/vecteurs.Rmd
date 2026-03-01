@@ -101,9 +101,14 @@ tm_shape(foret)+
   tm_borders(col = "black", lwd = 2)
 ```
 
-# 1. CADASTRE
+# 1. ACCESSIBILITE
 
-# 2. ENVIRONNEMENT
+
+# 2. CADASTRE
+
+Cette partie sera rédigée quand Mucau daignera finaliser frcadastre.
+
+# 3. ENVIRONNEMENT
 
 ```{r mnhm, include=FALSE}
 mnhn_keys <- get_keys("mnhn")
@@ -137,9 +142,9 @@ tm_shape(znieff1) +
 	
 ```
 
-Si l'utilisateur opte pour le procesus *Sequoia*, la fonction `seq_mnhm()` travaille directement avec le dossier normalisé en récupérant la couche *PARCA* comme zone d'étude. Elle télécharge l'ensemble des zonages intersectés avec `get_mnhn()` et les enregistre individuellement le dossier.
+Si l'utilisateur opte pour le procesus *Sequoia*, la fonction `seq_mnhm()` travaille directement avec le dossier normalisé en récupérant la couche *PARCA* comme zone d'étude. Elle peut télécharger l'ensemble des zonages intersectés en utilisant `get_mnhm()` en boucle avec `key = get_keys("mnhn")` (toutes les couches). Chaque couche intersectée est alors enregistrée individuellement dans le dossier.
 
-# 3. IFN
+# 4. IFN
 
 ```{r ifn, include=FALSE}
 ifn_keys <- get_keys("ifn")
@@ -159,15 +164,15 @@ De même, pour connaitre la région forestière nationale, il suffit d'utiliser 
 
 ------------------------------------------------------------------------
 
-La fonction `get_ser_pdf()` permet de télécharger les fiches descriptives des sylvoécorégions.
+La fonction `get_ser_pdf()` permet de télécharger les fiches descriptives des sylvoécorégions (exemple: la [SER C20](https://inventaire-forestier.ign.fr/IMG/pdf/C_20.pdf)).
 
-Elle requiert un `sf` ou `data.frame` en argument `ser` ainsi qu'un `dirname` (le chemin du dossier) où télécharger les fiches `.pdf`.
+Elle requiert les identifiants des SER en argument `id_ser` ainsi qu'un `dirname` (le chemin du dossier) où télécharger les fiches `.pdf`.
 
 **Exemple d'application:**
 
 Ces fiches sont pratiques pour enrichir la rédaction des documents de gestion (ou simplement se documenter sur une région).
 
-# 4. PATRIMOINE
+# 5. PATRIMOINE
 
 ```{r pat, include=FALSE}
 pat_keys <- get_keys("pat")
@@ -192,11 +197,13 @@ Typiquement, pour connaitre la présence d'un monument historique, un `buffer = 
 
 ```
 
-La fonction `seq_patrimony()` récupère la couche *PARCA* du dossier normalisé et l'utilise comme zone d'étude. Elle télécharge l'ensemble des couches intersectés avec `get_patrimony()` et les enregistre individuellement le dossier.
+La fonction `seq_patrimony()` récupère la couche *PARCA* du dossier normalisé et l'utilise comme zone d'étude.
 
-# 5. SOL
+Elle peut télécharger l'ensemble des zonages intersectés en utilisant `get_patrimony()` en boucle avec `key = get_keys("pat")` (toutes les couches). Chaque couche intersectée est alors enregistrée individuellement dans le dossier.
 
-## 5.1 Les bases géologiques départementales du BRGM
+# 6. SOL
+
+## 6.1 Les bases géologiques départementales du BRGM
 
 La fonction `get_brgm()` permet de télécharger depuis le BRGM :
 
@@ -212,7 +219,7 @@ La fonction s'articule essentiellement autour de deux arguments :
 
 Cette fonction a essentiellement pour objet de télécharger les bases départementales.
 
-## 5.2 Géologie
+## 6.2 Géologie
 
 La fonction `get_geol()` permet de récupérer les jeux de données précédents sur une zone d'étude.
 
@@ -222,7 +229,7 @@ La fonction ajoute un argument `x` correspondant au `sf` de la zone d'étude.
 
 La géologie est indispensable pour établir des cartes géologiques des forêts.
 
-## 5.3 Pédologie
+## 6.3 Pédologie
 
 La fonction `get_pedology()` permet de récupérer la [carte des sols](https://www.gissol.fr/donnees/carte-sur-le-geoportail-4789).
 
@@ -232,12 +239,65 @@ Elle n'a besoin que d'un `sf` de la zone d'étude en argument `x`.
 
 La pédologie permet d'enrichir la rédaction des documents de gestion.
 
-----
+------------------------------------------------------------------------
 
 La fonction `get_pedology_pdf` permet de récupérer les fiches détaillées des ucs (exemple: [UCS 5513](https://data.geopf.fr/annexes/ressources/INRA_carte_des_sols/INRA/id_ucs_5513.pdf)). Elle requiert les identifiants des UCS en argument `id_ucs` ainsi qu'un `dirname` (le chemin du dossier) où télécharger les fiches `.pdf`.
 
-# 6. URBANISME
+# 7. URBANISME
+
+```{r gpu, include=FALSE}
+gpu_keys <- get_keys("gpu", reduce = FALSE)
+```
+
+La fonction `get_gpu()` permet de télécharger depuis le GPU:
+
+-   Les municipalités détectées ;
+
+-   Les documents d'urbanismes ;
+
+-   Les zones du documents d'urbanisme (exemple: "N" pour les zones naturelles) ;
+
+-   Les prescriptions ponctuelles, linéaires et surfacique ;
+
+-   Les assiettes (emprises surfaciques) des servitudes d'utilité publiques (SUP) ;
+
+-   Les generateurs (object ponctuel, linéaire ou surfacique générant les assiettes) des servitudes d'utilité publiques (SUP).
+
+Comme précédement, la fonction s'articule autour des arguments:
+-   `x` correspond au `sf` de la zone d'étude ;
+
+-   `key` corespond à la clé (= type) du zonage recherché (ex: `"v.gpu.document.poly"`). Les clés disponibles sont un peu plus complexes : `r gpu_keys`.
+
+```{r gpu_fig, fig.height = 3.5}
 
 
+```
 
-# 7. VECTORIEL
+**Exemple d'application:**
+
+L'ubanisme est régulièrement mis de côté lors de la rédaction des documents de gestion. Pourant, le forestier est soumis comme chacun aux règlements d'ubanisme. Indiquer les prescriptions et SUP est donc primordial.
+
+**Attention:**
+Les rédacteurs des documents d'urbanismes restent des hommes. Des erreurs, incohérences ou ommissions ont été relevées dans les jeux de données testés. La prudence et la vérification des informations est donc préférable.
+
+----
+
+La fonction `seq_patrimony()` récupère la couche *PARCA* du dossier normalisé et l'utilise comme zone d'étude.
+
+Elle peut télécharger l'ensemble des zonages intersectés en utilisant `get_patrimony()` en boucle avec `key = get_keys("pat")` (toutes les couches). Chaque couche intersectée est alors enregistrée individuellement dans le dossier.
+
+# 8. SECURITE
+
+# 9. VECTORIEL
+
+## 9.1 Communes
+
+## 9.2 Toponymes
+
+## 9.3 Infrastructures (hors desserte)
+
+## 9.4 Desserte
+
+## 9.2 Hydrologie
+
+## 9.6 Végétation

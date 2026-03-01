@@ -4,11 +4,21 @@
 \alias{seq_gpu}
 \title{Generate GPU layers for a Sequoia project}
 \usage{
-seq_gpu(dirname = ".", verbose = TRUE, overwrite = FALSE)
+seq_gpu(
+  dirname = ".",
+  key = get_keys("gpu", reduce = FALSE),
+  verbose = TRUE,
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{dirname}{Character. Root directory of the project.
 Defaults to the current directory.}
+
+\item{key}{\code{character}; List of layer identifiers to download. If not
+provided, the function uses \code{get_keys("gpu", reduce = FALSE)} to
+automatically select all GPU layers defined in the Sequoia configuration
+(\code{inst/config/seq_layers.yaml})}
 
 \item{verbose}{Logical. Whether to display progress messages.
 Defaults to \code{TRUE}.}
@@ -22,7 +32,7 @@ GPU layers written to disk. Layers with no intersecting features
 are not included.
 }
 \description{
-Retrievesapplicable GPU (Geoportail de l'Urbanisme) layers intersecting
+Retrieves applicable GPU (Geoportail de l'Urbanisme) layers intersecting
 and surrounding the project area, and writes the resulting layer to disk.
 }
 \details{

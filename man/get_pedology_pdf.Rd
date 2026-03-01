@@ -7,7 +7,8 @@
 get_pedology_pdf(id_ucs, dirname = NULL, verbose = TRUE)
 }
 \arguments{
-\item{id_ucs}{\code{character} used to identify pedology reports.}
+\item{id_ucs}{\code{character} used to identify pedology reports.
+It can be got by using \code{get_pedology()$id_ucs}.}
 
 \item{dirname}{\code{character}; directory where the PDF will be saved. Defaults to
 \code{\link[tools:userdir]{tools::R_user_dir()}}}
@@ -23,7 +24,7 @@ Downloads pedological PDF documents associated with UCS identifiers
 from the INRA soil map repository.
 }
 \details{
-The function extracts unique UCS identifiers from the \code{id_ucs}
+The function needs unique UCS identifiers typically got from the \code{id_ucs}
 field of \code{pedology}, builds download URLs pointing to the INRA
 soil map repository, and downloads the corresponding PDF documents.
 

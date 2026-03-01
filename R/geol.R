@@ -17,7 +17,13 @@
 #' @return Character vector of directories where ZIPs are stored.
 #'
 #' @export
-download_brgm <- function(dep, source = "carhab", cache = NULL, verbose = FALSE, overwrite = FALSE){
+download_brgm <- function(
+    dep,
+    source = "carhab",
+    cache = NULL,
+    verbose = FALSE,
+    overwrite = FALSE
+){
 
   if (length(dep) != 1) {
     cli::cli_abort(c(
@@ -110,7 +116,13 @@ download_brgm <- function(dep, source = "carhab", cache = NULL, verbose = FALSE,
 #' @return `sf`
 #'
 #' @export
-get_brgm <- function(deps, source = "carhab", cache = NULL, verbose = FALSE, overwrite = FALSE){
+get_brgm <- function(
+    deps,
+    source = "carhab",
+    cache = NULL,
+    verbose = FALSE,
+    overwrite = FALSE
+){
 
   zip_path <- lapply(
     deps, download_brgm,

@@ -58,6 +58,7 @@ get_pedology <- function(x) {
 #' from the INRA soil map repository.
 #'
 #' @param id_ucs `character` used to identify pedology reports.
+#'   It can be got by using `get_pedology()$id_ucs`.
 #' @param dirname `character`; directory where the PDF will be saved. Defaults to
 #' [tools::R_user_dir()]
 #' @param verbose `logical`. If `TRUE`, display progress messages.
@@ -67,7 +68,7 @@ get_pedology <- function(x) {
 #' `NULL` invisibly if no valid `id_ucs` is found.
 #'
 #' @details
-#' The function extracts unique UCS identifiers from the `id_ucs`
+#' The function needs unique UCS identifiers typically got from the `id_ucs`
 #' field of `pedology`, builds download URLs pointing to the INRA
 #' soil map repository, and downloads the corresponding PDF documents.
 #'
@@ -78,17 +79,24 @@ get_pedology <- function(x) {
 #' @seealso [get_pedology()]
 #'
 #' @export
-get_pedology_pdf <- function(id_ucs, dirname = NULL, verbose = TRUE) {
-
-  if (is.null(dirname)) {
-    dirname <- tools::R_user_dir("Rsequoia2", which = "data")
-  }
-  dir.create(dirname, recursive = TRUE, showWarnings = FALSE)
+get_pedology_pdf <- function(
+    id_ucs,
+    dirname = NULL,
+    verbose = TRUE
+) {
 
   id_ucs <- unique(id_ucs)
   if (is.null(id_ucs) || length(id_ucs) == 0) {
     cli::cli_abort("{.arg id_ucs} must be a non-empty vector.")
   }
+  if (any(is.na(id_ucs))) {
+    cli::cli_abort("{.arg id_ucs} must not contain NA values.")
+  }
+
+  if (is.null(dirname)) {
+    dirname <- tools::R_user_dir("Rsequoia2", which = "data")
+  }
+  dir.create(dirname, recursive = TRUE, showWarnings = FALSE)
 
   base_url <- "https://data.geopf.fr/annexes/ressources/INRA_carte_des_sols/INRA"
 

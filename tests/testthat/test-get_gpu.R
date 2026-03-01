@@ -17,7 +17,7 @@ test_that("get_gpu() works (local only)", {
 
   x <- sf::st_sf(sf::st_sfc(sf::st_point(c(7.410821, 48.854160)), crs = 4326))
 
-  gpu <- get_gpu(x, key = "v.gpu.municipality.poly", buffer = 500)
+  gpu <- get_gpu(x, key = "v.gpu.municipality.poly")
 
   expect_s3_class(gpu, "sf")
   expect_true(nrow(gpu) >= 1)

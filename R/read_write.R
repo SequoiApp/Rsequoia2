@@ -165,6 +165,8 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
       x,
       path,
       delete_dsn = overwrite,
+      # This is better for long test and check. Toi meme tu sais.
+      quiet = TRUE,
       # This is already by default but explicit is better than default
       layer_options = c(
         "GEOMETRY_NAME=geom",

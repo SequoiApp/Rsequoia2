@@ -112,8 +112,8 @@ get_ifn <- function(x,
 #' Downloads PDF documents associated with SER identifiers
 #' from the IFN repository.
 #'
-#' @param ser An object (typically an `sf` object get by `get_ifn("ser")`)
-#'   containing an `codeser` field used to identify sylvoecoregion reports.
+#' @param id_ser `character` used to identify pedology reports.
+#'   It can be got by using `get_ifn("ser")$codeser`.
 #' @param dirname Output directory where PDF files are saved.
 #' @param overwrite `logical`; whether to overwrite existing files.
 #'   Defaults to `FALSE`.
@@ -124,8 +124,8 @@ get_ifn <- function(x,
 #' `NULL` invisibly if no valid `id_ucs` is found.
 #'
 #' @details
-#' The function extracts unique SER identifiers from the `codeser`
-#' field of `ser`, builds download URLs pointing to the INRA
+#' The function needs unique SER identifiers typically got from the `codeser`
+#' field of `ser`, builds download URLs pointing to the INRAE
 #' soil map repository, and downloads the corresponding PDF documents.
 #'
 #' Existing files are skipped unless `overwrite = TRUE`. All user
@@ -136,26 +136,19 @@ get_ifn <- function(x,
 #'
 #' @export
 get_ser_pdf <- function(
-    ser,
+    id_ser,
     dirname = NULL,
     overwrite = FALSE,
     verbose = TRUE) {
 
-  # Input checks ----
-  if (!"codeser" %in% names(ser)) {
-    cli::cli_abort("Field {.field codeser} is missing from the input object.")
+  id_ser <- unique(id_ser)
+  if (is.null(id_ser) || length(id_ser) == 0 ) {
+    cli::cli_abort("{.arg id_ser} must be a non-empty vector.")
+  }
+  if (any(is.na(id_ser))) {
+    cli::cli_abort("{.arg id_ucs} must not contain NA values.")
   }
 
-  codeser <- unique(ser$codeser[!is.na(ser$codeser)])
-
-  if (length(codeser) == 0) {
-    if (verbose) {
-      cli::cli_alert_warning("No valid {.field codeser} found.")
-    }
-    return(invisible(NULL))
-  }
-
-  # Output directory ----
   if (is.null(dirname)) {
     dirname <- tools::R_user_dir("Rsequoia2", which = "data") |>
       file.path("ifn")
@@ -169,7 +162,7 @@ get_ser_pdf <- function(
   }
 
   # Download loop ----
-  for (code in codeser) {
+  for (code in id_ser) {
 
     file_name <- paste0(substr(code, 1, 1),
                         "_",

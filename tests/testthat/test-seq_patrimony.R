@@ -5,7 +5,10 @@ test_that("seq_patrimony() return expected path", {
       get_patrimony = function(...) Rsequoia2:::seq_poly
     )
 
-    patrimony_path <- seq_patrimony(dirname = seq_cache, verbose = FALSE)
+    layer <- c("immh", "pamh")
+    patrimony_path <- seq_patrimony(dirname = seq_cache,
+                                    key = layer,
+                                    verbose = FALSE)
 
     expect_length(patrimony_path, length(layer))
     expect_all_true(file.exists(unlist(patrimony_path)))
@@ -19,7 +22,9 @@ test_that("seq_patrimony() return sf", {
       get_patrimony = function(...) Rsequoia2:::seq_poly
     )
 
-    patrimony_path <- seq_patrimony(dirname = seq_cache, key = "imdn", verbose = FALSE)
+    patrimony_path <- seq_patrimony(dirname = seq_cache,
+                                    key = "imdn",
+                                    verbose = FALSE)
     pn <- sf::read_sf(patrimony_path)
 
     expect_s3_class(pn, "sf")
