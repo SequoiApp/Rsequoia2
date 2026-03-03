@@ -91,7 +91,7 @@ seq_old <- function(
 
     old <- seq_write(
       old,
-      "v.old.poly",
+      "v.secu.old.poly",
       dirname = dirname,
       id = id,
       verbose = verbose,

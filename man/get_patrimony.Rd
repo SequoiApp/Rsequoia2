@@ -4,7 +4,7 @@
 \alias{get_patrimony}
 \title{Download patrimony vector layer}
 \usage{
-get_patrimony(x, key, buffer = 500, overwrite = FALSE, verbose = TRUE)
+get_patrimony(x, key, buffer = 500, verbose = TRUE)
 }
 \arguments{
 \item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
@@ -14,8 +14,6 @@ Must be one of from \code{get_keys("pat")}}
 
 \item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
 the download area.}
-
-\item{overwrite}{\code{logical}; If \code{TRUE}, file is overwritten.}
 
 \item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
 }

@@ -28,7 +28,7 @@ test_that("seq_mnhn() return sf", {
   })
 })
 
-test_that("seq_com() layers contain id", {
+test_that("seq_mnhn() layers contain id", {
   with_seq_cache({
 
     local_mocked_bindings(

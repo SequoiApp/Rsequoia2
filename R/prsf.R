@@ -91,7 +91,7 @@ seq_prsf <- function(
 
     prsf <- seq_write(
       prsf,
-      "v.prsf.point",
+      "v.secu.prsf.point",
       dirname = dirname,
       id = id,
       verbose = verbose,

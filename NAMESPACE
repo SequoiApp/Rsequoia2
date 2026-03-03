@@ -19,7 +19,11 @@ export(get_com_poly)
 export(get_curves)
 export(get_dem)
 export(get_dsm)
+<<<<<<< HEAD
 export(get_geol)
+=======
+export(get_gpu)
+>>>>>>> d6621caa5c61440b645b883bf64d24e885ef6ef7
 export(get_hydro_line)
 export(get_hydro_point)
 export(get_hydro_poly)

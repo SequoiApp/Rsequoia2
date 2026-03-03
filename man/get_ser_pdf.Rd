@@ -4,11 +4,11 @@
 \alias{get_ser_pdf}
 \title{Download sylvoecoregion PDF reports from INF repository}
 \usage{
-get_ser_pdf(ser, dirname = NULL, overwrite = FALSE, verbose = TRUE)
+get_ser_pdf(id_ser, dirname = NULL, overwrite = FALSE, verbose = TRUE)
 }
 \arguments{
-\item{ser}{An object (typically an \code{sf} object get by \code{get_ifn("ser")})
-containing an \code{codeser} field used to identify sylvoecoregion reports.}
+\item{id_ser}{\code{character} used to identify pedology reports.
+It can be got by using \code{get_ifn("ser")$codeser}.}
 
 \item{dirname}{Output directory where PDF files are saved.}
 
@@ -26,8 +26,8 @@ Downloads PDF documents associated with SER identifiers
 from the IFN repository.
 }
 \details{
-The function extracts unique SER identifiers from the \code{codeser}
-field of \code{ser}, builds download URLs pointing to the INRA
+The function needs unique SER identifiers typically got from the \code{codeser}
+field of \code{ser}, builds download URLs pointing to the INRAE
 soil map repository, and downloads the corresponding PDF documents.
 
 Existing files are skipped unless \code{overwrite = TRUE}. All user

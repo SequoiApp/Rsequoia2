@@ -1,25 +1,13 @@
-test_that("get_ser_pdf() errors when codeser is missing", {
+test_that("get_ser_pdf() validates id_ser", {
 
-  ser <- data.frame(foo = 1:3)
+  expect_error(get_ser_pdf(NULL), "must be a non-empty vector")
+  expect_error(get_ser_pdf(character(0)),"must be a non-empty vector")
 
-  expect_error(
-    get_ser_pdf(ser, verbose = FALSE),
-    "codeser"
-  )
-})
-
-test_that("get_ser_pdf() returns NULL when no valid codeser", {
-
-  ser <- data.frame(codeser = c(NA, NA))
-
-  res <- get_ser_pdf(ser, verbose = FALSE)
-
-  expect_null(res)
 })
 
 test_that("get_ser_pdf() creates output directory if missing", {
 
-  ser <- data.frame(codeser = "A12")
+  id_ser <- "A12"
   tmp <- tempfile()
 
   local_mocked_bindings(
@@ -29,14 +17,14 @@ test_that("get_ser_pdf() creates output directory if missing", {
 
   expect_false(dir.exists(tmp))
 
-  get_ser_pdf(ser, dirname = tmp, verbose = FALSE)
+  get_ser_pdf(id_ser, dirname = tmp, verbose = FALSE)
 
   expect_true(dir.exists(tmp))
 })
 
 test_that("get_ser_pdf() skips download if file exists and overwrite = FALSE", {
 
-  ser <- data.frame(codeser = "B34")
+  id_ser <- "B34"
   tmp <- tempdir()
   file <- file.path(tmp, "B_34.pdf")
   file.create(file)
@@ -50,14 +38,14 @@ test_that("get_ser_pdf() skips download if file exists and overwrite = FALSE", {
     .package = "utils"
   )
 
-  get_ser_pdf(ser, dirname = tmp, overwrite = FALSE, verbose = FALSE)
+  get_ser_pdf(id_ser, dirname = tmp, overwrite = FALSE, verbose = FALSE)
 
   expect_false(called)
 })
 
 test_that("get_ser_pdf() downloads when overwrite = TRUE", {
 
-  ser <- data.frame(codeser = "C56")
+  id_ser <- "C56"
   tmp <- tempdir()
   file <- file.path(tmp, "C_56.pdf")
   file.create(file)
@@ -72,7 +60,7 @@ test_that("get_ser_pdf() downloads when overwrite = TRUE", {
     .package = "utils"
   )
 
-  get_ser_pdf(ser, dirname = tmp, overwrite = TRUE, verbose = FALSE)
+  get_ser_pdf(id_ser, dirname = tmp, overwrite = TRUE, verbose = FALSE)
 
   expect_true(called)
   expect_true(file.exists(file))
@@ -80,7 +68,7 @@ test_that("get_ser_pdf() downloads when overwrite = TRUE", {
 
 test_that("get_ser_pdf() handles download errors gracefully", {
 
-  ser <- data.frame(codeser = "D78")
+  id_ser <- "D78"
   tmp <- tempdir()
 
   local_mocked_bindings(
@@ -89,13 +77,13 @@ test_that("get_ser_pdf() handles download errors gracefully", {
   )
 
   expect_silent(
-    get_ser_pdf(ser, dirname = tmp, verbose = FALSE)
+    get_ser_pdf(id_ser, dirname = tmp, verbose = FALSE)
   )
 })
 
 test_that("get_ser_pdf() downloads each unique codeser only once", {
 
-  ser <- data.frame(codeser = c("E12", "E12", NA))
+  id_ser <- c("E12", "E12", "C20")
   tmp <- tempdir()
 
   calls <- 0
@@ -107,7 +95,7 @@ test_that("get_ser_pdf() downloads each unique codeser only once", {
     .package = "utils"
   )
 
-  get_ser_pdf(ser, dirname = tmp, verbose = FALSE)
+  get_ser_pdf(id_ser, dirname = tmp, verbose = FALSE)
 
-  expect_equal(calls, 1)
+  expect_equal(calls, 2)
 })

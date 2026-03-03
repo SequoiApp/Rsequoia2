@@ -126,17 +126,11 @@ v.mnhn.zps.poly:        { name: "MNHN_ZPS_poly",        ext: "gpkg"}
 # TOPONYME
 v.toponyme.point: { name: "TOPONYME_point", ext: "gpkg" }
 
-# PRSF
-v.prsf.point: { name: "PRSF_point", ext: "gpkg" }
-
 # HYPSOMETRIC CURVES
 v.curves.line: { name: "CURVES_line", ext: "gpkg" }
 
-# OLD
-v.old.poly: { name: "OLD_poly", ext: "gpkg" }
-
 # ACCESS
-v.access.entry.point: {name: "ACCESS_ENTRY_point", ext: "gpkg" }
+v.access.entry.point:  {name: "ACCESS_ENTRY_point", ext: "gpkg" }
 v.access.porteur.poly: {name: "ACCESS_PORTEUR_poly", ext: "gpkg" }
 v.access.skidder.poly: {name: "ACCESS_SKIDDER_poly", ext: "gpkg" }
 
@@ -152,6 +146,10 @@ v.ifn.ser_ar.poly: { name: "REGION_SERAR_poly",  ext: "gpkg" }
 v.ifn.rfn.poly:    { name: "REGION_RFN_poly",    ext: "gpkg" }
 v.ifn.rfd.poly:    { name: "REGION_RFD_poly",    ext: "gpkg" }
 v.ifn.zp.poly:     { name: "REGION_ZP_poly",     ext: "gpkg" }
+
+# SECURITE
+v.secu.prsf.point: { name: "SECU_PRSF_point", ext: "gpkg" }
+v.secu.old.poly:   { name: "SECU_OLD_poly", ext: "gpkg" }
 
 # CADASTRE
 v.cad.vides.poly:       { name: "CAD_VIDES_poly",     ext: "gpkg" }
