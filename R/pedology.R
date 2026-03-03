@@ -23,7 +23,11 @@ get_pedology <- function(x) {
   x <- sf::st_transform(x, crs)
 
   # retrieve toponymic point
-  pedology <- happign::get_wfs(x, "INRA.CARTE.SOLS:geoportail_vf", verbose = FALSE) |>
+  pedology <- happign::get_wfs(
+    x,
+    "INRA.CARTE.SOLS:geoportail_vf",
+    predicate = happign::intersects(),
+    verbose = FALSE) |>
     sf::st_transform(crs)
 
   if (!nrow(pedology)) {
@@ -34,20 +38,6 @@ get_pedology <- function(x) {
   intersect <- sf::st_intersection(pedology, x) |>
     sf::st_cast("POLYGON") |>
     suppressWarnings()
-
-  # Field names from configuration
-  idu <- seq_field("idu")$name
-  cad_area <- seq_field("cad_area")$name
-  gis_area <- seq_field("gis_area")$name
-  cor_area <- seq_field("cor_area")$name
-  required_fields <- c(idu, cad_area, gis_area, cor_area)
-
-  if (all(required_fields %in% names(intersect))) {
-    pedology <- ua_generate_area(intersect, verbose = FALSE)
-    pedology <- intersect[, c(names(pedology), idu, cad_area, gis_area, cor_area)]
-  } else  {
-    pedology <- intersect[, c(names(pedology))]
-  }
 
   return(invisible(pedology))
 }
@@ -161,7 +151,8 @@ seq_pedology <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
   }
 
   # Retrieve pedology ----
-  pedo <- get_pedology(parca)
+  pedo <- get_pedology(parca) |>
+    sf::st_intersection(sf::st_geometry(parca))
 
   pedo_path <- NULL
   if (!is.null(pedo)){
