@@ -218,6 +218,7 @@ Ces fonctions ont toutes le même fonctionnement :
 - Elles renvoient le ou les chemins vers les fichiers générés.
 
 Pour les utilisateurs avancés, chaque fonction `seq_*` possède un
-équivalent `get_*` (ex : `get_geol()`,
+équivalent `get_*` (ex :
+[`get_geol()`](https://sequoiapp.github.io/Rsequoia2/reference/get_geol.md),
 [`get_prsf()`](https://sequoiapp.github.io/Rsequoia2/reference/get_prsf.md),
 …) utilisable indépendamment du workflow Sequoia.

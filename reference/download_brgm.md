@@ -8,7 +8,7 @@ in a persistent cache directory (`R_user_dir("Rsequoia2", "cache")`).
 ``` r
 download_brgm(
   dep,
-  source = "carhab",
+  key = "carhab",
   cache = NULL,
   verbose = FALSE,
   overwrite = FALSE
@@ -22,7 +22,7 @@ download_brgm(
   `character` or `numeric`; Department code (see
   [`get_cog()`](https://sequoiapp.github.io/Rsequoia2/reference/get_cog.md)).
 
-- source:
+- key:
 
   `character` Source use to download geology from BRGM. Must be one of:
 

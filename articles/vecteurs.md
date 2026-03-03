@@ -255,8 +255,9 @@ départementales.
 
 ### 6.2 Géologie
 
-La fonction `get_geol()` permet de récupérer les jeux de données
-précédents sur une zone d’étude.
+La fonction
+[`get_geol()`](https://sequoiapp.github.io/Rsequoia2/reference/get_geol.md)
+permet de récupérer les jeux de données précédents sur une zone d’étude.
 
 La fonction ajoute un argument `x` correspondant au `sf` de la zone
 d’étude.

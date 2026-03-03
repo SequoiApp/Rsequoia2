@@ -1,13 +1,18 @@
-# Create a geology layer for a Sequoia project from BRGM data
+# Create geology layers for a Sequoia project from BRGM data
 
-Uses the *PARCA* from Sequoia to determine which French departments are
-involved, downloads the corresponding BRGM geology datasets, and builds
-a single geology layer for the project.
+Uses the project's *PARCA* layer to download geology datasets and clip
+them to its geometry.
 
 ## Usage
 
 ``` r
-seq_geol(dirname = ".", cache = NULL, verbose = TRUE, overwrite = FALSE)
+seq_geol(
+  dirname = ".",
+  key = NULL,
+  cache = NULL,
+  verbose = TRUE,
+  overwrite = FALSE
+)
 ```
 
 ## Arguments
@@ -16,6 +21,13 @@ seq_geol(dirname = ".", cache = NULL, verbose = TRUE, overwrite = FALSE)
 
   `character` Directory where the matrice file is located. Defaults to
   the current working directory.
+
+- key:
+
+  `character`. Optional geology layer identifier(s). If `NULL`
+  (default), all available geology layers are created. Available layers
+  are `"bdcharm50"` and `"carhab"`. Partial matching is supported (see
+  [`seq_key()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_key.md)).
 
 - cache:
 
@@ -32,12 +44,12 @@ seq_geol(dirname = ".", cache = NULL, verbose = TRUE, overwrite = FALSE)
 
 ## Value
 
-An invisible `sf` object containing the merged geology layer.
+An invisible named `list` of file paths to the created layers.
 
 ## Details
 
-Created layer and its *QML style file* are automatically written to the
-project directory using
+Layers and their associated *QML style files* are written to the project
+directory using
 [`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
 
 **Difference between BRGM and CARHAB data**
@@ -51,9 +63,6 @@ CARHAB data are a simplified, harmonised reinterpretation of these maps.
 Geological formations are recoded into broader lithological classes
 tailored for ecological modelling. The goal is to provide consistent,
 comparable, and ecologically relevant information across departments.
-
-In short: **BRGM layers describe geology in detail; CARHAB layers
-provide a simplified lithology better suited for habitat modelling.**
 
 More info at
 [infoterre](https://infoterre.brgm.fr/page/carhab-donnees-geologiques)

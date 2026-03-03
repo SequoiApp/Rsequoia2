@@ -8,7 +8,7 @@ Charm 50" ZIP archives for one or several French departments.
 ``` r
 get_brgm(
   deps,
-  source = "carhab",
+  key = "carhab",
   cache = NULL,
   verbose = FALSE,
   overwrite = FALSE
@@ -22,7 +22,7 @@ get_brgm(
   `character` or `numeric`; One or sevral french department code (see
   [`get_cog()`](https://sequoiapp.github.io/Rsequoia2/reference/get_cog.md)).
 
-- source:
+- key:
 
   `character` Source use to download geology from BRGM. Must be one of:
 

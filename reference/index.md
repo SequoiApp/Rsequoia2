@@ -61,6 +61,9 @@
 - [`get_dsm()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dsm.md)
   : Download Digital Surface Model (DSM) raster from IGN RGEAlti
 
+- [`get_geol()`](https://sequoiapp.github.io/Rsequoia2/reference/get_geol.md)
+  : Download BRGM geology data to a geometry
+
 - [`get_gpu()`](https://sequoiapp.github.io/Rsequoia2/reference/get_gpu.md)
   : Download GPU vector layer
 
@@ -241,6 +244,9 @@
 
 - [`seq_field()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_field.md)
   : Load field definitions from the Sequoia configuration
+
+- [`seq_geol()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_geol.md)
+  : Create geology layers for a Sequoia project from BRGM data
 
 - [`seq_gpu()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_gpu.md)
   : Generate GPU layers for a Sequoia project

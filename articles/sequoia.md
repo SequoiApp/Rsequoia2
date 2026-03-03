@@ -169,7 +169,8 @@ configuration (name and extension) ; - Return path(s) where the data are
 stored.
 
 Note: for advanced users, each `seq_*` function has an equivalent
-`get_*` function (e.g. `get_geol()`,
+`get_*` function
+(e.g. [`get_geol()`](https://sequoiapp.github.io/Rsequoia2/reference/get_geol.md),
 [`get_prsf()`](https://sequoiapp.github.io/Rsequoia2/reference/get_prsf.md),
 …). These can be used independently of the Sequoia workflow.
 
