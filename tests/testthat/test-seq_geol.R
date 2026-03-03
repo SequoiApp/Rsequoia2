@@ -18,11 +18,11 @@ test_that("seq_geol() downloads both geology layers by default", {
     )
 
     # ---- Mock get_brgm ----
-    tracker <- list(source = character())
+    tracker <- list(key = character())
 
     local_mocked_bindings(
-      get_brgm = function(dep, source, ...) {
-        tracker$source <<- c(tracker$source, source)
+      get_brgm = function(dep, key, ...) {
+        tracker$key <<- c(tracker$key, key)
         return(p)  # p should be your fake sf test object
       }
     )
@@ -37,7 +37,7 @@ test_that("seq_geol() downloads both geology layers by default", {
 
     # ---- Assertions ----
     expect_named(paths, c("v.sol.carhab.poly", "v.sol.bdcharm50.poly"))
-    expect_equal(sort(unique(tracker$source)),
+    expect_equal(sort(unique(tracker$key)),
                  sort(c("carhab", "bdcharm50")))
 
     # QML must exist for bdcharm50
@@ -50,11 +50,11 @@ test_that("seq_geol() respects key argument", {
 
   with_seq_cache({
 
-    tracker <- list(source = character())
+    tracker <- list(key = character())
 
     local_mocked_bindings(
-      get_brgm = function(dep, source, ...) {
-        tracker$source <<- c(tracker$source, source)
+      get_brgm = function(dep, key, ...) {
+        tracker$key <<- c(tracker$key, key)
         return(p)
       }
     )
@@ -67,7 +67,7 @@ test_that("seq_geol() respects key argument", {
     )
 
     expect_named(paths, "v.sol.carhab.poly")
-    expect_equal(unique(tracker$source), "carhab")
+    expect_equal(unique(tracker$key), "carhab")
   })
 })
 

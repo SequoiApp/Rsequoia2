@@ -19,7 +19,7 @@ test_that("download_brgm() downloads when file is missing", {
     get_cog = function(...) list(dep = data.frame(DEP = "29", NCC_DEP = "FINISTERE"))
   )
 
-  zip_path <- download_brgm(dep = "29", source = "carhab", cache = brgm_cache, verbose = FALSE)
+  zip_path <- download_brgm(dep = "29", key = "carhab", cache = brgm_cache, verbose = FALSE)
 
   expect_true(tracker$called)
   expect_true(file.exists(zip_path))
@@ -27,7 +27,7 @@ test_that("download_brgm() downloads when file is missing", {
 
 })
 
-test_that("download_brgm() properly change source", {
+test_that("download_brgm() properly change key", {
 
   brgm_cache <- file.path(tempdir(), "brgm")
   dir.create(brgm_cache)
@@ -48,7 +48,7 @@ test_that("download_brgm() properly change source", {
     get_cog = function(...) list(dep = data.frame(DEP = "29", NCC_DEP = "FINISTERE"))
   )
 
-  zip_path <- download_brgm(dep = "29", source = "bdcharm50", cache = brgm_cache, verbose = FALSE)
+  zip_path <- download_brgm(dep = "29", key = "bdcharm50", cache = brgm_cache, verbose = FALSE)
 
   expect_true(tracker$called)
   expect_true(file.exists(zip_path))
@@ -93,10 +93,10 @@ test_that("download_brgm() errors on invalid input", {
     get_cog = function(...) list(dep = data.frame(DEP = "29", NCC_DEP = "FINISTERE"))
   )
 
-  expect_error(download_brgm(dep = 1, source = "bad_source"))
+  expect_error(download_brgm(dep = 1, key = "bad_key"))
 
   expect_error(download_brgm(dep = 1:2), "must contain exactly one element")
-  expect_error(download_brgm(dep = 1, source = 1:2), "must contain exactly one element")
+  expect_error(download_brgm(dep = 1, key = 1:2), "must contain exactly one element")
 
   expect_error(download_brgm(dep = 123), "Invalid department code")
   expect_error(download_brgm(dep = "A1"), "Invalid department code")
@@ -137,8 +137,8 @@ test_that("download_brgm() builds correct ZIP name", {
     get_cog = function(...) list(dep = data.frame(DEP = "08", NCC_DEP = "ARDENNES"))
   )
 
-  bdcharm50_path <- download_brgm(8, cache = brgm_cache, source = "bdcharm50", verbose = FALSE)
-  carhab_path <- download_brgm(8, cache = brgm_cache, source = "carhab", verbose = FALSE)
+  bdcharm50_path <- download_brgm(8, cache = brgm_cache, key = "bdcharm50", verbose = FALSE)
+  carhab_path <- download_brgm(8, cache = brgm_cache, key = "carhab", verbose = FALSE)
 
   expect_match(basename(bdcharm50_path), "^GEO050K_HARM_008\\.zip$")
   expect_match(basename(carhab_path), "^CARHAB_08_ARDENNES\\.zip$")
@@ -162,10 +162,10 @@ test_that("download_brgm() handle ZIP name with space when carhab", {
       ))
   )
 
-  carhab_path <- download_brgm(35, cache = brgm_cache, source = "carhab", verbose = FALSE)
+  carhab_path <- download_brgm(35, cache = brgm_cache, key = "carhab", verbose = FALSE)
   expect_match(basename(carhab_path), "35_ILLE-ET-VILAINE")
 
-  carhab_path <- download_brgm(22, cache = brgm_cache, source = "carhab", verbose = FALSE)
+  carhab_path <- download_brgm(22, cache = brgm_cache, key = "carhab", verbose = FALSE)
   expect_match(basename(carhab_path), "22_COTES-D-ARMOR")
 
 })
@@ -216,7 +216,7 @@ test_that("download_brgm() overwrites existing ZIP when overwrite=TRUE", {
   )
 
   # Call overwrite = TRUE
-  out <- download_brgm("29", source = "bdcharm50", cache = brgm_cache, verbose = FALSE, overwrite = TRUE)
+  out <- download_brgm("29", key = "bdcharm50", cache = brgm_cache, verbose = FALSE, overwrite = TRUE)
 
   expect_true(tracker$called)
   expect_true(file.exists(out))

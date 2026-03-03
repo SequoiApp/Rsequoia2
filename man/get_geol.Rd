@@ -6,8 +6,9 @@
 \usage{
 get_geol(
   x,
+  key = "carhab",
+  buffer = 100,
   deps = NULL,
-  source = "carhab",
   cache = NULL,
   verbose = FALSE,
   overwrite = FALSE
@@ -17,14 +18,17 @@ get_geol(
 \item{x}{\code{sf} or \code{sfc}; Geometry used to determine relevant departments
 and to spatially filter geology data.}
 
-\item{deps}{\code{character} or \code{numeric}; One or sevral french
-department code (see \code{\link[=get_cog]{get_cog()}}).}
-
-\item{source}{\code{character} Source use to download geology from BRGM. Must be one of:
+\item{key}{\code{character} Source use to download geology from BRGM. Must be one of:
 \itemize{
 \item \code{"carhab"} : geological data used to created the \code{CarHab} dataset ;
 \item \code{"bdcharm50"} : geological maps, vectorized and harmonised at 1:50,000 scale.
 }}
+
+\item{buffer}{\code{numeric}; Buffer distance (in meters) applied to \code{x}
+before spatial filtering. Default is \code{100}.}
+
+\item{deps}{\code{character} or \code{numeric}; One or sevral french
+department code (see \code{\link[=get_cog]{get_cog()}}).}
 
 \item{cache}{\code{character}; Storage directory. Defaults to the user cache
 directory (see \code{\link[tools:userdir]{tools::R_user_dir()}}).}
@@ -32,9 +36,6 @@ directory (see \code{\link[tools:userdir]{tools::R_user_dir()}}).}
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
 \item{overwrite}{\code{logical} If \code{TRUE}, overwrite zipfile.}
-
-\item{buffer}{\code{numeric}; Buffer distance (in meters) applied to \code{x}
-before spatial filtering. Default is \code{100}.}
 }
 \value{
 An \code{sf} object containing clipped geology features.

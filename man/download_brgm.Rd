@@ -6,7 +6,7 @@
 \usage{
 download_brgm(
   dep,
-  source = "carhab",
+  key = "carhab",
   cache = NULL,
   verbose = FALSE,
   overwrite = FALSE
@@ -15,7 +15,7 @@ download_brgm(
 \arguments{
 \item{dep}{\code{character} or \code{numeric}; Department code (see \code{\link[=get_cog]{get_cog()}}).}
 
-\item{source}{\code{character} Source use to download geology from BRGM. Must be one of:
+\item{key}{\code{character} Source use to download geology from BRGM. Must be one of:
 \itemize{
 \item \code{"carhab"} : geological data used to created the \code{CarHab} dataset ;
 \item \code{"bdcharm50"} : geological maps, vectorized and harmonised at 1:50,000 scale.
