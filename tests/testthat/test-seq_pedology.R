@@ -3,7 +3,12 @@ test_that("seq_pedology() returns path", {
 
     local_mocked_bindings(
       get_pedology = function(...) Rsequoia2:::seq_poly,
-      get_pedology_pdf = function(...) "path",
+      get_pedology_pdf = function(...) "path"
+    )
+
+    local_mocked_bindings(
+      st_intersection = function(x, y, ...) x,
+      .package = "sf"
     )
 
     path <- seq_pedology(seq_cache, verbose = FALSE)
@@ -18,6 +23,11 @@ test_that("seq_pedology() returns valid sf", {
     local_mocked_bindings(
       get_pedology = function(...) Rsequoia2:::seq_poly,
       get_pedology_pdf = function(...) called <<- called + 1,
+    )
+
+    local_mocked_bindings(
+      st_intersection = function(x, y, ...) x,
+      .package = "sf"
     )
 
     path <- seq_pedology(seq_cache, verbose = FALSE)
@@ -36,6 +46,11 @@ test_that("seq_pedology() writes nothing when no features exist", {
       get_pedology_pdf = function(...) called <<- called + 1
     )
 
+    local_mocked_bindings(
+      st_intersection = function(x, y, ...) x,
+      .package = "sf"
+    )
+
     path <- seq_pedology(dirname = seq_cache, verbose = FALSE)
     expect_length(path, 0)
     expect_equal(called, 0)
@@ -51,6 +66,11 @@ test_that("seq_pedology() layer contains identifier", {
     local_mocked_bindings(
       get_pedology = function(...) Rsequoia2:::seq_poly,
       get_pedology_pdf = function(...) NULL
+    )
+
+    local_mocked_bindings(
+      st_intersection = function(x, y, ...) x,
+      .package = "sf"
     )
 
     path <- seq_pedology(seq_cache, verbose = FALSE, overwrite = TRUE)
@@ -73,6 +93,11 @@ test_that("seq_pedology() saves pedology PDFs in same directory as pedology laye
       get_pedology_pdf = function(id_ucs, dirname, ...) {
         tracker$dirname <<- dirname
       }
+    )
+
+    local_mocked_bindings(
+      st_intersection = function(x, y, ...) x,
+      .package = "sf"
     )
 
     pedo_path <- seq_pedology(seq_cache, verbose = FALSE, overwrite = TRUE)
