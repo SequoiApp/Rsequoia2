@@ -69,3 +69,34 @@ test_that("get_legal_entity() warns on department-level queries", {
 
   expect_s3_class(res, "data.frame")
 })
+
+test_that("get_legal_entity() support multi-dep query", {
+
+  le_cache <- file.path(tempdir(), "legal_entity")
+  dir.create(le_cache)
+  on.exit(unlink(le_cache, recursive = TRUE, force = TRUE), add = TRUE)
+
+  x <- c("01", "02")
+  path <- file.path(le_cache, paste0(x, ".csv"))
+  write.csv2(fake_data(), row.names = FALSE, path[1], fileEncoding = "UTF-8")
+  write.csv2(fake_data(), row.names = FALSE, path[2], fileEncoding = "UTF-8")
+
+  testthat::local_mocked_bindings(
+    download_legal_entity = function(cache, verbose) le_cache,
+    format_legal_entity = function(legal_entity, ...) legal_entity,
+    normalize_legal_entity = function(legal_entity, ...) legal_entity,
+    get_cog = function(...) list(
+      com = data.frame(
+        COM = c("01001", "02002"),
+        NCC_COM = c("NCC_01001", "NCC_02002"),
+        DEP = c("01", "02")
+        ),
+      dep = data.frame(DEP = c("01", "02"), NCC_DEP = c("NCC_01", "NCC_02"), REG = c("01", "02")),
+      reg = data.frame(REG = c("01", "02"), NCC_REG = c("NCC_01", "NCC_02"))
+    )
+  )
+
+  res <- get_legal_entity(x, cache = le_cache, verbose = FALSE)
+
+  expect_equal(nrow(res), nrow(fake_data()) * 2)
+})

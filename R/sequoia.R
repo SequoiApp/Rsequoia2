@@ -186,10 +186,10 @@ menu_rp <- function(path, overwrite){
 menu_legal_entity <- function(path, overwrite){
   x <- readline("Enter DEP/INSEE codes (comma-separated): ")
   y <- readline("Enter proprietaire search pattern (comma-separated): ")
-  insee <- trimws(strsplit(x, ",")[[1]])
+  code <- trimws(strsplit(x, ",")[[1]])
   prop <- trimws(strsplit(y, ",")[[1]])
 
-  m <- get_legal_entity(insee)
+  m <- get_legal_entity(code)
   ms <- search_legal_entity(m, prop = prop)
 
   s <- sum(ms$SURF_CA)

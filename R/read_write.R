@@ -161,7 +161,7 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
       ))
     }
 
-    sf::st_write(
+    sf::write_sf(
       x,
       path,
       delete_dsn = overwrite,
@@ -169,7 +169,8 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
       layer_options = c(
         "GEOMETRY_NAME=geom",
         "SPATIAL_INDEX=YES"
-      )
+      ),
+
     )
 
     if (verbose) {

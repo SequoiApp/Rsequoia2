@@ -119,7 +119,7 @@ get_legal_entity <- function(
   deps <- c(code_dep, substr(code_insee, 1, 2)) |> unique()
   cache <- download_legal_entity(cache = cache, verbose = verbose)
 
-  pattern <- paste0(deps, ".*\\.csv$")
+  pattern <- paste0(deps, ".*\\.csv$") |> paste(collapse = "|")
   files <- list.files(cache, pattern = pattern, recursive = TRUE, full.names = TRUE)
 
   raw <- read_legal_entity(files, verbose = verbose)
