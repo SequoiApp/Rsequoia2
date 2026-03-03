@@ -2,13 +2,24 @@
 % Please edit documentation in R/geol.R
 \name{seq_geol}
 \alias{seq_geol}
-\title{Create a geology layer for a Sequoia project from BRGM data}
+\title{Create geology layers for a Sequoia project from BRGM data}
 \usage{
-seq_geol(dirname = ".", cache = NULL, verbose = TRUE, overwrite = FALSE)
+seq_geol(
+  dirname = ".",
+  key = NULL,
+  cache = NULL,
+  verbose = TRUE,
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
+
+\item{key}{\code{character}. Optional geology layer identifier(s). If \code{NULL}
+(default), all available geology layers are created. Available layers
+are \code{"bdcharm50"} and \code{"carhab"}. Partial matching is supported
+(see \code{\link[=seq_key]{seq_key()}}).}
 
 \item{cache}{\code{character}; Storage directory. Defaults to the user cache
 directory (see \code{\link[tools:userdir]{tools::R_user_dir()}}).}
@@ -18,15 +29,14 @@ directory (see \code{\link[tools:userdir]{tools::R_user_dir()}}).}
 \item{overwrite}{\code{logical} If \code{TRUE}, overwrite zipfile.}
 }
 \value{
-An invisible \code{sf} object containing the merged geology layer.
+An invisible named \code{list} of file paths to the created layers.
 }
 \description{
-Uses the \emph{PARCA} from Sequoia to determine which French departments are
-involved, downloads the corresponding BRGM geology datasets, and
-builds a single geology layer for the project.
+Uses the project's \emph{PARCA} layer to download geology datasets and clip
+them to its geometry.
 }
 \details{
-Created layer and its \emph{QML style file} are automatically written to the
+Layers and their associated \emph{QML style files} are written to the
 project directory using \code{\link[=seq_write]{seq_write()}}.
 
 \strong{Difference between BRGM and CARHAB data}
@@ -41,9 +51,5 @@ Geological formations are recoded into broader lithological classes tailored
 for ecological modelling. The goal is to provide consistent, comparable,
 and ecologically relevant information across departments.
 
-In short: \strong{BRGM layers describe geology in detail; CARHAB layers provide a
-simplified lithology better suited for habitat modelling.}
-
 More info at \href{https://infoterre.brgm.fr/page/carhab-donnees-geologiques}{infoterre}
 }
-\keyword{internal}

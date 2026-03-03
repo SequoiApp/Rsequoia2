@@ -6,7 +6,7 @@
 #' Existing ZIP files are never re-downloaded.
 #'
 #' @param dep `character` or `numeric`; Department code (see [Rsequoia2::get_cog()]).
-#' @param source `character` Source use to download geology from BRGM. Must be one of:
+#' @param key `character` Source use to download geology from BRGM. Must be one of:
 #'   - `"carhab"` : geological data used to created the `CarHab` dataset ;
 #'   - `"bdcharm50"` : geological maps, vectorized and harmonised at 1:50,000 scale.
 #' @param cache `character`; Storage directory. Defaults to the user cache
@@ -17,7 +17,7 @@
 #' @return Character vector of directories where ZIPs are stored.
 #'
 #' @export
-download_brgm <- function(dep, source = "carhab", cache = NULL, verbose = FALSE, overwrite = FALSE){
+download_brgm <- function(dep, key = "carhab", cache = NULL, verbose = FALSE, overwrite = FALSE){
 
   if (length(dep) != 1) {
     cli::cli_abort(c(
@@ -26,17 +26,17 @@ download_brgm <- function(dep, source = "carhab", cache = NULL, verbose = FALSE,
     ))
   }
 
-  if (length(source) != 1) {
+  if (length(key) != 1) {
     cli::cli_abort(c(
-      "x" = "{.arg source} must contain exactly one element.",
-      "i" = "You supplied {length(source)}: {.val {source}}"
+      "x" = "{.arg key} must contain exactly one element.",
+      "i" = "You supplied {length(key)}: {.val {key}}"
     ))
   }
 
-  if (!all(source %in% c("carhab", "bdcharm50"))) {
+  if (!all(key %in% c("carhab", "bdcharm50"))) {
     cli::cli_abort(c(
-      "x" = "{.arg source} is equal to {.val {format(source)}}.",
-      "i" = "{.arg source} must be equal to {.val carhab} or {.val bdcharm50}."
+      "x" = "{.arg key} is equal to {.val {format(key)}}.",
+      "i" = "{.arg key} must be equal to {.val carhab} or {.val bdcharm50}."
     ))
   }
 
@@ -59,7 +59,7 @@ download_brgm <- function(dep, source = "carhab", cache = NULL, verbose = FALSE,
   }
 
   zip_name <- sprintf("GEO050K_HARM_%s.zip", pad_left(dep, 3))
-  if (source == "carhab"){
+  if (key == "carhab"){
     dep_name <- all_dep[all_dep$DEP == dep, c("DEP", "NCC_DEP")]
     dep_name <- gsub("\\s", "-", dep_name)
     zip_name <- sprintf("CARHAB_%s.zip", paste(dep_name, collapse = "_"))
@@ -110,15 +110,15 @@ download_brgm <- function(dep, source = "carhab", cache = NULL, verbose = FALSE,
 #' @return `sf`
 #'
 #' @export
-get_brgm <- function(deps, source = "carhab", cache = NULL, verbose = FALSE, overwrite = FALSE){
+get_brgm <- function(deps, key = "carhab", cache = NULL, verbose = FALSE, overwrite = FALSE){
 
   zip_path <- lapply(
     deps, download_brgm,
-    source = source, cache = cache, verbose = verbose, overwrite = overwrite
+    key = key, cache = cache, verbose = verbose, overwrite = overwrite
   )
 
   geol <- lapply(zip_path, function(x){
-    pattern <- ifelse(source == "carhab", "CarHab.*shp$", "S_FGEOL.*shp")
+    pattern <- ifelse(key == "carhab", "CarHab.*shp$", "S_FGEOL.*shp")
     name <- grep(pattern, archive::archive(x)$path, value = TRUE)
     geol <- sf::read_sf(file.path("/vsizip", x, name))
   })
@@ -128,17 +128,78 @@ get_brgm <- function(deps, source = "carhab", cache = NULL, verbose = FALSE, ove
   return(invisible(geol))
 }
 
-#' Create a geology layer for a Sequoia project from BRGM data
+#' Download BRGM geology data to a geometry
 #'
-#' Uses the _PARCA_ from Sequoia to determine which French departments are
-#' involved, downloads the corresponding BRGM geology datasets, and
-#' builds a single geology layer for the project.
+#' Downloads BRGM geology layers for the departments intersecting `x`
+#' (or for specified departments) and spatially filters them using a
+#' buffered envelope around `x`.
 #'
-#' Created layer and its *QML style file* are automatically written to the
+#' @param x `sf` or `sfc`; Geometry used to determine relevant departments
+#' and to spatially filter geology data.
+#' @param buffer `numeric`; Buffer distance (in meters) applied to `x`
+#' before spatial filtering. Default is `100`.
+#' @inheritParams get_brgm
+#'
+#' @details
+#' The function:
+#' - Identifies departments intersecting `x` (if `deps` is not provided) ;
+#' - Downloads geology layers using [get_brgm()] ;
+#' - Filters features intersecting a buffered envelope around `x`.
+#'
+#' All geometries are returned in EPSG:2154.
+#'
+#' @return An `sf` object containing clipped geology features.
+#'
+#' @export
+get_geol <- function(
+    x,
+    key = "carhab",
+    buffer = 100,
+    deps = NULL,
+    cache = NULL,
+    verbose = FALSE,
+    overwrite = FALSE){
+
+  if (!inherits(x, c("sf", "sfc"))) {
+    cli::cli_abort("{.arg x} must be of class {.cls sf} or {.cls sfc}.")
+  }
+
+  crs <- 2154
+  x <- sf::st_transform(x, crs)
+  if (is.null(deps)){
+    deps <- happign::get_wfs(x, "BDCARTO_V5:departement", predicate = happign::intersects())
+    deps <- unique(deps[["code_insee"]])
+  }
+
+  geol <- get_brgm(
+    deps = deps,
+    key = key,
+    cache = cache,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+  geol <- sf::st_transform(geol, crs)
+
+  fetch_envelope <- envelope(x = x, dist = buffer, crs = crs)
+  geol_intersects <- sf::st_filter(geol, fetch_envelope)
+
+  return(geol_intersects)
+}
+
+#' Create geology layers for a Sequoia project from BRGM data
+#'
+#' Uses the project's _PARCA_ layer to download geology datasets and clip
+#' them to its geometry.
+#'
+#' Layers and their associated *QML style files* are written to the
 #' project directory using [seq_write()].
 #'
 #' @inheritParams get_brgm
 #' @inheritParams seq_write
+#' @param key `character`. Optional geology layer identifier(s). If `NULL`
+#' (default), all available geology layers are created. Available layers
+#' are `"bdcharm50"` and `"carhab"`. Partial matching is supported
+#' (see [seq_key()]).
 #'
 #' @details
 #' **Difference between BRGM and CARHAB data**
@@ -153,59 +214,135 @@ get_brgm <- function(deps, source = "carhab", cache = NULL, verbose = FALSE, ove
 #' for ecological modelling. The goal is to provide consistent, comparable,
 #' and ecologically relevant information across departments.
 #'
-#' In short: **BRGM layers describe geology in detail; CARHAB layers provide a
-#' simplified lithology better suited for habitat modelling.**
 #'
 #' More info at [infoterre](https://infoterre.brgm.fr/page/carhab-donnees-geologiques)
 #'
-#' @return An invisible `sf` object containing the merged geology layer.
+#' @return An invisible named `list` of file paths to the created layers.
 #'
-#' @keywords internal
 #' @export
-seq_geol <- function(dirname = ".", cache = NULL, verbose = TRUE, overwrite = FALSE){
-  seq_write2 <- function(x, key, id) {
-    seq_write(x, key, dirname = dirname, id = id, verbose = verbose, overwrite = overwrite)
+seq_geol <- function(
+    dirname = ".",
+    key = NULL,
+    cache = NULL,
+    verbose = TRUE,
+    overwrite = FALSE
+  ){
+
+  if (verbose) cli::cli_h1("GEOLOGY")
+
+  # KEY CHECK ----
+  allowed <- c("v.sol.carhab.poly", "v.sol.bdcharm50.poly")
+  if (is.null(key)) {
+    key <- allowed
+  } else {
+    key <- lapply(key, seq_key, allow_multiple = TRUE) |> unlist()
+    key <- intersect(key, allowed)
+
+    if (length(key) == 0) {
+      cli::cli_abort(c(
+        "x" = "Invalid {.arg key}.",
+        "i" = "Allowed geology keys are {.val {allowed}}."
+      ))
+    }
   }
 
+  # BASE INFO ----
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
   identifier <- seq_field("identifier")$name
   id <- unique(parca[[identifier]])
 
-  fetch_envelope <- envelope(parca, 5000)
-
-  if (verbose){
-    cli::cli_h1("GEOLOGY")
-  }
-
   dep <- unique(parca[[seq_field("dep_code")$name]])
 
+  outputs <- list()
+
   # CARHAB ----
-  carhab <- get_brgm(dep, source = "carhab", cache = cache, verbose = verbose, overwrite = FALSE)
-  carhab_mask <- carhab[sf::st_intersects(carhab, fetch_envelope, sparse = FALSE), ]
-  carhab_mask[[identifier]] <- id
-  carhab_path <- seq_write2(carhab_mask, "v.sol.carhab.poly", id)
+  if ("v.sol.carhab.poly" %in% key) {
 
-  # BDCHARM50 ----
-  bdcharm50 <- get_brgm(dep, source = "bdcharm50", cache = cache, verbose = verbose, overwrite = FALSE)
-  bdcharm50_mask <- bdcharm50[sf::st_intersects(bdcharm50, fetch_envelope, sparse = FALSE), ]
-  bdcharm50_mask[[identifier]] <- id
-  bdcharm50_path <- seq_write2(bdcharm50_mask, "v.sol.bdcharm50.poly", id)
+    carhab <- get_brgm(
+      dep,
+      key = "carhab",
+      cache = cache,
+      verbose = verbose,
+      overwrite = FALSE
+    )
 
-  # BDCHARM50 QML ----
-  if (is.null(cache)){
-    cache <- tools::R_user_dir("Rsequoia2", which = "cache") |>
-      file.path("geology")
-    dir.create(cache, recursive = TRUE, showWarnings = FALSE)
+    carhab <- carhab |>
+      sf::st_transform(sf::st_crs(parca)) |>
+      sf::st_intersection(parca) |>
+      suppressWarnings()
+
+    carhab[[identifier]] <- id
+
+    path <- seq_write(
+      carhab,
+      "v.sol.carhab.poly",
+      dirname = dirname,
+      id = id,
+      verbose = verbose,
+      overwrite = overwrite
+    )
+
+    outputs <- c(outputs, path)
   }
 
-  zip_name <- sprintf("GEO050K_HARM_%s.zip", pad_left(dep[1], 3))
-  zip_path <- file.path(cache, zip_name)
-  qml_zip <- grep("S_FGEOL.*qml", archive::archive(zip_path[[1]])$path, value = TRUE)
-  archive::archive_extract(zip_path, dir = dirname, files = qml_zip)
+  # BDCHARM50 ----
+  if ("v.sol.bdcharm50.poly" %in% key) {
 
-  qml_path <- paste0(tools::file_path_sans_ext(bdcharm50_path), ".qml")
-  file.rename(file.path(dirname, qml_zip), qml_path) |> invisible()
+    bdcharm50 <- get_brgm(
+      dep,
+      key = "bdcharm50",
+      cache = cache,
+      verbose = verbose,
+      overwrite = FALSE
+    )
 
-  return(invisible(c(carhab_path, bdcharm50_path) |> as.list()))
+    bdcharm50 <- bdcharm50 |>
+      sf::st_transform(sf::st_crs(parca)) |>
+      sf::st_intersection(parca) |>
+      suppressWarnings()
+
+    bdcharm50[[identifier]] <- id
+
+    path <- seq_write(
+      bdcharm50,
+      "v.sol.bdcharm50.poly",
+      dirname = dirname,
+      id = id,
+      verbose = verbose,
+      overwrite = overwrite
+    )
+
+    outputs <- c(outputs, path)
+
+    # ---- QML handling ----
+    cache_local <- cache
+    if (is.null(cache_local)) {
+      cache_local <- file.path(
+        tools::R_user_dir("Rsequoia2", which = "cache"),
+        "geology"
+      )
+      dir.create(cache_local, recursive = TRUE, showWarnings = FALSE)
+    }
+
+    zip_name <- sprintf("GEO050K_HARM_%s.zip", pad_left(dep[1], 3))
+    zip_path <- file.path(cache_local, zip_name)
+
+    qml_zip <- grep(
+      "S_FGEOL.*qml",
+      archive::archive(zip_path)$path,
+      value = TRUE
+    )
+
+    archive::archive_extract(zip_path, dir = dirname, files = qml_zip)
+
+    qml_path <- paste0(
+      tools::file_path_sans_ext(path),
+      ".qml"
+    )
+
+    file.rename(file.path(dirname, qml_zip), qml_path) |> invisible()
+  }
+
+  return(invisible(outputs))
 }
 
