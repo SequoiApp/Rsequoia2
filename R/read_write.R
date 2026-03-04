@@ -77,7 +77,7 @@ seq_read <- function(key, dirname = ".", verbose = FALSE) {
 
   is_xlsx <- (type == "xlsx")
   if (is_xlsx) {
-    x <- openxlsx2::read_xlsx(path, na.strings = "", skip_empty_rows = TRUE, skip_empty_cols = TRUE)
+    x <- openxlsx2::read_xlsx(path, na.strings = NULL, skip_empty_rows = TRUE, skip_empty_cols = TRUE)
     if (verbose) {
       cli::cli_alert_success(
         "Loaded xlsx table {.val {key}} from {.file {basename(path)}}."

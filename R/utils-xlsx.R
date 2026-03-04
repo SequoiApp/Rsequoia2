@@ -167,9 +167,9 @@ seq_xlsx <- function(..., filename, data_table = FALSE, overwrite = FALSE, verbo
 
     wb <- wb_add_worksheet(wb, sheet)
     if (data_table & nrow(df) > 0){
-      wb <- openxlsx2::wb_add_data_table(wb, sheet, x = df, na.strings = "", total_row = TRUE)
+      wb <- openxlsx2::wb_add_data_table(wb, sheet, x = df, na.strings = NULL, total_row = TRUE)
     }else{
-      wb <- wb_add_data(wb, sheet, x = df, na.strings = "")
+      wb <- wb_add_data(wb, sheet, x = df, na.strings = NULL)
     }
     wb <- style_table(wb, sheet, df)
     wb <- openxlsx2::wb_freeze_pane(wb, sheet, first_row = TRUE)

@@ -36,7 +36,7 @@ seq_summary <- function(dirname = ".", verbose = TRUE){
       openxlsx2::wb_add_data_table(
         sheet = sheet,
         x = x,
-        na.strings = "",
+        na.strings = NULL,
         total_row = total_row
       ) |>
       style_table(sheet = sheet, df = x) |>
