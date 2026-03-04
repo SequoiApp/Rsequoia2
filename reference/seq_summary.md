@@ -7,7 +7,7 @@ document.
 ## Usage
 
 ``` r
-seq_summary(dirname = ".", verbose = TRUE, overwrite = FALSE)
+seq_summary(dirname = ".", verbose = TRUE)
 ```
 
 ## Arguments
@@ -20,10 +20,6 @@ seq_summary(dirname = ".", verbose = TRUE, overwrite = FALSE)
 - verbose:
 
   `logical` If `TRUE`, display messages.
-
-- overwrite:
-
-  `logical` If `TRUE`, file is overwritten.
 
 ## Value
 
