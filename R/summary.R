@@ -26,81 +26,137 @@
 #'
 #' @return `list` of `data.frame`
 #'
-seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
+seq_summary <- function(dirname = ".", verbose = TRUE){
 
-  tables <- list()
+  # HELPERS ----
+  wb_add_seq_table <- function(wb, sheet, x, total_row = FALSE){
+
+    wb |>
+      openxlsx2::wb_add_worksheet(sheet = sheet) |>
+      openxlsx2::wb_add_data_table(
+        sheet = sheet,
+        x = x,
+        na.strings = "",
+        total_row = total_row
+      ) |>
+      style_table(sheet = sheet, df = x) |>
+      openxlsx2::wb_freeze_pane(
+        sheet = sheet,
+        first_row = TRUE
+      )
+  }
+
+  wb <- wb_workbook()
+
   ua <- seq_read("v.seq.ua.poly", dirname = dirname)
   pf <- ua_to_pf(ua)
 
-  # OCCUPATION
+  # OCCUPATION ----
   is_wooded <- seq_field("is_wooded")$name
   ua[[is_wooded]] <- ifelse(ua[[is_wooded]], "BOISEE", "NON BOISEE")
   ocs <- sum_surf_by(ua, "is_wooded")
-  tables$OCCUPATION <- ocs
+  wb <- wb_add_seq_table(wb, "OCCUPATION", ocs, total_row = c(text = "TOTAL", "sum"))
 
-  # RAW UA
-  tables$UA <- ua |> sf::st_drop_geometry()
+  # RAW UA ----
+  raw_ua <- sf::st_drop_geometry(ua)
+  wb <- wb_add_seq_table(wb, "UA", raw_ua)
 
   # Remove wooded data from ua
   ua <- ua[ua[[is_wooded]] == "BOISEE", ]
 
-  # PARCA
+  # PARCA ----
   parca <- sum_surf_by(ua, "reg_name", "dep_name", "com_name", "insee", "prefix", "section", "number", "locality")
-  tables$PARCA <- parca
+  wb <- wb_add_seq_table(
+    wb, "PARCA", parca,
+    total_row = c(text = "TOTAL", rep("none", ncol(parca) - 2), "sum")
+  )
 
-  # PARCA_COM
+  # PARCA_COM ----
   parca_by_com <- sum_surf_by(ua, "reg_name", "dep_name", "com_name", "insee")
-  tables$PARCA_COM <- parca_by_com
+  wb <- wb_add_seq_table(
+    wb, "PARCA_COM", parca_by_com,
+    total_row = c(text = "TOTAL", rep("none", ncol(parca_by_com) - 2), "sum")
+  )
 
-  # PF
+  # PF ----
   pf_raw <- sum_surf_by(ua, "pcl_code") |>
     order_by("pcl_code")
-  tables$PF <- pf_raw
+  wb <- wb_add_seq_table(wb, "PF", pf_raw, total_row = c(text = "TOTAL", "sum"))
 
-  # SSPF
+  # SSPF ----
   sspf_raw <- sum_surf_by(ua, "pcl_code", "sub_code") |>
     order_by("pcl_code", "sub_code")
-  tables$SSPF <- sspf_raw
+  wb <- wb_add_seq_table(wb, "SSPF", sspf_raw, total_row = c(text = "TOTAL", "none", "sum"))
 
-  # PF_PARCA
-  parca_col <- c("com_name", "insee", "prefix", "section", "number")
+  # PF_PARCA ----
+  parca_col <- c("com_name", "insee", "prefix", "section", "number", "locality")
   pf_by_parca <- sum_surf_by(ua, "pcl_code", parca_col) |>
     order_by("pcl_code", "insee", "prefix", "section", "number")
-  tables$PF_PARCA <- pf_by_parca
+  wb <- wb_add_seq_table(
+    wb, "PF_PARCA", pf_by_parca,
+    total_row = c(text = "TOTAL", rep("none", ncol(pf_by_parca) - 2), "sum")
+  )
 
-  # PARCA_PF
+  # PARCA_PF ----
   parca_by_pf <- sum_surf_by(ua, "pcl_code", parca_col) |>
     order_by("pcl_code") |>
     pivot(row = parca_col, "pcl_code", direction = "wide") |>
     order_by(parca_col)
-  parca_by_pf$TOTAL <- rowSums(parca_by_pf[, -(1:5)], na.rm = T)
-  tables$PARCA_PF <- parca_by_pf
+  parca_by_pf$TOTAL <- rowSums(parca_by_pf[, -seq_along(parca_col)], na.rm = T)
+  wb <- wb_add_seq_table(
+    wb, "PARCA_PF", parca_by_pf,
+    total_row = c(
+      text = "TOTAL",
+      rep("none", length(parca_col) - 1),
+      rep("sum", ncol(parca_by_pf) - length(parca_col)))
+  )
 
-  # PLT_TYPE
+  # PLT_TYPE ----
   plt_type <- sum_surf_by(ua, "std_type") |>
     order_by("std_type") |>
     add_prop("cor_area")
-  tables$PLT_TYPE <- plt_type
+  wb <- wb_add_seq_table(
+    wb, "PLT_TYPE", plt_type,
+    total_row = c(text = "TOTAL", "sum", "sum")
+  )
 
-  # PLT_STADE
+  # PLT_RICH ----
+  plt_rich <- sum_surf_by(ua, "std_wealth") |>
+    order_by("std_wealth") |>
+    add_prop("cor_area")
+  wb <- wb_add_seq_table(
+    wb, "PLT_RICH", plt_rich,
+    total_row = c(text = "TOTAL", "sum", "sum")
+  )
+
+  # PLT_STADE ----
   plt_stade <- sum_surf_by(ua, "std_stage") |>
     order_by("std_stage") |>
     add_prop("cor_area")
-  tables$PLT_STADE <- plt_stade
+  wb <- wb_add_seq_table(
+    wb, "PLT_STADE", plt_stade,
+    total_row = c(text = "TOTAL", "sum", "sum")
+  )
 
-  # PLT_ESS
+  # PLT_ESS ----
   plt_ess <- sum_surf_by(ua, "res_spe1") |>
     order_by("res_spe1") |>
     add_prop("cor_area")
-  tables$PLT_ESS <- plt_ess
+  wb <- wb_add_seq_table(
+    wb, "PLT_ESS", plt_ess,
+    total_row = c(text = "TOTAL", "sum", "sum")
+  )
 
-  # PLT
-  plt <- sum_surf_by(ua, "std_type", "std_stage", "res_spe1") |>
-    order_by("std_type", "std_stage", "res_spe1") |>
+  # PLT ----
+  plt <- sum_surf_by(ua, "std_type", "std_wealth", "std_stage", "res_spe1") |>
+    order_by("std_type", "std_wealth", "std_stage", "res_spe1") |>
     add_prop("cor_area")
-  tables$PLT <- plt
+  wb <- wb_add_seq_table(
+    wb, "PLT", plt,
+    total_row = c(text = "TOTAL", rep("none", ncol(plt) - 3), "sum", "sum")
+  )
 
-  # PF_PLT
+  # PF_PLT ----
   pf_by_plt <- sum_surf_by(ua, "pcl_code", "std_type") |>
     order_by("std_type") |>
     pivot("pcl_code", "std_type", direction = "wide") |>
@@ -110,48 +166,105 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
   if (nb_pplmt > 1){
     pf_by_plt$TOTAL <- rowSums(pf_by_plt[, -1], na.rm = T)
   }
-  tables$PF_PLT <- pf_by_plt
 
-  # PLT_PF
+  wb <- wb_add_seq_table(
+    wb, "PF_PLT", pf_by_plt,
+    total_row = c(text = "TOTAL", rep("sum", ncol(pf_by_plt) - 2), "sum")
+  )
+
+  # PLT_PF ----
   plt_by_pf <- sum_surf_by(ua, "pcl_code", "std_type") |>
     order_by("pcl_code") |>
     pivot("std_type", "pcl_code", direction = "wide") |>
     order_by("std_type")
-  plt_by_pf$TOTAL <- rowSums(plt_by_pf[, -1], na.rm = T)
-  tables$PLT_PF <- plt_by_pf
 
-  # GESTION
+  nb_pf <- ncol(plt_by_pf) - 1
+  if (nb_pf > 1){
+    plt_by_pf$TOTAL <- rowSums(plt_by_pf[, -1], na.rm = T)
+  }
+  wb <- wb_add_seq_table(
+    wb, "PLT_PF", plt_by_pf,
+    total_row = c(text = "TOTAL", rep("sum", ncol(plt_by_pf) - 1))
+  )
+
+  # PF_RICH ----
+  pf_by_rich <- sum_surf_by(ua, "pcl_code", "std_wealth") |>
+    order_by("std_wealth") |>
+    pivot("pcl_code", "std_wealth", direction = "wide") |>
+    order_by("pcl_code")
+
+  nb_rich <- ncol(pf_by_rich) - 1
+  if (nb_rich > 1){
+    pf_by_rich$TOTAL <- rowSums(pf_by_rich[, -1], na.rm = T)
+  }
+
+  wb <- wb_add_seq_table(
+    wb, "PF_RICH", pf_by_rich,
+    total_row = c(text = "TOTAL", rep("sum", ncol(pf_by_rich) - 2), "sum")
+  )
+
+  # COUPE ----
+  coupe <- sum_surf_by(ua, "mgmt_code", "std_type", "std_wealth", "std_stage", "res_spe1") |>
+    order_by("mgmt_code", "std_type", "std_wealth", "std_stage", "res_spe1")
+  actual_year <- Sys.Date() |> format("%Y") |> as.numeric()
+  last_year <- actual_year + 15
+  years <- as.character(actual_year:last_year)
+  coupe[,years] <- NA
+
+  wb <- wb_add_seq_table(
+    wb, "COUPE", coupe,
+    total_row = c(text = "TOTAL", rep("none", 4), "sum", rep("count", 16))
+  )
+  # GESTION ----
   gestion <- sum_surf_by(ua, "treatment") |>
     order_by("treatment") |>
     add_prop("cor_area")
-  tables$GESTION <- gestion
+  wb <- wb_add_seq_table(
+    wb, "GESTION", gestion,
+    total_row = c(text = "TOTAL", rep("none", ncol(gestion) - 3), "sum", "sum")
+  )
 
-  # GESTION_PLT
+  # GESTION_PLT ----
   gestion_by_plt <- sum_surf_by(ua, "treatment", "std_type") |>
     order_by("std_type") |>
     pivot("treatment", "std_type", direction = "wide") |>
     order_by("treatment")
 
-  nb_gestion <- ncol(gestion_by_plt) - 1
-  if (nb_gestion > 1){
+  nb_pplmt <- ncol(gestion_by_plt) - 1
+  if (nb_pplmt > 1){
     gestion_by_plt$TOTAL <- rowSums(gestion_by_plt[, -1], na.rm = T)
   }
-  tables$GESTION_PLT <- gestion_by_plt
+  wb <- wb_add_seq_table(
+    wb, "GESTION_PLT", gestion_by_plt,
+    total_row = c(text = "TOTAL", rep("sum", ncol(gestion_by_plt) - 1))
+  )
 
-  # PLT_GESTION
+  # PLT_GESTION ----
   plt_by_gestion <- sum_surf_by(ua, "std_type", "treatment") |>
     order_by("treatment") |>
     pivot("std_type", "treatment", direction = "wide") |>
     order_by("std_type")
-  plt_by_gestion$TOTAL <- rowSums(plt_by_gestion[, -1], na.rm = T)
-  tables$PLT_GESTION <- plt_by_gestion
 
-  # STATION
+  nb_gestion <- ncol(plt_by_gestion) - 1
+  if (nb_gestion > 1){
+    plt_by_gestion$TOTAL <- rowSums(plt_by_gestion[, -1], na.rm = T)
+  }
+
+  wb <- wb_add_seq_table(
+    wb, "PLT_GESTION", plt_by_gestion,
+    total_row = c(text = "TOTAL", rep("sum", ncol(plt_by_gestion) - 1))
+  )
+
+  # STATION ----
   station <- sum_surf_by(ua, "station") |>
     add_prop("cor_area")
-  tables$STATION <- station
 
-  # BDCHARM50
+  wb <- wb_add_seq_table(
+    wb, "STATION", station,
+    total_row = c(text = "TOTAL", rep("sum", 2))
+  )
+
+  # BDCHARM50 ----
   bdcharm50 <- safe_seq_read("bdcharm50", dirname = dirname)
   if (!is.null(bdcharm50)){
     geol_bdcharm50 <- ua |>
@@ -162,10 +275,14 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
       sum_surf_by("NOTATION", "DESCR")  |>
       order_by("cor_area", decreasing = TRUE) |>
       add_prop("cor_area")
-    tables$BDCHARM50 <- geol_bdcharm50
+
+    wb <- wb_add_seq_table(
+      wb, "BDCHARM50", geol_bdcharm50,
+      total_row = c(text = "TOTAL", "none", rep("sum", 2))
+    )
   }
 
-  # CARHAB
+  # CARHAB ----
   carhab <- safe_seq_read("carhab", dirname = dirname)
   if (!is.null(carhab)){
     geol_carhab <- ua |>
@@ -175,10 +292,15 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
       sum_surf_by("CARHAB", "TYPE")  |>
       order_by("cor_area", decreasing = TRUE) |>
       add_prop("cor_area")
-    tables$CARHAB <- geol_carhab
+
+    wb <- wb_add_seq_table(
+      wb, "CARHAB", geol_carhab,
+      total_row = c(text = "TOTAL", "none", rep("sum", 2))
+    )
+
   }
 
-  # PEDO
+  # PEDO ----
   pedo <- safe_seq_read("pedo", dirname = dirname)
   if (!is.null(pedo)){
     pedo <- ua |>
@@ -189,12 +311,16 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
       setNames(c("ID_UCS", "NOM_GER", "NOM_UCS", seq_field("cor_area")$name)) |>
       order_by("cor_area", decreasing = TRUE) |>
       add_prop("cor_area")
-    tables$PEDO <- pedo
+
+    wb <- wb_add_seq_table(
+      wb, "PEDO", pedo,
+      total_row = c(text = "TOTAL", rep("none", 2), rep("sum", 2))
+    )
   }
 
   pf_field <- seq_field("pcl_code")$name
 
-  # ROUTES
+  # ROUTES ----
   road <- safe_seq_read("v.road.topo.line", dirname = dirname)
   if (is.null(road)){
     road <- safe_seq_read("v.road.graphic.line", dirname = dirname)
@@ -236,11 +362,14 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
       surface_ha <- sum(ua$SURF_CAD, na.rm = TRUE)
       road_by_type$KM_100HA <- road_by_type$TOTAL * 100 / surface_ha
 
-      tables$ROAD <- road_by_type
+      wb <- wb_add_seq_table(
+        wb, "ROAD", road_by_type,
+        total_row = c(text = "TOTAL", rep("sum", 4))
+      )
     }
   }
 
-  # MNT
+  # MNT ----
   mnt <- safe_seq_read("r.alt.mnt", dirname = dirname)
   if (!is.null(mnt)){
     fun <- list(mean = mean, min = min, max = max)
@@ -254,10 +383,15 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
             terra::extract(mnt, pf[pf_field], fun[[x]], na.rm = TRUE, bind = TRUE, ID = FALSE)
           )}
       ))
-    tables$MNT_PF <- mnt_by_pf
+
+    wb <- wb_add_seq_table(
+      wb, "MNT", mnt_by_pf,
+      total_row = c(text = "TOTAL", rep("average", 3))
+    )
+
   }
 
-  # MNH
+  # MNH ----
   mnh <- safe_seq_read("r.alt.mnh", dirname = dirname)
   if (!is.null(mnh)){
     fun <- list(mean = mean, min = min, max = max)
@@ -271,10 +405,15 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
             terra::extract(mnh, pf[pf_field], fun[[x]], na.rm = TRUE, bind = TRUE, ID = FALSE)
           )}
       ))
-    tables$MNH_PF <- mnh_by_pf
+
+    wb <- wb_add_seq_table(
+      wb, "MNH", mnh_by_pf,
+      total_row = c(text = "TOTAL", rep("average", 3))
+    )
+
   }
 
-  # EXPO
+  # EXPO ----
   expo <- safe_seq_read("r.alt.expo", dirname = dirname)
   if (!is.null(expo)){
     m <- matrix(c(
@@ -296,7 +435,12 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
       setNames(freq / rowSums(freq) * 100, paste0("%_", names(freq)))
     )
     expo_by_pf$EXPO_MAJ <- classes[max.col(freq[classes])]
-    tables$EXPO_PF <- expo_by_pf
+
+    wb <- wb_add_seq_table(
+      wb, "EXPO", expo_by_pf,
+      total_row = c(text = "TOTAL", rep("average", 4), "none")
+    )
+
   }
 
   # PENTE
@@ -310,7 +454,12 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
       setNames(freq / rowSums(freq) * 100, paste0("% ", names(freq)))
     )
     pente_by_pf$PENTE_MAJ <- names(freq)[max.col(freq)]
-    tables$PENTE_PF <- pente_by_pf
+
+    wb <- wb_add_seq_table(
+      wb, "PENTE", pente_by_pf,
+      total_row = c(text = "TOTAL", rep("average", 5), "none")
+    )
+
   }
 
   # SAVE
@@ -321,13 +470,14 @@ seq_summary <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
     format(Sys.time(), "%Y%m%dT%H%M%S"),
     tools::file_ext(filename)
   )
-  seq_xlsx(
-    tables,
-    filename = secure_filename,
-    data_table = TRUE,
-    overwrite = overwrite,
-    verbose = verbose
-  )
 
-  return(tables)
+  openxlsx2::wb_save(wb, secure_filename)
+
+  if (verbose) {
+    cli::cli_alert_success(
+      "Summary saved to {.file {secure_filename}}."
+    )
+  }
+
+  return(invisible(NULL))
 }

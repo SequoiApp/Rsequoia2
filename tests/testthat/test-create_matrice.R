@@ -8,7 +8,9 @@ test_that("create_matrice() creates a valid Excel file", {
 
     # Check that IDENTIFIANT matches id
     identifier <- seq_field("identifier")$name
-    df <- openxlsx2::read_xlsx(outfile, sheet = "MATRICE")
+    df <- openxlsx2::read_xlsx(
+      outfile, sheet = "MATRICE", skip_empty_rows = TRUE, skip_empty_cols = TRUE
+    )
     expect_equal(df[[identifier]], id)
   })
 })

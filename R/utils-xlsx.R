@@ -34,7 +34,7 @@ style_table <- function(wb, sheet, df, numfmt = "0.00"){
   }
 
   # Manually create range because wb_dims is super slow
-  nrow <- nrow(df) + 1
+  nrow <- nrow(df) + 2
   num_cols <- which(vapply(df, is.numeric, logical(1)))
   col <- LETTERS[num_cols]
   fmt_dims <- paste(sprintf("%s2:%s%d", col, col, nrow), collapse = ",")

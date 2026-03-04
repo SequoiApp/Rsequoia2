@@ -4,15 +4,13 @@
 \alias{seq_summary}
 \title{Summarize information for a Sequoia folder}
 \usage{
-seq_summary(dirname = ".", verbose = TRUE, overwrite = FALSE)
+seq_summary(dirname = ".", verbose = TRUE)
 }
 \arguments{
 \item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
-
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
 }
 \value{
 \code{list} of \code{data.frame}

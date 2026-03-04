@@ -23,7 +23,13 @@ sum_surf_by <- function(x, ...){
   by_key <- vapply(by[is_key], \(x) seq_field(x)$name, character(1))
   by[is_key] <- by_key
 
-  by_formula <- paste(by, collapse = " + ")
+  # remove all na col
+  by_without_na <- by[!vapply(by, \(col) all(is.na(x[[col]])), logical(1))]
+  if (length(by_without_na) == 0) {
+    return(data.frame(by, sum(x[[cor_area]], na.rm = TRUE)) |> setNames(c(by, cor_area)))
+  }
+
+  by_formula <- paste(by_without_na, collapse = " + ")
 
   aggregate(
     stats::as.formula(paste(cor_area, "~", by_formula)),
