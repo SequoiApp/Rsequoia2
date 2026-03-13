@@ -18,4 +18,3 @@ seq_retry(expr, times = 3, wait = 0.5, verbose = TRUE)
 \description{
 Internal helper used to retry download when failing
 }
-\keyword{internal}

@@ -84,8 +84,7 @@ quiet <- function(expr) {
 #' @param wait Time to wait between retry
 #' @param verbose `logical` If `TRUE`, display messages.
 #'
-#' @keywords internal
-#'
+#' @export
 seq_retry <- function(expr, times = 3, wait = 0.5, verbose = TRUE) {
 
   last_error <- NULL

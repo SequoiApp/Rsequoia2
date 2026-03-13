@@ -301,29 +301,45 @@ seq_desc_fields <- function() {
 #' @export
 ua_check_ug <- function(ua, verbose = TRUE) {
 
-  # Resolve field name
-  # desc : descriptive fields
   ug <- seq_field("mgmt_code")$name
   desc <- intersect(seq_desc_fields(), names(ua))
 
-  ua_no_geom <- sf::st_drop_geometry(ua)
-  desc_id <- do.call(paste, c(ua_no_geom[desc], sep = "|"))
+  ua_df <- sf::st_drop_geometry(ua)
 
-  # More than one desc_id in a UG -> inconsistency
-  valid <- tapply(desc_id, ua[[ug]], \(x) length(unique(x)) == 1)
-  invalid <- names(valid)[!valid]
+  report <- lapply(split(ua_df, ua_df[[ug]]), function(df) {
+    bad <- desc[vapply(df[desc], \(x) length(unique(x)) > 1, logical(1))]
+    if (!length(bad)) return(NULL)
+    lapply(df[bad], unique)
+  })
 
-  # CLI messages
-  if (length(invalid)) {
-    cli::cli_warn("{length(invalid)} inconsistent UG{?s}: {.val {invalid}}")
-    return(invisible(FALSE))
+  report <- Filter(\(x) !is.null(x), report)
+  is_valid <- !length(report)
+
+  if (!is_valid) {
+    cli::cli_warn("{length(report)} inconsistent UG{?s} detected")
+
+    for (i in seq_along(report)) {
+
+      g <- names(report)[i]
+      if (i > 1) cli::cli_rule()
+      cli::cli_bullets(c(
+        "x" = "UG {.val {g}} has inconsistent descriptive fields:"
+      ))
+      for (f in names(report[[g]])) {
+        vals <- report[[g]][[f]]
+        cli::cli_bullets(c(
+          "!" = "{.field {f}} contains multiple values: {.val {vals}}"
+        ))
+      }
+    }
   }
 
-  if (verbose){
+  if (verbose && is_valid) {
     cli::cli_alert_success("All UG are consistent.")
   }
 
-  return(invisible(TRUE))
+  return(invisible(is_valid))
+
 }
 
 #' Clean management units (UG) by correcting minor inconsistencies in the _UA_ sf object
@@ -413,11 +429,11 @@ ua_to_ua <- function(ua, parca, verbose = TRUE){
   }
 
   # Compute ua
-  ua <- ua_check_area(ua, parca, verbose = verbose) |>
-    ua_generate_ug(verbose = verbose) |>
-    ua_generate_area(verbose = verbose) |>
-    ua_clean_ug() |>
-    clean_topology()
+  ua <- ua_check_area(ua, parca, verbose = verbose)
+  ua <- clean_topology(ua)
+  ua <- ua_generate_ug(ua, verbose = verbose)
+  ua <- ua_generate_area(ua, verbose = verbose)
+  ua <- ua_clean_ug(ua)
 
   is_valid <- ua_check_ug(ua, verbose = verbose)
   if (!is_valid) {

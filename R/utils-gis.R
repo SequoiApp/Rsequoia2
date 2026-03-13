@@ -242,7 +242,7 @@ envelope <- function(x, dist, crs = 2154) {
 #' geometries in a non-reversible way and should be applied with care,
 #' especially on cadastral data.
 #'
-#' @param sf_obj An `sf` object whose geometry topology must be cleaned.
+#' @param x An `sf` object whose geometry topology must be cleaned.
 #' @param tool `character`, default `"snap"`. GRASS cleaning tool to use
 #'   (e.g. `"snap"`, `"rmdupl"`, `"break"`, `"rmdangle"`).
 #' @param snap_tolerance `numeric`, default `0.05`. Snapping tolerance
@@ -258,43 +258,54 @@ envelope <- function(x, dist, crs = 2154) {
 #' @importFrom cli cli_alert_info cli_alert_success cli_abort
 #'
 #' @noRd
-clean_topology <- function(sf_obj,
-                           tool = "snap",
-                           snap_tolerance = 0.05,
-                           min_area = 0.1,
-                           verbose = TRUE) {
+clean_topology <- function(
+    x,
+    snap_tolerance = 0.05,
+    min_area = 0.1,
+    verbose = TRUE
+){
 
-  if (!inherits(sf_obj, "sf")) {
-    cli::cli_abort("`sf_obj` must be an sf object.")
+  if (!inherits(x, "sf")) {
+    cli::cli_abort("`x` must be an sf object.")
   }
 
-  # Check GRASS availability via QGIS
   providers <- qgisprocess::qgis_providers()
+
   if (!"GRASS" %in% providers$provider_title) {
-    cli::cli_abort("GRASS provider is not available in the current QGIS installation.")
+    cli::cli_abort(
+      "GRASS provider is not available in the current QGIS installation."
+    )
   }
 
-  # Temporary input / output files
+  # ensure valid geometry before GRASS
+  x <- sf::st_make_valid(x)
+
   input_path  <- tempfile(fileext = ".gpkg")
   output_path <- tempfile(fileext = ".gpkg")
 
-  # Write input data
-  sf::st_write(sf_obj, input_path, quiet = TRUE)
+  sf::st_write(x, input_path, quiet = TRUE)
 
-  # Run GRASS v.clean via QGIS
   qgisprocess::qgis_run_algorithm(
-      "grass:v.clean",
-      input = input_path,
-      type = "area",
-      tool = tool,
-      output = output_path,
-      GRASS_SNAP_TOLERANCE_PARAMETER = snap_tolerance,
-      GRASS_MIN_AREA_PARAMETER = min_area
+    "grass:v.clean",
+    input = input_path,
+    type  = "area",
+
+    tool = "snap",
+
+    output = output_path,
+
+    GRASS_SNAP_TOLERANCE_PARAMETER = snap_tolerance,
+    GRASS_MIN_AREA_PARAMETER = min_area,
+    GRASS_REGION_PARAMETER = input_path
   ) |> suppressMessages()
 
-  # Read result and ensure validity
-  cleaned_sf <- sf::st_read(output_path, quiet = TRUE, stringsAsFactors = FALSE)
-  cleaned_sf <- cleaned_sf[, -1, drop = FALSE]
+  cleaned_sf <- sf::st_read(output_path, quiet = TRUE)
+
+  # remove GRASS category column if present
+  if ("cat" %in% names(cleaned_sf))
+    cleaned_sf$cat <- NULL
+
   cleaned_sf <- sf::st_make_valid(cleaned_sf)
+
   cleaned_sf
 }
