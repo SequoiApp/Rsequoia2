@@ -289,8 +289,9 @@ clean_topology <- function(
     "grass:v.clean",
     input = input_path,
     type  = "area",
-
     tool = "snap",
+
+    `-c` = TRUE,
 
     output = output_path,
 
@@ -307,5 +308,5 @@ clean_topology <- function(
 
   cleaned_sf <- sf::st_make_valid(cleaned_sf)
 
-  cleaned_sf
+  return(cleaned_sf)
 }
