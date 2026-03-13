@@ -309,6 +309,9 @@
 - [`seq_read()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_read.md)
   : Open file based on key name
 
+- [`seq_retry()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_retry.md)
+  : Add retry capability to seq\_\* function
+
 - [`seq_road()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_road.md)
   : Generate road layers for a Sequoia project
 
