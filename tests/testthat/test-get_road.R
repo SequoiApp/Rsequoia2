@@ -101,13 +101,13 @@ test_that("get_road() classifies bretelles as RN when importance >= 2", {
     geometry = sf::st_sfc(
       sf::st_linestring(
         matrix(c(0, 0,
-                 1, 1),
+                 10, 10),
                ncol = 2,
                byrow = TRUE)
       ),
       sf::st_linestring(
-        matrix(c(0, 0,
-                 1, 1),
+        matrix(c(20, 20,
+                 30, 30),
                ncol = 2,
                byrow = TRUE)
       ),

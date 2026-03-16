@@ -243,7 +243,7 @@ menu_data <- function(path, overwrite){
     "Pedologie"      = function() try(seq_pedology(path, overwrite = overwrite)),
     "Infra"          = function() try(seq_infra(path, overwrite = overwrite)),
     "Route"          = function() try(seq_road(path, overwrite = overwrite)),
-    "Route cad."     = function() try(seq_graphic_road(path, overwrite = overwrite)),
+    "Route cad."     = function() try(seq_roadway(path, overwrite = overwrite)),
     "PRSF"           = function() try(seq_prsf(path, overwrite = overwrite)),
     "OLD"            = function() try(seq_old(path, overwrite = overwrite)),
     "Toponyme"       = function() try(seq_toponyme(path, overwrite = overwrite)),

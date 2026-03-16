@@ -321,10 +321,7 @@ seq_summary <- function(dirname = ".", verbose = TRUE){
   pf_field <- seq_field("pcl_code")$name
 
   # ROUTES ----
-  road <- safe_seq_read("v.road.topo.line", dirname = dirname)
-  if (is.null(road)){
-    road <- safe_seq_read("v.road.graphic.line", dirname = dirname)
-  }
+  road <- safe_seq_read("v.road.line", dirname = dirname)
 
   if (!is.null(road)){
     road_in <- road |>

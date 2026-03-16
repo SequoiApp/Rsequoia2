@@ -1,12 +1,16 @@
-test_that("get_vides() aborts with invalid source", {
+test_that("get_voids() aborts with invalid source", {
+
+  x <- Rsequoia2:::seq_poly
+  source_field <- seq_field("source")$name
+  x[[source_field]] <- "PROUT"
 
   expect_error(
-    gaps <- get_vides(Rsequoia2:::seq_poly),
+    gaps <- get_voids(x),
     "Source must be one of"
   )
 })
 
-test_that("get_vides() returns same geom when no cadastral data retrieved", {
+test_that("get_voids() returns same geom when no cadastral data retrieved", {
 
   x <- Rsequoia2:::seq_poly
   source_field <- seq_field("source")$name
@@ -19,13 +23,13 @@ test_that("get_vides() returns same geom when no cadastral data retrieved", {
     .package = "happign"
   )
 
-  gaps <- get_vides(x) |> quiet()
+  gaps <- get_voids(x) |> quiet()
 
   # tests
   expect_equal(sf::st_geometry(gaps), sf::st_geometry(fetch_envelope))
 })
 
-test_that("get_vides() works", {
+test_that("get_voids() works", {
 
   mock_envelope <- sf::st_sf(
     geometry = sf::st_sfc(
@@ -79,7 +83,7 @@ test_that("get_vides() works", {
     .package = "happign"
   )
 
-  res <- get_vides(x)
+  res <- get_voids(x)
 
   expect_s3_class(res, "sf")
 

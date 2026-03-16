@@ -1,7 +1,7 @@
-test_that("vides_to_line() returns sf LINESTRING", {
+test_that("get_roadway_line() returns sf LINESTRING", {
   poly <- Rsequoia2:::seq_poly
 
-  out <- vides_to_line(poly) |> quiet()
+  out <- get_roadway_line(poly) |> quiet()
 
   expect_s3_class(out, "sf")
   expect_true("geometry" %in% names(out))
@@ -9,7 +9,7 @@ test_that("vides_to_line() returns sf LINESTRING", {
   expect_true(nrow(out) >= 1)  # ensure we have at least one line
 })
 
-test_that("vides_to_line() handles MULTIPOLYGONs", {
+test_that("get_roadway_line() handles MULTIPOLYGONs", {
   multi <- sf::st_sf(
     geometry = sf::st_sfc(
       sf::st_multipolygon(list(
@@ -20,7 +20,7 @@ test_that("vides_to_line() handles MULTIPOLYGONs", {
     crs = 2154
   )
 
-  out <- vides_to_line(multi)
+  out <- get_roadway_line(multi)
 
   expect_s3_class(out, "sf")
   expect_true(all(sf::st_geometry_type(out) %in% c("LINESTRING", "MULTILINESTRING")))

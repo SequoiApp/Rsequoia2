@@ -1,4 +1,4 @@
-test_that("line_to_poly() aborts on invalid road type", {
+test_that("road_to_roadway() aborts on invalid road type", {
   type_field <- seq_field("type")$name
 
   x <- sf::st_sf(
@@ -11,12 +11,12 @@ test_that("line_to_poly() aborts on invalid road type", {
   x[[type_field]] <- "BAD"
 
   expect_error(
-    line_to_poly(x),
+    road_to_roadway(x),
     regexp = "Invalid road type value"
   )
 })
 
-test_that("line_to_poly() works on minimal valid input with two output lines", {
+test_that("road_to_roadway() works on minimal valid input with two output lines", {
 
   type_field <- seq_field("type")$name
 
@@ -38,7 +38,7 @@ test_that("line_to_poly() works on minimal valid input with two output lines", {
   x[[type_field]] <- c("RN", "RC")
 
   # run the function
-  out <- line_to_poly(x, dist = 5)
+  out <- road_to_roadway(x, dist = 5)
 
   # check results
   expect_s3_class(out, "sf")

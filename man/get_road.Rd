@@ -2,7 +2,7 @@
 % Please edit documentation in R/road.R
 \name{get_road}
 \alias{get_road}
-\title{Retrieve road sections around an area}
+\title{Retrieve road section around an area}
 \usage{
 get_road(x)
 }
@@ -10,7 +10,7 @@ get_road(x)
 \item{x}{An \code{sf} object used as the input area.}
 }
 \value{
-An \code{sf} object of type \code{LINESTRING} containing road sections
+An \code{sf} object of type \code{LINESTRING} containing road section
 with standardized fields, including:
 \itemize{
 \item \code{TYPE} - Road section type code, deduced from surface, numbering
@@ -23,6 +23,7 @@ as well as major slip roads)
 \item \code{RC} = Communal road (other paved roads)
 \item \code{RF} = Forest or gravel road (unpaved / empierree)
 \item \code{PN} = Natural path (tracks, trails, footpaths)
+\item \code{LY} = Tie ridge
 }
 \item \code{NATURE} - Original BDTOPO road nature (surface / usage description)
 \item \code{NAME} - Road identifier, taken from \code{cpx_numero} when available,
@@ -31,7 +32,7 @@ otherwise from \code{cpx_toponyme_route_nommee}
 }
 }
 \description{
-Retrieve road sections around an area
+Retrieve road section around an area
 }
 \details{
 The function retrieves road section layer from
