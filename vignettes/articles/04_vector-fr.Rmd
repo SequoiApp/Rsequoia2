@@ -1,0 +1,853 @@
+---
+title: "Téléchargement de données vectorielles"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Téléchargement de données}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r rmd, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  out.width = "100%",
+  out.height = "400px",
+  dpi = 300,
+  # fig.width = 7.2916667,
+  # fig.height = 4,
+  comment = "#>"
+)
+```
+
+```{r setup, include = FALSE}
+library(Rsequoia2)
+library(sf)
+library(tmap)
+tmap_mode("view")
+tmap_options(scale = 0.75)
+```
+
+----
+
+# Introduction
+
+## De quoi on parle ?
+
+`Rsequoia2` offre la possibilité de télécharger un ensemble de données jugées pertinentes dans le cadre d'une gestion forestière durable et multifonctionnelle.
+
+Il peut s'agir aussi bien de **couches vectorielles** que de **couches raster**.
+
+Les fonctions se déclinent en deux types de fonctions:
+
+-   Les fonctions "base" `get_*` : il s'agit de fonctions autonomes permettant de récupérer une couche (où `*` correspont au thême de la couche). Le plus souvent, ces fonctions réclament la zone d'étude en entrée et restituent dans l'environnement R un objet (généralement un `sf`) récupéré en Open data.
+
+-   Les fonctions "process" `seq_*` intégrées au processus formalisé de *Sequoia* : ces fonctions, déclinées pour chaque thême (où `*` correspont au thême de la couche), télécharge via les fonction `get_*` les couches demandés et les stocke directement sur l'ordinateur.
+
+## Architecture "process"
+
+Si l'utilisateur opte (et nous vous le conseillons) pour le procesus *Sequoia*, `Rsequoia2` télécharge et stocke les couches directement sur l'ordinateur.
+
+Pour clarifier l'objet et la nature de ces données et afin d'en faciliter l'usage ultérieure, les couches téléchargées sont stockées selon leur thématiques:
+
+-   **CADASTRE**: il s'agit des couches directement tirées des bases parcellaires (*PCI Etalab* ou *BD Parcelaire*).
+
+-   **ENVIRONNEMENT**: y sont stockés les couches ayant trait aux zonages environnementaux tels que décrit par l'INPN.
+
+-   **IFN**: il s'agit simplement des régions telles que décrites par l'IFN (ex: région forestières, sylvoécorégions, etc. )
+
+-   **PATRIMOINE**: il s'agit des couches ayant trait aux zonages patrimoniaux (ex: monuments historiques)
+
+-   **SOL**: cette rubrique regroupe les couches portant sur le sols (ex: carte géologique, carte pédologique, etc.).
+
+-   **URBANISME**: les données tirées du géoportail de l'urbanisme y figurent (ex: prescriptions, SUP, etc.)
+
+-   **VECTORIEL**: il s'agit des couches tirés de la *BD TOPO* servant notamment à l'habillage des cartes.
+
+## Zone d'étude utilisée
+
+La forêt étudiée dans l'article sera la forêt de Brin, propriété de l'école forestière de Nancy, située à Brin-Sur-Seille, dans le département de Meurthe-Et-Moselle (54).
+
+```{r foret, fig.height = 3.5}
+idu <- c(
+  "540120000C0001", "540120000C0005", "540120000C0007", "540120000C0008",
+  "540120000C0009", "540120000C0010", "540120000C0011", "540120000C0012",
+  "540120000C0016", "540120000C0018", "540120000C0069", "540120000C0071",
+  "540120000C0073", "540120000C0077", "540700000C0002", "540700000C0003",
+  "540700000C0004", "540700000C0005", "540700000C0006", "540700000C0007",
+  "540700000C0008", "540700000C0009", "540700000C0010", "540700000C0011",
+  "540700000C0012", "540700000C0013", "540700000C0108", "540700000C0109",
+  "540700000C0110", "540700000C0111", "540700000C0112", "540700000C0113",
+  "540700000C0114", "540700000C0115", "540700000C0116", "540700000C0117",
+  "540700000C0118", "540700000C0119", "540700000C0120", "540700000C0121",
+  "54070000ZB0060", "540890000C0927", "540890000C0928", "540890000C1031",
+  "541000000A0001", "541000000A0002", "541000000A0003", "541000000A0004",
+  "541000000A0005", "541000000A0006", "541000000A0007", "541000000A0008",
+  "541000000A0009", "541000000A0010", "541000000A0011", "541000000A0012",
+  "541000000A0013", "541000000A0014", "541000000A0015", "541000000A0016",
+  "541000000A0018", "541000000A0019", "541000000A0029", "541000000A0030",
+  "541000000A0031", "541000000A0032", "541000000A0033", "541000000A0034",
+  "541000000A0035", "541000000A0036", "541000000A0037", "541000000A0038",
+  "541000000A0039", "541000000A0040", "541000000A0041", "541000000A0042",
+  "541000000A0043", "541000000A0044", "541000000A0045", "541000000A0046",
+  "541000000A0055", "541000000A0056", "541000000A0057", "541000000A0058",
+  "541000000A0059", "541000000A0060", "541000000A0061", "541000000A0062",
+  "541000000A0063", "541000000A0064", "541000000A0066", "541000000A0067",
+  "541000000A0076", "541000000A0080", "541000000A0081", "541000000A0083",
+  "541000000A0085", "541000000A0086", "541000000A0092", "541000000A0093",
+  "541000000A0094", "541000000A0095", "541000000A0098", "541000000A0099",
+  "541000000A0148", "541000000A0149", "541000000A0150", "541000000A0151",
+  "541000000A0152", "541000000A0153", "541000000A0156", "541000000A0157",
+  "54100000ZH0004", "54100000ZI0011"
+)
+
+parca <- get_parca(idu) |> transform(IDENTIFIANT = "BRIN")
+
+foret <- Rsequoia2:::dissolve(parca, 5.5)
+
+tm_shape(parca)+
+  tm_borders(col = "blue", lwd = 1)+
+tm_shape(foret)+
+  tm_borders(col = "black", lwd = 2)
+```
+
+------------------------------------------------------------------------
+
+# 1. ACCESSIBILITE
+
+## 1.1. Fonction "base"
+
+La fonction `get_accessibility()` permet de télécharger les zones accessibles selon les types d'engins forestiers. La fonction réclame:
+
+-   `x` correspond au `sf` de la zone d'étude ;
+
+-   `type` corespond au type d'engin : `"porteur"` ou `"skidder"`;
+
+-   `buffer` correspond au tempon éxécuté autour de la zone d'étude pour capter un résultat.
+
+## 1.2. Fonction "process"
+
+La fonction `seq_accessibility()` execute la fonction de base pour chaque type d'engin en utilisant le *PARCA* en zone d'étude. Elle enregistre les éventuels résutlats dans le dossier normalisé.
+
+La fonction génère également une couche vide dans laquelle l'utilisateur pour pointer les accès principaux et secondaires du massifs (entrée de rotue forestière).
+
+## 1.3. Applications
+
+Conformément à [l'article 2 de l'arrété du 19 juillet 2012 fixant le contenu obligatoire des PSG](https://www.legifrance.gouv.fr/loda/id/JORFTEXT000026227617), les points d'accès doivent figurer sur le plan de localisation ainsi que sur le plan particulier de la forêt. C'est pourquoi, `Rsequoia2` propose une couche dédiée.
+
+----
+
+# 2. CADASTRE
+
+Cette partie sera rédigée ultérieurement quand Mucau daignera finaliser `frcadastre`.
+
+------------------------------------------------------------------------
+
+# 3. ENVIRONNEMENT
+
+## 3.1. Fonction "base"
+
+```{r mnhm, include=FALSE}
+mnhn_keys <- get_keys("mnhn")
+```
+
+La fonction `get_mnhn()` permet de télécharger un zonnage environnemental en s'articulant autour de trois arguments :
+
+-   `x` correspond au `sf` de la zone d'étude ;
+
+-   `key` corespond à la clé (= type) du zonage recherché (ex: `"zps"`). Les clés disponibles sont : `r mnhn_keys` ;
+
+-   `buffer` correspond au tempon éxécuté autour de la zone d'étude pour capter un résultat.
+
+La fonction fait appelle en interne au package [`happign`](%22https://github.com/paul-carteron/happign%22).
+
+La fonction retourne un objet `sf` correspondant aux éventuels zones intersectées dans le périmètre du `buffer.`
+
+## 3.2. Fonction "process"
+
+Si l'utilisateur opte pour le procesus *Sequoia*, la fonction `seq_mnhm()` travaille directement avec le dossier normalisé en récupérant la couche *PARCA* comme zone d'étude.
+
+Elle peut télécharger l'ensemble des zonages intersectés en utilisant `get_mnhm()` en boucle avec `key = get_keys("mnhn")` (toutes les couches).
+
+Chaque couche intersectée est alors enregistrée individuellement dans le dossier.
+
+## 3.3. Applications
+
+Typiquement, pour connaitre la présence d'une znieff, un `buffer = 0` avec `key = znieff2` permettra d'intersecter une zone.
+
+```{r mnhm_fig, fig.height = 3.5}
+
+znieff1 <- get_mnhn(x = parca, key = "znieff1", buffer = 500)
+znieff2 <- get_mnhn(x = parca, key = "znieff2", buffer = 500)
+
+tm_shape(foret) +
+  tm_borders(col = "black", lwd = 2) +
+tm_shape(znieff2) +
+  tm_polygons(fill = "green", fill_alpha = 0.4) +
+tm_shape(znieff1) +
+  tm_polygons(fill = "red", fill_alpha = 0.4)
+	
+```
+
+Ces données sont indispensables pour connaitre les enjeux environnementaux d'un massif forestier.
+
+------------------------------------------------------------------------
+
+# 4. IFN
+
+## 4.1. Fonctions "base"
+
+```{r ifn, include=FALSE}
+ifn_keys <- get_keys("ifn")
+```
+
+La fonction `get_ifn()` permet de télécharger les régions définis par l'[inventaire forestier national](%22https://inventaire-forestier.ign.fr/spip.php?rubrique267%22) en s'articulant autour de deux arguments :
+
+-   `x` correspond au `sf` de la zone d'étude ;
+
+-   `key` corespond à la clé (= type) du zonage recherché (ex: `"ser"`). Les clés disponibles sont : `r ifn_keys`.
+
+La fonction `get_ser_pdf()` permet de télécharger les fiches descriptives des sylvoécorégions (exemple: la [SER C20](https://inventaire-forestier.ign.fr/IMG/pdf/C_20.pdf)).
+
+Elle requiert les identifiants des SER en argument `id_ser` ainsi qu'un `dirname` (le chemin du dossier) où télécharger les fiches `.pdf`.
+
+## 4.2. Fonction "process"
+
+La fonction `seq_ifn()` récupère la couche *PARCA* comme zone d'étude et télécharge l'ensemble des régions intersectées dans le dossier normalisé.
+
+## 4.3. Exemple d'application
+
+Typiquement, pour connaitre la sylvoécorégion d'un massif, il suffit d'utiliser `key = ser`. Cette information est indispensable pour connaitre les [matériels forestiers de reproduction](https://agriculture.gouv.fr/materiels-forestiers-de-reproduction-arretes-regionaux-relatifs-aux-aides-de-letat-linvestissement) à utiliser localement.
+
+De même, pour connaitre la région forestière nationale, il suffit d'utiliser `key = rfn`. Cela permet de se localiser sur [Climessences](https://climessences.fr/) par exemple.
+
+Par ailleurs, les fiches SER sont pratiques pour enrichir la rédaction des documents de gestion (ou simplement se documenter sur une région).
+
+```{r ifn_fig, fig.height = 3.5}
+
+ifn <- get_ifn(x = parca, key = "ser")
+
+tm_shape(foret) +
+  tm_borders(col = "black", lwd = 2)+
+tm_shape(ifn) +
+  tm_polygons(fill = "green", fill_alpha = 0.4)
+
+```
+
+------------------------------------------------------------------------
+
+# 5. PATRIMOINE
+
+## 5.1. Fonction "base"
+
+```{r pat, include=FALSE}
+pat_keys <- get_keys("pat")
+```
+
+La fonction `get_patrimony()` permet d'obtenir les couches de l'[Atlas du patrimoine](%22http://atlas.patrimoines.culture.fr/atlas/trunk/static/presentation.html%22) en s'articulant autour de trois arguments :
+
+-   `x` correspond au `sf` de la zone d'étude ;
+
+-   `key` corespond à la clé (= type) du zonage recherché (ex: `"immh"`). Les clés disponibles sont : `r pat_keys` ;
+
+-   `buffer` correspond au tempon éxécuté autour de la zone d'étude pour capter un résultat.
+
+La fonction fait appelle en interne au package [`frheritage`](%22https://github.com/mucau/frheritage%22).
+
+## 5.2. Fonction "process"
+
+La fonction `seq_patrimony()` récupère la couche *PARCA* du dossier normalisé et l'utilise comme zone d'étude.
+
+Elle peut télécharger l'ensemble des zonages intersectés en utilisant `get_patrimony()` en boucle avec `key = get_keys("pat")` (toutes les couches). Chaque couche intersectée est alors enregistrée individuellement dans le dossier.
+
+## 5.3. Applications
+
+Typiquement, pour connaitre la présence d'un monument historique, un `buffer = 0` avec `key = pamh` permettra d'intersecter le périmètre de protection. Pour obtenir l'immeuble inscrit ou classé, il convient d'utiliser `buffer = 500` avec `key = immh`.
+
+```{r pat_fig, fig.height = 3.5}
+
+# pamh <- get_patrimony(x = parca, key = "pamh", buffer = 1000)
+# immh <- get_patrimony(x = parca, key = "immh", buffer = 2000)
+# 
+# tm_shape(foret) +
+#   tm_borders(col = "black", lwd = 2)+
+# tm_shape(pamh) +
+#   tm_polygons(fill = "red", fill_alpha = 0.4) +
+# tm_shape(immh) +
+#   tm_polygons(fill = "red", fill_alpha = 0.4)
+
+```
+
+------------------------------------------------------------------------
+
+# 6. SOL
+
+## 6.1. Fonctions "base"
+
+### 6.1.1. Les bases géologiques départementales du BRGM
+
+La fonction `get_brgm()` permet de télécharger depuis le BRGM :
+
+-   la [cartes géologiques départementales à 1/50 000 (Bd Charm-50)](https://infoterre.brgm.fr/formulaire/telechargement-cartes-geologiques-departementales-150-000-bd-charm-50)
+
+-   les [données géologiques dédiées au programme de Cartographie des Habitats Naturels et semi-naturels (CARHAB)](https://infoterre.brgm.fr/formulaire/telechargement-donnees-geologiques-dediees-au-programme-cartographie-habitats-naturels).
+
+La fonction s'articule essentiellement autour de deux arguments :
+
+-   `deps` correspond au département(s) ciblés par la requête ;
+
+-   `source` corespond à la clé (= type) de la couche (`"bdcharm50"`, `"carhab"`) ;
+
+Cette fonction a essentiellement pour objet de télécharger les bases départementales.
+
+### 6.1.2. Géologie
+
+La fonction `get_geol()` permet de récupérer les jeux de données précédents sur une zone d'étude.
+
+La fonction ajoute un argument `x` correspondant au `sf` de la zone d'étude.
+
+### 6.1.3. Pédologie
+
+La fonction `get_pedology()` permet de récupérer la [carte des sols](https://www.gissol.fr/donnees/carte-sur-le-geoportail-4789).
+
+Elle n'a besoin que d'un `sf` de la zone d'étude en argument `x`.
+
+------------------------------------------------------------------------
+
+La fonction `get_pedology_pdf` permet de récupérer les fiches détaillées des ucs (exemple: [UCS 5513](https://data.geopf.fr/annexes/ressources/INRA_carte_des_sols/INRA/id_ucs_5513.pdf)). Elle requiert les identifiants des UCS en argument `id_ucs` ainsi qu'un `dirname` (le chemin du dossier) où télécharger les fiches `.pdf`.
+
+## 6.2. Fonction "process"
+
+Les thématiques précédentes se déclinent dans le processus par les fonctions `seq_geol()` et `seq_pedology()`. La première télécharge toutes les bases géologiques disponibles pour le *PARCA* (en utilisant le code insee du département renseigné dans la couche pour connaitre le département). La se conde télécharge la carte des sols, ainsi que les PDF des ucs intersectées.
+
+## 6.3. Applications
+
+La géologie est indispensable pour établir des cartes géologiques des forêts.
+
+La pédologie permet d'enrichir la rédaction des documents de gestion, ainsi que les diagnostiques pédologiques réalisés dans les massifs en amont de reboisement (par exemple).
+
+```{r geol_fig, fig.height = 3.5}
+
+# Géologie
+# geol <- get_geol(x = parca, key = "bdcharm50") |> 
+#   sf::st_intersection(foret) |> 
+#   Rsequoia2:::quiet()
+
+# Pédologie
+pedo <- get_pedology(x = parca) |> 
+  sf::st_intersection(foret) |> 
+  Rsequoia2:::quiet()
+
+# Convertir no_ucs en character
+pedo$no_ucs <- as.character(pedo$no_ucs)
+
+# Foret en contours
+tm_shape(foret) +
+  tm_borders(col = "black", lwd = 2) +
+
+# Géologie avec couleurs aléatoires
+# tm_shape(geol) +
+#   tm_polygons(
+#     fill = "NOTATION",
+#     fill.scale = tm_scale_categorical(),
+#     col = "black",
+#     fill_alpha = 0.7
+#   ) +
+
+# Pédologie avec couleurs aléatoires
+tm_shape(pedo) +
+  tm_polygons(
+    fill = "no_ucs",
+    fill.scale = tm_scale_categorical(),
+    col = "black",
+    fill_alpha = 0.7
+  )
+```
+------------------------------------------------------------------------
+
+# 7. URBANISME
+
+## 7.1. Fonction "base"
+
+```{r gpu, include=FALSE}
+gpu_keys <- get_keys("gpu", reduce = FALSE)
+
+```
+
+La fonction `get_gpu()` permet de télécharger depuis le GPU:
+
+-   Les municipalités détectées ;
+
+-   Les documents d'urbanismes ;
+
+-   Les zones du documents d'urbanisme (exemple: "N" pour les zones naturelles) ;
+
+-   Les prescriptions ponctuelles, linéaires et surfacique ;
+
+-   Les assiettes (emprises surfaciques) des servitudes d'utilité publiques (SUP) ;
+
+-   Les generateurs (object ponctuel, linéaire ou surfacique générant les assiettes) des servitudes d'utilité publiques (SUP).
+
+Comme précédement, la fonction s'articule autour des arguments: - `x` correspond au `sf` de la zone d'étude ;
+
+-   `key` corespond à la clé (= type) du zonage recherché (ex: `"v.gpu.document.poly"`). Les clés disponibles sont un peu plus complexes : `r gpu_keys`.
+
+## 7.2. Fonction "process"
+
+La fonction `seq_patrimony()` récupère la couche *PARCA* du dossier normalisé et l'utilise comme zone d'étude.
+
+Elle peut télécharger l'ensemble des zonages intersectés en utilisant `get_patrimony()` en boucle avec `key = get_keys("pat")` (toutes les couches). Chaque couche intersectée est alors enregistrée individuellement dans le dossier.
+
+## 7.3. Applications
+
+L'ubanisme est régulièrement mis de côté lors de la rédaction des documents de gestion. Pourant, le forestier est soumis comme chacun aux règlements d'ubanisme. Indiquer les prescriptions et SUP est donc primordial.
+
+```{r zones_fig, fig.height = 3.5}
+
+# Zones GPU
+zones <- get_gpu(x = parca, key = "v.gpu.zone.poly")
+
+# Foret en contours
+tm_shape(foret) +
+  tm_borders(col = "black", lwd = 2)+
+
+# Document
+tm_shape(zones) +
+  tm_polygons(
+    fill = "libelle",
+    fill.scale = tm_scale_categorical(),
+    col = "black",
+    fill_alpha = 0.7
+  )
+```
+
+```{r prescriptions_fig, fig.height = 3.5}
+
+# Prescriptions 
+ppoly <- get_gpu(x = parca, key = "v.gpu.prescription.poly")
+pline <- get_gpu(x = parca, key = "v.gpu.prescription.line")
+ppoint <- get_gpu(x = parca, key = "v.gpu.prescription.point")
+
+# Foret en contours
+tm_shape(foret) +
+  tm_borders(col = "black", lwd = 2)+
+
+# Prescriptions
+tm_shape(ppoly) +
+  tm_polygons(
+    fill = "libelle",
+    fill.scale = tm_scale_categorical(),
+    col = "black",
+    fill_alpha = 0.7
+  ) +
+  
+tm_shape(pline) +
+  tm_lines(col = "blue", lwd = 2) +
+  
+if (!is.null(ppoint) && nrow(ppoint) > 0) {
+  tm_shape(ppoint) +
+    tm_dots(col = "red", size = 0.1, fill_alpha = 0.4)
+}
+```
+
+**Attention:** Les rédacteurs des documents d'urbanismes restent des hommes. Des erreurs, incohérences ou ommissions ont été relevées dans les jeux de données testés. La prudence et la vérification des informations est donc préférable.
+
+------------------------------------------------------------------------
+
+# 8. SECURITE
+
+## 8.1. Fonctions "base"
+
+Sont intégrées dans la sécurité les Points de rencontres des secours en forêts (PRSF) ainsi que les obligations légales de débroussaillements (OLD).
+
+La fonction `get_prsf()` permet de télécharger les points de rencontres des secours en forêts (PRSF) en requierant deux arguments:
+
+-   `x`: le `sf` de la zone d'étude
+
+-   `buffer`: la distance autour de la zone d'étude (5 km par défaut).
+
+La fonction `get_old()` permet de récupérer les obligations légales de débroussaillements (OLD). Son fonctionnement est identique à la fonction précédente à la différence que le `buffer` par défaut est réduit à 1 km.
+
+## 8.2. Fonction "process"
+
+Les fonctions `seq_prsf()` et `seq_old()` enregistre les entités intersectées autour du *PARCA* pour chaque thême.
+
+## 7.3. Applications
+
+La mention des PRSF est obligatoire dans les contrats de prestations avec des entreprises de travaux forestiers (ETF) : ils doivent impérativement figurer sur les fiches de sécurité des chantiers forestier.
+
+Pour les OLD, la donnée actuellement disponible n'est guère détaillée. Elle est fournit pour la sensibilisation à la défence des forêts contre les incendies (DFCI).
+
+```{r prsf_fig, fig.height = 3.5}
+
+prsf <- get_prsf(x = parca, buffer = 1000)
+
+tm_shape(foret) +
+  tm_borders(col = "black", lwd = 2)+
+tm_shape(prsf) +
+  tm_dots(fill = "red", size = 1)
+
+```
+
+# 9. VECTORIEL
+
+Les fonctions suivantes récupère les données tirées de l'[IGN (c) BD TOPO (r) v3](https://geoservices.ign.fr/sites/default/files/2021-07/DC_BDTOPO_3-0.pdf).
+
+## 9.1 Communes
+
+### 9.1.1. Fonctions "base"
+
+Les fonctions `get_com*()` permettent de récupérer les territoires communaux. Chaque fonction comprend un argument d'entrée `x` pour la zone d'étude.
+
+Les données récupérables se décomposent en :
+
+-   `get_com_poly()`: l'emprise de la commune à laquelle s'ajoute un argument `buffer` fixé par défaut à 2 km ;
+
+-   `get_com_line()`: les contours de la commune, obtenus par linearisation de l'emprise polygon ;
+
+-   `get_com_point()`: le centroid de la commune, obtenus par centroid de l'emprise polygon.
+
+Les fonctions `get_com_line()` et `get_com_point()` comprennnent un argument boolean `graphic`. Ce dernier permet de "couper" le résutat à une emprise réduite de 500 m autour de `x`. Une zone réduite est idéale pour un affichage sur une carte aux échelles inférieures au 1:10000 (ex: carte des peuplements). Une zone élargie (`graphic = FALSE`) est préférable pour obtenir des données affichables à des échelle supérieure au 1:10000 (ex. carte de localisation au 1:25 000).
+
+### 9.1.2. Fonction "process"
+
+La fonction `seq_com()` utilise le *PARCA* pour enregistrer plusieurs couches : 1 polygon (emprise élargie); 2 lignes (1 sur emprises élargie et 1 sur emprises réduite); 2 points (1 sur emprises élargie et 1 sur emprises réduite).
+
+## 9.1.3. Applications
+
+```{r com_fig, fig.height = 3.5}
+
+com_poly <- get_com_poly(x = parca, buffer = 2000)
+com_line <- get_com_line(x = parca, graphic = T)
+com_point <- get_com_point(x = parca, graphic = T)
+
+tm_shape(foret) +
+  tm_borders(col = "black", lwd = 2)+
+tm_shape(com_poly) +
+  tm_polygons(fill = "red", fill_alpha = 0.4) +
+tm_shape(com_line) +
+  tm_lines(col = "red", lwd = 2) +
+tm_shape(com_point) +
+  tm_dots(fill = "red", size = 1) +
+  tm_text("COM_NOM")
+
+```
+
+## 9.2 Toponymes
+
+### 9.2.1. Fonctions "base"
+
+La fonction `get_toponyme()` récupère les toponymes autour d'une zone d'étude `x` selon un `buffer` (fixé à 1 km).
+
+Sont récupérés plusieurs types de toponymes classés selon la nomenclature suivante :
+
+| TYPE  | Définition                                                          |
+|------------------------------------|------------------------------------|
+| "TYP" | Toponymes de lieux (lieudits)                                       |
+| "HYD" | Toponymes hydrographiques (tronçons, plans d'eau, réservoirs, etc.) |
+| "VEG" | Toponymes de végétation (boisements, forêts, etc.)                  |
+
+### 9.2.2. Fonction "process"
+
+La fonction `seq_toponyme()` utilise le *PARCA* comme référence pour récupérer la couche de toponymes avant de l'enregistrer.
+
+### 9.2.3. Applications
+
+```{r toponymes_fig, fig.height = 3.5}
+
+toponymes <- get_toponyme(x = parca, buffer = 1000)
+
+tm_shape(foret) +
+  tm_borders(col = "black", lwd = 2)+
+tm_shape(toponymes) +
+  tm_dots(fill = "black", size = 0) +
+  tm_text(
+    "NOM",
+    col = "TYPE",
+    col.scale = tm_scale_categorical(values = c(
+      HYD = "blue",
+      VEG = "darkgreen",
+      TYP = "black"
+    )),
+    col.legend = tm_legend_hide()
+  )
+```
+
+## 9.3 Infrastructures (hors desserte)
+
+### 9.3.1. Fonctions "base"
+
+Les fonctions `get_infra_*()` permettent de récupérer les infrastructures (hors desserte) autour d'une zone d'étude `x` selon un `buffer` (fixé à 1 km).
+
+Ces éléments sont récupérés, car ils peuvent servir de point de repère sur une carte.
+
+#### 9.3.1.1. Emprises d'infrastructures
+
+La fonction `get_infra_poly()` récupère plusieurs types d'emprises qu'elle classe selon la nomenclature suivante :
+
+| TYPE  | Définition                                                          |
+|------------------------------------|------------------------------------|
+| "AER" | Aerodrome                                                           |
+| "BAT" | Batiment                                                            |
+| "CIM" | Cimetière                                                           |
+| "CST" | Construction surfacique diverse                                     |
+| "HAB" | Zone urbaine d'habitation : hameau                                  |
+| "SPO" | Terrain de sport                                                    |
+| "VIL" | Zone urbaine d'habitation : villes et villages                      |
+
+
+#### 9.3.1.2. Infrastructures linéaires
+
+La fonction `get_infra_line()` récupère plusieurs types de linéaires qu'elle classe selon la nomenclature suivante :
+
+| TYPE  | Définition                                                          |
+|------------------------------------|------------------------------------|
+| "CST" | Construction linéaire diverse                                       |
+| "LEL" | Ligne électrique                                                    |
+| "ORO" | Ligne orographique                                                  |
+| "VFE" | Voie ferrée                                                         |
+
+
+#### 9.3.1.3. Infrastructures ponctuelles
+
+La fonction `get_infra_point()` récupère plusieurs types de ponctuels qu'elle classe selon la nomenclature suivante :
+
+| TYPE  | Définition                                                          |
+|------------------------------------|------------------------------------|
+| "CLO" | Clocher                                                             |
+| "CRX" | Croix / Calvaire                                                    |
+| "CST" | Construction ponctuelle diverse                                     |
+| "EOL" | Eolienne                                                            |
+| "GOU" | Gouffre                                                             |
+| "GRO" | Grotte                                                              |
+| "ORO" | Détail orographique                                                 |
+| "PYL" | Pylone électrique                                                   |
+
+
+### 9.3.2. Fonction "process"
+
+La fonction `seq_infra()` utilise le *PARCA* comme référence pour récupérer les trois couches précédentes (polygon, ligne, point) avant de les enregistrer.
+
+### 9.3.3. Applications
+
+```{r infra_fig, fig.height = 3.5}
+
+infra_poly  <- get_infra_poly(x = parca, buffer = 1000)
+infra_line  <- get_infra_line(x = parca, buffer = 1000)
+infra_point <- get_infra_point(x = parca, buffer = 1000)
+
+tm_shape(foret) +
+  tm_borders(col = "black", lwd = 2)+
+tm_shape(infra_poly) +
+  tm_polygons(
+    fill = "TYPE",
+    fill.scale = tm_scale_categorical(),
+    fill_alpha = 0.7
+  ) +
+tm_shape(infra_line) +
+  tm_lines(
+    col = "TYPE",
+    col.scale = tm_scale_categorical(),
+    lwd = 1
+  ) +
+tm_shape(infra_point) +
+  tm_dots(
+    fill = "TYPE",
+    fill.scale = tm_scale_categorical(),
+    size = 1
+  )
+```
+
+## 9.4 Desserte
+
+### 9.4.1. Fonction "base"
+
+La fonction `get_road()` permet de récupérer les infrastructures de desserte autour d'une zone d'étude `x` selon un `buffer` (fixé à 1 km).
+
+Elle classe les tronçons linéaires intersectés selon la nomenclature suivante :
+
+| TYPE  | Définition                                                          |
+|------------------------------------|------------------------------------|
+| "RN" | Autoroute / Route nationale / européenne / ou départementale 9**     |
+| "RD" | Route départementale                                                 |
+| "RC" | Route communale                                                      |
+| "RF" | Route forestière                                                     |
+| "PN" | Piste en terrain naturel                                             |
+| "LY" | Layon                                                                |
+
+### 9.4.2. Fonction "process"
+
+La fonction `seq_road()` utilise le *PARCA* comme référence pour récupérer la couche précédente avant de les enregistrer.
+
+### 9.4.3. Applications
+
+```{r road_fig, fig.height = 3.5}
+
+road_line  <- get_road(x = parca, 1000)
+
+tm_shape(foret) +
+  tm_borders(col = "black", lwd = 2)+
+tm_shape(road_line) +
+  tm_lines(
+    col = "TYPE",
+    col.scale = tm_scale_categorical(
+      values = c(RD = "red",
+                 RC = "orange",
+                 RF = "yellow",
+                 PN = "brown")
+    ),
+    lwd = "TYPE",
+    lwd.scale = tm_scale_categorical(
+      values = c(RD = 4,
+                 RC = 3,
+                 RF = 2,
+                 PN = 1)
+    ),
+    lwd.legend = tm_legend_hide()
+  )
+```
+
+## 9.5 Hydrologie
+
+### 9.5.1. Fonctions "base"
+
+Les fonctions `get_hydro_*()` permettent de récupérer les éléments hydrographiques autour d'une zone d'étude `x` selon un `buffer` (fixé à 1 km).
+
+Ces éléments sont récupérés, car ils peuvent servir de point de repère sur une carte.
+
+#### 9.5.1.1. Emprises hydrographiques
+
+La fonction `get_hydro_poly()` récupère plusieurs types d'emprises qu'elle classe selon la nomenclature suivante :
+
+| TYPE  | Définition                                                          |
+|------------------------------------|------------------------------------|
+| "RSO" | Réservoirs                                                          |
+| "SFP" | Surface hydrographique permanente                                   |
+| "SFI" | Surface hydrographique intermitente                                 |
+
+#### 9.5.1.2. Tronçons hydrographiques
+
+La fonction `get_hydro_line()` récupère plusieurs types de linéaires qu'elle classe selon la nomenclature suivante :
+
+| TYPE  | Définition                                                          |
+|------------------------------------|------------------------------------|
+| "RUP" | Tronçon hydrographique permanent                                    |
+| "RUI" | Tronçon hydrographique intermitent                                  |
+
+#### 9.5.1.3. Hydrographie ponctuelle
+
+La fonction `get_hydro_point()` récupère plusieurs types des ponctuels qu'elle classe selon la nomenclature suivante :
+
+| TYPE  | Définition                                                          |
+|------------------------------------|------------------------------------|
+| "MAR" | Mare / Source / Fontaine                                            |
+
+### 9.5.2. Fonction "process"
+
+La fonction `seq_hydro()` utilise le *PARCA* comme référence pour récupérer les trois couches précédentes (polygon, ligne, point) avant de les enregistrer.
+
+### 9.5.3. Applications
+
+```{r hydro_fig, fig.height = 3.5}
+
+hydro_poly  <- get_hydro_poly(x = parca, buffer = 1000)
+hydro_line  <- get_hydro_line(x = parca, buffer = 1000)
+hydro_point <- get_hydro_point(x = parca, buffer = 1000)
+
+tm_shape(foret) +
+  tm_borders(col = "black", lwd = 2)+
+tm_shape(hydro_poly) +
+  tm_polygons(
+    fill = "TYPE",
+    fill.scale = tm_scale_categorical(
+      values = c(RSO = "#002060",
+                 SFP = "#0070C0",
+                 SFI = "#00B0F0")
+    ),
+    fill_alpha = 0.7
+  ) +
+tm_shape(hydro_line) +
+  tm_lines(
+    col = "TYPE",
+    col.scale = tm_scale_categorical(
+      values = c(RUP = "#0070C0",
+                 RUI = "#00B0F0")
+    ),
+    lwd = 1
+  ) +
+tm_shape(hydro_point) +
+  tm_dots(
+    fill = "TYPE",
+    fill.scale = tm_scale_categorical(
+      values = c(MAR = "#0070C0")
+    ),
+    size = 1
+  )
+```
+
+## 9.6 Végétation
+
+### 9.6.1. Fonctions "base"
+
+Les fonctions `get_vege_*()` permettent de récupérer les éléments de végétation autour d'une zone d'étude `x`.
+Le périmètre de l'analyse est fixée à 1500 m autour de la zone d'étude. Ce paramètre est exceptionnellement non modifiable.
+
+Ces éléments sont récupérés, car ils peuvent servir sur une carte.
+
+#### 9.6.1.1. Emprise forestière
+
+La fonction `get_vege_poly()` récupère les zones forestières depuis le [masque forêt](https://geoservices.ign.fr/sites/default/files/2025-10/DC_DL_Masque_Foret_v1.pdf)
+
+#### 9.6.1.2. Lisière forestière
+
+La fonction `get_vege_line()` trace les lisières des entités obtenues par `get_vege_poly()`.
+
+#### 9.6.1.3. Végétation ponctuelle
+
+La fonction `get_vege_point()` récupère les zones forestières depuis la [BD forêt](https://geoservices.ign.fr/sites/default/files/2021-06/DC_BDForet_2-0.pdf) pour placer des ponctuels sur les zones forestières précédentes.
+
+Les ponctuels sont classés selon la nomenclature suivantes :
+
+| TYPE  | Définition                                                          |
+|------------------------------------|------------------------------------|
+| "FEV" | Forêt feuillue                                                      |
+| "REV" | Forêt résineuse                                                     |
+| "FRV" | Forêt mixte                                                         |
+| "PEV" | Peupleraie                                                          |
+| "LAV" | Landes                                                              |
+
+### 9.6.2. Fonction "process"
+
+La fonction `seq_vege()` utilise le *PARCA* comme référence pour récupérer les trois couches précédentes (polygon, ligne, point) avant de les enregistrer.
+
+### 9.6.3. Applications
+
+```{r vege_fig, fig.height = 3.5}
+
+vege_poly  <- get_vege_poly(x = parca)
+vege_line  <- get_vege_line(x = parca)
+vege_point <- get_vege_point(x = parca)
+
+tm_shape(foret) +
+  tm_borders(col = "black", lwd = 2)+
+tm_shape(vege_poly) +
+  tm_polygons(
+    fill = "green",
+    fill_alpha = 0.2
+  ) +
+tm_shape(vege_line) +
+  tm_lines(
+    col = "darkgreen",
+    lwd = 1
+  ) +
+tm_shape(vege_point) +
+  tm_dots(
+    fill = "TYPE",
+    fill.scale = tm_scale_categorical(
+      values = c(FEV = "green",
+                 REV = "violet",
+                 FRV = "orange",
+                 PEV = "#0070C0")
+    ),
+    size = 1
+  )
+```

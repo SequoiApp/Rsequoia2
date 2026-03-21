@@ -4,6 +4,7 @@
 #' boundaries from BDTOPO, normalizes them, and returns a polygon layer.
 #'
 #' @param x An `sf` object used as the input area.
+#' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
 #' @param verbose `logical` If `TRUE`, display messages.
 #'
 #' @return An `sf` object of type `POLYGON` containing commune boundaries,
@@ -16,17 +17,21 @@
 #' and normalizes the resulting geometries and attributes.
 #'
 #' @export
-get_com_poly <- function(x, verbose = TRUE) {
+get_com_poly <- function(x,
+                         buffer = 2000,
+                         verbose = TRUE) {
 
+  # fetch_envelope buffer
   crs <- 2154
-  convex <- envelope(x, 2000)
+  x <- sf::st_transform(x, crs)
+  fetch_envelope <- envelope(x, buffer)
 
   if (verbose){
     cli::cli_alert_info("Downloading communes dataset...")
   }
 
   com <- happign::get_wfs(
-    convex,
+    fetch_envelope,
     layer = "BDTOPO_V3:commune",
     verbose = FALSE
   )
@@ -65,7 +70,7 @@ get_com_poly <- function(x, verbose = TRUE) {
 #' @export
 get_com_line <- function(x, graphic = FALSE, verbose = TRUE) {
 
-  poly <- get_com_poly(x, verbose = verbose)
+  poly <- get_com_poly(x, buffer = 2000, verbose = verbose)
 
   if (is.null(poly)) {
     return(NULL)
@@ -113,7 +118,7 @@ get_com_line <- function(x, graphic = FALSE, verbose = TRUE) {
 #' @export
 get_com_point <- function(x, graphic = FALSE, verbose = TRUE) {
 
-  poly <- get_com_poly(x, verbose = verbose)
+  poly <- get_com_poly(x, buffer = 2000, verbose = verbose)
 
   if (is.null(poly)) {
     return(NULL)

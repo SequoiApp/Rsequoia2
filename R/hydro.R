@@ -1,6 +1,7 @@
 #' Retrieve hydrographic polygons around an area
 #'
 #' @param x An `sf` object used as the input area.
+#' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
 #'
 #' @return An `sf` object containing hydrographic polygons with two fields:
 #'   * `TYPE` - hydrographic class
@@ -11,12 +12,13 @@
 #'   * `NAME` - Official hydrographic name (when available)
 #'
 #' @details
-#' The function retrieves BDTOPO layers within a 1000 m convex buffer
+#' The function retrieves BDTOPO layers within a convex buffer
 #' around `x`, assigns the hydrographic types, and combines them into
 #' a single layer.
 #'
 #' @export
-get_hydro_poly <- function(x){
+get_hydro_poly <- function(x,
+                           buffer = 1000){
 
   if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
@@ -25,7 +27,7 @@ get_hydro_poly <- function(x){
   # convex buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, 1000)
+  fetch_envelope <- envelope(x, buffer)
 
   # empty sf
   hydro_poly <- create_empty_sf("POLYGON") |>
@@ -85,6 +87,7 @@ get_hydro_poly <- function(x){
 #' linestring layer.
 #'
 #' @param x An `sf` object used as the input area.
+#' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
 #'
 #' @return An `sf` object containing hydrographic line features with four fields:
 #'   * `TYPE` - hydrographic class
@@ -101,7 +104,8 @@ get_hydro_poly <- function(x){
 #' and returns them as a single combined layer.
 #'
 #' @export
-get_hydro_line <- function(x){
+get_hydro_line <- function(x,
+                           buffer = 1000){
 
   if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
@@ -110,7 +114,7 @@ get_hydro_line <- function(x){
   # convex buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, 1000)
+  fetch_envelope <- envelope(x, buffer)
 
   # empty sf
   hydro_line <- create_empty_sf("LINESTRING") |>
@@ -153,6 +157,7 @@ get_hydro_line <- function(x){
 #' point layer.
 #'
 #' @param x An `sf` object used as the input area.
+#' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
 #'
 #' @return An `sf` object containing hydrographic point features with four fields:
 #'   * `TYPE` - hydrographic class
@@ -169,7 +174,8 @@ get_hydro_line <- function(x){
 #'
 #'
 #' @export
-get_hydro_point <- function(x){
+get_hydro_point <- function(x,
+                            buffer = 1000){
 
   if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
@@ -178,7 +184,7 @@ get_hydro_point <- function(x){
   # convex buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, 1000)
+  fetch_envelope <- envelope(x, buffer)
 
   # empty sf
   hydro_point <- create_empty_sf("POINT") |>
@@ -221,8 +227,7 @@ get_hydro_point <- function(x){
 #' all products in one call and automatically write them to the project
 #' directory using [seq_write()].
 #'
-#' @param dirname `character` Path to the directory. Defaults to the current
-#' working directory.
+#' @inheritParams get_hydro_poly
 #' @inheritParams seq_write
 #'
 #' @details
@@ -241,6 +246,7 @@ get_hydro_point <- function(x){
 #'
 seq_hydro <- function(
     dirname = ".",
+    buffer = 1000,
     verbose = TRUE,
     overwrite = FALSE
 ) {
@@ -266,7 +272,7 @@ seq_hydro <- function(
 
   for (k in names(layers)) {
 
-    f <- layers[[k]]$fun(parca)
+    f <- layers[[k]]$fun(parca, buffer)
 
     if (nrow(f)>0){
       f[[id_field]] <- id

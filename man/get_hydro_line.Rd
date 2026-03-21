@@ -4,10 +4,12 @@
 \alias{get_hydro_line}
 \title{Retrieve and assemble hydrographic lines around an area}
 \usage{
-get_hydro_line(x)
+get_hydro_line(x, buffer = 1000)
 }
 \arguments{
 \item{x}{An \code{sf} object used as the input area.}
+
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
 }
 \value{
 An \code{sf} object containing hydrographic line features with four fields:

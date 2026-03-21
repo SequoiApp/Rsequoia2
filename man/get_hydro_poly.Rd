@@ -4,10 +4,12 @@
 \alias{get_hydro_poly}
 \title{Retrieve hydrographic polygons around an area}
 \usage{
-get_hydro_poly(x)
+get_hydro_poly(x, buffer = 1000)
 }
 \arguments{
 \item{x}{An \code{sf} object used as the input area.}
+
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
 }
 \value{
 An \code{sf} object containing hydrographic polygons with two fields:
@@ -26,7 +28,7 @@ An \code{sf} object containing hydrographic polygons with two fields:
 Retrieve hydrographic polygons around an area
 }
 \details{
-The function retrieves BDTOPO layers within a 1000 m convex buffer
+The function retrieves BDTOPO layers within a convex buffer
 around \code{x}, assigns the hydrographic types, and combines them into
 a single layer.
 }

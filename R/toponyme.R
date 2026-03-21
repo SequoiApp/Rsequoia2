@@ -6,6 +6,7 @@
 #' a standardized `sf` point layer.
 #'
 #' @param x An `sf` object defining the input area of interest.
+#' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
 #' @param verbose `logical` If `TRUE`, display messages.
 #'
 #' @return An `sf` object containing toponymic point features with standardized
@@ -26,12 +27,14 @@
 #' normalized before being returned as a single `sf` point layer.
 #'
 #' @export
-get_toponyme <- function(x, verbose = verbose) {
+get_toponyme <- function(x,
+                         buffer = 1000,
+                         verbose = TRUE) {
 
   # fetch_envelope buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, 1000)
+  fetch_envelope <- envelope(x, buffer)
 
   if (verbose){
     cli::cli_alert_info("Downloading toponyme dataset...")
@@ -69,13 +72,17 @@ get_toponyme <- function(x, verbose = verbose) {
     "Zones de v\u00E9g\u00E9tation",
     "Parcs et r\u00E9serves",
     "Haies",
-    "For\u00EAts publiques"
+    "For\u00EAt domaniale",
+    "For\u00EAts publiques",
+    "Autre for\u00EAt publique",
+    "Bois"
   )
 
   # type
   toponyme[[type]] <- "TYP"
   toponyme[toponyme$classe_de_l_objet %in% t_hydr, type] <- "HYD"
   toponyme[toponyme$classe_de_l_objet %in% t_vege, type] <- "VEG"
+  toponyme[toponyme$nature_de_l_objet %in% t_vege, type] <- "VEG"
 
   # autres champs
   toponyme[[nature]] <- toponyme$nature_de_l_objet
@@ -94,12 +101,8 @@ get_toponyme <- function(x, verbose = verbose) {
 #' the project area, classifies them by thematic type, and writes the
 #' resulting layer to disk.
 #'
-#' @param dirname `character` Path to the project directory.
-#'   Defaults to the current working directory.
-#' @param verbose `logical`; whether to display informational messages.
-#'   Defaults to `TRUE`.
-#' @param overwrite `logical`; whether to overwrite existing files.
-#'   Defaults to `FALSE`.
+#' @inheritParams get_toponyme
+#' @inheritParams seq_write
 #'
 #' @details
 #' Toponymic point features are retrieved using [get_toponyme()].
@@ -120,6 +123,7 @@ get_toponyme <- function(x, verbose = verbose) {
 #' @export
 seq_toponyme <- function(
     dirname = ".",
+    buffer = 1000,
     verbose = TRUE,
     overwrite = FALSE
 ) {
@@ -133,7 +137,7 @@ seq_toponyme <- function(
   }
 
   # Retrieve toponyms
-  topo <- get_toponyme(parca, verbose = verbose)
+  topo <- get_toponyme(parca, buffer = buffer, verbose = verbose)
 
   # Exit early if nothing to write
   if (!is.null(topo)){

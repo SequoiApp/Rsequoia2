@@ -4,21 +4,24 @@
 #' point features and returns an `sf` point layer.
 #'
 #' @param x An `sf` object defining the input area of interest.
+#' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
 #' @param verbose `logical` If `TRUE`, display messages.
 #'
 #' @return An `sf` object containing PRSF point features.
 #'
 #' @details
-#' The function creates a 5000 m convex buffer around the input geometry `x`
+#' The function creates convex buffer around the input geometry `x`
 #' and retrieves PRSF point features before returns as a single `sf` point layer.
 #'
 #' @export
-get_prsf <- function(x, verbose = TRUE) {
+get_prsf <- function(x,
+                     buffer = 5000,
+                     verbose = TRUE) {
 
   # convex buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, 5000)
+  fetch_envelope <- envelope(x, buffer)
 
   if (verbose){
     cli::cli_alert_info("Downloading PRSF dataset...")
@@ -44,12 +47,8 @@ get_prsf <- function(x, verbose = TRUE) {
 #' Retrieves PRSF point features intersecting and surrounding
 #' the project area, and writes the resulting layer to disk.
 #'
-#' @param dirname `character` Path to the project directory.
-#'   Defaults to the current working directory.
-#' @param verbose `logical`; whether to display informational messages.
-#'   Defaults to `TRUE`.
-#' @param overwrite `logical`; whether to overwrite existing files.
-#'   Defaults to `FALSE`.
+#' @inheritParams get_prsf
+#' @inheritParams seq_write
 #'
 #' @details
 #' PRSF point features are retrieved using [get_prsf()].
@@ -70,6 +69,7 @@ get_prsf <- function(x, verbose = TRUE) {
 #' @export
 seq_prsf <- function(
     dirname = ".",
+    buffer = 5000,
     verbose = TRUE,
     overwrite = FALSE
 ) {
@@ -84,7 +84,7 @@ seq_prsf <- function(
   }
 
   # Retrieve toponyms
-  prsf <- get_prsf(parca, verbose = verbose)
+  prsf <- get_prsf(parca, buffer = buffer, verbose = verbose)
 
   if (!is.null(prsf)){
     prsf[[id_field]] <- id

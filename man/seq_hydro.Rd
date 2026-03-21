@@ -4,11 +4,13 @@
 \alias{seq_hydro}
 \title{Generates hydrographic polygon, line and point layers for a Sequoia project.}
 \usage{
-seq_hydro(dirname = ".", verbose = TRUE, overwrite = FALSE)
+seq_hydro(dirname = ".", buffer = 1000, verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Path to the directory. Defaults to the current
-working directory.}
+\item{dirname}{\code{character} Directory where the matrice file is located.
+Defaults to the current working directory.}
+
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 

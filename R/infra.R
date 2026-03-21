@@ -1,23 +1,24 @@
 #' Retrieve infrastructure polygon features around an area
 #'
 #' @param x An `sf` object used as the input area.
+#' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
 #'
 #' @return An `sf` object of type `POLYGON` containing infrastructure
 #'   features with standardized fields, including:
 #'   * `TYPE` - Infrastructure type code:
+#'     - `AER` = Aerodrome runway
 #'     - `BAT` = Building
 #'     - `CIM` = Cemetery
 #'     - `CST` = Surface construction
-#'     - `AER` = Aerodrome runway
+#'     - `HAB` = Residential area
 #'     - `SPO` = Sports ground
 #'     - `VIL` = Urbanized area (importance 1-2)
-#'     - `HAB` = Residential area
 #'   * `NAME` - Toponym when available
 #'   * `SOURCE` - Data source (`IGNF_BDTOPO_V3`)
 #'
 #' @details
 #' The function retrieves several polygon infrastructure layers from
-#' the IGN BDTOPO V3 dataset within a 1000 m convex buffer around `x`.
+#' the IGN BDTOPO V3 dataset within a convex buffer around `x`.
 #'
 #' Retrieved layers include buildings, cemeteries, surface constructions,
 #' aerodrome runways, sports grounds, and residential or urbanized areas.
@@ -26,7 +27,7 @@
 #' standardized `sf` object.
 #'
 #' @export
-get_infra_poly <- function(x) {
+get_infra_poly <- function(x, buffer = 1000) {
 
   if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
@@ -34,7 +35,7 @@ get_infra_poly <- function(x) {
 
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, 1000)
+  fetch_envelope <- envelope(x, buffer)
 
   # empty sf
   infra_poly <- create_empty_sf("POLYGON") |>
@@ -167,6 +168,7 @@ get_infra_poly <- function(x) {
 #' Retrieve linear infrastructure features around an area
 #'
 #' @param x An `sf` object used as the input area.
+#' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
 #'
 #' @return An `sf` object of type `LINESTRING` containing linear
 #'   infrastructure features with standardized fields, including:
@@ -181,7 +183,7 @@ get_infra_poly <- function(x) {
 #'
 #' @details
 #' The function retrieves linear infrastructure layers from the IGN
-#' BDTOPO V3 dataset within a 1000 m convex buffer around `x`.
+#' BDTOPO V3 dataset within a convex buffer around `x`.
 #'
 #' Retrieved layers include linear constructions, power lines,
 #' orographic lines, and railway segments.
@@ -190,7 +192,8 @@ get_infra_poly <- function(x) {
 #' an empty standardized `sf` object.
 #'
 #' @export
-get_infra_line <- function(x) {
+get_infra_line <- function(x,
+                           buffer = 1000) {
 
   if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
@@ -199,7 +202,7 @@ get_infra_line <- function(x) {
   # convex buffers
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, 1000)
+  fetch_envelope <- envelope(x, buffer)
 
   # empty sf
   infra_line <- create_empty_sf("LINESTRING") |>
@@ -297,6 +300,7 @@ get_infra_line <- function(x) {
 #' Retrieve point infrastructure features around an area
 #'
 #' @param x An `sf` object used as the input area.
+#' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
 #'
 #' @return An `sf` object of type `POINT` containing point infrastructure
 #'   features with standardized fields, including:
@@ -314,7 +318,7 @@ get_infra_line <- function(x) {
 #'
 #' @details
 #' The function retrieves point infrastructure layers from the IGN
-#' BDTOPO V3 dataset within a 1000 m convex buffer around `x`.
+#' BDTOPO V3 dataset within a convex buffer around `x`.
 #'
 #' Retrieved layers include point constructions, orographic details,
 #' and pylons. Feature types are classified into standardized Sequoia
@@ -324,7 +328,8 @@ get_infra_line <- function(x) {
 #' an empty standardized `sf` object.
 #'
 #' @export
-get_infra_point <- function(x) {
+get_infra_point <- function(x,
+                            buffer = 1000) {
 
   if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
@@ -333,7 +338,7 @@ get_infra_point <- function(x) {
   # convex buffers
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, 1000)
+  fetch_envelope <- envelope(x, buffer)
 
   # empty sf
   infra_point <- create_empty_sf("POINT") |>
@@ -422,8 +427,7 @@ get_infra_point <- function(x) {
 #' all products in one call and automatically write them to the project
 #' directory using [seq_write()].
 #'
-#' @param dirname `character` Path to the directory. Defaults to the current
-#' working directory.
+#' @inheritParams get_infra_poly
 #' @inheritParams seq_write
 #'
 #' @details
@@ -442,6 +446,7 @@ get_infra_point <- function(x) {
 #'
 seq_infra <- function(
     dirname = ".",
+    buffer = 1000,
     verbose = TRUE,
     overwrite = FALSE
 ) {
@@ -467,7 +472,7 @@ seq_infra <- function(
 
   for (k in names(layers)) {
 
-    f <- layers[[k]]$fun(parca)
+    f <- layers[[k]]$fun(parca, buffer)
 
     if (nrow(f) > 0){
       f[[id_field]] <- id

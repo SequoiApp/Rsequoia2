@@ -4,10 +4,12 @@
 \alias{get_infra_line}
 \title{Retrieve linear infrastructure features around an area}
 \usage{
-get_infra_line(x)
+get_infra_line(x, buffer = 1000)
 }
 \arguments{
 \item{x}{An \code{sf} object used as the input area.}
+
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
 }
 \value{
 An \code{sf} object of type \code{LINESTRING} containing linear
@@ -30,7 +32,7 @@ Retrieve linear infrastructure features around an area
 }
 \details{
 The function retrieves linear infrastructure layers from the IGN
-BDTOPO V3 dataset within a 1000 m convex buffer around \code{x}.
+BDTOPO V3 dataset within a convex buffer around \code{x}.
 
 Retrieved layers include linear constructions, power lines,
 orographic lines, and railway segments.

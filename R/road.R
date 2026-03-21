@@ -1,6 +1,7 @@
 #' Retrieve road sections around an area
 #'
 #' @param x An `sf` object used as the input area.
+#' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
 #'
 #' @return An `sf` object of type `LINESTRING` containing road sections
 #'   with standardized fields, including:
@@ -15,24 +16,28 @@
 #'     - `PN` = Natural path (tracks, trails, footpaths)
 #'     - `LY` = Tie ridge
 #'   * `NATURE` - Original BDTOPO road nature (surface / usage description)
-#'   * `NAME` - Road identifier, taken from `cpx_numero` when available,
+#'   * `IMPORTANCE` - Road importance, taken from `importance` when available,
+#'   * `PRIVE` - Road status, taken from `prive` when available,
+#'   * `RESTRICTION` - Road restriction, taken from `restriction_de_poids_total` when available,
+#'   * `NOM` - Road identifier, taken from `cpx_numero` when available,
 #'     otherwise from `cpx_toponyme_route_nommee`
 #'   * `SOURCE` - Data source (`BDTOPO V3`)
 #'
 #' @details
 #' The function retrieves road section layer from
-#' the IGN BDTOPO V3 dataset within a 1000 m convex buffer around `x`.
+#' the IGN BDTOPO V3 dataset within a convex buffer around `x`.
 #'
 #' If no road section data are found, the function returns an empty
 #' standardized `sf` object.
 #'
 #' @export
-get_road <- function(x){
+get_road <- function(x,
+                     buffer = 1000){
 
   ## convex buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, 1000)
+  fetch_envelope <- envelope(x, buffer)
 
   ## standardized field names
   type   <- seq_field("type")$name
@@ -139,6 +144,7 @@ get_road <- function(x){
 #' Retrieves road section line features intersecting and surrounding
 #' the project area and writes the resulting layer to disk.
 #'
+#' @inheritParams get_road
 #' @inheritParams seq_write
 #'
 #' @details
@@ -160,6 +166,7 @@ get_road <- function(x){
 #' @export
 seq_road <- function(
     dirname = ".",
+    buffer = 1000,
     verbose = TRUE,
     overwrite = FALSE
 ) {
@@ -174,7 +181,7 @@ seq_road <- function(
   }
 
   # Retrieve road section
-  roads <- get_road(parca)
+  roads <- get_road(parca, buffer = buffer)
 
   # Exit early if nothing to write
   if (!is.null(roads) ) {

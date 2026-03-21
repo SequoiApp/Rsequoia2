@@ -4,10 +4,12 @@
 \alias{get_com_poly}
 \title{Retrieve administrative boundary polygons around an area}
 \usage{
-get_com_poly(x, verbose = TRUE)
+get_com_poly(x, buffer = 2000, verbose = TRUE)
 }
 \arguments{
 \item{x}{An \code{sf} object used as the input area.}
+
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }

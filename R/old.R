@@ -4,21 +4,24 @@
 #' features and returns an `sf` point layer.
 #'
 #' @param x An `sf` object defining the input area of interest.
+#' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
 #' @param verbose `logical` If `TRUE`, display messages.
 #'
 #' @return An `sf` object containing OLD features.
 #'
 #' @details
-#' The function creates a 5000 m convex buffer around the input geometry `x`
+#' The function creates a convex buffer around the input geometry `x`
 #' and retrieves OLD features before returns as a single `sf` point layer.
 #'
 #' @export
-get_old <- function(x, verbose = TRUE) {
+get_old <- function(x,
+                    buffer = 1000,
+                    verbose = TRUE) {
 
   # convex buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, 5000)
+  fetch_envelope <- envelope(x, buffer)
 
   if (verbose){
     cli::cli_alert_info("Downloading OLD dataset...")
@@ -44,12 +47,8 @@ get_old <- function(x, verbose = TRUE) {
 #' Retrieves OLD features intersecting and surrounding
 #' the project area, and writes the resulting layer to disk.
 #'
-#' @param dirname `character` Path to the project directory.
-#'   Defaults to the current working directory.
-#' @param verbose `logical`; whether to display informational messages.
-#'   Defaults to `TRUE`.
-#' @param overwrite `logical`; whether to overwrite existing files.
-#'   Defaults to `FALSE`.
+#' @inheritParams get_old
+#' @inheritParams seq_write
 #'
 #' @details
 #' OLD features are retrieved using [get_old()].
@@ -70,6 +69,7 @@ get_old <- function(x, verbose = TRUE) {
 #' @export
 seq_old <- function(
     dirname = ".",
+    buffer = 1000,
     verbose = TRUE,
     overwrite = FALSE
 ) {
@@ -84,7 +84,7 @@ seq_old <- function(
   }
 
   # Retrieve toponyms
-  old <- get_old(parca, verbose = verbose)
+  old <- get_old(parca, buffer = buffer, verbose = verbose)
 
   if (!is.null(old)){
     old[[id_field]] <- id

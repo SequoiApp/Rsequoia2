@@ -4,10 +4,12 @@
 \alias{get_toponyme}
 \title{Retrieve and classify toponymic point features around an area}
 \usage{
-get_toponyme(x, verbose = verbose)
+get_toponyme(x, buffer = 1000, verbose = TRUE)
 }
 \arguments{
 \item{x}{An \code{sf} object defining the input area of interest.}
+
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }

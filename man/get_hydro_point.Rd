@@ -4,10 +4,12 @@
 \alias{get_hydro_point}
 \title{Retrieve and assemble hydrographic points around an area}
 \usage{
-get_hydro_point(x)
+get_hydro_point(x, buffer = 1000)
 }
 \arguments{
 \item{x}{An \code{sf} object used as the input area.}
+
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
 }
 \value{
 An \code{sf} object containing hydrographic point features with four fields:

@@ -4,10 +4,12 @@
 \alias{get_infra_point}
 \title{Retrieve point infrastructure features around an area}
 \usage{
-get_infra_point(x)
+get_infra_point(x, buffer = 1000)
 }
 \arguments{
 \item{x}{An \code{sf} object used as the input area.}
+
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
 }
 \value{
 An \code{sf} object of type \code{POINT} containing point infrastructure
@@ -33,7 +35,7 @@ Retrieve point infrastructure features around an area
 }
 \details{
 The function retrieves point infrastructure layers from the IGN
-BDTOPO V3 dataset within a 1000 m convex buffer around \code{x}.
+BDTOPO V3 dataset within a convex buffer around \code{x}.
 
 Retrieved layers include point constructions, orographic details,
 and pylons. Feature types are classified into standardized Sequoia
