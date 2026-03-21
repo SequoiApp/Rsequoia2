@@ -5,7 +5,7 @@ Retrieve hydrographic polygons around an area
 ## Usage
 
 ``` r
-get_hydro_poly(x)
+get_hydro_poly(x, buffer = 1000)
 ```
 
 ## Arguments
@@ -13,6 +13,10 @@ get_hydro_poly(x)
 - x:
 
   An `sf` object used as the input area.
+
+- buffer:
+
+  `numeric`; Buffer around `x` (in **meters**) used to enlarge
 
 ## Value
 
@@ -32,6 +36,5 @@ An `sf` object containing hydrographic polygons with two fields:
 
 ## Details
 
-The function retrieves BDTOPO layers within a 1000 m convex buffer
-around `x`, assigns the hydrographic types, and combines them into a
-single layer.
+The function retrieves BDTOPO layers within a convex buffer around `x`,
+assigns the hydrographic types, and combines them into a single layer.

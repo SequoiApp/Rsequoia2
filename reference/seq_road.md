@@ -1,48 +1,50 @@
-# Generate road layers for a Sequoia project
+# Generate road section layer for a Sequoia project
 
-Retrieves road features intersecting and surrounding the project area,
-classifies them by thematic type, and writes the resulting layer to
-disk.
+Retrieves road section line features intersecting and surrounding the
+project area and writes the resulting layer to disk.
 
 ## Usage
 
 ``` r
-seq_road(dirname = ".", verbose = TRUE, overwrite = FALSE)
+seq_road(dirname = ".", buffer = 1000, verbose = TRUE, overwrite = FALSE)
 ```
 
 ## Arguments
 
 - dirname:
 
-  `character` Path to the project directory. Defaults to the current
-  working directory.
+  `character` Directory where the matrice file is located. Defaults to
+  the current working directory.
+
+- buffer:
+
+  `numeric`; Buffer around `x` (in **meters**) used to enlarge
 
 - verbose:
 
-  `logical`; whether to display informational messages. Defaults to
-  `TRUE`.
+  `logical` If `TRUE`, display messages.
 
 - overwrite:
 
-  `logical`; whether to overwrite existing files. Defaults to `FALSE`.
+  `logical` If `TRUE`, file is overwritten.
 
 ## Value
 
 Invisibly returns a named list of file paths written by
 [`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
-Returns `NULL` invisibly when no road features are found.
+Returns `NULL` invisibly when no features are found.
 
 ## Details
 
-Road features are retrieved using
+Road section line features are retrieved using
 [`get_road()`](https://sequoiapp.github.io/Rsequoia2/reference/get_road.md).
 
-If no road features are found, the function returns `NULL` invisibly and
-no file is written.
+If no features are found, the function returns `NULL` invisibly and no
+file is written.
 
 When features are present, the layer is written to disk using
 [`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
-with the key `"v.road.topo.line"`.
+with the key `"v.road.line"`.
 
 ## See also
 

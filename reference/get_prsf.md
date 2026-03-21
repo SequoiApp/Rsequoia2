@@ -6,7 +6,7 @@ features and returns an `sf` point layer.
 ## Usage
 
 ``` r
-get_prsf(x, verbose = TRUE)
+get_prsf(x, buffer = 5000, verbose = TRUE)
 ```
 
 ## Arguments
@@ -14,6 +14,10 @@ get_prsf(x, verbose = TRUE)
 - x:
 
   An `sf` object defining the input area of interest.
+
+- buffer:
+
+  `numeric`; Buffer around `x` (in **meters**) used to enlarge
 
 - verbose:
 
@@ -25,6 +29,6 @@ An `sf` object containing PRSF point features.
 
 ## Details
 
-The function creates a 5000 m convex buffer around the input geometry
-`x` and retrieves PRSF point features before returns as a single `sf`
-point layer.
+The function creates convex buffer around the input geometry `x` and
+retrieves PRSF point features before returns as a single `sf` point
+layer.

@@ -7,7 +7,7 @@ linestring layer.
 ## Usage
 
 ``` r
-get_hydro_line(x)
+get_hydro_line(x, buffer = 1000)
 ```
 
 ## Arguments
@@ -15,6 +15,10 @@ get_hydro_line(x)
 - x:
 
   An `sf` object used as the input area.
+
+- buffer:
+
+  `numeric`; Buffer around `x` (in **meters**) used to enlarge
 
 ## Value
 

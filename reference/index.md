@@ -163,7 +163,7 @@
 - [`get_vege_poly()`](https://sequoiapp.github.io/Rsequoia2/reference/get_vege_poly.md)
   : Retrieve forest vegetation polygons around an area
 
-- [`get_vides()`](https://sequoiapp.github.io/Rsequoia2/reference/get_vides.md)
+- [`get_voids()`](https://sequoiapp.github.io/Rsequoia2/reference/get_voids.md)
   :
 
   Retrieve cadastral gaps around the *PARCA*
@@ -251,9 +251,6 @@
 - [`seq_gpu()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_gpu.md)
   : Generate GPU layers for a Sequoia project
 
-- [`seq_graphic_road()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_graphic_road.md)
-  : Generate graphic road layers for a Sequoia project
-
 - [`seq_hydro()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_hydro.md)
   : Generates hydrographic polygon, line and point layers for a Sequoia
   project.
@@ -313,7 +310,10 @@
   : Add retry capability to seq\_\* function
 
 - [`seq_road()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_road.md)
-  : Generate road layers for a Sequoia project
+  : Generate road section layer for a Sequoia project
+
+- [`seq_roadway()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_roadway.md)
+  : Generate graphic road layers for a Sequoia project
 
 - [`seq_scan()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_scan.md)
   : Download scanned IGN maps for a Sequoia project
@@ -334,7 +334,7 @@
   : Generates vegetation polygon, line and point layers for a Sequoia
   project.
 
-- [`seq_vides()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_vides.md)
+- [`seq_voids()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_voids.md)
   : Generate cadastral gaps layer for a Sequoia project
 
 - [`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)

@@ -191,7 +191,7 @@ function launches the main interactive workflow for `Rsequoia2`.
 - [`get_vege_poly()`](https://sequoiapp.github.io/Rsequoia2/reference/get_vege_poly.md)
   : Retrieve forest vegetation polygons around an area
 
-- [`get_vides()`](https://sequoiapp.github.io/Rsequoia2/reference/get_vides.md)
+- [`get_voids()`](https://sequoiapp.github.io/Rsequoia2/reference/get_voids.md)
   :
 
   Retrieve cadastral gaps around the *PARCA*
@@ -279,9 +279,6 @@ function launches the main interactive workflow for `Rsequoia2`.
 - [`seq_gpu()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_gpu.md)
   : Generate GPU layers for a Sequoia project
 
-- [`seq_graphic_road()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_graphic_road.md)
-  : Generate graphic road layers for a Sequoia project
-
 - [`seq_hydro()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_hydro.md)
   : Generates hydrographic polygon, line and point layers for a Sequoia
   project.
@@ -341,7 +338,10 @@ function launches the main interactive workflow for `Rsequoia2`.
   : Add retry capability to seq\_\* function
 
 - [`seq_road()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_road.md)
-  : Generate road layers for a Sequoia project
+  : Generate road section layer for a Sequoia project
+
+- [`seq_roadway()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_roadway.md)
+  : Generate graphic road layers for a Sequoia project
 
 - [`seq_scan()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_scan.md)
   : Download scanned IGN maps for a Sequoia project
@@ -362,7 +362,7 @@ function launches the main interactive workflow for `Rsequoia2`.
   : Generates vegetation polygon, line and point layers for a Sequoia
   project.
 
-- [`seq_vides()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_vides.md)
+- [`seq_voids()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_voids.md)
   : Generate cadastral gaps layer for a Sequoia project
 
 - [`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
@@ -442,18 +442,18 @@ function launches the main interactive workflow for `Rsequoia2`.
 
 ### All vignettes
 
-- [Analysis
-  units](https://sequoiapp.github.io/Rsequoia2/articles/analysis_units.md):
-- [Parcelles Cadastrales
-  (FR)](https://sequoiapp.github.io/Rsequoia2/articles/cadastral-parcels-fr.md):
-- [Parcelles cadastrales - Personne morale
-  (FR)](https://sequoiapp.github.io/Rsequoia2/articles/cadastral-parcels-legal-entity-fr.md):
-- [Cadastral parcels - legal entity
-  (FR)](https://sequoiapp.github.io/Rsequoia2/articles/cadastral-parcels-legal-entity.md):
-- [Cadastral
-  parcels](https://sequoiapp.github.io/Rsequoia2/articles/cadastral-parcels.md):
 - [Sequoia
-  (FR)](https://sequoiapp.github.io/Rsequoia2/articles/sequoia-fr.md):
-- [Sequoia](https://sequoiapp.github.io/Rsequoia2/articles/sequoia.md):
-- [Téléchargement de
-  données](https://sequoiapp.github.io/Rsequoia2/articles/vecteurs.md):
+  (FR)](https://sequoiapp.github.io/Rsequoia2/articles/01_sequoia-fr.md):
+- [Parcelles Cadastrales
+  (FR)](https://sequoiapp.github.io/Rsequoia2/articles/02_cadastral-parcels-fr.md):
+- [Parcelles cadastrales - Personne morale
+  (FR)](https://sequoiapp.github.io/Rsequoia2/articles/03_cadastral-parcels-legal-entity-fr.md):
+- [Téléchargement de données
+  vectorielles](https://sequoiapp.github.io/Rsequoia2/articles/04_vector-fr.md):
+- [Sequoia](https://sequoiapp.github.io/Rsequoia2/articles/11_sequoia.md):
+- [Cadastral
+  parcels](https://sequoiapp.github.io/Rsequoia2/articles/12_cadastral-parcels.md):
+- [Cadastral parcels - legal entity
+  (FR)](https://sequoiapp.github.io/Rsequoia2/articles/13_cadastral-parcels-legal-entity.md):
+- [Analysis
+  units](https://sequoiapp.github.io/Rsequoia2/articles/16_analysis_units.md):

@@ -7,7 +7,7 @@ point layer.
 ## Usage
 
 ``` r
-get_hydro_point(x)
+get_hydro_point(x, buffer = 1000)
 ```
 
 ## Arguments
@@ -15,6 +15,10 @@ get_hydro_point(x)
 - x:
 
   An `sf` object used as the input area.
+
+- buffer:
+
+  `numeric`; Buffer around `x` (in **meters**) used to enlarge
 
 ## Value
 

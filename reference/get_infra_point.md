@@ -5,7 +5,7 @@ Retrieve point infrastructure features around an area
 ## Usage
 
 ``` r
-get_infra_point(x)
+get_infra_point(x, buffer = 1000)
 ```
 
 ## Arguments
@@ -13,6 +13,10 @@ get_infra_point(x)
 - x:
 
   An `sf` object used as the input area.
+
+- buffer:
+
+  `numeric`; Buffer around `x` (in **meters**) used to enlarge
 
 ## Value
 
@@ -44,7 +48,7 @@ with standardized fields, including:
 ## Details
 
 The function retrieves point infrastructure layers from the IGN BDTOPO
-V3 dataset within a 1000 m convex buffer around `x`.
+V3 dataset within a convex buffer around `x`.
 
 Retrieved layers include point constructions, orographic details, and
 pylons. Feature types are classified into standardized Sequoia codes

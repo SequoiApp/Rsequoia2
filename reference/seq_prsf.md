@@ -6,24 +6,27 @@ area, and writes the resulting layer to disk.
 ## Usage
 
 ``` r
-seq_prsf(dirname = ".", verbose = TRUE, overwrite = FALSE)
+seq_prsf(dirname = ".", buffer = 5000, verbose = TRUE, overwrite = FALSE)
 ```
 
 ## Arguments
 
 - dirname:
 
-  `character` Path to the project directory. Defaults to the current
-  working directory.
+  `character` Directory where the matrice file is located. Defaults to
+  the current working directory.
+
+- buffer:
+
+  `numeric`; Buffer around `x` (in **meters**) used to enlarge
 
 - verbose:
 
-  `logical`; whether to display informational messages. Defaults to
-  `TRUE`.
+  `logical` If `TRUE`, display messages.
 
 - overwrite:
 
-  `logical`; whether to overwrite existing files. Defaults to `FALSE`.
+  `logical` If `TRUE`, file is overwritten.
 
 ## Value
 

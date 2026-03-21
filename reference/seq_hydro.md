@@ -12,15 +12,19 @@ write them to the project directory using
 ## Usage
 
 ``` r
-seq_hydro(dirname = ".", verbose = TRUE, overwrite = FALSE)
+seq_hydro(dirname = ".", buffer = 1000, verbose = TRUE, overwrite = FALSE)
 ```
 
 ## Arguments
 
 - dirname:
 
-  `character` Path to the directory. Defaults to the current working
-  directory.
+  `character` Directory where the matrice file is located. Defaults to
+  the current working directory.
+
+- buffer:
+
+  `numeric`; Buffer around `x` (in **meters**) used to enlarge
 
 - verbose:
 

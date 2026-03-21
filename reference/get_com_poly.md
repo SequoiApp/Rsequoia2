@@ -6,7 +6,7 @@ boundaries from BDTOPO, normalizes them, and returns a polygon layer.
 ## Usage
 
 ``` r
-get_com_poly(x, verbose = TRUE)
+get_com_poly(x, buffer = 2000, verbose = TRUE)
 ```
 
 ## Arguments
@@ -14,6 +14,10 @@ get_com_poly(x, verbose = TRUE)
 - x:
 
   An `sf` object used as the input area.
+
+- buffer:
+
+  `numeric`; Buffer around `x` (in **meters**) used to enlarge
 
 - verbose:
 

@@ -5,7 +5,7 @@ Retrieve infrastructure polygon features around an area
 ## Usage
 
 ``` r
-get_infra_poly(x)
+get_infra_poly(x, buffer = 1000)
 ```
 
 ## Arguments
@@ -14,6 +14,10 @@ get_infra_poly(x)
 
   An `sf` object used as the input area.
 
+- buffer:
+
+  `numeric`; Buffer around `x` (in **meters**) used to enlarge
+
 ## Value
 
 An `sf` object of type `POLYGON` containing infrastructure features with
@@ -21,19 +25,19 @@ standardized fields, including:
 
 - `TYPE` - Infrastructure type code:
 
+  - `AER` = Aerodrome runway
+
   - `BAT` = Building
 
   - `CIM` = Cemetery
 
   - `CST` = Surface construction
 
-  - `AER` = Aerodrome runway
+  - `HAB` = Residential area
 
   - `SPO` = Sports ground
 
   - `VIL` = Urbanized area (importance 1-2)
-
-  - `HAB` = Residential area
 
 - `NAME` - Toponym when available
 
@@ -42,7 +46,7 @@ standardized fields, including:
 ## Details
 
 The function retrieves several polygon infrastructure layers from the
-IGN BDTOPO V3 dataset within a 1000 m convex buffer around `x`.
+IGN BDTOPO V3 dataset within a convex buffer around `x`.
 
 Retrieved layers include buildings, cemeteries, surface constructions,
 aerodrome runways, sports grounds, and residential or urbanized areas.

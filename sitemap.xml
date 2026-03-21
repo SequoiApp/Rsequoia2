@@ -3,15 +3,15 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/CODE_OF_CONDUCT.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/GOVERNANCE.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/LICENSE.html</loc></url>
-<url><loc>https://sequoiapp.github.io/Rsequoia2/articles/analysis_units.html</loc></url>
-<url><loc>https://sequoiapp.github.io/Rsequoia2/articles/cadastral-parcels-fr.html</loc></url>
-<url><loc>https://sequoiapp.github.io/Rsequoia2/articles/cadastral-parcels-legal-entity-fr.html</loc></url>
-<url><loc>https://sequoiapp.github.io/Rsequoia2/articles/cadastral-parcels-legal-entity.html</loc></url>
-<url><loc>https://sequoiapp.github.io/Rsequoia2/articles/cadastral-parcels.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/articles/01_sequoia-fr.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/articles/02_cadastral-parcels-fr.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/articles/03_cadastral-parcels-legal-entity-fr.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/articles/04_vector-fr.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/articles/11_sequoia.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/articles/12_cadastral-parcels.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/articles/13_cadastral-parcels-legal-entity.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/articles/16_analysis_units.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/articles/index.html</loc></url>
-<url><loc>https://sequoiapp.github.io/Rsequoia2/articles/sequoia-fr.html</loc></url>
-<url><loc>https://sequoiapp.github.io/Rsequoia2/articles/sequoia.html</loc></url>
-<url><loc>https://sequoiapp.github.io/Rsequoia2/articles/vecteurs.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/authors.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/index.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/create_empty_sf.html</loc></url>
@@ -69,6 +69,8 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_raw_parcels.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_reference.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_road.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_roadway_line.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_roadway_poly.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_scan.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_ser_pdf.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_slope.html</loc></url>
@@ -76,7 +78,7 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_vege_line.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_vege_point.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_vege_poly.html</loc></url>
-<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_vides.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_voids.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/group_lines_by_y.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/identify_non_anchors.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/identify_total_anchors.html</loc></url>
@@ -100,6 +102,10 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/quiet.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/read_legal_entity.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/read_matrice.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/road_buffer.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/road_difference.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/road_mask.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/road_to_roadway.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/search_legal_entity.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq1_id.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq1_read.html</loc></url>
@@ -113,7 +119,6 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_field.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_geol.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_gpu.html</loc></url>
-<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_graphic_road.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_hydro.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_ifn.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_infra.html</loc></url>
@@ -133,13 +138,14 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_read.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_retry.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_road.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_roadway.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_scan.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_summary.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_table.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_toponyme.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_ua.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_vege.html</loc></url>
-<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_vides.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_voids.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_write.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_xlsx.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/sequoia.html</loc></url>
@@ -156,5 +162,6 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/ua_to_ua.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/update_parca.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/update_ua.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/voids_to_roadway.html</loc></url>
 </urlset>
 

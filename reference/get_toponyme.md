@@ -8,7 +8,7 @@ result, and returns a standardized `sf` point layer.
 ## Usage
 
 ``` r
-get_toponyme(x, verbose = verbose)
+get_toponyme(x, buffer = 1000, verbose = TRUE)
 ```
 
 ## Arguments
@@ -16,6 +16,10 @@ get_toponyme(x, verbose = verbose)
 - x:
 
   An `sf` object defining the input area of interest.
+
+- buffer:
+
+  `numeric`; Buffer around `x` (in **meters**) used to enlarge
 
 - verbose:
 

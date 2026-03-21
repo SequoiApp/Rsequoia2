@@ -2,15 +2,15 @@ pandoc: 3.1.11
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
-  articles/analysis_units: analysis_units.html
-  articles/cadastral-parcels-fr: cadastral-parcels-fr.html
-  articles/cadastral-parcels-legal-entity-fr: cadastral-parcels-legal-entity-fr.html
-  articles/cadastral-parcels-legal-entity: cadastral-parcels-legal-entity.html
-  articles/cadastral-parcels: cadastral-parcels.html
-  articles/sequoia-fr: sequoia-fr.html
-  articles/sequoia: sequoia.html
-  articles/vecteurs: vecteurs.html
-last_built: 2026-03-13T15:52Z
+  articles/01_sequoia-fr: 01_sequoia-fr.html
+  articles/02_cadastral-parcels-fr: 02_cadastral-parcels-fr.html
+  articles/03_cadastral-parcels-legal-entity-fr: 03_cadastral-parcels-legal-entity-fr.html
+  articles/04_vector-fr: 04_vector-fr.html
+  articles/11_sequoia: 11_sequoia.html
+  articles/12_cadastral-parcels: 12_cadastral-parcels.html
+  articles/13_cadastral-parcels-legal-entity: 13_cadastral-parcels-legal-entity.html
+  articles/16_analysis_units: 16_analysis_units.html
+last_built: 2026-03-21T11:59Z
 urls:
   reference: https://sequoiapp.github.io/Rsequoia2/reference
   article: https://sequoiapp.github.io/Rsequoia2/articles

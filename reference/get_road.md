@@ -5,7 +5,7 @@ Retrieve road sections around an area
 ## Usage
 
 ``` r
-get_road(x)
+get_road(x, buffer = 1000)
 ```
 
 ## Arguments
@@ -13,6 +13,10 @@ get_road(x)
 - x:
 
   An `sf` object used as the input area.
+
+- buffer:
+
+  `numeric`; Buffer around `x` (in **meters**) used to enlarge
 
 ## Value
 
@@ -34,9 +38,19 @@ standardized fields, including:
 
   - `PN` = Natural path (tracks, trails, footpaths)
 
+  - `LY` = Tie ridge
+
 - `NATURE` - Original BDTOPO road nature (surface / usage description)
 
-- `NAME` - Road identifier, taken from `cpx_numero` when available,
+- `IMPORTANCE` - Road importance, taken from `importance` when
+  available,
+
+- `PRIVE` - Road status, taken from `prive` when available,
+
+- `RESTRICTION` - Road restriction, taken from
+  `restriction_de_poids_total` when available,
+
+- `NOM` - Road identifier, taken from `cpx_numero` when available,
   otherwise from `cpx_toponyme_route_nommee`
 
 - `SOURCE` - Data source (`BDTOPO V3`)
@@ -44,7 +58,7 @@ standardized fields, including:
 ## Details
 
 The function retrieves road section layer from the IGN BDTOPO V3 dataset
-within a 1000 m convex buffer around `x`.
+within a convex buffer around `x`.
 
 If no road section data are found, the function returns an empty
 standardized `sf` object.

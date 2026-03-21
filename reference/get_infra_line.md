@@ -5,7 +5,7 @@ Retrieve linear infrastructure features around an area
 ## Usage
 
 ``` r
-get_infra_line(x)
+get_infra_line(x, buffer = 1000)
 ```
 
 ## Arguments
@@ -13,6 +13,10 @@ get_infra_line(x)
 - x:
 
   An `sf` object used as the input area.
+
+- buffer:
+
+  `numeric`; Buffer around `x` (in **meters**) used to enlarge
 
 ## Value
 
@@ -38,7 +42,7 @@ features with standardized fields, including:
 ## Details
 
 The function retrieves linear infrastructure layers from the IGN BDTOPO
-V3 dataset within a 1000 m convex buffer around `x`.
+V3 dataset within a convex buffer around `x`.
 
 Retrieved layers include linear constructions, power lines, orographic
 lines, and railway segments.
