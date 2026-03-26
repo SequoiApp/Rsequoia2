@@ -180,7 +180,7 @@ get_geol <- function(
   geol <- sf::st_transform(geol, crs)
 
   fetch_envelope <- envelope(x = x, dist = buffer, crs = crs)
-  geol_intersects <- sf::st_filter(geol, fetch_envelope)
+  geol_intersects <- geol[sf::st_intersects(geol, fetch_envelope, sparse = FALSE),]
 
   return(geol_intersects)
 }
