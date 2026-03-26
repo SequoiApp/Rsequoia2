@@ -53,8 +53,7 @@ download_brgm <- function(dep, key = "carhab", cache = NULL, verbose = FALSE, ov
   }
 
   if (is.null(cache)){
-    cache <- tools::R_user_dir("Rsequoia2", which = "cache") |>
-      file.path("geology")
+    cache <- tools::R_user_dir("Rsequoia2", which = "cache") |> file.path("geology")
     dir.create(cache, recursive = TRUE, showWarnings = FALSE)
   }
 
