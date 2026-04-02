@@ -44,7 +44,7 @@ sequoia <- function(overwrite = FALSE) {
       seq_parcels(path, overwrite = TRUE)
     },
     "Telecharger DONNEES" = function() menu_data(path, overwrite),
-    "Generer une synthese" = function() seq_summary(path),
+    "Generer synthese UA" = function() seq_summary(path),
     "Mettre a jour un ancien dossier" = function(){
       p <- rstudioapi::selectDirectory(
         caption = "Selectionner ancien dossier sequoia"
