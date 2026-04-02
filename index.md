@@ -22,6 +22,5 @@ library(Rsequoia2)
 sequoia()
 ```
 
-The
-[`sequoia()`](https://sequoiapp.github.io/Rsequoia2/reference/sequoia.md)
-function launches the main interactive workflow for `Rsequoia2`.
+The `sequoia()` function launches the main interactive workflow for
+`Rsequoia2`.

@@ -49,8 +49,7 @@ Un processus **Sequoia** comprend toujours les étapes suivantes :
 - Génération des couches de gestion à partir des unités d’analyse.
 
 Pour vous guider a travers ces différentes étapes, `Rsequoia2` propose
-la fonction
-[`sequoia()`](https://sequoiapp.github.io/Rsequoia2/reference/sequoia.md).
+la fonction `sequoia()`.
 
 Cette dernière ouvre un menu dans la console pour faciliter l’accès aux
 fonctionnalités.

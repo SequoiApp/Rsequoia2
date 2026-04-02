@@ -343,7 +343,7 @@
 - [`seq_xlsx()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_xlsx.md)
   : Save Multiple Data Frames to an Excel Workbook with Styling
 
-- [`sequoia()`](https://sequoiapp.github.io/Rsequoia2/reference/sequoia.md)
+- [`sequoia2()`](https://sequoiapp.github.io/Rsequoia2/reference/sequoia2.md)
   : Rsequoia2 Main Interactive Workflow
 
 - [`style_table()`](https://sequoiapp.github.io/Rsequoia2/reference/style_table.md)

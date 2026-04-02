@@ -177,7 +177,6 @@ Note: for advanced users, each `seq_*` function has an equivalent
 ### Cheat code !
 
 For those who made it to the end, `Rsequoia2` provides a wrapper
-function to guide you through the entire workflow:
-[`sequoia()`](https://sequoiapp.github.io/Rsequoia2/reference/sequoia.md).
+function to guide you through the entire workflow: `sequoia()`.
 
 Have fun !
