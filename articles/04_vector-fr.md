@@ -403,9 +403,9 @@ amont de reboisement (par exemple).
 ``` r
 
 # Géologie
-# geol <- get_geol(x = parca, key = "bdcharm50") |> 
-#   sf::st_intersection(foret) |> 
-#   Rsequoia2:::quiet()
+geol <- get_geol(x = parca, key = "bdcharm50") |>
+  sf::st_intersection(foret) |>
+  Rsequoia2:::quiet()
 
 # Pédologie
 pedo <- get_pedology(x = parca) |> 
@@ -420,13 +420,13 @@ tm_shape(foret) +
   tm_borders(col = "black", lwd = 2) +
 
 # Géologie avec couleurs aléatoires
-# tm_shape(geol) +
-#   tm_polygons(
-#     fill = "NOTATION",
-#     fill.scale = tm_scale_categorical(),
-#     col = "black",
-#     fill_alpha = 0.7
-#   ) +
+tm_shape(geol) +
+  tm_polygons(
+    fill = "NOTATION",
+    fill.scale = tm_scale_categorical(),
+    col = "black",
+    fill_alpha = 0.7
+  ) +
 
 # Pédologie avec couleurs aléatoires
 tm_shape(pedo) +
