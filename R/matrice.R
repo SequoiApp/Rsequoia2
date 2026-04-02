@@ -57,6 +57,17 @@ read_matrice <- function(dirname = "."){
     recursive = TRUE
   )
 
+  # Exclude Excel temporary lock files like "~$_matrice.xlsx"
+  xlsx_lock_file <- m_path[grepl("^~\\$.*_matrice\\.xlsx$", basename(m_path), ignore.case = TRUE)]
+
+  if (length(xlsx_lock_file) > 0) {
+    cli::cli_abort(c(
+      "!" = "The matrice file appears to be open in Excel.",
+      "x" = "Please close the matrice workbook first.",
+      "i" = "Temporary file detected: {paste(basename(xlsx_lock_file), collapse = ', ')}"
+    ))
+  }
+
   # No file
   if (length(m_path) == 0) {
     cli::cli_abort(c(
