@@ -27,8 +27,6 @@ tmap_mode("view")
 tmap_options(scale = 0.75)
 ```
 
-----
-
 # Introduction
 
 ## De quoi on parle ?
@@ -487,6 +485,8 @@ tm_shape(prsf) +
   tm_dots(fill = "red", size = 1)
 
 ```
+
+------------------------------------------------------------------------
 
 # 9. VECTORIEL
 
