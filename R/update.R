@@ -281,102 +281,143 @@ seq1_update <- function(
   # paths
   paths <- c()
 
-  # parca
-  parca <- seq1_read(dirname, "parca_poly")
-  if (nrow(parca)>0){
-    parca <- update_parca(parca, id)
-    parca_path <- seq_write2(parca, "v.seq.parca.poly")
-    paths <- c(paths, parca_path)
-  }
+  # PARCA ----
+  tryCatch({
+    parca <- seq1_read(dirname, "parca_poly")
 
-  # ua
-  ua <- seq1_read(dirname, "ua_poly")
-  if (nrow(parca)>0){
-    ua <- update_ua(ua, id)
-    ua_path <- seq_write2(ua, "v.seq.ua.poly")
-    paths <- c(paths, ua_path)
-  }
-
-  # com_line
-  com_line <- seq1_read(dirname, "com_line")
-  if (nrow(com_line)>0){
-    com_line <- sf::st_sf(geometry = sf::st_geometry(com_line)) |>
-      sf::st_make_valid()
-    com_line[[id_field]] <- id
-    com_line_path <- seq_write2(com_line, "v.com.graphic.line")
-    paths <- c(paths, com_line_path)
-  }
-
-  # com_point
-  com_point <- seq1_read(dirname, "com_point")
-  if (nrow(com_line)>0){
-    com_point <- seq_normalize(com_point, "vct_point")
-    com_point[[id_field]] <- id
-    com_point_path <- seq_write2(com_point, "v.com.graphic.point")
-    paths <- c(paths, com_point_path)
-  }
-
-  # infra_poly
-  type_field <- seq_field("type")$name # for all infra_
-
-  infra_poly <- seq1_read(dirname, "infra_poly")
-  if (nrow(infra_poly)>0){
-    infra_poly <- seq_normalize(infra_poly, "vct_poly")
-    infra_poly <- update_infra(infra_poly)
-    infra_poly[[id_field]] <- id
-
-    ## hydro
-    hydro_poly <- infra_poly[infra_poly[[type_field]] %in%  c("RSO", "SFP", "SFI"), ]
-    if (nrow(hydro_poly)>0){
-      hydro_poly_path <- seq_write2(hydro_poly, "v.hydro.poly")
-      paths <- c(paths, hydro_poly_path)
+    if (!is.null(parca) && nrow(parca) > 0) {
+      parca <- update_parca(parca, id)
+      parca_path <- seq_write2(parca, "v.seq.parca.poly")
+      paths <- c(paths, parca_path)
+    } else {
+      cli::cli_alert_warning("Aucune donnee 'parca_poly' trouvee.")
     }
 
-    ## veg
-    vege_poly <- infra_poly[infra_poly[[type_field]] %in%  c("FOR"), ]
-    if (nrow(vege_poly)>0){
-      vege_poly_path <- seq_write2(vege_poly, "v.vege.poly")
-      paths <- c(paths, vege_poly_path)
-    }
+  }, error = function(e) {
+    cli::cli_alert_danger("Erreur traitement couche 'parca_poly'")
+  })
 
-    ## infra
-    infra_poly <- infra_poly[!infra_poly[[type_field]] %in%  c("RSO", "SFP", "SFI", "FOR"), ]
+
+  # UA ----
+  tryCatch({
+    ua <- seq1_read(dirname, "ua_poly")
+    if (nrow(parca) > 0){
+      ua <- update_ua(ua, id)
+      ua_path <- seq_write2(ua, "v.seq.ua.poly")
+      paths <- c(paths, ua_path)
+    } else {
+      cli::cli_alert_warning("Aucune donnee 'ua_poly' trouvee.")
+    }
+  }, error = function(e) {
+    cli::cli_alert_danger("Erreur traitement couche 'ua_poly'")
+  })
+
+  # COM_LINE ----
+  tryCatch({
+    com_line <- seq1_read(dirname, "com_line")
+    if (nrow(com_line)>0){
+      com_line <- sf::st_sf(geometry = sf::st_geometry(com_line)) |>
+        sf::st_make_valid()
+      com_line[[id_field]] <- id
+      com_line_path <- seq_write2(com_line, "v.com.graphic.line")
+      paths <- c(paths, com_line_path)
+    } else {
+      cli::cli_alert_warning("Aucune donnee 'com_line' trouvee.")
+    }
+  }, error = function(e) {
+    cli::cli_alert_danger("Erreur traitement couche 'com_line'")
+  })
+
+  # COM_POINT ---
+  tryCatch({
+    com_point <- seq1_read(dirname, "com_point")
+    if (nrow(com_line)>0){
+      com_point <- seq_normalize(com_point, "vct_point")
+      com_point[[id_field]] <- id
+      com_point_path <- seq_write2(com_point, "v.com.graphic.point")
+      paths <- c(paths, com_point_path)
+    } else {
+      cli::cli_alert_warning("Aucune donnee 'com_point' trouvee.")
+    }
+  }, error = function(e) {
+    cli::cli_alert_danger("Erreur traitement couche 'com_point'")
+  })
+
+  # INFRA_POLY ----
+  tryCatch({
+    type_field <- seq_field("type")$name # for all infra_
+
+    infra_poly <- seq1_read(dirname, "infra_poly")
     if (nrow(infra_poly)>0){
-      infra_poly_path <- seq_write2(infra_poly, "v.infra.poly")
-      paths <- c(paths, infra_poly_path)
+      infra_poly <- seq_normalize(infra_poly, "vct_poly")
+      infra_poly <- update_infra(infra_poly)
+      infra_poly[[id_field]] <- id
+
+      ## hydro
+      hydro_poly <- infra_poly[infra_poly[[type_field]] %in%  c("RSO", "SFP", "SFI"), ]
+      if (nrow(hydro_poly)>0){
+        hydro_poly_path <- seq_write2(hydro_poly, "v.hydro.poly")
+        paths <- c(paths, hydro_poly_path)
+      }
+
+      ## veg
+      vege_poly <- infra_poly[infra_poly[[type_field]] %in%  c("FOR"), ]
+      if (nrow(vege_poly)>0){
+        vege_poly_path <- seq_write2(vege_poly, "v.vege.poly")
+        paths <- c(paths, vege_poly_path)
+      }
+
+      ## infra
+      infra_poly <- infra_poly[!infra_poly[[type_field]] %in%  c("RSO", "SFP", "SFI", "FOR"), ]
+      if (nrow(infra_poly)>0){
+        infra_poly_path <- seq_write2(infra_poly, "v.infra.poly")
+        paths <- c(paths, infra_poly_path)
+      }
+    } else {
+      cli::cli_alert_warning("Aucune donnee 'infra_poly' trouvee.")
     }
-  }
+  }, error = function(e) {
+    cli::cli_alert_danger("Erreur traitement couche 'infra_poly'")
+  })
 
-  # infra_line
-  infra_line <- seq1_read(dirname, "infra_line")
-  if (nrow(infra_line)>0){
-    infra_line <- seq_normalize(infra_line, "vct_line")
-    infra_line <- update_infra(infra_line)
-    infra_line[[id_field]] <- id
-
-    ## hydro
-    hydro_line <- infra_line[infra_line[[type_field]] %in%  c("RUP", "RUI"), ]
-    if (nrow(hydro_line)>0){
-      hydro_line_path <- seq_write2(hydro_line, "v.hydro.line")
-      paths <- c(paths, hydro_line_path)
-    }
-
-    ## veg
-    vege_line <- infra_line[infra_line[[type_field]] %in%  c("FOR"), ]
-    if (nrow(vege_line)>0){
-      vege_line_path <- seq_write2(vege_line, "v.vege.line")
-      paths <- c(paths, vege_line_path)
-    }
-
-    ## infra
-    infra_line <- infra_line[!infra_line[[type_field]] %in%  c("RUP", "RUI", "FOR"), ]
+  # INFRA_LINE ----
+  tryCatch({
+    infra_line <- seq1_read(dirname, "infra_line")
     if (nrow(infra_line)>0){
-      infra_line_path <- seq_write2(infra_line, "v.infra.line")
-      paths <- c(paths, infra_line_path)
-    }
-  }
+      infra_line <- seq_normalize(infra_line, "vct_line")
+      infra_line <- update_infra(infra_line)
+      infra_line[[id_field]] <- id
 
-  # infra_point
+      ## hydro
+      hydro_line <- infra_line[infra_line[[type_field]] %in%  c("RUP", "RUI"), ]
+      if (nrow(hydro_line)>0){
+        hydro_line_path <- seq_write2(hydro_line, "v.hydro.line")
+        paths <- c(paths, hydro_line_path)
+      }
+
+      ## veg
+      vege_line <- infra_line[infra_line[[type_field]] %in%  c("FOR"), ]
+      if (nrow(vege_line)>0){
+        vege_line_path <- seq_write2(vege_line, "v.vege.line")
+        paths <- c(paths, vege_line_path)
+      }
+
+      ## infra
+      infra_line <- infra_line[!infra_line[[type_field]] %in%  c("RUP", "RUI", "FOR"), ]
+      if (nrow(infra_line)>0){
+        infra_line_path <- seq_write2(infra_line, "v.infra.line")
+        paths <- c(paths, infra_line_path)
+      }
+    } else {
+      cli::cli_alert_warning("Aucune donnee 'infra_line' trouvee.")
+    }
+  }, error = function(e) {
+    cli::cli_alert_danger("Erreur traitement couche 'infra_line'")
+  })
+
+
+  # INFRA_POINT ----
+  tryCatch({
   infra_point <- seq1_read(dirname, "infra_point")
   if (nrow(infra_point)>0){
     infra_point <- seq_normalize(infra_point, "vct_line")
@@ -410,25 +451,45 @@ seq1_update <- function(
       infra_point_path <- seq_write2(infra_point, "v.infra.point")
       paths <- c(paths, infra_point_path)
     }
+  } else {
+    cli::cli_alert_warning("Aucune donnee 'infra_point' trouvee.")
   }
+  }, error = function(e) {
+    cli::cli_alert_danger("Erreur traitement couche 'infra_point'")
+  })
 
-  # road_poly
+
+  # ROAD_POLY ----
+  tryCatch({
   road_poly <- seq1_read(dirname, "route_poly")
   if (nrow(com_line)>0){
     road_poly <- seq_normalize(road_poly, "road_poly")
     road_poly[[id_field]] <- id
     road_poly_path <- seq_write2(road_poly, "v.road.graphic.poly")
     paths <- c(paths, road_poly_path)
+  } else {
+    cli::cli_alert_warning("Aucune donnee 'road_poly' trouvee.")
   }
+  }, error = function(e) {
+    cli::cli_alert_danger("Erreur traitement couche 'road_poly'")
+  })
 
-  # road_line
+
+  # ROAD_LINE ----
+  tryCatch({
   road_line <- seq1_read(dirname, "route_line")
   if (nrow(road_line)>0){
     road_line <- seq_normalize(road_line, "road_line")
     road_line[[id_field]] <- id
     road_line_path <- seq_write2(road_line, "v.road.graphic.line")
     paths <- c(paths, road_line_path)
+  } else {
+    cli::cli_alert_warning("Aucune donnee 'road_line' trouvee.")
   }
+  }, error = function(e) {
+    cli::cli_alert_danger("Erreur traitement couche 'road_line'")
+  })
+
 
   # result
   return(invisible(paths))

@@ -53,8 +53,7 @@ download_brgm <- function(dep, key = "carhab", cache = NULL, verbose = FALSE, ov
   }
 
   if (is.null(cache)){
-    cache <- tools::R_user_dir("Rsequoia2", which = "cache") |>
-      file.path("geology")
+    cache <- tools::R_user_dir("Rsequoia2", which = "cache") |> file.path("geology")
     dir.create(cache, recursive = TRUE, showWarnings = FALSE)
   }
 
@@ -181,7 +180,7 @@ get_geol <- function(
   geol <- sf::st_transform(geol, crs)
 
   fetch_envelope <- envelope(x = x, dist = buffer, crs = crs)
-  geol_intersects <- sf::st_filter(geol, fetch_envelope)
+  geol_intersects <- geol[sf::st_intersects(geol, fetch_envelope, sparse = FALSE),]
 
   return(geol_intersects)
 }
