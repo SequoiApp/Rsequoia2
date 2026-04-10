@@ -1,7 +1,5 @@
 # Téléchargement de données vectorielles
 
-------------------------------------------------------------------------
-
 ## Introduction
 
 ### De quoi on parle ?
@@ -601,6 +599,8 @@ tm_shape(foret) +
 tm_shape(prsf) +
   tm_dots(fill = "red", size = 1)
 ```
+
+------------------------------------------------------------------------
 
 ## 9. VECTORIEL
 
