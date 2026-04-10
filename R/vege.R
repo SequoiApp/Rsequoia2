@@ -40,8 +40,8 @@ get_vege_poly <- function(x) {
   source <- seq_field("source")$name
 
   # Fetching data in 1000m distance, then crop to 1500m for large data
-  fetch_envelope <- envelope(x, 1000)
-  control_envelope <- envelope(x, 1500)
+  fetch_envelope <- seq_envelope(x, 1000)
+  control_envelope <- seq_envelope(x, 1500)
 
   # forest mask
   forest_mask <- happign::get_wfs(
@@ -102,7 +102,7 @@ get_vege_line <- function(x) {
   x <- sf::st_transform(x, crs)
 
   # Used to remove straight line due to buffer
-  cleaning_envelope <- envelope(x, 1500 - 1)
+  cleaning_envelope <- seq_envelope(x, 1500 - 1)
 
   # standardized field names
   type <- seq_field("type")$name
@@ -174,8 +174,8 @@ get_vege_point <- function(x){
   source <-  seq_field("source")$name
 
   # Fetching data in 1000m distance, then crop to 1500m for large data
-  fetch_envelope   <- envelope(x, 1000)
-  control_envelope <- envelope(x, 1500)
+  fetch_envelope   <- seq_envelope(x, 1000)
+  control_envelope <- seq_envelope(x, 1500)
 
   raw_fv <- happign::get_wfs(
     x = fetch_envelope,

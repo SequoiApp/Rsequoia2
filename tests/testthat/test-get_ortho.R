@@ -112,7 +112,7 @@ test_that("get_ortho() calls get_wmts once per envelope row", {
   b <- 0.1
   get_ortho(Rsequoia2:::seq_poly, type = "irc", buffer = b, verbose = FALSE)
 
-  expect_equal(calls, nrow(envelope(x, b)))
+  expect_equal(calls, nrow(seq_envelope(x, b)))
 })
 
 test_that("get_ortho() writes temporary raster files", {

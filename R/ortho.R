@@ -66,7 +66,7 @@ get_ortho <- function(
   }
 
   x <- sf::st_transform(x, 2154)
-  x_env <- envelope(x, buffer)
+  x_env <- seq_envelope(x, buffer)
 
   layer <- switch(
     type,

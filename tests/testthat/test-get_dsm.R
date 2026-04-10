@@ -82,7 +82,7 @@ test_that("get_dsm() calls get_wms_raster once per envelope row", {
   b <- 0.1
   get_dsm(Rsequoia2:::seq_poly, buffer = b, verbose = FALSE)
 
-  expect_equal(calls, nrow(envelope(x, b)))
+  expect_equal(calls, nrow(seq_envelope(x, b)))
 })
 
 test_that("get_dsm() writes temporary raster files", {

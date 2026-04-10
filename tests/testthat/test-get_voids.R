@@ -16,7 +16,7 @@ test_that("get_voids() returns same geom when no cadastral data retrieved", {
   source_field <- seq_field("source")$name
   x[[source_field]] <- "bdp"
 
-  fetch_envelope <- envelope(x, 1000)
+  fetch_envelope <- seq_envelope(x, 1000)
 
   testthat::local_mocked_bindings(
     get_wfs = function(...) Rsequoia2:::seq_empty,
@@ -75,7 +75,7 @@ test_that("get_voids() works", {
     sf::st_make_valid()
 
   testthat::local_mocked_bindings(
-    envelope = function(...) mock_envelope
+    seq_envelope = function(...) mock_envelope
   )
 
   testthat::local_mocked_bindings(

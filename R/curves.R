@@ -18,7 +18,7 @@ get_curves <- function(x, verbose = TRUE) {
   # convex buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, 1000)
+  fetch_envelope <- seq_envelope(x, 1000)
 
   if (verbose){
     cli::cli_alert_info("Downloading contour lines dataset...")

@@ -100,7 +100,7 @@ idu <- c(
 
 parca <- get_parca(idu) |> transform(IDENTIFIANT = "BRIN")
 
-foret <- Rsequoia2:::dissolve(parca, 5.5)
+foret <- Rsequoia2::seq_dissolve(parca, 5.5)
 
 tm_shape(parca)+
   tm_borders(col = "blue", lwd = 1)+

@@ -26,7 +26,7 @@ get_dem <- function(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE) {
   }
 
   x <- sf::st_transform(x, 2154)
-  x_env <- envelope(x, buffer)
+  x_env <- seq_envelope(x, buffer)
 
   if (verbose) {cli::cli_alert_info("Downloading DEM dataset...")}
 
@@ -82,7 +82,7 @@ get_dsm <- function(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE) {
   }
 
   x <- sf::st_transform(x, 2154)
-  x_env <- envelope(x, buffer)
+  x_env <- seq_envelope(x, buffer)
 
   if (verbose) {cli::cli_alert_info("Downloading DSM dataset...")}
 

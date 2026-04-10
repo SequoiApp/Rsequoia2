@@ -27,7 +27,7 @@ get_hydro_poly <- function(x,
   # convex buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, buffer)
+  fetch_envelope <- seq_envelope(x, buffer)
 
   # empty sf
   hydro_poly <- create_empty_sf("POLYGON") |>
@@ -114,7 +114,7 @@ get_hydro_line <- function(x,
   # convex buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, buffer)
+  fetch_envelope <- seq_envelope(x, buffer)
 
   # empty sf
   hydro_line <- create_empty_sf("LINESTRING") |>
@@ -184,7 +184,7 @@ get_hydro_point <- function(x,
   # convex buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, buffer)
+  fetch_envelope <- seq_envelope(x, buffer)
 
   # empty sf
   hydro_point <- create_empty_sf("POINT") |>

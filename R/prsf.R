@@ -21,7 +21,7 @@ get_prsf <- function(x,
   # convex buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, buffer)
+  fetch_envelope <- seq_envelope(x, buffer)
 
   if (verbose){
     cli::cli_alert_info("Downloading PRSF dataset...")

@@ -41,7 +41,7 @@ get_accessibility <- function(
 
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, buffer)
+  fetch_envelope <- seq_envelope(x, buffer)
 
   layer <- switch(
     type,

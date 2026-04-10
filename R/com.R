@@ -24,7 +24,7 @@ get_com_poly <- function(x,
   # fetch_envelope buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, buffer)
+  fetch_envelope <- seq_envelope(x, buffer)
 
   if (verbose){
     cli::cli_alert_info("Downloading communes dataset...")
@@ -79,7 +79,7 @@ get_com_line <- function(x, graphic = FALSE, verbose = TRUE) {
   line <- poly_to_line(poly)
 
   if (graphic){
-    convex <- envelope(x, 500)
+    convex <- seq_envelope(x, 500)
     line <- sf::st_intersection(line, convex) |> suppressWarnings()
 
     if (nrow(line) == 0){
@@ -125,7 +125,7 @@ get_com_point <- function(x, graphic = FALSE, verbose = TRUE) {
   }
 
   if (graphic){
-    convex <- envelope(x, 500)
+    convex <- seq_envelope(x, 500)
     point <- quiet(sf::st_centroid(sf::st_intersection(poly, convex),
                                    of_largest_polygon = FALSE))
     if (nrow(point) == 0) {

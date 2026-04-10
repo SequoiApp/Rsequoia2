@@ -35,7 +35,7 @@ get_infra_poly <- function(x, buffer = 1000) {
 
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, buffer)
+  fetch_envelope <- seq_envelope(x, buffer)
 
   # empty sf
   infra_poly <- create_empty_sf("POLYGON") |>
@@ -202,7 +202,7 @@ get_infra_line <- function(x,
   # convex buffers
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, buffer)
+  fetch_envelope <- seq_envelope(x, buffer)
 
   # empty sf
   infra_line <- create_empty_sf("LINESTRING") |>
@@ -338,7 +338,7 @@ get_infra_point <- function(x,
   # convex buffers
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- envelope(x, buffer)
+  fetch_envelope <- seq_envelope(x, buffer)
 
   # empty sf
   infra_point <- create_empty_sf("POINT") |>

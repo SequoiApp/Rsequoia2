@@ -82,7 +82,7 @@ test_that("get_dem() calls get_wms_raster once per envelope row", {
   b <- 0.1
   get_dem(Rsequoia2:::seq_poly, buffer = b, verbose = FALSE)
 
-  expect_equal(calls, nrow(envelope(x, b)))
+  expect_equal(calls, nrow(seq_envelope(x, b)))
 })
 
 test_that("get_dem() writes temporary raster files", {
