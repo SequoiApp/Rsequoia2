@@ -12,9 +12,15 @@
 #' @return An `sf` object containing toponymic point features with standardized
 #' attribute fields:
 #'   * `TYPE` - Toponym class
-#'     - `HYD` = Hydrographic toponym
-#'     - `VEG` = Vegetation-related toponym
-#'     - `TYP` = Other toponyms
+#'     - `AER` = Aerodrome runway
+#'     - `BAT` = Building
+#'     - `CIM` = Cemetery
+#'     - `CST` = Construction
+#'     - `HAB` = Residential area
+#'     - `HYD` = Hydrographic
+#'     - `ORO` = Orographic
+#'     - `VEG` = Vegetation-related
+#'     - `AUT` = Other toponyms
 #'   * `NATURE` - Original BDTOPO object nature
 #'   * `NAME` - Official toponym name (when available)
 #'   * `SOURCE` - Data source identifier (`IGNF_BDTOPO_V3`)
@@ -51,38 +57,52 @@ get_toponyme <- function(x,
 
   # normalise field
   type <- seq_field("type")$name
-  name <- seq_field("name")$name
   nature <- seq_field("nature")$name
+  name <- seq_field("name")$name
   source <- seq_field("source")$name
 
-  # classes
-  t_hydr <- c(
-    "Cours d\u0027eau",
-    "D\u00E9tails hydrographiques",
-    "N\u0153uds hydrographiques",
-    "Plans d\u0027eau",
-    "Plan d\u0027eau",
-    "R\u00E9servoirs",
-    "Surfaces hydrographiques",
-    "Tron\u00E7ons hydrographiques",
-    "Bassins versants topographiques"
-  )
+  # --- type ---
+  toponyme$cleabs <- substr(toponyme$cleabs_de_l_objet, 1, 8)
+  toponyme[[type]] <- "AUT"
 
-  t_vege <- c(
+  #Building
+  t_bat <- c("SURFACTI")
+  toponyme[toponyme$cleabs %in% t_bat, type] <- "BAT"
+
+  # Cimetery
+  t_cim <- c("CIMETIER")
+  toponyme[toponyme$cleabs %in% t_cim, type] <- "CIM"
+
+  # Construction
+  t_cst <- c("CONSPONC", "CONSLINE", "CONSSURF")
+  toponyme[toponyme$cleabs %in% t_cst, type] <- "CST"
+
+  # Runway
+  t_aer <- c("AERODROM")
+  toponyme[toponyme$cleabs %in% t_aer, type] <- "AER"
+
+  # Habitation
+  t_hab <- c("PAIHABIT")
+  toponyme[toponyme$cleabs %in% t_hab, type] <- "HAB"
+
+  # Hydrographie
+  t_hyd <- c("PAIHYDRO", "COURDEAU", "PLANDEAU")
+  toponyme[toponyme$cleabs %in% t_hyd, type] <- "HYD"
+
+  # Orographie
+  t_oro <- c("PAIOROGR")
+  toponyme[toponyme$cleabs %in% t_oro, type] <- "ORO"
+
+  # Vegetation
+  t_veg <- c(
+    "FORETPUB",
+    "SURFPARC",
     "Zones de v\u00E9g\u00E9tation",
-    "Parcs et r\u00E9serves",
     "Haies",
-    "For\u00EAt domaniale",
-    "For\u00EAts publiques",
-    "Autre for\u00EAt publique",
     "Bois"
   )
-
-  # type
-  toponyme[[type]] <- "TYP"
-  toponyme[toponyme$classe_de_l_objet %in% t_hydr, type] <- "HYD"
-  toponyme[toponyme$classe_de_l_objet %in% t_vege, type] <- "VEG"
-  toponyme[toponyme$nature_de_l_objet %in% t_vege, type] <- "VEG"
+  toponyme[toponyme$cleabs %in% t_veg, type] <- "VEG"
+  toponyme[toponyme$nature_de_l_objet %in% t_veg, type] <- "VEG"
 
   # autres champs
   toponyme[[nature]] <- toponyme$nature_de_l_objet

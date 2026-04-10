@@ -19,9 +19,15 @@ attribute fields:
 \itemize{
 \item \code{TYPE} - Toponym class
 \itemize{
-\item \code{HYD} = Hydrographic toponym
-\item \code{VEG} = Vegetation-related toponym
-\item \code{TYP} = Other toponyms
+\item \code{AER} = Aerodrome runway
+\item \code{BAT} = Building
+\item \code{CIM} = Cemetery
+\item \code{CST} = Construction
+\item \code{HAB} = Residential area
+\item \code{HYD} = Hydrographic
+\item \code{ORO} = Orographic
+\item \code{VEG} = Vegetation-related
+\item \code{AUT} = Other toponyms
 }
 \item \code{NATURE} - Original BDTOPO object nature
 \item \code{NAME} - Official toponym name (when available)

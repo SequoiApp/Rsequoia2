@@ -65,7 +65,7 @@ get_infra_poly <- function(x, buffer = 1000) {
     infra_poly <- rbind(infra_poly, building)
   }
 
-  # cimetiere
+  # cemetery
   cemetery <- happign::get_wfs(
     x = fetch_envelope,
     layer = "BDTOPO_V3:cimetiere",
