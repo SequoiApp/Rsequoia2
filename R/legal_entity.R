@@ -213,7 +213,7 @@ read_legal_entity <- function(files, verbose = TRUE) {
   # Column classes: keep only useful fields, others ignored
   col_classes <- replace(
     rep("NULL", 24),
-    c(1, 3, 5, 6, 7, 13, 14, 16, 17, 18, 24),
+    c(1, 3, 5, 6, 7, 13, 14, 16, 17, 18, 20, 24),
     NA
   )
 
@@ -225,7 +225,7 @@ read_legal_entity <- function(files, verbose = TRUE) {
   # Canonical column names (DGFiP layout)
   names(raw) <- c(
     "dep", "com", "prefix", "section", "numero", "lieu_dit",
-    "surf_tot", "nature", "contenance", "type", "prop"
+    "surf_tot", "nature", "contenance", "type", "siren","prop"
   )
 
   return(raw)
@@ -247,8 +247,9 @@ format_legal_entity <- function(legal_entity, code_insee = NULL, verbose = FALSE
     legal_entity <- legal_entity[insee %in% code_insee, ]
   }
 
-  # Keep proprietors only
+  # Keep proprietors only and remove empty siren
   legal_entity <- legal_entity[startsWith(legal_entity$type, "P"), ]
+  legal_entity <- legal_entity[legal_entity$siren != "", ]
 
   # Build IDU
   formatted_legal_entity <- transform(
@@ -264,13 +265,13 @@ format_legal_entity <- function(legal_entity, code_insee = NULL, verbose = FALSE
 
   # Aggregate textual fields
   legal_entity_prop <- aggregate(
-    prop ~ idu,
+    prop ~ idu + siren,
     data = formatted_legal_entity,
     FUN = \(x) paste(unique(x), collapse = " \\ ")
   )
 
   legal_entity_lieu_dit <- aggregate(
-    lieu_dit ~ idu,
+    lieu_dit ~ idu + siren,
     data = formatted_legal_entity,
     FUN = \(x) paste(unique(x), collapse = " \\ ")
   )
@@ -313,6 +314,8 @@ normalize_legal_entity <- function(legal_entity, verbose = FALSE){
     merge(cog$dep[, c("DEP", "NCC_DEP", "REG")], all.x = TRUE) |>
     merge(cog$reg[, c("REG", "NCC_REG")], all.x = TRUE) |>
     seq_normalize("parca")
+
+  matrice["SIREN"] <- legal_entity$siren
 
   return(matrice)
 }
