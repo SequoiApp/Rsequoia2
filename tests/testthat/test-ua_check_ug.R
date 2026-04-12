@@ -25,7 +25,8 @@ test_that("ua_check_ug() detects inconsistent UG", {
   expect_warning(
     res <- ua_check_ug(ua, verbose = FALSE),
     "inconsistent UG"
-  )
+  ) |> quiet()
+
   expect_false(res)
 })
 
@@ -66,7 +67,8 @@ test_that("ua_check_ug() detects multiple inconsistent UGs", {
   expect_warning(
     res <- ua_check_ug(ua, verbose = FALSE),
     "inconsistent UG"
-  )
+  ) |> quiet()
+
   expect_false(res)
 })
 
@@ -83,7 +85,8 @@ test_that("ua_check_ug() works with NA values", {
   expect_warning(
     res <- ua_check_ug(ua, verbose = FALSE),
     "inconsistent UG"
-  )
+  ) |> quiet()
+
   expect_false(res)
 })
 
@@ -103,3 +106,4 @@ test_that("ua_check_ug() throws message wehn verbose = TRUE", {
   )
   expect_true(res)
 })
+

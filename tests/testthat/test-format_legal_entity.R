@@ -10,6 +10,7 @@ fake_data <- function(dep) {
     "nature" = c("L - Landes", "T - Terre", "T - Terre"),
     "contenance" = c("1", "1", "1"),
     "type" = "P - Proprietaire",
+    "siren" = "Matthieu",
     "prop" = "PROP"
   )
 }

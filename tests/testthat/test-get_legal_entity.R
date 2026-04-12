@@ -2,13 +2,13 @@ fake_data <- function() {
   # fake data should have 24 col but not all are read
   # col_classes <- replace(rep("NULL", 24), c(1, 3, 5, 6, 7, 13, 14, 16, 17, 18, 24), NA)
   data.frame(
-    "dep" = c("1", "29", "29"),
+    "dep" = c("01", "29", "29"),
     "2_null" = NA,
-    "com" = c("1", "123", "123"),
+    "com" = c("001", "123", "123"),
     "4_null" = NA,
     "prefix" = c("", "123", "123"),
-    "section" = c("A", "AB", "AB"),
-    "numero" = c("0001", "1", "1"),
+    "section" = c("0A", "AB", "AB"),
+    "numero" = c("0001", "0001", "0001"),
     "8_null" = NA,
     "9_null" = NA,
     "10_null" = NA,
@@ -21,7 +21,7 @@ fake_data <- function() {
     "contenance" = c("1", "1", "1"),
     "type" = c("P - Proprietaire", "P - Proprietaire", "P - Proprietaire"),
     "19_null" = NA,
-    "20_null" = NA,
+    "siren" = c("Matthieu", "Paul", "Alexandre"),
     "21_null" = NA,
     "22_null" = NA,
     "23_null" = NA,
@@ -54,12 +54,7 @@ test_that("get_legal_entity() warns on department-level queries", {
   write.csv2(fake_data(), row.names = FALSE, path, fileEncoding = "UTF-8")
 
   testthat::local_mocked_bindings(
-    download_legal_entity = function(cache, verbose) le_cache,
-    get_cog = function(...) list(
-      com = data.frame(COM = "01001", NCC_COM = "NCC_01001", DEP = "01"),
-      dep = data.frame(DEP = "01", NCC_DEP = "NCC_01", REG = "01"),
-      reg = data.frame(REG = "01", NCC_REG = "NCC_01")
-    )
+    download_legal_entity = function(...) le_cache
   )
 
   expect_message(

@@ -42,7 +42,7 @@ test_that("read_legal_entity() returns a shaped data.frame ", {
   res <- read_legal_entity(path1, verbose = FALSE)
 
   expect_s3_class(res, "data.frame")
-  expect_shape(res, dim = c(3,11))
+  expect_shape(res, dim = c(3,12))
 
 })
 
@@ -83,7 +83,7 @@ test_that("read_legal_entity() sets canonical column names", {
     names(res),
     c(
       "dep", "com", "prefix", "section", "numero", "lieu_dit",
-      "surf_tot", "nature", "contenance", "type", "prop"
+      "surf_tot", "nature", "contenance", "type", "siren", "prop"
     )
   )
 })
