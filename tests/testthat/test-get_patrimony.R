@@ -10,21 +10,6 @@ test_that("get_patrimony() validates type", {
   expect_error(get_patrimony(x, key = c("key1", "key2")), "must contain exactly one element")
 })
 
-test_that("get_patrimony() works (local only)", {
-  skip_on_cran()
-  skip_on_ci()
-  skip_if_offline()
-
-  x <- sf::st_sf(sf::st_sfc(sf::st_point(c(7.410821, 48.854160)), crs = 4326))
-
-  immh <- get_patrimony(x, key = "immh", buffer = 500)
-
-  expect_s3_class(immh, "sf")
-  expect_true(nrow(immh) >= 1)
-  expect_equal(sf::st_crs(immh), sf::st_crs(2154))
-
-})
-
 test_that("get_patrimony() works offline", {
 
   mock_immh <- list(
@@ -126,4 +111,28 @@ test_that("get_patrimony() works offline", {
   expect_true(nrow(immh) >= 1)
   expect_equal(sf::st_crs(immh), sf::st_crs(2154))
 
+})
+
+test_that("get_patrimony() handles unavailable Atlas service", {
+
+  testthat::local_mocked_bindings(
+    get_heritage = function(...) {
+      stop("Atlas service is not available")
+    },
+    .package = "frheritage"
+  )
+
+  x <- sf::st_sf(
+    sf::st_sfc(
+      sf::st_point(c(2, 48)),
+      crs = 4326
+    )
+  )
+
+  expect_message(
+    res <- get_patrimony(x, key = "immh"),
+    "Atlas service is not available"
+  ) |> quiet()
+
+  expect_null(res)
 })

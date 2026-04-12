@@ -43,15 +43,28 @@ get_patrimony <- function(
 
   data_code <- toupper(key)
 
-  f <- frheritage::get_heritage(
-    x,
-    data_code,
-    buffer = buffer,
-    crs = 2154,
-    spatial_filter = "intersects",
-    verbose = FALSE
-  )
+  f <- tryCatch(
+    frheritage::get_heritage(
+      x,
+      data_code,
+      buffer = buffer,
+      crs = 2154,
+      spatial_filter = "intersects",
+      verbose = FALSE
+    ),
+    error = function(e) {
 
+      if (grepl("Atlas service is not available", e$message, fixed = TRUE)) {
+        cli::cli_alert_warning(c(
+          "x" = "Atlas service is not available.",
+          "i" = "Please try again later."
+        ))
+        return(invisible(NULL))
+      }
+
+      stop(e)
+    }
+  )
 
   if (is.null(f) || !nrow(f)) {
     if (verbose){
