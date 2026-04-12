@@ -64,6 +64,9 @@
 - [`get_geol()`](https://sequoiapp.github.io/Rsequoia2/reference/get_geol.md)
   : Download BRGM geology data to a geometry
 
+- [`get_geom_type()`](https://sequoiapp.github.io/Rsequoia2/reference/get_geom_type.md)
+  : Use to get type of a geometry
+
 - [`get_gpu()`](https://sequoiapp.github.io/Rsequoia2/reference/get_gpu.md)
   : Download GPU vector layer
 
@@ -147,6 +150,9 @@
 
 - [`get_ser_pdf()`](https://sequoiapp.github.io/Rsequoia2/reference/get_ser_pdf.md)
   : Download sylvoecoregion PDF reports from INF repository
+
+- [`get_siren()`](https://sequoiapp.github.io/Rsequoia2/reference/get_siren.md)
+  : Get SIREN from pattern
 
 - [`get_slope()`](https://sequoiapp.github.io/Rsequoia2/reference/get_slope.md)
   : Compute a Slope Raster from a DEM
@@ -236,11 +242,17 @@
 - [`seq_curves()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_curves.md)
   : Generate hypsometric curves line layer for a Sequoia project
 
+- [`seq_dissolve()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_dissolve.md)
+  : Dissolve polygons using buffer-based tolerance
+
 - [`seq_drias()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_drias.md)
   : Generate DRIAS climate projection outputs
 
 - [`seq_elevation()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_elevation.md)
   : Download and Compute Elevation Products for a Sequoia Project
+
+- [`seq_envelope()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_envelope.md)
+  : Compute convex hulls from buffered geometries
 
 - [`seq_field()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_field.md)
   : Load field definitions from the Sequoia configuration

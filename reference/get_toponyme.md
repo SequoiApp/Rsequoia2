@@ -32,11 +32,23 @@ attribute fields:
 
 - `TYPE` - Toponym class
 
-  - `HYD` = Hydrographic toponym
+  - `AER` = Aerodrome runway
 
-  - `VEG` = Vegetation-related toponym
+  - `BAT` = Building
 
-  - `TYP` = Other toponyms
+  - `CIM` = Cemetery
+
+  - `CST` = Construction
+
+  - `HAB` = Residential area
+
+  - `HYD` = Hydrographic
+
+  - `ORO` = Orographic
+
+  - `VEG` = Vegetation-related
+
+  - `AUT` = Other toponyms
 
 - `NATURE` - Original BDTOPO object nature
 

@@ -96,7 +96,7 @@ idu <- c(
 
 parca <- get_parca(idu) |> transform(IDENTIFIANT = "BRIN")
 
-foret <- Rsequoia2:::dissolve(parca, 5.5)
+foret <- Rsequoia2::seq_dissolve(parca, 5.5)
 
 tm_shape(parca)+
   tm_borders(col = "blue", lwd = 1)+
@@ -711,13 +711,14 @@ tm_shape(toponymes) +
     "NOM",
     col = "TYPE",
     col.scale = tm_scale_categorical(values = c(
+      BAT = "red",
+      HAB = "black",
       HYD = "blue",
       VEG = "darkgreen",
-      TYP = "black"
+      AUT = "grey"
     )),
     col.legend = tm_legend_hide()
   )
-#> Multiple palettes called "blue" found: "kovesi.blue", "tableau.blue". The first one, "kovesi.blue", is returned.
 ```
 
 ### 9.3 Infrastructures (hors desserte)

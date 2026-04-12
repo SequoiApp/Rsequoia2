@@ -51,17 +51,15 @@ insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
 #> ℹ Downloading legal entity datasets...
-#> ⠙ 6 extracted | 263 MB ( 88 MB/s) | 3s
-#> ⠹ 20 extracted | 929 MB (153 MB/s) | 6.1s
-#> ⠸ 41 extracted | 1.5 GB (171 MB/s) | 9s
-#> ⠙ 21 extracted | 777 MB (159 MB/s) | 4.9s
-#> ⠹ 36 extracted | 1.5 GB (184 MB/s) | 7.9s
-#> ⠸ 54 extracted | 2.2 GB (197 MB/s) | 10.9s
+#> ⠙ 3 extracted | 162 MB ( 47 MB/s) | 3.5s
+#> ⠹ 20 extracted | 908 MB (141 MB/s) | 6.5s
+#> ⠙ 26 extracted | 986 MB (276 MB/s) | 3.6s
+#> ⠹ 52 extracted | 2.1 GB (319 MB/s) | 6.6s
 #> ✔ Data available at: /home/runner/.cache/R/Rsequoia2/legal_entity
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
 #> ℹ Generating matrice...
-#> ✔ Matrix successfully generated (2329 rows).
+#> ✔ Matrix successfully generated (2332 rows).
 
 head(legal_entity_cp)
 #>   IDENTIFIANT         PROPRIETAIRE            IDU  REG_NOM REG_CODE   DEP_NOM
@@ -92,6 +90,13 @@ head(legal_entity_cp)
 #> 4 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales
 #> 5 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales
 #> 6 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales
+#>       SIREN
+#> 1 448253641
+#> 2 448253641
+#> 3 448253641
+#> 4 448253641
+#> 5 907708952
+#> 6 491949202
 ```
 
 ### Rechercher un propriétaire
@@ -137,15 +142,15 @@ search_mat <- search_legal_entity(legal_entity_cp, lieu_dit = "phare")
 
 unique(search_mat[,c("PROPRIETAIRE", "LIEU_DIT")])
 #>                                     PROPRIETAIRE LIEU_DIT
-#> 692                                  LA VOILERIE DU PHARE
-#> 696                   379 RUE DU PHARE -PENMARCH DU PHARE
-#> 707 ETAT PAR DIRECTION DE L IMMOBILIER DE L ETAT DU PHARE
-#> 710                          COMMUNE DE PENMARCH DU PHARE
-#> 715                                       ECKMUL DU PHARE
-#> 720                                     VINCEAUR DU PHARE
-#> 745                     SCI BOULANGERIE COAT PIN DU PHARE
-#> 749                               BRISE DU LARGE DU PHARE
-#> 768                               SCI PLOUGONVEN DU PHARE
+#> 694                                  LA VOILERIE DU PHARE
+#> 698                   379 RUE DU PHARE -PENMARCH DU PHARE
+#> 709 ETAT PAR DIRECTION DE L IMMOBILIER DE L ETAT DU PHARE
+#> 712                          COMMUNE DE PENMARCH DU PHARE
+#> 717                                       ECKMUL DU PHARE
+#> 722                                     VINCEAUR DU PHARE
+#> 747                     SCI BOULANGERIE COAT PIN DU PHARE
+#> 751                               BRISE DU LARGE DU PHARE
+#> 770                               SCI PLOUGONVEN DU PHARE
 ```
 
 ### Enregistrer la matrice pour démarrer un processus Sequoia
@@ -177,11 +182,13 @@ seq_write(
 
 seq_parca(seq_dir)
 #> ℹ Downloading BDP from IGN...
+#> ⠙ iterating 1 done (0.44/s) | 2.3s
+#> iterating ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 #> ✔ 12 of 13 ETALAB geom successfully replaced with BDP geom.
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 13 features saved to 1_SEQUOIA/MY_FOREST_SEQ_PARCA_poly.gpkg.
 #> ✔ Table "x.seq.matrice" saved to MY_FOREST_MATRICE.xlsx.
-#> ✔ _matrice.xlsx also saved as MY_FOREST_MATRICE_20260410T060226.xlsx for safety.
+#> ✔ _matrice.xlsx also saved as MY_FOREST_MATRICE_20260412T165007.xlsx for safety.
 parca <- seq_read("parca", seq_dir)
 
 tm_tiles("OpenStreetMap")+

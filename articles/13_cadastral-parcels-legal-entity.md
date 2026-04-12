@@ -56,7 +56,7 @@ legal_entity_cp <- get_legal_entity(insee)
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
 #> ℹ Generating matrice...
-#> ✔ Matrix successfully generated (2329 rows).
+#> ✔ Matrix successfully generated (2332 rows).
 
 head(legal_entity_cp)
 #>   IDENTIFIANT         PROPRIETAIRE            IDU  REG_NOM REG_CODE   DEP_NOM
@@ -87,6 +87,13 @@ head(legal_entity_cp)
 #> 4 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales
 #> 5 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales
 #> 6 https://data.economie.gouv.fr/api/v2/catalog/datasets/fichiers-des-locaux-et-des-parcelles-des-personnes-morales
+#>       SIREN
+#> 1 448253641
+#> 2 448253641
+#> 3 448253641
+#> 4 448253641
+#> 5 907708952
+#> 6 491949202
 ```
 
 ### Search legal entity owner
@@ -127,15 +134,15 @@ search_mat <- search_legal_entity(legal_entity_cp, lieu_dit = "phare")
 
 unique(search_mat[,c("PROPRIETAIRE", "LIEU_DIT")])
 #>                                     PROPRIETAIRE LIEU_DIT
-#> 692                                  LA VOILERIE DU PHARE
-#> 696                   379 RUE DU PHARE -PENMARCH DU PHARE
-#> 707 ETAT PAR DIRECTION DE L IMMOBILIER DE L ETAT DU PHARE
-#> 710                          COMMUNE DE PENMARCH DU PHARE
-#> 715                                       ECKMUL DU PHARE
-#> 720                                     VINCEAUR DU PHARE
-#> 745                     SCI BOULANGERIE COAT PIN DU PHARE
-#> 749                               BRISE DU LARGE DU PHARE
-#> 768                               SCI PLOUGONVEN DU PHARE
+#> 694                                  LA VOILERIE DU PHARE
+#> 698                   379 RUE DU PHARE -PENMARCH DU PHARE
+#> 709 ETAT PAR DIRECTION DE L IMMOBILIER DE L ETAT DU PHARE
+#> 712                          COMMUNE DE PENMARCH DU PHARE
+#> 717                                       ECKMUL DU PHARE
+#> 722                                     VINCEAUR DU PHARE
+#> 747                     SCI BOULANGERIE COAT PIN DU PHARE
+#> 751                               BRISE DU LARGE DU PHARE
+#> 770                               SCI PLOUGONVEN DU PHARE
 ```
 
 ### Save to start Sequoia process
@@ -169,7 +176,7 @@ seq_parca(seq_dir)
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 13 features saved to 1_SEQUOIA/MY_FOREST_SEQ_PARCA_poly.gpkg.
 #> ✔ Table "x.seq.matrice" saved to MY_FOREST_MATRICE.xlsx.
-#> ✔ _matrice.xlsx also saved as MY_FOREST_MATRICE_20260410T060616.xlsx for safety.
+#> ✔ _matrice.xlsx also saved as MY_FOREST_MATRICE_20260412T165318.xlsx for safety.
 parca <- seq_read("parca", seq_dir)
 
 tm_tiles("OpenStreetMap")+
