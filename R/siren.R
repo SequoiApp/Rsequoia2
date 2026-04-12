@@ -63,12 +63,12 @@ get_siren <- function(pattern, verbose = TRUE){
   res <- DBI::dbGetQuery(con, sql, params = params)
 
   if (nrow(res) == 0) {
-    cli::cli_alert_warning("Aucun résultat trouvé.")
+    cli::cli_alert_warning("No result found")
     return(invisible(res))
   }
 
   if (verbose){
-    cli::cli_alert_success("{nrow(res)} résultat(s) trouvé(s) :")
+    cli::cli_alert_success("{nrow(res)} result{?s} found :")
     cli::cli_ul(paste0(res$denominationUniteLegale, ": ", res$siren))
     cli::cli_alert_info(paste("All SIREN:", paste0(res$siren, collapse = ", ")))
   }

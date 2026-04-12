@@ -13,6 +13,8 @@ Depends:
     R (>= 4.1.0)
 Imports: 
     archive,
+    DBI,
+    duckdb,
     cli,
     curl (>= 7.0.0),
     frheritage,
