@@ -467,9 +467,9 @@ correspond au `sf` de la zone d’étude ;
 - `key` corespond à la clé (= type) du zonage recherché (ex:
   `"v.gpu.document.poly"`). Les clés disponibles sont un peu plus
   complexes : v.gpu.municipality.poly, v.gpu.document.poly,
-  v.gpu.zone.poly, v.gpu.prescription.poly, v.gpu.prescription.line,
-  v.gpu.prescription.point, v.gpu.supa.poly, v.gpu.supg.poly,
-  v.gpu.supg.line, v.gpu.supg.point.
+  v.gpu.zone.poly, v.gpu.prescription.point, v.gpu.prescription.line,
+  v.gpu.prescription.poly, v.gpu.supa.poly, v.gpu.supg.point,
+  v.gpu.supg.line, v.gpu.supg.poly.
 
 ### 7.2. Fonction “process”
 
