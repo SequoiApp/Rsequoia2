@@ -56,12 +56,16 @@ get_toponyme <- function(x,
   }
 
   # normalise field
+  raw_names <- names(toponyme)
+  id <- seq_field("identifier")$name
   type <- seq_field("type")$name
   nature <- seq_field("nature")$name
   name <- seq_field("name")$name
   source <- seq_field("source")$name
+  rotation <- seq_field("rotation")$name
 
   # --- type ---
+  toponyme[[id]] <- NA_character_
   toponyme$cleabs <- substr(toponyme$cleabs_de_l_objet, 1, 8)
   toponyme[[type]] <- "AUT"
 
@@ -108,9 +112,12 @@ get_toponyme <- function(x,
   toponyme[[nature]] <- toponyme$nature_de_l_objet
   toponyme[[name]]   <- toponyme$graphie_du_toponyme
   toponyme[[source]] <- "IGNF_BDTOPO_V3"
+  toponyme[[rotation]] <- NA_real_
 
   # normalisation finale
-  toponyme <- seq_normalize(toponyme, "vct_point")
+  # toponyme <- seq_normalize(toponyme, "vct_point")
+  cols <- c(id, type, nature, name, source, rotation, raw_names)
+  toponyme <- subset(toponyme, select = cols)
 
   invisible(toponyme)
 }
