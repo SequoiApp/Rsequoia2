@@ -81,11 +81,11 @@ seq_boundaries <- function(
   )
 
   # Forest line ----
-  forest_line <- poly_to_line(forest) |> suppressWarnings()
+  forest_line <- poly_to_line(forest_polygon) |> suppressWarnings()
   forest_line[[identifier]] <- id
 
   # Forest point ----
-  forest_point <- sf::st_centroid(forest) |> suppressWarnings()
+  forest_point <- sf::st_centroid(forest_polygon) |> suppressWarnings()
 
   f_poly <- seq_write2(forest_polygon, "v.seq.forest.poly", id)
   f_line <- seq_write2(forest_line, "v.seq.forest.line", id)

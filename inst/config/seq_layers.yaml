@@ -13,7 +13,6 @@ r.ortho.rgb: { name: "RGB",     ext: "tif" }
 r.scan.25:   { name: "SCAN25",  ext: "tif" }
 r.scan.100:  { name: "SCAN100", ext: "tif" }
 r.scan.oaci: { name: "OACI",    ext: "tif" }
-r.scan.ign:  { name: "IGN",     ext: "tif" }
 r.sol.geol:  { name: "GEOL",    ext: "tif" }
 
 # SEQUOIA
@@ -61,13 +60,13 @@ v.pat.zppa.poly:   { name: "PAT_ZPPA_poly", ext: "gpkg" }
 v.gpu.municipality.poly:  { name: "GPU_MUNICIPALITY_poly",  ext: "gpkg" }
 v.gpu.document.poly:      { name: "GPU_DOCUMENT_poly",      ext: "gpkg" }
 v.gpu.zone.poly:          { name: "GPU_ZONE_poly",        ext: "gpkg" }
-v.gpu.prescription.poly:  { name: "GPU_PRESCRIPTION_poly",  ext: "gpkg" }
-v.gpu.prescription.line:  { name: "GPU_PRESCRIPTION_line",  ext: "gpkg" }
 v.gpu.prescription.point: { name: "GPU_PRESCRIPTION_point", ext: "gpkg" }
+v.gpu.prescription.line:  { name: "GPU_PRESCRIPTION_line",  ext: "gpkg" }
+v.gpu.prescription.poly:  { name: "GPU_PRESCRIPTION_poly",  ext: "gpkg" }
 v.gpu.supa.poly:          { name: "GPU_SUPA_poly",          ext: "gpkg" }
-v.gpu.supg.poly:          { name: "GPU_SUPG_poly",          ext: "gpkg" }
-v.gpu.supg.line:          { name: "GPU_SUPG_line",          ext: "gpkg" }
 v.gpu.supg.point:         { name: "GPU_SUPG_point",         ext: "gpkg" }
+v.gpu.supg.line:          { name: "GPU_SUPG_line",          ext: "gpkg" }
+v.gpu.supg.poly:          { name: "GPU_SUPG_poly",          ext: "gpkg" }
 
 # ARS
 v.ars.perimetre.poly: { name: "ARS_PERIMETRES_poly", ext: "gpkg" }
