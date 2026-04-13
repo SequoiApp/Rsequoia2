@@ -49,7 +49,6 @@ get_patrimony <- function(
       data_code,
       buffer = buffer,
       crs = 2154,
-      spatial_filter = "intersects",
       verbose = FALSE
     ),
     error = function(e) {
