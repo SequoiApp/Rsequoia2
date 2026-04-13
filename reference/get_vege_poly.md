@@ -5,7 +5,7 @@ Retrieve forest vegetation polygons around an area
 ## Usage
 
 ``` r
-get_vege_poly(x)
+get_vege_poly(x, tol = 500)
 ```
 
 ## Arguments
@@ -13,6 +13,10 @@ get_vege_poly(x)
 - x:
 
   `sf` or `sfc`; Geometry located in France.
+
+- tol:
+
+  `numeric`. Minimum area threshold in square meters.
 
 ## Value
 

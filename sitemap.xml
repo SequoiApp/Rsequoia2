@@ -104,6 +104,8 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/quiet.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/read_legal_entity.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/read_matrice.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/remove_interior_ring.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/remove_small_geometries.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/road_buffer.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/road_difference.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/road_mask.html</loc></url>
