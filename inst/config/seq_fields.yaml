@@ -150,7 +150,7 @@ std_stage:
 
 std_year:
   name: "PLT_ANNE"
-  class: "character"
+  class: "integer"
   definition: "Year of stand establishment"
 
 is_damaged:
