@@ -5,12 +5,20 @@
 #'
 #' @return An `sf` object containing the analysis units.
 #'
-#' @export
 parca_to_ua <- function(parca) {
   ua <- seq_normalize(parca, "ua")
 
-  is_wooded <- seq_field("is_wooded")$name
-  ua[[is_wooded]] <- TRUE
+  defaults <- c(
+    is_wooded = TRUE, # BOISE
+    is_damaged = FALSE, # SINISTRE
+    is_available = TRUE, # DISPONIBLE
+    is_compartmented = FALSE, # CLOISONNE
+    is_subsidized = FALSE # SUBVENTION
+  )
+
+  for (k in names(defaults)) {
+    ua[[seq_field(k)$name]] <- defaults[[k]]
+  }
 
   return(ua)
 }

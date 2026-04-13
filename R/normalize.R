@@ -47,12 +47,12 @@
 #' @export
 seq_normalize <- function(x, table){
 
-  x <- field_rename(x)
-  x <- field_add_drop(x, table)
-  x <- field_check_class(x)
-  x <- field_order(x, table)
+  x_rename <- field_rename(x)
+  x_add_drop <- field_add_drop(x_rename, table)
+  x_check_class <- field_check_class(x_add_drop)
+  x_order <- field_order(x_check_class, table)
 
-  return(x)
+  return(x_order)
 }
 
 #' @noRd
@@ -98,6 +98,13 @@ field_check_class <- function(x){
 
   to_check <- intersect(names(class_map), names(x))
 
+  as_boolean <- function(x) {
+    if (is.logical(x)) return(x)
+    x <- toupper(as.character(x))
+    ifelse(x %in% c("TRUE","T","1"), TRUE,
+           ifelse(x %in% c("FALSE","F","0"), FALSE, NA))
+  }
+
   coerce_one <- function(v, tgt) {
     tgt <- tolower(tgt)
     if (is.factor(v)) v <- as.character(v)  # safe baseline
@@ -109,6 +116,8 @@ field_check_class <- function(x){
            "logical"   = as.logical(v),
            "factor"    = factor(v),
            "date"      = as.Date(v),
+           "boolean"   = as_boolean(v),
+           "logical"   = as_boolean(v),
            v # unknown -> leave as is
     ) |> suppressWarnings()
   }
