@@ -52,32 +52,14 @@ seq_boundaries <- function(
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
   id <- unique(parca[[identifier]])
 
-  # Forest polygon ----
-  forest <- aggregate(
-    parca[cad_area],
-    by = list(parca[[identifier]]) |> setNames(identifier),
-    FUN = sum,
-    do_union = FALSE
-  )
+  parca <- parca[!sf::st_is_empty(parca), ]
 
-  forest_attr <- sf::st_drop_geometry(forest)
-
-  forest_geom <- lapply(seq_len(nrow(forest)), function(i) {
-
-    g <- sf::st_geometry(forest)[[i]]
-
-    tmp <- seq_dissolve(
-      sf::st_sf(geometry = sf::st_sfc(g, crs = sf::st_crs(forest))),
-      buffer = tol
-    )
-
-    sf::st_geometry(tmp)[[1]]
-
-  })
+  geom <- seq_dissolve(parca, buffer = tol)
 
   forest_polygon <- sf::st_sf(
-    forest_attr,
-    geometry = sf::st_sfc(forest_geom, crs = sf::st_crs(forest))
+    setNames(data.frame(parca[[identifier]][1]), identifier),
+    setNames(data.frame(sum(parca[[cad_area]], na.rm = TRUE)), cad_area),
+    geometry = sf::st_geometry(geom)
   )
 
   # Forest line ----
@@ -92,22 +74,33 @@ seq_boundaries <- function(
   f_point <- seq_write2(forest_point, "v.seq.forest.point", id)
 
   # Owner boudaries ----
-  by_id_owner <- list(parca[[identifier]], parca[[owner]]) |>
-    setNames(c(identifier, owner))
+  spl <- split(parca, parca[[owner]])
 
-  owner <- aggregate(
-    parca[cad_area],
-    by = by_id_owner,
-    FUN = sum,
-    do_union = TRUE
-  )
+  owner_list <- lapply(spl, function(x) {
 
-  owner_line <- poly_to_line(owner) |> suppressWarnings()
+    geom <- sf::st_union(seq_dissolve(x, buffer = tol))
+
+    sf::st_sf(
+      setNames(
+        data.frame(
+          x[[identifier]][1],
+          x[[owner]][1],
+          sum(x[[cad_area]], na.rm = TRUE)
+        ),
+        c(identifier, owner, cad_area)
+      ),
+        geometry = sf::st_geometry(geom)
+      )
+  })
+
+  owner_poly <- do.call(rbind, unname(owner_list))
+
+  owner_line <- poly_to_line(owner_poly) |> suppressWarnings()
   owner_line[[identifier]] <- id
 
-  owner_point <- sf::st_centroid(owner) |> suppressWarnings()
+  owner_point <- sf::st_centroid(owner_poly) |> suppressWarnings()
 
-  o_poly <- seq_write2(owner, "v.seq.owner.poly", id)
+  o_poly <- seq_write2(owner_poly, "v.seq.owner.poly", id)
   o_line <- seq_write2(owner_line, "v.seq.owner.line", id)
   o_point <- seq_write2(owner_point, "v.seq.owner.point", id)
 
