@@ -4,10 +4,12 @@
 \alias{get_vege_poly}
 \title{Retrieve forest vegetation polygons around an area}
 \usage{
-get_vege_poly(x)
+get_vege_poly(x, tol = 500)
 }
 \arguments{
 \item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
+
+\item{tol}{\code{numeric}. Minimum area threshold in square meters.}
 }
 \value{
 An \code{sf} object containing forest vegetation polygons

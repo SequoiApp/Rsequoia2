@@ -30,7 +30,7 @@ test_that("get_vege_poly() returns polygon when WFS returns data", {
     .package = "happign"
   )
 
-  res <- get_vege_poly(x)
+  res <- get_vege_poly(x, 0)
   expect_s3_class(res, "sf")
   expect_equal(nrow(res), 1)
   expect_true(all(st_geometry_type(res) == "POLYGON"))
@@ -49,7 +49,7 @@ test_that("get_vege_poly() remove interior ring", {
     .package = "happign"
   )
 
-  res <- get_vege_poly(x)
+  res <- get_vege_poly(x, 0)
 
   expect_s3_class(res, "sf")
   expect_equal(nrow(res), 1)
@@ -68,7 +68,7 @@ test_that("get_vege_poly() sets type and source fields", {
     .package = "happign"
   )
 
-  res <- get_vege_poly(x)
+  res <- get_vege_poly(x, 0)
 
   type <- seq_field("type")$name
   source <- seq_field("source")$name
