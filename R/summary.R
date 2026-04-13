@@ -102,7 +102,13 @@ seq_summary <- function(dirname = ".", verbose = TRUE){
     order_by("pcl_code") |>
     pivot(row = parca_col, "pcl_code", direction = "wide") |>
     order_by(parca_col)
-  parca_by_pf$TOTAL <- rowSums(parca_by_pf[, -seq_along(parca_col)], na.rm = T)
+
+  # Garde fou s'il n'y a qu'une parcelle
+  nb_pcl <- ncol(parca_by_pf) - length(parca_col)
+  if (nb_pcl > 1){
+    parca_by_pf$TOTAL <- rowSums(parca_by_pf[, -seq_along(parca_col)], na.rm = T)
+  }
+
   wb <- wb_add_seq_table(
     wb, "PARCA_PF", parca_by_pf,
     total_row = c(
@@ -209,12 +215,14 @@ seq_summary <- function(dirname = ".", verbose = TRUE){
   actual_year <- Sys.Date() |> format("%Y") |> as.numeric()
   last_year <- actual_year + 15
   years <- as.character(actual_year:last_year)
-  coupe[,years] <- NA
+  coupe_with_year <- coupe
+  coupe_with_year[,years] <- NA
 
   wb <- wb_add_seq_table(
-    wb, "COUPE", coupe,
-    total_row = c(text = "TOTAL", rep("none", 4), "sum", rep("count", 16))
+    wb, "COUPE", coupe_with_year,
+    total_row = c(text = "TOTAL", rep("none", ncol(coupe) - 2), "sum", rep("count", 16))
   )
+
   # GESTION ----
   gestion <- sum_surf_by(ua, "treatment") |>
     order_by("treatment") |>
@@ -225,35 +233,53 @@ seq_summary <- function(dirname = ".", verbose = TRUE){
   )
 
   # GESTION_PLT ----
-  gestion_by_plt <- sum_surf_by(ua, "treatment", "std_type") |>
-    order_by("std_type") |>
-    pivot("treatment", "std_type", direction = "wide") |>
-    order_by("treatment")
+  field_treatment <- seq_field("treatment")$name
+  if (all(is.na(ua$AME_TYPE))) {
+    cli::cli_alert_warning(
+      "No stand type available in {.field {field_treatment}}"
+    )
+  } else {
+    gestion_by_plt <- sum_surf_by(ua, "treatment", "std_type") |>
+      order_by("std_type") |>
+      pivot("treatment", "std_type", direction = "wide") |>
+      order_by("treatment")
 
-  nb_pplmt <- ncol(gestion_by_plt) - 1
-  if (nb_pplmt > 1){
-    gestion_by_plt$TOTAL <- rowSums(gestion_by_plt[, -1], na.rm = T)
+    value_cols <- setdiff(names(gestion_by_plt), field_treatment)
+
+    if (length(value_cols) > 1) {
+      gestion_by_plt$TOTAL <- rowSums(gestion_by_plt[value_cols], na.rm = TRUE)
+    }
+
+    wb <- wb_add_seq_table(
+      wb,
+      "GESTION_PLT",
+      gestion_by_plt,
+      total_row = c(text = "TOTAL", rep("sum", ncol(gestion_by_plt) - 1))
+    )
   }
-  wb <- wb_add_seq_table(
-    wb, "GESTION_PLT", gestion_by_plt,
-    total_row = c(text = "TOTAL", rep("sum", ncol(gestion_by_plt) - 1))
-  )
 
   # PLT_GESTION ----
-  plt_by_gestion <- sum_surf_by(ua, "std_type", "treatment") |>
-    order_by("treatment") |>
-    pivot("std_type", "treatment", direction = "wide") |>
-    order_by("std_type")
+  field_treatment <- seq_field("treatment")$name
+  if (all(is.na(ua$AME_TYPE))) {
+    cli::cli_alert_warning(
+      "No stand type available in {.field {field_treatment}}"
+    )
+  }else{
+    plt_by_gestion <- sum_surf_by(ua, "std_type", "treatment") |>
+      order_by("treatment") |>
+      pivot("std_type", "treatment", direction = "wide") |>
+      order_by("std_type")
 
-  nb_gestion <- ncol(plt_by_gestion) - 1
-  if (nb_gestion > 1){
-    plt_by_gestion$TOTAL <- rowSums(plt_by_gestion[, -1], na.rm = T)
+    nb_gestion <- ncol(plt_by_gestion) - 1
+    if (nb_gestion > 1){
+      plt_by_gestion$TOTAL <- rowSums(plt_by_gestion[, -1], na.rm = T)
+    }
+
+    wb <- wb_add_seq_table(
+      wb, "PLT_GESTION", plt_by_gestion,
+      total_row = c(text = "TOTAL", rep("sum", ncol(plt_by_gestion) - 1))
+    )
   }
-
-  wb <- wb_add_seq_table(
-    wb, "PLT_GESTION", plt_by_gestion,
-    total_row = c(text = "TOTAL", rep("sum", ncol(plt_by_gestion) - 1))
-  )
 
   # STATION ----
   station <- sum_surf_by(ua, "station") |>

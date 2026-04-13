@@ -62,6 +62,7 @@ order_by <- function(to_order, ..., decreasing = FALSE) {
   )
 
   cols <- lapply(by, function(nm) to_order[[nm]])
+  cols <- Filter(Negate(is.null), cols) #remove col without value
   o <- do.call(order, c(cols, list(decreasing = decreasing)))
   to_order[o, , drop = FALSE]
 }
@@ -84,11 +85,12 @@ pivot <- function(to_pivot, row, col, ...){
 
   row_vars <- vapply(row, \(x) seq_field(x)$name, character(1))
 
-  pivoted <- stats::reshape(to_pivot,
-                            idvar = row_vars,
-                            timevar = seq_field(col)$name,
-                            sep = "___",
-                            direction = "wide"
+  pivoted <- stats::reshape(
+    to_pivot,
+    idvar = row_vars,
+    timevar = seq_field(col)$name,
+    sep = "___",
+    direction = "wide"
   )
   names(pivoted) <- sub("^.*___", "", names(pivoted))
 
