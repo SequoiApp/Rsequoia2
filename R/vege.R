@@ -1,6 +1,7 @@
 #' Retrieve forest vegetation polygons around an area
 #'
 #' @param x `sf` or `sfc`; Geometry located in France.
+#' @param tol `numeric`. Minimum area threshold in square meters.
 #'
 #' @return An `sf` object containing forest vegetation polygons
 #'
@@ -13,21 +14,10 @@
 #' `sf` object with a standardized structure.
 #'
 #' @export
-get_vege_poly <- function(x) {
+get_vege_poly <- function(x, tol = 500) {
 
   if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
-  }
-
-  remove_interior_ring <- function(x) {
-    sf::st_sf(
-      geometry = sf::st_sfc(
-        lapply(sf::st_geometry(sf::st_cast(x, "POLYGON")), function(p) {
-          sf::st_polygon(list(p[[1]]))  # keep only outer ring
-        }),
-        crs = sf::st_crs(x)
-      )
-    )
   }
 
   crs <- 2154
@@ -42,8 +32,9 @@ get_vege_poly <- function(x) {
   # Fetching data in 1000m distance, then crop to 1500m for large data
   fetch_envelope <- seq_envelope(x, 1000)
   control_envelope <- seq_envelope(x, 1500)
+  forest <- seq_dissolve(sf::st_buffer(x, 5), 5)
 
-  # forest mask
+  # Retrieve forest mask
   forest_mask <- happign::get_wfs(
     x = fetch_envelope, layer = layer, predicate = happign::intersects()
   )
@@ -54,20 +45,102 @@ get_vege_poly <- function(x) {
     return(invisible(empty_sf))
   }
 
+  # Intersection on area of interest
   forest_mask <- sf::st_transform(forest_mask, crs)
-  forest_intersect <- sf::st_intersection(forest_mask, control_envelope) |> suppressWarnings()
+  intersect <- sf::st_intersection(forest_mask, control_envelope) |>
+    quiet()
 
+  # Remove interior rings
   # Intersection create mixed geometry type (POLYGON, MULTIPOLYGON)
   # Because st_cast cannot deal with mixed geometry, first is casted to multipoly, then poly
-  vege_poly <- sf::st_cast(forest_intersect, "MULTIPOLYGON") |>
+  external <- sf::st_cast(intersect, "MULTIPOLYGON") |>
     sf::st_cast("POLYGON", warn = FALSE) |>
     remove_interior_ring()
+
+  # Remove forest boundary
+  difference <- sf::st_difference(external, forest) |>
+    sf::st_cast("MULTIPOLYGON") |>
+    sf::st_cast("POLYGON") |>
+    sf::st_make_valid() |>
+    quiet()
+
+  # Remove small features
+  vege_poly <- remove_small_geometries(difference, tol) |>
+    sf::st_make_valid()
+
+  if (nrow(vege_poly)==0){
+    return(invisible(NULL))
+  }
 
   vege_poly[[type]] <- "FOR"
   vege_poly[[source]] <- "ignf_masque_foret"
 
   return(invisible(vege_poly))
 
+}
+
+#' Remove interior rings from polygons
+#'
+#' Keeps only the exterior ring of each polygon, removing holes.
+#'
+#' @param x `sf` or `sfc`. Input geometries (POLYGON / MULTIPOLYGON).
+#'
+#' @return An `sf` object with polygons stripped of interior rings.
+#'
+#' @keywords internal
+remove_interior_ring <- function(x) {
+  sf::st_sf(
+    geometry = sf::st_sfc(
+      lapply(sf::st_geometry(sf::st_cast(x, "POLYGON")), function(p) {
+        sf::st_polygon(list(p[[1]]))  # keep only outer ring
+      }),
+      crs = sf::st_crs(x)
+    )
+  ) |> quiet()
+}
+
+#' Remove geometries below a minimum area threshold
+#'
+#' Filters geometries whose area is smaller than a given threshold (in m²).
+#' The input is projected to a metric CRS before area computation.
+#'
+#' @param x `sf` or `sfc`. Input geometries (POLYGON / MULTIPOLYGON).
+#' @param tol `numeric`. Minimum area threshold in square meters.
+#' @param crs `numeric`. EPSG code of a projected CRS (default: 2154).
+#'
+#' @return An object of the same class as `x`, with geometries below the threshold removed.
+#'
+#' @keywords internal
+remove_small_geometries <- function(x, tol, crs = 2154) {
+
+  # --- Checks ----
+  if (!inherits(x, c("sf", "sfc"))) {
+    cli::cli_abort("{.arg x} must be of class {.cls sf} or {.cls sfc}.")
+  }
+
+  if (!is.numeric(tol) || length(tol) != 1) {
+    cli::cli_abort("{.arg tol} must be a single numeric value (area in m^2).")
+  }
+
+  # --- Transform ----
+  x_proj <- sf::st_transform(x, crs)
+
+  # --- Validate ----
+  x_proj <- sf::st_make_valid(x_proj) |> quiet()
+
+  # --- Areas ----
+  areas <- sf::st_area(x_proj)
+
+  # --- Filter ----
+  keep <- as.numeric(areas) >= tol
+  n_removed <- sum(!keep)
+
+  x_filtered <- x_proj[keep, , drop = FALSE]
+
+  # --- Back to original CRS ----
+  x_filtered <- sf::st_transform(x_filtered, sf::st_crs(x))
+
+  return(x_filtered)
 }
 
 #' Retrieve forest vegetation lines around an area
@@ -176,7 +249,9 @@ get_vege_point <- function(x){
   # Fetching data in 1000m distance, then crop to 1500m for large data
   fetch_envelope   <- seq_envelope(x, 1000)
   control_envelope <- seq_envelope(x, 1500)
+  forest <- seq_dissolve(seq_dissolve(sf::st_buffer(x, 5), 5), 5)
 
+  # Retrieve fv data
   raw_fv <- happign::get_wfs(
     x = fetch_envelope,
     layer = "LANDCOVER.FORESTINVENTORY.V2:formation_vegetale",
@@ -193,6 +268,7 @@ get_vege_point <- function(x){
   fv <- sf::st_transform(raw_fv, crs)
   fv <- sf::st_intersection(fv, control_envelope) |> suppressWarnings()
 
+  # Mapping type
   # https://geoservices.ign.fr/sites/default/files/2021-06/DC_BDForet_2-0.pdf
   map <- c(
     "FF1" = "FEV", "FO1" = "FEV",
@@ -215,6 +291,7 @@ get_vege_point <- function(x){
   fv <- seq_normalize(fv, "vct_point")
   fv[[source]] <- "ignf_bd_foretv2"
 
+  # Create points on grid
   area_tot <- sum(st_area(fv)) |> units::set_units("ha")
   ha_per_point <- units::set_units(4, "ha")
   n_points <- max(0L, round(area_tot / ha_per_point) |> as.integer())
@@ -229,7 +306,14 @@ get_vege_point <- function(x){
     sf::st_as_sf(crs = sf::st_crs(fv)) |>
     sf::st_set_geometry("geometry") # rename sf column to geometry instead of x
 
-  vege_point <- sf::st_join(point, fv, join = sf::st_intersects)
+  point <- sf::st_join(point, fv, join = sf::st_intersects)
+
+  # Remove forest boundary
+  vege_point <- sf::st_difference(point, forest) |>
+    sf::st_cast("MULTIPOINT") |>
+    sf::st_cast("POINT") |>
+    sf::st_make_valid() |>
+    quiet()
 
   return(invisible(vege_point))
 
