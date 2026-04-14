@@ -24,6 +24,11 @@
 #' @export
 download_legal_entity <- function(cache = NULL, verbose = TRUE) {
 
+  # --- timeout handling (scoped)
+  old_timeout <- getOption("timeout")
+  options(timeout = max(300, old_timeout))  # e.g. 5 min
+  on.exit(options(timeout = old_timeout), add = TRUE)
+
   if (is.null(cache)){
     cache <- tools::R_user_dir("Rsequoia2", which = "cache") |>
       file.path("legal_entity")
