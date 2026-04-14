@@ -121,7 +121,7 @@ get_legal_entity <- function(
     cli::cli_alert_warning("Department-level queries may be slower. For better performance, use {.field code_insee} instead.")
   }
 
-  deps <- c(code_dep, substr(code_insee, 1, 2)) |> unique()
+  deps <- c(code_dep, substr(code_insee, 1, 2)) |> unique() |> pad_right(3)
   cache <- download_legal_entity(cache = cache, verbose = verbose)
 
   pattern <- paste0(deps, ".*\\.csv$") |> paste(collapse = "|")
