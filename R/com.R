@@ -17,9 +17,10 @@
 #' and normalizes the resulting geometries and attributes.
 #'
 #' @export
-get_com_poly <- function(x,
-                         buffer = 2000,
-                         verbose = TRUE) {
+get_com_poly <- function(
+    x,
+    buffer = 2000,
+    verbose = TRUE) {
 
   # fetch_envelope buffer
   crs <- 2154
@@ -76,7 +77,9 @@ get_com_line <- function(x, graphic = FALSE, verbose = TRUE) {
     return(NULL)
   }
 
-  line <- poly_to_line(poly)
+  line <- poly_to_line(poly) |>
+    sf::st_line_merge() |>
+    sf::st_cast("LINESTRING", warn = TRUE)
 
   if (graphic){
     convex <- seq_envelope(x, 500)
