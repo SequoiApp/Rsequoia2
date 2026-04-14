@@ -19,6 +19,7 @@ namespace:
   r.ortho: "imagerie"
   r.scan: "scan"
   r.sol: "sol"
+  r.seq: "raster"
 
 path:
   sequoia: "1_SEQUOIA"
@@ -31,6 +32,7 @@ path:
   urbanisme: "2_VECTOR/URBANISME"
   environnement: "2_VECTOR/ENVIRONNEMENT"
   ifn: "2_VECTOR/IFN"
+  raster: "3_RASTER"
   scan: "3_RASTER/SCAN"
   altimetrie: "3_RASTER/ALTIMETRIE"
   imagerie: "3_RASTER/IMAGERIE"

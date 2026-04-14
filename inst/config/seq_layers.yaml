@@ -14,6 +14,7 @@ r.scan.25:   { name: "SCAN25",  ext: "tif" }
 r.scan.100:  { name: "SCAN100", ext: "tif" }
 r.scan.oaci: { name: "OACI",    ext: "tif" }
 r.sol.geol:  { name: "GEOL",    ext: "tif" }
+r.seq.plt:   { name: "PLT",    ext: "tif" }
 
 # SEQUOIA
 v.seq.parca.poly:   { name: "SEQ_PARCA_poly",  ext: "gpkg" }
