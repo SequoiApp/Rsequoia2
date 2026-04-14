@@ -473,7 +473,7 @@ menu_data <- function(path, overwrite = FALSE) {
         }
 
         for (i in idx) {
-          run_interactive(seq_actions[[i]]())
+          run_interactive(seq_actions[[i]]() |> seq_retry(verbose = TRUE))
         }
       }
     ),
