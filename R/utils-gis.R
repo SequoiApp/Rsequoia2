@@ -103,9 +103,9 @@ poly_to_line <- function(x) {
   # remove empty result (if no shared line)
   lines <- Filter(\(x) !is.null(x), lines)
 
-  lines_sf <- sf::st_sf(
-    type = names(lines),
-    geometry = do.call(c, lines)
+  lines_sf <- rbind(
+    sf::st_sf(type = "shared", geometry = lines$shared),
+    sf::st_sf(type = "outer",  geometry = lines$outer)
   )
 
   return(lines_sf)
@@ -133,7 +133,9 @@ extract_shared_lines <- function(x){
   shared_lines <- tryCatch({
     sf::st_intersection(x, x) |>
       sf::st_collection_extract("LINESTRING") |>
-      sf::st_union()
+      sf::st_union() |>
+      sf::st_line_merge() |>
+      sf::st_cast("LINESTRING")
   },
   error = function(e) {
     NULL
@@ -159,9 +161,10 @@ extract_outer_lines <- function(x){
   }
 
   x <- sf::st_geometry(x)
-  outer_lines <- sf::st_union(x) |>
-    sf::st_cast("MULTILINESTRING") |>
-    sf::st_union()
+  outer_lines <- x |>
+    sf::st_union() |>
+    sf::st_boundary() |>
+    sf::st_cast("LINESTRING")
 
   return(outer_lines)
 }

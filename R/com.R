@@ -77,9 +77,7 @@ get_com_line <- function(x, graphic = FALSE, verbose = TRUE) {
     return(NULL)
   }
 
-  line <- poly_to_line(poly) |>
-    sf::st_line_merge() |>
-    sf::st_cast("LINESTRING", warn = TRUE)
+  line <- poly_to_line(poly)
 
   if (graphic){
     convex <- seq_envelope(x, 500)
