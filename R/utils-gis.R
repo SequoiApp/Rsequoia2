@@ -103,9 +103,11 @@ poly_to_line <- function(x) {
   # remove empty result (if no shared line)
   lines <- Filter(\(x) !is.null(x), lines)
 
-  lines_sf <- rbind(
-    sf::st_sf(type = "shared", geometry = lines$shared),
-    sf::st_sf(type = "outer",  geometry = lines$outer)
+  lines_sf <- do.call(
+    rbind,
+    lapply(names(lines), function(n) {
+      sf::st_sf(type = n, geometry = lines[[n]])
+    })
   )
 
   return(lines_sf)
