@@ -6,12 +6,7 @@ object based on configured parcel keys.
 ## Usage
 
 ``` r
-ua_generate_ug(
-  ua,
-  ug_keys = c("pcl_code", "sub_code"),
-  separator = ".",
-  verbose = TRUE
-)
+ua_generate_ug(ua, separator = ".", verbose = TRUE)
 ```
 
 ## Arguments
@@ -20,11 +15,6 @@ ua_generate_ug(
 
   `sf` object containing analysis units; must contain fields used by
   `ug_keys`.
-
-- ug_keys:
-
-  `character` vector, default `c("pcl_code", "sub_code")`. Keys used to
-  build the UG identifier.
 
 - separator:
 
