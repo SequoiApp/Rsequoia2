@@ -816,9 +816,6 @@ tm_shape(infra_point) +
     fill.scale = tm_scale_categorical(),
     size = 1
   )
-#> Registered S3 method overwritten by 'jsonify':
-#>   method     from    
-#>   print.json jsonlite
 ```
 
 ### 9.4 Desserte

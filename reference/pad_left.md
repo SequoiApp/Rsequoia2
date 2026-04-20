@@ -1,4 +1,4 @@
-# Right-pad a string with zeros
+# Left-pad a string with zeros
 
 Internal helper used to format fixed-width codes.
 
