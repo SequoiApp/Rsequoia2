@@ -50,7 +50,7 @@ test_that("get_legal_entity() warns on department-level queries", {
   on.exit(unlink(le_cache, recursive = TRUE, force = TRUE), add = TRUE)
 
   x <- "01"
-  path <- file.path(le_cache, paste0(x, ".csv"))
+  path <- file.path(le_cache, paste0(pad_right(x, 3), ".csv"))
   write.csv2(fake_data(), row.names = FALSE, path, fileEncoding = "UTF-8")
 
   testthat::local_mocked_bindings(
@@ -72,7 +72,7 @@ test_that("get_legal_entity() support multi-dep query", {
   on.exit(unlink(le_cache, recursive = TRUE, force = TRUE), add = TRUE)
 
   x <- c("01", "02")
-  path <- file.path(le_cache, paste0(x, ".csv"))
+  path <- file.path(le_cache, paste0(pad_right(x, 3), ".csv"))
   write.csv2(fake_data(), row.names = FALSE, path[1], fileEncoding = "UTF-8")
   write.csv2(fake_data(), row.names = FALSE, path[2], fileEncoding = "UTF-8")
 
