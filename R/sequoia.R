@@ -168,7 +168,7 @@ select_pdf_files <- function(path) {
 
   repeat {
     f <- rstudioapi::selectFile(
-      caption = "Selectionner Releve de propriete",
+      caption = "Sélectionner un relevé de propriété",
       path = getOption("last_pdf_path", path),
       filter = "PDF files (*.pdf)"
     )
@@ -177,13 +177,31 @@ select_pdf_files <- function(path) {
       break
     }
 
+    if (f %in% files) {
+      rstudioapi::showDialog(
+        title = "Fichier déjà sélectionné",
+        message = paste0(
+          "Ce fichier est déjà sélectionné : ",
+          basename(f)
+        )
+      )
+      next
+    }
+
     files <- c(files, f)
     options(last_pdf_path = dirname(f))
 
+    n <- length(files)
+    msg <- paste0(
+      n, " fichier", if (n > 1) "s" else "", " sélectionné", if (n > 1) "s" else "", " : \n",
+      paste("-", basename(files), collapse = "\n")
+    )
+
     another <- rstudioapi::showQuestion(
-      title = "Selection des fichiers",
-      message = "Selectionner un autre fichier ?",
-      cancel = "Termine"
+      title = "Sélection des fichiers",
+      message = paste0(msg, "\n\nVoulez-vous sélectionner un autre fichier ?"),
+      ok = "Oui",
+      cancel = "Lancer la conversion"
     )
 
     if (!another) {
@@ -191,7 +209,7 @@ select_pdf_files <- function(path) {
     }
   }
 
-  unique(files)
+  files
 }
 
 #' Ask for multiple numbered choices
