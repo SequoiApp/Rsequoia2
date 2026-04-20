@@ -168,7 +168,7 @@ select_pdf_files <- function(path) {
 
   repeat {
     f <- rstudioapi::selectFile(
-      caption = "Sélectionner un relevé de propriété",
+      caption = "Selectionner un releve de propriete",
       path = getOption("last_pdf_path", path),
       filter = "PDF files (*.pdf)"
     )
@@ -179,9 +179,9 @@ select_pdf_files <- function(path) {
 
     if (f %in% files) {
       rstudioapi::showDialog(
-        title = "Fichier déjà sélectionné",
+        title = "Fichier deja selectionne",
         message = paste0(
-          "Ce fichier est déjà sélectionné : ",
+          "Ce fichier est deja selectionne : ",
           basename(f)
         )
       )
@@ -193,13 +193,13 @@ select_pdf_files <- function(path) {
 
     n <- length(files)
     msg <- paste0(
-      n, " fichier", if (n > 1) "s" else "", " sélectionné", if (n > 1) "s" else "", " : \n",
+      n, " fichier", if (n > 1) "s" else "", " selectionne", if (n > 1) "s" else "", " : \n",
       paste("-", basename(files), collapse = "\n")
     )
 
     another <- rstudioapi::showQuestion(
-      title = "Sélection des fichiers",
-      message = paste0(msg, "\n\nVoulez-vous sélectionner un autre fichier ?"),
+      title = "Selection des fichiers",
+      message = paste0(msg, "\n\nVoulez-vous selectionner un autre fichier ?"),
       ok = "Oui",
       cancel = "Lancer la conversion"
     )
@@ -270,6 +270,7 @@ make_sequoia_actions <- function(overwrite = FALSE) {
       path <- require_seq_path()
       seq_ua(path, overwrite = TRUE)
       seq_parcels(path, overwrite = TRUE)
+      seq_wooded(path, overwrite = TRUE)
     },
 
     "Telecharger DONNEES" = function() {

@@ -52,6 +52,7 @@ seq_boundaries <- function(
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
   id <- unique(parca[[identifier]])
 
+  # Forest poly ----
   parca <- parca[!sf::st_is_empty(parca), ]
 
   geom <- seq_dissolve(parca, buffer = tol)
@@ -73,7 +74,7 @@ seq_boundaries <- function(
   f_line <- seq_write2(forest_line, "v.seq.forest.line", id)
   f_point <- seq_write2(forest_point, "v.seq.forest.point", id)
 
-  # Owner boudaries ----
+  # Owner poly ----
   spl <- split(parca, parca[[owner]])
 
   owner_list <- lapply(spl, function(x) {
@@ -95,9 +96,11 @@ seq_boundaries <- function(
 
   owner_poly <- do.call(rbind, unname(owner_list))
 
+  # Owner line ----
   owner_line <- poly_to_line(owner_poly) |> suppressWarnings()
   owner_line[[identifier]] <- id
 
+  # Owner point ----
   owner_point <- sf::st_centroid(owner_poly) |> suppressWarnings()
 
   o_poly <- seq_write2(owner_poly, "v.seq.owner.poly", id)

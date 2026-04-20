@@ -32,6 +32,7 @@ v.seq.sspf.point:   { name: "SEQ_SSPF_point",  ext: "gpkg" }
 v.seq.sspf.poly:    { name: "SEQ_SSPF_poly",   ext: "gpkg" }
 v.seq.sspf.line:    { name: "SEQ_SSPF_line",   ext: "gpkg" }
 v.seq.ame.poly:     { name: "SEQ_AME_poly",    ext: "gpkg" }
+v.seq.wooded.point: { name: "SEQ_BOISEE_poly",ext: "gpkg" }
 
 # COMMUNE
 v.com.topo.poly:      { name: "COMS_TOPO_poly",     ext: "gpkg" }
