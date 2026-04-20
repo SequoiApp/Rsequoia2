@@ -8,7 +8,7 @@ areas, and ensures the internal consistency of the resulting UA object.
 ## Usage
 
 ``` r
-ua_to_ua(ua, parca, verbose = TRUE)
+ua_to_ua(ua, parca, verbose = TRUE, check = interactive())
 ```
 
 ## Arguments
@@ -26,6 +26,10 @@ ua_to_ua(ua, parca, verbose = TRUE)
 - verbose:
 
   `logical` If `TRUE`, display progress messages.
+
+- check:
+
+  `logical` If `TRUE`, ask user.
 
 ## Value
 

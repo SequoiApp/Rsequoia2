@@ -80,8 +80,6 @@
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sequoiapp.github.io/Rsequoia2/">Rsequoia2</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Attempting to load the package cache ... No cache found.</span></span>
-<span><span class="co">#&gt; Will try to reconfigure qgisprocess and build new cache ...</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-tmap/tmap" class="external-link">tmap</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://janmarvin.github.io/openxlsx2/" class="external-link">openxlsx2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
@@ -152,8 +150,6 @@ it automatically replaces the Etalab geometry.</p>
 <span><span class="va">etalab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_parca.html">get_parca</a></span><span class="op">(</span><span class="va">idus</span>, bdp_geom <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">bdp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_parca.html">get_parca</a></span><span class="op">(</span><span class="va">idus</span>, bdp_geom <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading BDP from IGN...</span></span>
-<span><span class="co">#&gt; ⠙ iterating 1 done (0.39/s) | 2.5s</span></span>
-<span><span class="co">#&gt; iterating <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> 9 of 9 ETALAB geom successfully replaced with BDP geom.</span></span>
 <span></span>
 <span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_basemap.html" class="external-link">tm_tiles</a></span><span class="op">(</span><span class="st">"OpenStreetMap"</span><span class="op">)</span><span class="op">+</span></span>
@@ -226,7 +222,7 @@ with:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">my_forest_dir</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">matrice_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_matrice.html">create_matrice</a></span><span class="op">(</span><span class="va">my_forest_dir</span>, id <span class="op">=</span> <span class="st">"MY_FOREST"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Excel file created at: <span style="color: #0000BB;">/tmp/RtmpjW5KLm/MY_FOREST/MY_FOREST_matrice.xlsx</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Excel file created at: <span style="color: #0000BB;">/tmp/RtmpeOPYRA/MY_FOREST/MY_FOREST_matrice.xlsx</span></span></span></code></pre></div>
 <p>You can then manually fill the Excel file.</p>
 </div>
 <div class="section level3">
@@ -266,7 +262,7 @@ it<a class="anchor" aria-label="anchor" href="#step-1---set-up-a-sequoia-directo
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> No area inconsistencies (cadastre vs GIS) detected.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Layer <span style="color: #0000BB;">"v.seq.parca.poly"</span> with 9 features saved to <span style="color: #0000BB;">1_SEQUOIA/ECKMUHL_SEQ_PARCA_poly.gpkg</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Table <span style="color: #0000BB;">"x.seq.matrice"</span> saved to <span style="color: #0000BB;">ECKMUHL_MATRICE.xlsx</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">_matrice.xlsx</span> also saved as <span style="color: #0000BB;">ECKMUHL_matrice_20260420T082334.xlsx</span> for safety.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">_matrice.xlsx</span> also saved as <span style="color: #0000BB;">ECKMUHL_matrice_20260420T084441.xlsx</span> for safety.</span></span>
 <span></span>
 <span><span class="co"># directly read parca form parca path</span></span>
 <span><span class="va">parca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="va">parca_path</span><span class="op">)</span></span>
