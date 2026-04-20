@@ -36,9 +36,7 @@ test_that("ua_generate_ug() creates UG field correctly", {
     ua[[pcl_code]][seq_len(n)] <- pcl_vals
     ua[[sub_code]][seq_len(n)] <- sub_vals
 
-    res <- ua_generate_ug(
-      ua, ug_keys = c("pcl_code", "sub_code"), separator = ".", verbose = FALSE
-    )
+    res <- ua_generate_ug(ua, separator = ".", verbose = FALSE)
 
     expect_true(mgmt_code %in% names(res))
     expect_equal(res[[mgmt_code]][seq_len(n)], unname(expected))
@@ -57,7 +55,7 @@ test_that("ua_generate_ug() throw expected message when verbose = TRUE", {
     ua[[sub_code]] <- "a"
 
     expect_message(
-      ua_generate_ug(ua, ug_keys = c("pcl_code", "sub_code"), verbose = TRUE),
+      ua_generate_ug(ua, verbose = TRUE),
       sprintf("UG field *%s created", mgmt_code)
     )
   })
@@ -75,8 +73,7 @@ test_that("ua_generate_ug() separator arg is working", {
     ua[[sub_code]] <- "a"
 
     sep = "_"
-    res <- ua_generate_ug(
-      ua, ug_keys = c("pcl_code", "sub_code"), separator = sep, verbose = FALSE
+    res <- ua_generate_ug(ua, separator = sep, verbose = FALSE
     )
 
     expect_true(mgmt_code %in% names(res))
@@ -96,11 +93,42 @@ test_that("ua_generate_ug() empty separator is working", {
     ua[[sub_code]] <- "a"
 
     sep = ""
-    res <- ua_generate_ug(
-      ua, ug_keys = c("pcl_code", "sub_code"), separator = sep, verbose = FALSE
-    )
+    res <- ua_generate_ug(ua, separator = sep, verbose = FALSE)
 
     expect_true(mgmt_code %in% names(res))
     expect_equal(res[[mgmt_code]][1], "aa")
+  })
+})
+
+test_that("ua_generate_ug() also correct pcl_code and sub_code ", {
+  with_seq_cache({
+    ua <- seq_normalize(p, "ua")
+
+    mgmt_code <- seq_field("mgmt_code")$name
+    pcl_code <- seq_field("pcl_code")$name
+    sub_code <- seq_field("sub_code")$name
+
+    ua[[pcl_code]] <- ""
+    ua[[sub_code]] <- "1"
+
+    res <- ua_generate_ug(ua, verbose = FALSE)
+
+    expect_all_true(res[[pcl_code]] %in% "00")
+    expect_all_true(res[[sub_code]] %in% "01")
+  })
+})
+
+test_that("ua_generate_ug() return error when missing fields", {
+  with_seq_cache({
+    ua <- seq_normalize(p, "ua")
+
+    mgmt_code <- seq_field("mgmt_code")$name
+    pcl_code <- seq_field("pcl_code")$name
+    sub_code <- seq_field("sub_code")$name
+
+    ua[[pcl_code]] <- NULL
+
+    expect_error(ua_generate_ug(ua, verbose = FALSE))
+
   })
 })

@@ -185,8 +185,6 @@ ua_check_area <- function(ua, parca, verbose = FALSE) {
 #'
 #' @param ua `sf` object containing analysis units;
 #' must contain fields used by `ug_keys`.
-#' @param ug_keys `character` vector, default `c("pcl_code", "sub_code")`.
-#' Keys used to build the UG identifier.
 #' @param separator `character`, default `"."`. Separator between keys.
 #' @param verbose `logical` If `TRUE`, display progress messages.
 #'
@@ -195,28 +193,32 @@ ua_check_area <- function(ua, parca, verbose = FALSE) {
 #' @importFrom cli cli_alert_success
 #'
 #' @export
-ua_generate_ug <- function(
-    ua,
-    ug_keys = c("pcl_code", "sub_code"),
-    separator = ".",
-    verbose = TRUE
-    ){
+ua_generate_ug <- function(ua, separator = ".", verbose = TRUE) {
 
   ug <- seq_field("mgmt_code")$name
-  fields <- vapply(ug_keys, function(k) seq_field(k)$name, character(1))
+  pcl_code <- seq_field("pcl_code")$name
+  sub_code <- seq_field("sub_code")$name
 
-  # RMQ: Used to avoid bad filtering (ex : 1, 10, 2, 3 VS 01, 02, 03, 10)
-  # Clean/pad each column
-  cleaned <- lapply(fields, function(f) {
-    x <- ua[[f]]
-    # Replace NA with "00", pad numeric strings, keep letters as is
-    ifelse(is.na(x), "00",
-           ifelse(grepl("^[A-Za-z]+$", x), x, pad_left(x, 2))
+  missing_fields <- setdiff(c(pcl_code, sub_code), names(ua))
+  if (length(missing_fields) > 0) {
+    cli::cli_abort(
+      "Missing field{?s} in {.arg ua}: {.field {missing_fields}}."
     )
-  })
+  }
 
-  # Concatenate columns to create UG
-  ua[[ug]] <- do.call(paste, c(cleaned, sep = separator))
+  clean_part <- function(x) {
+    x <- as.character(x)
+    ifelse(
+      is.na(x) | x == "",
+      "00",
+      ifelse(grepl("^[A-Za-z]+$", x), x, pad_left(x, 2))
+    )
+  }
+
+  ua[[pcl_code]] <- clean_part(ua[[pcl_code]])
+  ua[[sub_code]] <- clean_part(ua[[sub_code]])
+
+  ua[[ug]] <- paste(ua[[pcl_code]], ua[[sub_code]], sep = separator)
 
   if (verbose) cli::cli_alert_success("UG field {.field {ug}} created.")
 
