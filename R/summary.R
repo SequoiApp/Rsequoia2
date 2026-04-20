@@ -358,6 +358,7 @@ seq_summary <- function(dirname = ".", verbose = TRUE){
       road_map <- c(
         PN = "Pistes & layons",
         RF = "Route empierr\u00E9e",
+        RN = "Route rev\u00EAtue",
         RD = "Route rev\u00EAtue",
         RC = "Route rev\u00EAtue"
       )
