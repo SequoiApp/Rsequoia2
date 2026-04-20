@@ -214,8 +214,6 @@ voids_to_roadway <- function(x){
     ))
   }
 
-  # x <- clean_topology(x)
-
   return(seq_normalize(x, "road_poly"))
 }
 

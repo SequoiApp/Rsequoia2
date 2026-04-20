@@ -4,7 +4,7 @@
 \alias{ua_to_ua}
 \title{Check and update \emph{UA} consistency with cadastral \emph{PARCA} data}
 \usage{
-ua_to_ua(ua, parca, verbose = TRUE)
+ua_to_ua(ua, parca, verbose = TRUE, check = interactive())
 }
 \arguments{
 \item{ua}{\code{sf} object containing analysis units.}
@@ -13,6 +13,8 @@ ua_to_ua(ua, parca, verbose = TRUE)
 containing cadastral parcels.}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+
+\item{check}{\code{logical} If \code{TRUE}, ask user.}
 }
 \value{
 An updated \code{sf} object identical to \code{ua}, but with:

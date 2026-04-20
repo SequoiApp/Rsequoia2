@@ -420,6 +420,7 @@ ua_clean_ug <- function(
 #' @param parca `sf` object, typically produced by [Rsequoia2::seq_parca()],
 #'   containing cadastral parcels.
 #' @param verbose `logical` If `TRUE`, display progress messages.
+#' @param check `logical` If `TRUE`, ask user.
 #'
 #' @return An updated `sf` object identical to `ua`, but with:
 #' - IDUs checked against PARCA,
@@ -429,18 +430,23 @@ ua_clean_ug <- function(
 #' - management unit consistency checked and corrected.
 #'
 #' @export
-ua_to_ua <- function(ua, parca, verbose = TRUE){
+ua_to_ua <- function(ua, parca, verbose = TRUE, check = interactive()){
 
-  # Check ua
-  # Why adding this warning ? it is already in ua_check_idu() right ?
   idu_valid <- ua_check_idu(ua, parca, verbose = verbose)
   if (!idu_valid){
     cli::cli_abort("Please correct IDU inconsistency before going further.")
   }
 
+  if (check && interactive()) {
+    cli::cli_alert_warning("{.var ua} should be topologically valid before generating UG.")
+
+    if (utils::menu(c("Confirm and continue", "Cancel")) != 1) {
+      cli::cli_abort("UG generation aborted by user.")
+    }
+  }
+
   # Compute ua
   ua <- ua_check_area(ua, parca, verbose = verbose)
-  ua <- clean_topology(ua)
   ua <- ua_generate_ug(ua, verbose = verbose)
   ua <- ua_generate_area(ua, verbose = verbose)
   ua <- ua_clean_ug(ua)

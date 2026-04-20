@@ -23,7 +23,6 @@ Imports:
     lwgeom,
     openxlsx2,
     pdftools,
-    qgisprocess,
     sf,
     terra,
     tmap,

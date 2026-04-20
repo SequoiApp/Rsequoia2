@@ -1,10 +1,5 @@
 test_that("seq_parcels() generates expected parcel layers", {
 
-  skip_if_not(
-    qgisprocess::has_qgis(),
-    "QGIS not available on this system"
-  )
-
   with_seq_cache({
 
     ua <- parca_to_ua(p)
@@ -68,11 +63,6 @@ test_that("seq_parcels() generates expected parcel layers", {
 })
 
 test_that("seq_parcels() respects overwrite argument", {
-
-  skip_if_not(
-    qgisprocess::has_qgis(),
-    "QGIS not available on this system"
-  )
 
   with_seq_cache({
 
