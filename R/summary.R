@@ -448,10 +448,11 @@ seq_summary <- function(dirname = ".", verbose = TRUE){
     ), ncol = 3, byrow = TRUE)
 
     expo_class <- terra::classify(expo, m)
-
     classes <- c("NORD", "EST", "SUD", "OUEST")
     levels(expo_class) <- data.frame(value = 1:4, exposition = classes)
-    freq <- terra::extract(expo_class, pf, "table", ID = FALSE) |> as.data.frame()
+    freq <- terra::extract(expo_class, pf, "table", ID = TRUE, wide = FALSE)
+    freq <- stats::xtabs(count ~ ID + exposition, data = freq) |>
+      as.data.frame.matrix()
 
     expo_by_pf <- cbind(
       pf[pf_field] |> sf::st_drop_geometry(),
@@ -469,8 +470,21 @@ seq_summary <- function(dirname = ".", verbose = TRUE){
   # PENTE
   pente <- safe_seq_read("r.alt.pente", dirname = dirname)
   if (!is.null(pente)){
-    pente_class <- terra::classify(pente, c(-Inf, 10, 40, 60, 80, Inf))
-    freq <- terra::extract(pente_class, pf, "table", ID = FALSE) |> as.data.frame()
+    m <- matrix(c(
+      -Inf, 10, 1,
+      10,  40,  2,
+      40,  60,  3,
+      60,  80,  4,
+      80,  Inf, 5
+    ), ncol = 3, byrow = TRUE)
+
+    pente_class <- terra::classify(pente, m)
+    classes <- c("< 10%", "[10% - 40%]", "[40% - 60%]", "[60% - 80%]", "> 80%")
+    levels(pente_class) <- data.frame(value = 1:5, pentes = classes)
+    freq <- terra::extract(pente_class, pf, "table", ID = TRUE, wide = FALSE)
+    freq <- stats::xtabs(count ~ ID + pentes, data = freq) |>
+      as.data.frame.matrix()
+    names(freq) <- sub("^count\\.", "", names(freq))
 
     pente_by_pf <- cbind(
       pf[pf_field] |> sf::st_drop_geometry(),
@@ -482,7 +496,6 @@ seq_summary <- function(dirname = ".", verbose = TRUE){
       wb, "PENTE", pente_by_pf,
       total_row = c(text = "TOTAL", rep("average", 5), "none")
     )
-
   }
 
   # SAVE
