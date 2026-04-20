@@ -349,6 +349,11 @@
 - [`seq_voids()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_voids.md)
   : Generate cadastral gaps layer for a Sequoia project
 
+- [`seq_wooded()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_wooded.md)
+  :
+
+  Create wooded-area layer from *UA* for a Sequoia project
+
 - [`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
   : Write a spatial object based on a layer key
 
@@ -411,6 +416,11 @@
   :
 
   Check and update *UA* consistency with cadastral *PARCA* data
+
+- [`ua_to_wooded()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_to_wooded.md)
+  :
+
+  Aggregate *UA* surfaces by wooded / non-wooded status
 
 - [`update_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/update_parca.md)
   :
