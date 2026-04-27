@@ -184,3 +184,4 @@ seq_xlsx <- function(..., filename, data_table = FALSE, overwrite = FALSE, verbo
   invisible(filename)
 }
 
+

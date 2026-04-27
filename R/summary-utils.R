@@ -1,3 +1,92 @@
+#' Safely build and add a summary table to an Excel workbook
+#'
+#' Executes a summary table builder, validates its output, writes the table to
+#' an `openxlsx2` workbook, and captures any error without stopping the full
+#' summary workflow.
+#'
+#' This helper is used by [seq_summary()] to process tables one by one. If a
+#' table fails during either the build step or the Excel writing step, the error
+#' is reported with `cli` and the workflow continues with the next table.
+#'
+#' A builder function must return a list with at least:
+#'
+#' \describe{
+#'   \item{`table`}{A `data.frame`-like object to write.}
+#'   \item{`sheet_name`}{Character string. Name of the Excel worksheet.}
+#'   \item{`total_row`}{Optional total row specification passed to
+#'     [openxlsx2::wb_add_data_table()]. If missing, `FALSE` is used.}
+#' }
+#'
+#' @param wb An `openxlsx2` workbook object.
+#' @param sheet Character string. Internal table name used for console messages.
+#' @param fun Function. A zero-argument builder function returning a table
+#'   specification list.
+#' @param verbose Logical. If `TRUE`, prints an `OK` or `BAD` message with
+#'   `cli` for this table.
+#'
+#' @return A list with:
+#' \describe{
+#'   \item{`wb`}{The updated workbook if successful, otherwise the unchanged
+#'     workbook.}
+#'   \item{`ok`}{Logical. `TRUE` if the table was built and written
+#'     successfully, `FALSE` otherwise.}
+#'   \item{`table`}{The generated table on success, or `NULL` on failure.}
+#' }
+#'
+#' @seealso [seq_summary()]
+#'
+#' @keywords internal
+#'
+safe_add_seq_table <- function(wb, sheet, fun, verbose = TRUE) {
+  tryCatch(
+    {
+      out <- fun()
+
+      if (!is.list(out)) {
+        cli::cli_abort("Builder must return a list.")
+      }
+
+      table <- out$table
+      total_row <- out$total_row
+
+      if (is.null(total_row)) {
+        total_row <- FALSE
+      }
+
+      if (!is.data.frame(table)) {
+        cli::cli_abort("Builder must return a data frame in {.field table}.")
+      }
+
+      wb <- wb |>
+        openxlsx2::wb_add_worksheet(sheet = sheet) |>
+        openxlsx2::wb_add_data_table(
+          sheet = sheet,
+          x = table,
+          na.strings = NULL,
+          total_row = total_row
+        ) |>
+        style_table(sheet = sheet, df = table) |>
+        openxlsx2::wb_freeze_pane(
+          sheet = sheet,
+          first_row = TRUE
+        )
+
+      if (verbose) {
+        cli::cli_alert_success("{.field {sheet}}")
+      }
+
+      list(wb = wb, ok = TRUE, sheet_name = sheet, table = table)
+    },
+    error = function(e) {
+      if (verbose) {
+        cli::cli_alert_danger("{.field {sheet}}: {conditionMessage(e)}")
+      }
+
+      list(wb = wb, ok = FALSE, sheet_name = sheet, table = NULL)
+    }
+  )
+}
+
 #' Sum corrected area by grouping variables
 #'
 #' Internal helper that aggregates the corrected area (`cor_area`) of a Sequoia
@@ -13,31 +102,72 @@
 #'
 #' @keywords internal
 #' @noRd
-sum_surf_by <- function(x, ...){
-
-  x <- sf::st_drop_geometry(x)
-  cor_area <- seq_field("cor_area")$name
-
-  by <- c(...)
-  is_key <- by %in% names(seq_field())
-  by_key <- vapply(by[is_key], \(x) seq_field(x)$name, character(1))
-  by[is_key] <- by_key
-
-  # remove all na col
-  by_without_na <- by[!vapply(by, \(col) all(is.na(x[[col]])), logical(1))]
-  if (length(by_without_na) == 0) {
-    return(data.frame(by, sum(x[[cor_area]], na.rm = TRUE)) |> setNames(c(by, cor_area)))
+sum_surf_by <- function(x, ..., area_key = "cor_area") {
+  if (!inherits(x, "data.frame")) {
+    cli::cli_abort("{.arg x} must be a data frame or sf object.")
   }
 
-  by_formula <- paste(by_without_na, collapse = " + ")
+  if (inherits(x, "sf")) {
+    x <- sf::st_drop_geometry(x)
+  }
 
-  aggregate(
-    stats::as.formula(paste(cor_area, "~", by_formula)),
+  by <- c(...)
+
+  if (length(by) == 0) {
+    cli::cli_abort("No grouping field supplied.")
+  }
+
+  resolve_col <- function(key) {
+    tryCatch(
+      seq_field(key)$name,
+      error = function(e) key
+    )
+  }
+
+  area_col <- resolve_col(area_key)
+  by_cols <- vapply(by, resolve_col, character(1))
+
+  if (!area_col %in% names(x)) {
+    cli::cli_abort(
+      "Missing area column {.field {area_col}}."
+    )
+  }
+
+  missing <- by_cols[!by_cols %in% names(x)]
+
+  if (length(missing) > 0) {
+    cli::cli_abort(
+      "Missing grouping column{?s}: {.field {unname(missing)}}."
+    )
+  }
+
+  is_all_na <- vapply(
+    by_cols,
+    function(col) all(is.na(x[[col]])),
+    logical(1)
+  )
+
+  kept_cols <- by_cols[!is_all_na]
+  dropped_cols <- by_cols[is_all_na]
+
+  if (length(kept_cols) == 0) {
+    cli::cli_abort(
+      "Cannot group: field{?s} {.field {by_cols}} is empty."
+    )
+  }
+
+  by_formula <- paste(kept_cols, collapse = " + ")
+
+  out <- aggregate(
+    stats::as.formula(paste(area_col, "~", by_formula)),
     data = x,
     FUN = sum,
     na.rm = TRUE,
     na.action = stats::na.pass
   )
+
+  rownames(out) <- NULL
+  out
 }
 
 #' Order a table by Sequoia field keys
@@ -53,18 +183,33 @@ sum_surf_by <- function(x, ...){
 #'
 #' @keywords internal
 #' @noRd
-order_by <- function(to_order, ..., decreasing = FALSE) {
+order_by <- function(x, ..., decreasing = FALSE, na.last = TRUE) {
+  by_keys <- c(...)
+  if (length(by_keys) == 0) {
+    cli::cli_abort("No grouping field supplied.")
+  }
 
   by <- vapply(
-    c(...),
-    function(x) seq_field(x)$name,
+    by_keys,
+    function(key) seq_field(key)$name,
     character(1)
   )
 
-  cols <- lapply(by, function(nm) to_order[[nm]])
-  cols <- Filter(Negate(is.null), cols) #remove col without value
-  o <- do.call(order, c(cols, list(decreasing = decreasing)))
-  to_order[o, , drop = FALSE]
+  existing <- by[by %in% names(x)]
+  ignored <- by_keys[!by %in% names(x)]
+
+  if (length(existing) == 0) {
+    return(x)
+  }
+
+  cols <- x[existing]
+
+  o <- do.call(
+    order,
+    c(cols, list(decreasing = decreasing, na.last = na.last))
+  )
+
+  x[o, , drop = FALSE]
 }
 
 #' Pivot a table to wide format using Sequoia field keys
@@ -75,26 +220,44 @@ order_by <- function(to_order, ..., decreasing = FALSE) {
 #' @param to_pivot `data.frame`. Table to reshape.
 #' @param row `character`. Sequoia field keys defining rows.
 #' @param col `character`. Sequoia field key defining columns.
-#' @param ... Unused.
 #'
 #' @return A reshaped `data.frame`.
 #'
 #' @keywords internal
 #' @noRd
-pivot <- function(to_pivot, row, col, ...){
+pivot <- function(x, row, col) {
+  row_keys <- row
+  col_key <- col
 
-  row_vars <- vapply(row, \(x) seq_field(x)$name, character(1))
+  row_cols <- vapply(row_keys, function(key) seq_field(key)$name, character(1))
+  col_col <- seq_field(col_key)$name
+
+  existing_row_cols <- row_cols[row_cols %in% names(x)]
+  ignored_row_keys <- row_keys[!row_cols %in% names(x)]
+  if (length(existing_row_cols) == 0) {
+    cli::cli_abort(
+      "Cannot pivot: row field{?s} {.field {row_cols}} is missing."
+    )
+  }
+
+  if (!col_col %in% names(x)) {
+    cli::cli_abort(
+      "Cannot pivot: column field {.field {col_col}} is missing."
+    )
+  }
 
   pivoted <- stats::reshape(
-    to_pivot,
-    idvar = row_vars,
-    timevar = seq_field(col)$name,
+    x,
+    idvar = existing_row_cols,
+    timevar = col_col,
     sep = "___",
     direction = "wide"
   )
-  names(pivoted) <- sub("^.*___", "", names(pivoted))
 
-  return(pivoted)
+  names(pivoted) <- sub("^.*___", "", names(pivoted))
+  rownames(pivoted) <- NULL
+
+  pivoted
 }
 
 #' Add a total row to a summary table
