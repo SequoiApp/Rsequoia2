@@ -11,7 +11,7 @@ test_that("seq_parcels() generates expected parcel layers", {
     ua[[sub_code]] <- "00"
     ua[[sub_code]][1] <- "01"  # force SSPF split
 
-    ua <- ua_to_ua(ua, p, verbose = FALSE)
+    ua <- ua_to_ua(ua, p, verbose = FALSE, check = FALSE)
     seq_write(ua, "ua", seq_cache, overwrite = TRUE)
 
     # ---- Run function ----
@@ -73,7 +73,7 @@ test_that("seq_parcels() respects overwrite argument", {
     ua[[pcl_code]] <- "00"
     ua[[sub_code]] <- "00"
 
-    ua <- ua_to_ua(ua, p, verbose = FALSE)
+    ua <- ua_to_ua(ua, p, verbose = FALSE, check = FALSE)
     seq_write(ua, "ua", seq_cache, overwrite = TRUE)
 
     # First run

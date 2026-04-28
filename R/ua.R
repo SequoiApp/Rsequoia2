@@ -87,95 +87,211 @@ seq_parca_to_ua <- function(
   return(invisible(ua_path))
 }
 
-#' Check cadastral IDU consistency between _UA_ and _PARCA_ sf objects
+#' Check spatial coverage between _UA_ and _PARCA_
 #'
-#' @param ua `sf` Object from [Rsequoia2::parca_to_ua()] containing analysis
-#' units
-#' @inheritParams parca_to_ua
-#' @param verbose `logical` If `TRUE`, display progress messages.
+#' Checks that every _UA_ feature intersects at least one _PARCA_ feature, and
+#' that every _PARCA_ feature intersects at least one _UA_ feature.
 #'
-#' @return `TRUE` if all `parca` idu values are found in `ua`;
-#'         `FALSE` otherwise (with CLI messages if `verbose = TRUE`).
+#' @param ua `sf` Object containing analysis units.
+#' @param parca `sf` Object containing cadastral parcels.
 #'
-#' @importFrom cli cli_alert_warning cli_ul
+#' @return The input `ua` object, invisibly, if spatial coverage is valid.
+#' Aborts otherwise.
 #'
 #' @export
-ua_check_idu <- function(ua, parca, verbose = FALSE) {
-  # Get canonical idu field name
-  idu <- seq_field("idu")$name
+ua_check_coverage <- function(ua, parca) {
+  idu_field <- seq_field("idu")$name
 
-  # Extract idu vectors
-  idu_pc_vals <- unique(parca[[idu]])
-  idu_ua_vals <- unique(ua[[idu]])
-  idu_ua_vals <- idu_ua_vals[!is.na(idu_ua_vals)]
-
-  # Compute missing values
-  missing_idu <- setdiff(idu_pc_vals, idu_ua_vals)
-
-  # If mismatches found report + return FALSE
-  if (length(missing_idu)) {
-    cli::cli_warn(
-      "Some cadastral IDUs from {.arg parca} are missing in {.arg ua}: {.val {sort(missing_idu)}}"
-      )
-    return(FALSE)
+  if (!inherits(ua, "sf") || !inherits(parca, "sf")) {
+    cli::cli_abort("{.var ua} and {.var parca} must be {.cls sf} objects.")
   }
 
-  # All good return TRUE
-  if (verbose) {
-    cli::cli_alert_success(
-      "All cadastral IDUs from {.arg parca} are present in {.arg ua}."
+  if (!idu_field %in% names(ua) || !idu_field %in% names(parca)) {
+    cli::cli_abort(
+      "{.var ua} or {.var parca} is missing IDU field {.field {idu_field}}."
     )
   }
 
-  return(TRUE)
-}
-
-#' Update cadastral area values in _UA_ using _PARCA_
-#'
-#' This function compares cadastral area values between _UA_ and _PARCA_,
-#' and updates _UA_ wherever discrepancies are detected.
-#'
-#' @inheritParams ua_check_idu
-#'
-#' @return Updated `ua` object.
-#'
-#' @export
-ua_check_area <- function(ua, parca, verbose = FALSE) {
-
-  # Field names from YAML structure
-  idu <- seq_field("idu")$name            # e.g. "IDU"
-  cad_area <- seq_field("cad_area")$name  # e.g. "SURF_CA"
-
-  # Drop geometry and keep only needed PARCA fields
-  parca_tab <- parca |>
-    sf::st_drop_geometry() |>
-    subset(select = c(idu, cad_area))
-
-  # Match UA rows to PARCA rows
-  m <- match(ua[[idu]], parca_tab[[idu]])
-
-  # Extract PARCA area values aligned on UA order
-  parca_vals <- parca_tab[[cad_area]][m]
-
-  # Detect differences
-  diff_idx <- which(!is.na(parca_vals) & ua[[cad_area]] != parca_vals)
-  nb_diff <- length(diff_idx)
-
-  # Apply corrections (vectorized)
-  if (nb_diff > 0) {
-    bad_idu <- ua[[idu]][diff_idx]
-      cli::cli_warn(
-        "{nb_diff} cadastral area value{?s} corrected in UA. Affected Idu{?s}: {.val {bad_idu}}"
-      )
-
-    ua[[cad_area]][diff_idx] <- parca_vals[diff_idx]
+  if (sf::st_crs(ua) != sf::st_crs(parca)) {
+    parca <- sf::st_transform(parca, sf::st_crs(ua))
   }
 
-  if (verbose & nb_diff == 0) {
-    cli_alert_success("No cadastral area discrepancies detected.")
+  ua_hits <- lengths(sf::st_intersects(ua, parca)) > 0
+  if (any(!ua_hits)) {
+    cli::cli_abort(c(
+      "{sum(!ua_hits)} UA feature{?s} do not intersect PARCA.",
+      "i" = "Affected UA IDU{?s}: {.val {unique(ua[[idu_field]][!ua_hits])}}."
+    ))
+  }
+
+  parca_hits <- lengths(sf::st_intersects(parca, ua)) > 0
+  if (any(!parca_hits)) {
+    cli::cli_abort(c(
+      "{sum(!parca_hits)} PARCA feature{?s} do not intersect UA.",
+      "i" = "Affected PARCA IDU{?s}: {.val {unique(parca[[idu_field]][!parca_hits])}}."
+    ))
   }
 
   return(invisible(ua))
+}
+
+#' Repair _UA_ cadastral IDU from _PARCA_
+#'
+#' Repairs _UA_ IDU values from the dominant intersecting _PARCA_ polygon.
+#'
+#' The spatial match is based on [sf::st_join()] with `largest = TRUE`, so the
+#' _PARCA_ polygon with the largest overlap is used as reference.
+#'
+#' @param ua `sf` Object containing analysis units.
+#' @param parca `sf` Object containing cadastral parcels.
+#' @param verbose `logical` If `TRUE`, display messages.
+#'
+#' @return The input `ua` object with corrected IDU values.
+#'
+#' @export
+ua_repair_idu <- function(ua, parca, verbose = TRUE) {
+  idu_field <- seq_field("idu")$name
+  mgmt_field <- seq_field("mgmt_code")$name
+
+  if (!mgmt_field %in% names(ua)) {
+    cli::cli_abort("{.var ua} is missing management field {.field {mgmt_field}}.")
+  }
+
+  if (sf::st_crs(ua) != sf::st_crs(parca)) {
+    parca <- sf::st_transform(parca, sf::st_crs(ua))
+  }
+
+  suffix <- "_PARCA"
+
+  joined <- suppressWarnings(
+    sf::st_join(
+      ua,
+      parca[idu_field],
+      join = sf::st_intersects,
+      largest = TRUE,
+      suffix = c("", suffix)
+    )
+  )
+
+  ua_idu <- joined[[idu_field]]
+  parca_idu <- joined[[paste0(idu_field, suffix)]]
+
+  to_fix <- is.na(ua_idu) | ua_idu != parca_idu
+
+  if (!any(to_fix)) {
+    if (verbose) {
+      cli::cli_alert_success("All UA IDU values are already correct.")
+    }
+
+    return(ua)
+  }
+
+  if (verbose) {
+    cli::cli_alert_warning(
+      "{sum(to_fix)} UA feature{?s} had an incorrect IDU and {?was/were} corrected:"
+    )
+
+    cli::cli_ul(unique(sprintf(
+      "PARFOR %s: %s -> %s",
+      ua[[mgmt_field]][to_fix],
+      ua_idu[to_fix],
+      parca_idu[to_fix]
+    )))
+  }
+
+  ua[[idu_field]][to_fix] <- parca_idu[to_fix]
+
+  return(invisible(ua))
+}
+
+#' Check cadastral IDU consistency between _UA_ and _PARCA_
+#'
+#' Checks that all _PARCA_ IDU values are present in _UA_, and that all _UA_
+#' IDU values exist in _PARCA_.
+#'
+#' @param ua `sf` Object containing analysis units.
+#' @param parca `sf` Object containing cadastral parcels.
+#' @param verbose `logical` If `TRUE`, display messages.
+#'
+#' @return `TRUE` if IDU values are consistent; `FALSE` otherwise,
+#' with CLI warnings.
+#'
+#' @export
+ua_check_idu <- function(ua, parca, verbose = FALSE) {
+  idu_field <- seq_field("idu")$name
+
+  ua_idu <- unique(ua[[idu_field]])
+  parca_idu <- unique(parca[[idu_field]])
+
+  ua_idu <- ua_idu[!is.na(ua_idu)]
+  parca_idu <- parca_idu[!is.na(parca_idu)]
+
+  missing_in_ua <- setdiff(parca_idu, ua_idu)
+  unknown_in_ua <- setdiff(ua_idu, parca_idu)
+
+  if (length(missing_in_ua) > 0) {
+    cli::cli_alert_warning(
+      "PARCA IDU missing in UA: {.val {sort(missing_in_ua)}}."
+    )
+  }
+
+  if (length(unknown_in_ua) > 0) {
+    cli::cli_alert_warning(
+      "UA IDU unknown in PARCA: {.val {sort(unknown_in_ua)}}."
+    )
+  }
+
+  ok <- length(missing_in_ua) == 0 && length(unknown_in_ua) == 0
+
+  if (ok && verbose) {
+    cli::cli_alert_success("UA and PARCA IDU values are consistent.")
+  }
+
+  ok
+}
+
+#' Update _UA_ fields from _PARCA_
+#'
+#' Refreshes _UA_ cadastral fields from _PARCA_ using the IDU field as key.
+#'
+#' This function assumes that _UA_ IDU values are already correct.
+#'
+#' @param ua `sf` Object containing analysis units.
+#' @param parca `sf` Object containing cadastral parcels.
+#'
+#' @return A `sf` _UA_ object with cadastral fields updated from _PARCA_.
+#'
+#' @export
+ua_update_parca_fields <- function(ua, parca) {
+  idu_field <- seq_field("idu")$name
+
+  keys_to_update <- c(
+    "reg_name", "reg_code", "dep_name", "dep_code",
+    "com_name", "com_code", "insee", "prefix", "section",
+    "number", "locality", "cad_area"
+  )
+
+  fields_to_update <- vapply(
+    keys_to_update,
+    \(x) seq_field(x)$name,
+    character(1)
+  )
+
+  parca_tab <- parca |>
+    sf::st_drop_geometry()
+
+  parca_tab <- parca_tab[c(idu_field, fields_to_update)]
+
+  ua_base <- ua[setdiff(names(ua), fields_to_update)]
+
+  merge(
+    ua_base,
+    parca_tab,
+    by = idu_field,
+    all.x = TRUE,
+    sort = FALSE
+  ) |>
+    seq_normalize("ua")
 }
 
 #' Create management unit field (UG) in the _UA_ sf object
@@ -430,30 +546,37 @@ ua_clean_ug <- function(
 #' - management unit consistency checked and corrected.
 #'
 #' @export
-ua_to_ua <- function(ua, parca, verbose = TRUE, check = interactive()){
-
-  idu_valid <- ua_check_idu(ua, parca, verbose = verbose)
-  if (!idu_valid){
-    cli::cli_abort("Please correct IDU inconsistency before going further.")
-  }
+ua_to_ua <- function(ua, parca, verbose = TRUE, check = interactive()) {
 
   if (check && interactive()) {
-    cli::cli_alert_warning("{.var ua} should be topologically valid before generating UG.")
+    cli::cli_alert_warning(
+      "{.var ua} should be topologically valid before generating UG."
+    )
 
     if (utils::menu(c("Confirm and continue", "Cancel")) != 1) {
       cli::cli_abort("UG generation aborted by user.")
     }
   }
 
-  # Compute ua
-  ua <- ua_check_area(ua, parca, verbose = verbose)
+  # Check and repair cadastral consistency
+  ua <- ua_check_coverage(ua, parca)
+  ua <- ua_repair_idu(ua, parca, verbose)
+
+  if (!ua_check_idu(ua, parca, verbose)) {
+    cli::cli_abort("UA and PARCA IDU values are inconsistent after repair.")
+  }
+
+  ua <- ua_update_parca_fields(ua, parca)
+
+  # Generate UG
   ua <- ua_generate_ug(ua, verbose = verbose)
   ua <- ua_generate_area(ua, verbose = verbose)
   ua <- ua_clean_ug(ua)
 
-  is_valid <- ua_check_ug(ua, verbose = verbose)
-  if (!is_valid) {
-    cli::cli_warn("You need to correct the inconsistent units in the UA layer.")
+  if (!ua_check_ug(ua, verbose = verbose)) {
+    cli::cli_warn(
+      "You need to correct the inconsistent units in the UA layer."
+    )
   }
 
   return(ua)
