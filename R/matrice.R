@@ -22,12 +22,12 @@ create_matrice <- function(dirname = ".", id = "MY_FOREST", overwrite = FALSE, v
 
   matrice <- data.frame(
     "IDENTIFIANT" = id,
-    "PROPRIETAIRE" = "NAME OF THE OWNER",
-    "INSEE" = "99999",
+    "PROPRIETAIRE" = "",
+    "INSEE" = "",
     "PREFIX" = "",
-    "SECTION" = "ZZ",
-    "NUMERO" = "999",
-    "LIEU_DIT" = "NAME OF LIEU DIT"
+    "SECTION" = "",
+    "NUMERO" = "",
+    "LIEU_DIT" = ""
   ) |> seq_normalize("matrice")
 
   seq_xlsx(
