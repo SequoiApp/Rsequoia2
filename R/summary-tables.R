@@ -213,7 +213,7 @@ build_summary_coupe <- function(ua) {
     order_by("mgmt_code", "std_type", "std_wealth", "std_stage", "res_spe1")
 
   actual_year <- as.numeric(format(Sys.Date(), "%Y"))
-  last_year <- actual_year + 15
+  last_year <- actual_year + 20
   years <- as.character(actual_year:last_year)
 
   coupe_with_year <- coupe
