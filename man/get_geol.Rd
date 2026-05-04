@@ -2,56 +2,41 @@
 % Please edit documentation in R/geol.R
 \name{get_geol}
 \alias{get_geol}
-\title{Download BRGM geology data to a geometry}
+\title{Read BRGM geology data for an area}
 \usage{
 get_geol(
   x,
-  key = "carhab",
+  key = c("carhab", "bdcharm50"),
   buffer = 100,
-  deps = NULL,
   cache = NULL,
   verbose = FALSE,
   overwrite = FALSE
 )
 }
 \arguments{
-\item{x}{\code{sf} or \code{sfc}; Geometry used to determine relevant departments
-and to spatially filter geology data.}
+\item{x}{\code{sf} or \code{sfc}; Area used to determine departments and filter geology.}
 
-\item{key}{\code{character} Source use to download geology from BRGM. Must be one of:
-\itemize{
-\item \code{"carhab"} : geological data used to created the \code{CarHab} dataset ;
-\item \code{"bdcharm50"} : geological maps, vectorized and harmonised at 1:50,000 scale.
-}}
+\item{key}{\code{character}; Dataset to use. One of \code{"carhab"} or \code{"bdcharm50"}.}
 
-\item{buffer}{\code{numeric}; Buffer distance (in meters) applied to \code{x}
+\item{buffer}{\code{numeric}; Buffer distance, in meters, applied around \code{x}
 before spatial filtering. Default is \code{100}.}
 
-\item{deps}{\code{character} or \code{numeric}; One or sevral french
-department code (see \code{\link[=get_cog]{get_cog()}}).}
+\item{cache}{\code{character}; Optional cache directory. If \code{NULL}, the
+dataset-specific cache from \code{\link[=seq_cache]{seq_cache()}} is used.}
 
-\item{cache}{\code{character}; Storage directory. Defaults to the user cache
-directory (see \code{\link[tools:userdir]{tools::R_user_dir()}}).}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress messages.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
-
-\item{overwrite}{\code{logical} If \code{TRUE}, overwrite zipfile.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, re-download archives even when
+they already exist in \code{cache}.}
 }
 \value{
-An \code{sf} object containing clipped geology features.
+An \code{sf} object containing geology features intersecting the buffered
+envelope of \code{x}, returned in EPSG:2154.
 }
 \description{
-Downloads BRGM geology layers for the departments intersecting \code{x}
-(or for specified departments) and spatially filters them using a
-buffered envelope around \code{x}.
+Downloads and reads BRGM geology layers for the departments intersecting
+\code{x}, then keeps only features intersecting a buffered envelope around \code{x}.
 }
 \details{
-The function:
-\itemize{
-\item Identifies departments intersecting \code{x} (if \code{deps} is not provided) ;
-\item Downloads geology layers using \code{\link[=get_brgm]{get_brgm()}} ;
-\item Filters features intersecting a buffered envelope around \code{x}.
-}
-
-All geometries are returned in EPSG:2154.
+Supported datasets are \code{"carhab"} and \code{"bdcharm50"}.
 }

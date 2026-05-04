@@ -57,6 +57,7 @@ idu_split <- function(idu) {
     stringsAsFactors = FALSE
   )
 }
+
 #' Build IDU
 #'
 #' Internal helper used to build idu
@@ -79,6 +80,7 @@ idu_build <- function(dep, com, prefix, section, numero) {
 
   return(paste0(dep, com, prefix, section, numero))
 }
+
 #' Force silent function
 #'
 #' Internal helper used to silent function
@@ -137,4 +139,35 @@ seq_retry <- function(expr, times = 3, wait = 0.5, verbose = TRUE) {
 
   return(invisible(NULL))
 
+}
+
+#' Validate department codes
+#'
+#' Checks that department codes are non-empty and exist in the COG reference.
+#' Values are converted to character, padded to two digits, and deduplicated.
+#'
+#' @param dep Department code vector.
+#'
+#' @return A normalized `character` vector of valid department codes.
+#'
+#' @keywords internal
+check_dep <- function(dep) {
+  if (missing(dep) || is.null(dep) || length(dep) == 0) {
+    cli::cli_abort("{.arg dep} must be a non-empty department code vector.")
+  }
+
+  dep <- unique(pad_left(as.character(dep), 2))
+
+  valid_dep <- get_cog(verbose = FALSE)$dep$DEP
+  invalid_dep <- dep[!dep %in% valid_dep]
+
+  if (length(invalid_dep) > 0) {
+    cli::cli_abort(c(
+      "Invalid department code.",
+      "x" = "Invalid department code(s): {.vals {invalid_dep}}",
+      "i" = "See {.run get_cog()$dep} for valid department codes."
+    ))
+  }
+
+  return(dep)
 }

@@ -8,6 +8,7 @@ seq_geol(
   dirname = ".",
   key = NULL,
   cache = NULL,
+  buffer = 100,
   verbose = TRUE,
   overwrite = FALSE
 )
@@ -16,40 +17,36 @@ seq_geol(
 \item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{key}{\code{character}. Optional geology layer identifier(s). If \code{NULL}
-(default), all available geology layers are created. Available layers
-are \code{"bdcharm50"} and \code{"carhab"}. Partial matching is supported
-(see \code{\link[=seq_key]{seq_key()}}).}
+\item{key}{\code{character}. Optional geology layer identifier(s). If \code{NULL},
+all available geology layers are created. Available layers are
+\code{"v.sol.carhab.poly"} and \code{"v.sol.bdcharm50.poly"}. Partial matching is
+supported through \code{\link[=seq_key]{seq_key()}}.}
 
-\item{cache}{\code{character}; Storage directory. Defaults to the user cache
-directory (see \code{\link[tools:userdir]{tools::R_user_dir()}}).}
+\item{cache}{\code{character}; Optional cache directory. If \code{NULL}, the
+dataset-specific cache from \code{\link[=seq_cache]{seq_cache()}} is used.}
+
+\item{buffer}{\code{numeric}; Buffer distance, in meters, applied around \code{x}
+before spatial filtering. Default is \code{100}.}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, overwrite zipfile.}
+\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
 }
 \value{
-An invisible named \code{list} of file paths to the created layers.
+Invisibly returns a named \code{list} of file paths to the created layers.
 }
 \description{
-Uses the project's \emph{PARCA} layer to download geology datasets and clip
-them to its geometry.
+Uses the project's \emph{PARCA} layer as the area of interest, downloads the
+requested BRGM geology dataset(s), clips them to the parcel geometry, and
+writes the resulting layers to the project directory with \code{\link[=seq_write]{seq_write()}}.
 }
 \details{
-Layers and their associated \emph{QML style files} are written to the
-project directory using \code{\link[=seq_write]{seq_write()}}.
+\strong{BD Charm 50} contains harmonised 1:50,000 geological map data from BRGM.
+It is detailed and may contain finely split geological units.
 
-\strong{Difference between BRGM and CARHAB data}
+\strong{CarHab} is a simplified and harmonised reinterpretation of geological
+formations into broader lithological classes, designed for ecological
+modelling.
 
-The BRGM 1:50000 geological maps are detailed, heterogeneous products
-created for geological interpretation. They include many finely split
-geological units and may show inconsistencies between neighbouring map
-sheets due to varying survey dates, methods, and levels of detail.
-
-CARHAB data are a simplified, harmonised reinterpretation of these maps.
-Geological formations are recoded into broader lithological classes tailored
-for ecological modelling. The goal is to provide consistent, comparable,
-and ecologically relevant information across departments.
-
-More info at \href{https://infoterre.brgm.fr/page/carhab-donnees-geologiques}{infoterre}
+More info: \url{https://infoterre.brgm.fr/page/carhab-donnees-geologiques}
 }
