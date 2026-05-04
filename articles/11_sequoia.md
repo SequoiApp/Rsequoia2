@@ -1,6 +1,7 @@
 # Sequoia
 
 ``` r
+
 library(Rsequoia2)
 library(tmap)
 library(openxlsx2)
@@ -38,6 +39,7 @@ session.
 For the example, a forest named `"ECKMUHL"` is used:
 
 ``` r
+
 sequoia_dir <- "ECKMUHL"
 dir.create(sequoia_dir)
 
@@ -61,6 +63,7 @@ All data downloaded by `Rsequoia2` are based on cadastral parcels
 [`seq_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parca.md).
 
 ``` r
+
 seq_parca()
 ```
 
@@ -78,6 +81,7 @@ functions:
 - …
 
 ``` r
+
 seq_mnhn()
 ```
 
@@ -92,6 +96,7 @@ Your task is to segment the layer so that it reflects the actual forest
 structure.
 
 ``` r
+
 seq_parca_to_ua()
 ```
 
@@ -124,6 +129,7 @@ UA layer:
 - Cleans geometry topology
 
 ``` r
+
 seq_ua()
 ```
 
@@ -136,6 +142,7 @@ better understand and write their forest management document.
 produces a set of opinionated summary tables derived from the UA layer.
 
 ``` r
+
 seq_summary()
 ```
 

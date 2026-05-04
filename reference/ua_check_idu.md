@@ -1,6 +1,7 @@
-# Check cadastral IDU consistency between *UA* and *PARCA* sf objects
+# Check cadastral IDU consistency between *UA* and *PARCA*
 
-Check cadastral IDU consistency between *UA* and *PARCA* sf objects
+Checks that all *PARCA* IDU values are present in *UA*, and that all
+*UA* IDU values exist in *PARCA*.
 
 ## Usage
 
@@ -12,21 +13,17 @@ ua_check_idu(ua, parca, verbose = FALSE)
 
 - ua:
 
-  `sf` Object from
-  [`parca_to_ua()`](https://sequoiapp.github.io/Rsequoia2/reference/parca_to_ua.md)
-  containing analysis units
+  `sf` Object containing analysis units.
 
 - parca:
 
-  `sf` Object from
-  [`seq_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parca.md)
-  containing cadastral parcels.
+  `sf` Object containing cadastral parcels.
 
 - verbose:
 
-  `logical` If `TRUE`, display progress messages.
+  `logical` If `TRUE`, display messages.
 
 ## Value
 
-`TRUE` if all `parca` idu values are found in `ua`; `FALSE` otherwise
-(with CLI messages if `verbose = TRUE`).
+`TRUE` if IDU values are consistent; `FALSE` otherwise, with CLI
+warnings.

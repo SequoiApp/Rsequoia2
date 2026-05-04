@@ -1,6 +1,7 @@
 # Cadastral parcels - legal entity (FR)
 
 ``` r
+
 library(Rsequoia2)
 library(tmap)
 library(openxlsx2)
@@ -11,6 +12,7 @@ library(sf)
 As always, we need to setup a Sequoia dir (temporary in this case)
 
 ``` r
+
 seq_dir <- file.path(tempdir(), "MY_FOREST")
 dir.create(seq_dir)
 ```
@@ -47,6 +49,7 @@ The first can be a bit time-consuming but you can then search all
 selected dep(s) if owner have cadastral parcels accros multiple commune.
 
 ``` r
+
 # cp: cadastrals parcels
 insee <- c("29158", "29165")
 
@@ -107,6 +110,7 @@ differences.
 Below we search all GFA (“Groupement Foncier Agricole”).
 
 ``` r
+
 search_mat <- search_legal_entity(legal_entity_cp, prop = "gfa")
 
 unique(search_mat$PROPRIETAIRE)
@@ -117,6 +121,7 @@ unique(search_mat$PROPRIETAIRE)
 can also support multiple search pattern:
 
 ``` r
+
 search_mat <- search_legal_entity(legal_entity_cp, prop = c("conservatoire", "espace", "naturel"))
 
 unique(search_mat$PROPRIETAIRE)
@@ -128,6 +133,7 @@ unique(search_mat$PROPRIETAIRE)
 Finally, `lieu_dit` can also be seached:
 
 ``` r
+
 search_mat <- search_legal_entity(legal_entity_cp, lieu_dit = "phare")
 
 unique(search_mat[,c("PROPRIETAIRE", "LIEU_DIT")])
@@ -158,6 +164,7 @@ is already formated for Sequoia process. This mean you have the
 to do it before saving.
 
 ``` r
+
 id <- "MY_FOREST"
 search_mat$IDENTIFIANT <- id
 
@@ -170,11 +177,15 @@ seq_write(
 
 seq_parca(seq_dir)
 #> ℹ Downloading BDP from IGN...
+#> ⠙ iterating 1 done (0.21/s) | 4.7s
+#> iterating ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
+#> ⠙ iterating 1 done (0.46/s) | 2.2s
+#> iterating ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 #> ✔ 12 of 13 ETALAB geom successfully replaced with BDP geom.
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 13 features saved to 1_SEQUOIA/MY_FOREST_SEQ_PARCA_poly.gpkg.
 #> ✔ Table "x.seq.matrice" saved to MY_FOREST_MATRICE.xlsx.
-#> ✔ _matrice.xlsx also saved as MY_FOREST_MATRICE_20260427T134505.xlsx for safety.
+#> ✔ _matrice.xlsx also saved as MY_FOREST_MATRICE_20260504T092703.xlsx for safety.
 parca <- seq_read("parca", seq_dir)
 
 tm_tiles("OpenStreetMap")+

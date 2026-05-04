@@ -62,6 +62,7 @@ l’école forestière de Nancy, située à Brin-Sur-Seille, dans le
 département de Meurthe-Et-Moselle (54).
 
 ``` r
+
 idu <- c(
   "540120000C0001", "540120000C0005", "540120000C0007", "540120000C0008",
   "540120000C0009", "540120000C0010", "540120000C0011", "540120000C0012",
@@ -195,6 +196,7 @@ avec `key = znieff2` permettra d’intersecter une zone.
 
 ``` r
 
+
 znieff1 <- get_mnhn(x = parca, key = "znieff1", buffer = 500)
 znieff2 <- get_mnhn(x = parca, key = "znieff2", buffer = 500)
 
@@ -258,6 +260,7 @@ des documents de gestion (ou simplement se documenter sur une région).
 
 ``` r
 
+
 ifn <- get_ifn(x = parca, key = "ser")
 #> Downloading "ser" data
 
@@ -310,6 +313,7 @@ protection. Pour obtenir l’immeuble inscrit ou classé, il convient
 d’utiliser `buffer = 500` avec `key = immh`.
 
 ``` r
+
 
 # pamh <- get_patrimony(x = parca, key = "pamh", buffer = 1000)
 # immh <- get_patrimony(x = parca, key = "immh", buffer = 2000)
@@ -399,6 +403,7 @@ ainsi que les diagnostiques pédologiques réalisés dans les massifs en
 amont de reboisement (par exemple).
 
 ``` r
+
 
 # Géologie
 geol <- get_geol(x = parca, key = "bdcharm50") |>
@@ -493,6 +498,7 @@ primordial.
 
 ``` r
 
+
 # Zones GPU
 zones <- get_gpu(x = parca, key = "v.gpu.zone.poly")
 
@@ -511,6 +517,7 @@ tm_shape(zones) +
 ```
 
 ``` r
+
 
 # Prescriptions 
 ppoly <- get_gpu(x = parca, key = "v.gpu.prescription.poly")
@@ -591,6 +598,7 @@ les incendies (DFCI).
 
 ``` r
 
+
 prsf <- get_prsf(x = parca, buffer = 1000)
 #> ℹ Downloading PRSF dataset...
 
@@ -653,6 +661,7 @@ réduite); 2 points (1 sur emprises élargie et 1 sur emprises réduite).
 
 ``` r
 
+
 com_poly <- get_com_poly(x = parca, buffer = 2000)
 #> ℹ Downloading communes dataset...
 com_line <- get_com_line(x = parca, graphic = T)
@@ -699,6 +708,7 @@ avant de l’enregistrer.
 #### 9.2.3. Applications
 
 ``` r
+
 
 toponymes <- get_toponyme(x = parca, buffer = 1000)
 #> ℹ Downloading toponyme dataset...
@@ -792,6 +802,7 @@ précédentes (polygon, ligne, point) avant de les enregistrer.
 
 ``` r
 
+
 infra_poly  <- get_infra_poly(x = parca, buffer = 1000)
 infra_line  <- get_infra_line(x = parca, buffer = 1000)
 infra_point <- get_infra_point(x = parca, buffer = 1000)
@@ -849,6 +860,7 @@ avant de les enregistrer.
 #### 9.4.3. Applications
 
 ``` r
+
 
 road_line  <- get_road(x = parca, 1000)
 
@@ -931,6 +943,7 @@ précédentes (polygon, ligne, point) avant de les enregistrer.
 #### 9.5.3. Applications
 
 ``` r
+
 
 hydro_poly  <- get_hydro_poly(x = parca, buffer = 1000)
 hydro_line  <- get_hydro_line(x = parca, buffer = 1000)
@@ -1020,6 +1033,7 @@ précédentes (polygon, ligne, point) avant de les enregistrer.
 #### 9.6.3. Applications
 
 ``` r
+
 
 vege_poly  <- get_vege_poly(x = parca)
 vege_line  <- get_vege_line(x = parca)

@@ -91,6 +91,7 @@ than the cadastral parcel layer enriched with additional attribute
 fields.
 
 ``` r
+
 # remove eval = FALSE when data is available 
 
 ua_path <- seq_parca_to_ua(sequoia_dir)
@@ -130,6 +131,7 @@ the *UA* layer by running
 running !
 
 ``` r
+
 # remove eval = FALSE when data is available
 
 ua_path <- seq_ua(sequoia_dir)
@@ -170,6 +172,7 @@ When you have updated the *AU* layer, you can get new products:
   (`cor_area`) are summed. A polygon and border lines layer are created.
 
 ``` r
+
 # remove eval = FALSE when data is available 
 
 # generate new products by running

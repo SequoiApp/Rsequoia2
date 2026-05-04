@@ -366,15 +366,15 @@
 - [`style_table()`](https://sequoiapp.github.io/Rsequoia2/reference/style_table.md)
   : Style a Data Frame Table in an openxlsx2 Workbook
 
-- [`ua_check_area()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_check_area.md)
+- [`ua_check_coverage()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_check_coverage.md)
   :
 
-  Update cadastral area values in *UA* using *PARCA*
+  Check spatial coverage between *UA* and *PARCA*
 
 - [`ua_check_idu()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_check_idu.md)
   :
 
-  Check cadastral IDU consistency between *UA* and *PARCA* sf objects
+  Check cadastral IDU consistency between *UA* and *PARCA*
 
 - [`ua_check_ug()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_check_ug.md)
   :
@@ -396,6 +396,11 @@
   :
 
   Create management unit field (UG) in the *UA* sf object
+
+- [`ua_repair_idu()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_repair_idu.md)
+  :
+
+  Repair *UA* cadastral IDU from *PARCA*
 
 - [`ua_to_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_to_parca.md)
   :
@@ -421,6 +426,11 @@
   :
 
   Aggregate *UA* surfaces by wooded / non-wooded status
+
+- [`ua_update_parca_fields()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_update_parca_fields.md)
+  :
+
+  Update *UA* fields from *PARCA*
 
 - [`update_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/update_parca.md)
   :

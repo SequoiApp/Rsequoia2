@@ -1,6 +1,7 @@
 # Sequoia (FR)
 
 ``` r
+
 knitr::opts_chunk$set(
   fig.width = 7.291667,
   collapse = TRUE,
@@ -11,6 +12,7 @@ knitr::opts_chunk$set(
 ```
 
 ``` r
+
 library(Rsequoia2)
 library(tmap)
 library(openxlsx2)
@@ -53,6 +55,7 @@ Cette dernière ouvre un menu dans la console pour faciliter l’accès aux
 fonctionnalités.
 
 ``` r
+
 sequoia()
 ```
 
@@ -70,6 +73,7 @@ répertoire de travail de la session R.
 Dans cet exemple, une forêt nommée `"ECKMUHL"` est utilisée :
 
 ``` r
+
 sequoia_dir <- "ECKMUHL"
 dir.create(sequoia_dir)
 
@@ -95,6 +99,7 @@ parcelles cadastrales (couche *PARCA*). La première étape obligatoire
 consiste donc à les télécharger avec :
 
 ``` r
+
 seq_parca()
 ```
 
@@ -133,6 +138,7 @@ fonctions `seq_*`) :
 Exemple :
 
 ``` r
+
 seq_mnhn()
 ```
 
@@ -144,6 +150,7 @@ données complémentaires, consiste à créer les unités d’analyse *UA*.
 Cette couche est générée avec :
 
 ``` r
+
 seq_parca_to_ua()
 ```
 
@@ -162,6 +169,7 @@ Une fois que la couche *UA* est complétée, il est nécessaire de la
 valider :
 
 ``` r
+
 seq_ua()
 ```
 
@@ -185,6 +193,7 @@ La dernière étape consiste à générer des tableaux de synthèse facilitant
 l’analyse et la rédaction du document de gestion forestière :
 
 ``` r
+
 seq_summary()
 ```
 
@@ -204,18 +213,21 @@ géologique “GEOL.tif”.
 Toutes les clés disponibles peuvent être listées avec :
 
 ``` r
+
 seq_key()
 ```
 
 Pour accéder aux métadonnées d’une couche spécifique :
 
 ``` r
+
 seq_layer("r.sol.geol")
 ```
 
 Les clés partielles sont également acceptées :
 
 ``` r
+
 seq_layer("geol")
 ```
 

@@ -9,6 +9,7 @@ You can install the development version of Rsequoia2 from
 [GitHub](https://github.com/) with:
 
 ``` r
+
 # install.packages("devtools")
 devtools::install_github("SequoiApp/Rsequoia2")
 ```
@@ -18,6 +19,7 @@ devtools::install_github("SequoiApp/Rsequoia2")
 For a quick package execution, try:
 
 ``` r
+
 library(Rsequoia2)
 sequoia()
 ```

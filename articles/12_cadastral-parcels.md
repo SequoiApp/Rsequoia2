@@ -1,6 +1,7 @@
 # Cadastral parcels
 
 ``` r
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   out.width = "100%",
@@ -11,6 +12,7 @@ knitr::opts_chunk$set(
 ```
 
 ``` r
+
 library(Rsequoia2)
 library(tmap)
 library(openxlsx2)
@@ -48,6 +50,7 @@ digits) - “AX” -\> Section (2 characters) - “0696” -\> Parcel number (4
 digits)
 
 ``` r
+
 idu <- c("29158000AX0696") 
 
 cp <- get_parca(idu)
@@ -62,6 +65,7 @@ tm_layout(bg = F)
 is vectorized so multiple idu can be used
 
 ``` r
+
 idus <- paste0("29158000AX0", 696:704)
 
 cp <- get_parca(idus)
@@ -93,6 +97,7 @@ set `bdp_geom = TRUE`; when BDP geometry exists for a given IDU, it
 automatically replaces the Etalab geometry.
 
 ``` r
+
 idus <- paste0("545400000C0", 101:109)
 
 etalab <- get_parca(idus, bdp_geom = FALSE)
@@ -126,6 +131,7 @@ can handle this automatically when: `lieu_dit = TRUE`
 numbers of parcels.
 
 ``` r
+
 idus <- paste0("29158000BD00", c(10:12, 14:19, 21:25, 29, 31:36, 38, 39, 41, 43:60))
 
 with_lieu_dit <- get_parca(idus, lieu_dit = TRUE)
@@ -180,11 +186,12 @@ contain one unique IDENTIFIANT
 To avoid formatting mistakes, you can generate an empty matrix with:
 
 ``` r
+
 my_forest_dir <- file.path(tempdir(), "MY_FOREST")
 dir.create(my_forest_dir)
 
 matrice_path <- create_matrice(my_forest_dir, id = "MY_FOREST")
-#> ✔ Excel file created at: /tmp/RtmpddDBjK/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/Rtmp4aw7RF/MY_FOREST/MY_FOREST_matrice.xlsx
 ```
 
 You can then manually fill the Excel file.
@@ -210,6 +217,7 @@ process it.
 #### Step 1 - Set up a Sequoia directory and copy the example matrix into it
 
 ``` r
+
 matrice <- read_xlsx(system.file("extdata/ECKMUHL_matrice.xlsx", package = "Rsequoia2"))
 
 sequoia_dir <- file.path(tempdir(), "ECKMUHL")
@@ -221,13 +229,14 @@ write_xlsx(matrice, file.path(sequoia_dir, "ECKMUHL_matrice.xlsx"))
 #### Step 2 - Run seq_parca() and load the resulting parcels
 
 ``` r
+
 parca_path <- seq_parca(sequoia_dir)
 #> ℹ Downloading BDP from IGN...
 #> ✔ 9 of 9 ETALAB geom successfully replaced with BDP geom.
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 9 features saved to 1_SEQUOIA/ECKMUHL_SEQ_PARCA_poly.gpkg.
 #> ✔ Table "x.seq.matrice" saved to ECKMUHL_MATRICE.xlsx.
-#> ✔ _matrice.xlsx also saved as ECKMUHL_matrice_20260427T134438.xlsx for safety.
+#> ✔ _matrice.xlsx also saved as ECKMUHL_matrice_20260504T092631.xlsx for safety.
 
 # directly read parca form parca path
 parca <- read_sf(parca_path)

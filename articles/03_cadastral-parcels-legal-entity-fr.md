@@ -1,6 +1,7 @@
 # Parcelles cadastrales - Personne morale (FR)
 
 ``` r
+
 library(Rsequoia2)
 library(tmap)
 library(openxlsx2)
@@ -12,6 +13,7 @@ Comme pour chaque processus Sequoia, la première étape consiste à créer
 un répertoire de travail (ici temporaire).
 
 ``` r
+
 seq_dir <- file.path(tempdir(), "MY_FOREST")
 dir.create(seq_dir)
 ```
@@ -44,17 +46,18 @@ d’identifier automatiquement les parcelles d’un propriétaire situées
 dans plusieurs communes du département.
 
 ``` r
+
 # cp: cadastrals parcels
 insee <- c("29158", "29165")
 
 legal_entity_cp <- get_legal_entity(insee)
 #> ℹ Downloading legal entity datasets...
-#> ⠙ 3 extracted | 105 MB ( 20 MB/s) | 5.2s
-#> ⠹ 3 extracted | 158 MB ( 26 MB/s) | 6.2s
-#> ⠸ 20 extracted | 910 MB ( 99 MB/s) | 9.2s
-#> ⠙ 9 extracted | 307 MB (128 MB/s) | 2.4s
-#> ⠹ 28 extracted | 1.1 GB (200 MB/s) | 5.4s
-#> ⠸ 45 extracted | 1.8 GB (219 MB/s) | 8.4s
+#> ⠙ 4 extracted | 221 MB ( 78 MB/s) | 2.8s
+#> ⠹ 14 extracted | 643 MB (110 MB/s) | 5.8s
+#> ⠸ 24 extracted | 1.1 GB (124 MB/s) | 8.8s
+#> ⠼ 41 extracted | 1.5 GB (131 MB/s) | 11.8s
+#> ⠙ 25 extracted | 922 MB (191 MB/s) | 4.8s
+#> ⠹ 43 extracted | 1.7 GB (221 MB/s) | 7.8s
 #> ✔ Data available at: /home/runner/.cache/R/Rsequoia2/legal_entity
 #> ℹ Reading CSV files...
 #> ℹ Preparing CSV files...
@@ -116,6 +119,7 @@ L’exemple ci-dessous permet d’identifier tous les GFA (« Groupements
 Fonciers Agricoles »).
 
 ``` r
+
 search_mat <- search_legal_entity(legal_entity_cp, prop = "gfa")
 
 unique(search_mat$PROPRIETAIRE)
@@ -126,6 +130,7 @@ unique(search_mat$PROPRIETAIRE)
 support plusieurs propriétaires:
 
 ``` r
+
 search_mat <- search_legal_entity(legal_entity_cp, prop = c("conservatoire", "espace", "naturel"))
 
 unique(search_mat$PROPRIETAIRE)
@@ -138,6 +143,7 @@ Egalement, la recherche de parcelles peut se faire à partir des
 lieux-dits.
 
 ``` r
+
 search_mat <- search_legal_entity(legal_entity_cp, lieu_dit = "phare")
 
 unique(search_mat[,c("PROPRIETAIRE", "LIEU_DIT")])
@@ -170,6 +176,7 @@ d’enregistrer la matrice, afin d’éviter toute modification manuelle dans
 Excel.
 
 ``` r
+
 id <- "MY_FOREST"
 search_mat$IDENTIFIANT <- id
 
@@ -186,7 +193,7 @@ seq_parca(seq_dir)
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 13 features saved to 1_SEQUOIA/MY_FOREST_SEQ_PARCA_poly.gpkg.
 #> ✔ Table "x.seq.matrice" saved to MY_FOREST_MATRICE.xlsx.
-#> ✔ _matrice.xlsx also saved as MY_FOREST_MATRICE_20260427T134102.xlsx for safety.
+#> ✔ _matrice.xlsx also saved as MY_FOREST_MATRICE_20260504T092236.xlsx for safety.
 parca <- seq_read("parca", seq_dir)
 
 tm_tiles("OpenStreetMap")+
