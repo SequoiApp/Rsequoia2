@@ -8,8 +8,11 @@
 - [`create_matrice()`](https://sequoiapp.github.io/Rsequoia2/reference/create_matrice.md)
   : Create a forest matrice
 
-- [`download_brgm()`](https://sequoiapp.github.io/Rsequoia2/reference/download_brgm.md)
-  : Download BRGM "BD Charm 50" harmonised geology ZIP files
+- [`download_bdcharm50()`](https://sequoiapp.github.io/Rsequoia2/reference/download_bdcharm50.md)
+  : Download BRGM BD Charm 50 geology archives
+
+- [`download_carhab()`](https://sequoiapp.github.io/Rsequoia2/reference/download_carhab.md)
+  : Download CarHab geology archive
 
 - [`download_legal_entity()`](https://sequoiapp.github.io/Rsequoia2/reference/download_legal_entity.md)
   : Download and cache cadastral data for legal entities ("Personnes
@@ -33,9 +36,6 @@
 
 - [`get_aspect()`](https://sequoiapp.github.io/Rsequoia2/reference/get_aspect.md)
   : Compute a Aspect Raster from a DEM
-
-- [`get_brgm()`](https://sequoiapp.github.io/Rsequoia2/reference/get_brgm.md)
-  : Download and read BRGM "BD Charm 50" harmonised geology layers
 
 - [`get_chm()`](https://sequoiapp.github.io/Rsequoia2/reference/get_chm.md)
   : Compute Canopy Height Model (CHM)
@@ -62,7 +62,7 @@
   : Download Digital Surface Model (DSM) raster from IGN RGEAlti
 
 - [`get_geol()`](https://sequoiapp.github.io/Rsequoia2/reference/get_geol.md)
-  : Download BRGM geology data to a geometry
+  : Read BRGM geology data for an area
 
 - [`get_geom_type()`](https://sequoiapp.github.io/Rsequoia2/reference/get_geom_type.md)
   : Use to get type of a geometry
@@ -234,6 +234,9 @@
   :
 
   Create *FOREST* and *OWNER* object from *PARCA* for a Sequoia project
+
+- [`seq_cache()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_cache.md)
+  : Get Rsequoia2 cache configuration
 
 - [`seq_com()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_com.md)
   : Generates commune polygon, line and point layers for a Sequoia

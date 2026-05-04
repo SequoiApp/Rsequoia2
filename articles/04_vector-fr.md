@@ -334,9 +334,7 @@ d’utiliser `buffer = 500` avec `key = immh`.
 
 #### 6.1.1. Les bases géologiques départementales du BRGM
 
-La fonction
-[`get_brgm()`](https://sequoiapp.github.io/Rsequoia2/reference/get_brgm.md)
-permet de télécharger depuis le BRGM :
+La fonction `get_brgm()` permet de télécharger depuis le BRGM :
 
 - la [cartes géologiques départementales à 1/50 000 (Bd
   Charm-50)](https://infoterre.brgm.fr/formulaire/telechargement-cartes-geologiques-departementales-150-000-bd-charm-50)

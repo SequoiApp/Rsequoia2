@@ -1,7 +1,9 @@
 # Create geology layers for a Sequoia project from BRGM data
 
-Uses the project's *PARCA* layer to download geology datasets and clip
-them to its geometry.
+Uses the project's *PARCA* layer as the area of interest, downloads the
+requested BRGM geology dataset(s), clips them to the parcel geometry,
+and writes the resulting layers to the project directory with
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
 
 ## Usage
 
@@ -10,6 +12,7 @@ seq_geol(
   dirname = ".",
   key = NULL,
   cache = NULL,
+  buffer = 100,
   verbose = TRUE,
   overwrite = FALSE
 )
@@ -24,15 +27,23 @@ seq_geol(
 
 - key:
 
-  `character`. Optional geology layer identifier(s). If `NULL`
-  (default), all available geology layers are created. Available layers
-  are `"bdcharm50"` and `"carhab"`. Partial matching is supported (see
-  [`seq_key()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_key.md)).
+  `character`. Optional geology layer identifier(s). If `NULL`, all
+  available geology layers are created. Available layers are
+  `"v.sol.carhab.poly"` and `"v.sol.bdcharm50.poly"`. Partial matching
+  is supported through
+  [`seq_key()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_key.md).
 
 - cache:
 
-  `character`; Storage directory. Defaults to the user cache directory
-  (see [`tools::R_user_dir()`](https://rdrr.io/r/tools/userdir.html)).
+  `character`; Optional cache directory. If `NULL`, the dataset-specific
+  cache from
+  [`seq_cache()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_cache.md)
+  is used.
+
+- buffer:
+
+  `numeric`; Buffer distance, in meters, applied around `x` before
+  spatial filtering. Default is `100`.
 
 - verbose:
 
@@ -40,29 +51,19 @@ seq_geol(
 
 - overwrite:
 
-  `logical` If `TRUE`, overwrite zipfile.
+  `logical` If `TRUE`, file is overwritten.
 
 ## Value
 
-An invisible named `list` of file paths to the created layers.
+Invisibly returns a named `list` of file paths to the created layers.
 
 ## Details
 
-Layers and their associated *QML style files* are written to the project
-directory using
-[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
+**BD Charm 50** contains harmonised 1:50,000 geological map data from
+BRGM. It is detailed and may contain finely split geological units.
 
-**Difference between BRGM and CARHAB data**
+**CarHab** is a simplified and harmonised reinterpretation of geological
+formations into broader lithological classes, designed for ecological
+modelling.
 
-The BRGM 1:50000 geological maps are detailed, heterogeneous products
-created for geological interpretation. They include many finely split
-geological units and may show inconsistencies between neighbouring map
-sheets due to varying survey dates, methods, and levels of detail.
-
-CARHAB data are a simplified, harmonised reinterpretation of these maps.
-Geological formations are recoded into broader lithological classes
-tailored for ecological modelling. The goal is to provide consistent,
-comparable, and ecologically relevant information across departments.
-
-More info at
-[infoterre](https://infoterre.brgm.fr/page/carhab-donnees-geologiques)
+More info: <https://infoterre.brgm.fr/page/carhab-donnees-geologiques>

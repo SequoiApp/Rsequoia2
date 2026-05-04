@@ -14,10 +14,13 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/articles/index.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/authors.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/index.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/news/index.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/check_dep.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/create_empty_sf.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/create_matrice.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/define_column_positions.html</loc></url>
-<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/download_brgm.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/download_bdcharm50.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/download_carhab.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/download_legal_entity.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/drias_etp.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/drias_ombro.html</loc></url>
@@ -29,10 +32,11 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/extract_table_section.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/extract_visual_data.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/filter_column_headers.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/find_bdcharm50_zip.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/format_legal_entity.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_accessibility.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_aspect.html</loc></url>
-<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_brgm.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_bdcharm50_url.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_chm.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_cog.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_com_line.html</loc></url>
@@ -118,6 +122,7 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq1_update.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_access.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_boundaries.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_cache.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_com.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_curves.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_dissolve.html</loc></url>
