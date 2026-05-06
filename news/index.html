@@ -46,10 +46,23 @@
 <h2 class="pkg-version" data-toc-text="development version" id="rsequoia2-development-version">Rsequoia2 (development version)<a class="anchor" aria-label="anchor" href="#rsequoia2-development-version"></a></h2>
 <div class="section level3">
 <h3 id="v001-development-version">v0.0.1<a class="anchor" aria-label="anchor" href="#v001-development-version"></a></h3>
-<ul><li>Remove <code>download_brgm</code> in favor of <code>download_bdcharm50</code> &amp; <code>download_carhab</code>
-</li>
-<li>Add cache config in <code>inst/config/seq_caches.yaml</code> and associated helpers function in <code>config-cache.R</code>
-</li>
+<ul><li>Removed <code>download_brgm()</code> in favor of the more explicit <code><a href="../reference/download_bdcharm50.html">download_bdcharm50()</a></code> and <code><a href="../reference/download_carhab.html">download_carhab()</a></code> functions.</li>
+<li>Added cache configuration in <code>inst/config/seq_caches.yaml</code>, with associated helper functions in <code>config-cache.R</code>.</li>
+<li>Added LIDAR tile support:
+<ul><li>
+<code><a href="../reference/download_lidar.html">download_lidar()</a></code> downloads LIDAR tiles in parallel and stores them in the cache;</li>
+<li>
+<code><a href="../reference/get_lidar.html">get_lidar()</a></code> loads LIDAR tiles in memory, then crops and masks the raster around an area;</li>
+<li>
+<code><a href="../reference/seq_lidar.html">seq_lidar()</a></code> orchestrates LIDAR processing within a Sequoia workflow.</li>
+</ul></li>
+<li>Split the former <code>seq_elevation()</code> workflow into:
+<ul><li>
+<code><a href="../reference/seq_rgealti.html">seq_rgealti()</a></code> for classic RGE ALTI raster data;</li>
+<li>
+<code><a href="../reference/seq_terrain.html">seq_terrain()</a></code> for slope/aspect</li>
+</ul></li>
+<li>Updated <code><a href="../reference/sequoia2.html">sequoia2()</a></code> altimetry workflow: LIDAR data is now attempted first, with fallback to classic WMS raster data.</li>
 </ul></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

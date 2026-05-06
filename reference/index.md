@@ -97,6 +97,9 @@
 - [`get_legal_entity()`](https://sequoiapp.github.io/Rsequoia2/reference/get_legal_entity.md)
   : Create a forest matrice for legal entity from insee code
 
+- [`get_lidar()`](https://sequoiapp.github.io/Rsequoia2/reference/get_lidar.md)
+  : Download and extract LiDAR HD raster
+
 - [`get_lieux_dits()`](https://sequoiapp.github.io/Rsequoia2/reference/get_lieux_dits.md)
   : Retrieve a "Lieud-dit" from Etalab
 
@@ -251,9 +254,6 @@
 - [`seq_drias()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_drias.md)
   : Generate DRIAS climate projection outputs
 
-- [`seq_elevation()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_elevation.md)
-  : Download and Compute Elevation Products for a Sequoia Project
-
 - [`seq_envelope()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_envelope.md)
   : Compute convex hulls from buffered geometries
 
@@ -282,6 +282,9 @@
 
 - [`seq_layer()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_layer.md)
   : Retrieve layer metadata from the Sequoia configuration
+
+- [`seq_lidar()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_lidar.md)
+  : Create LiDAR layers for a Sequoia project
 
 - [`seq_meteo_france()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_meteo_france.md)
   : Download Meteo-France meteorological data for a sequoia process
@@ -324,6 +327,9 @@
 - [`seq_retry()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_retry.md)
   : Add retry capability to seq\_\* function
 
+- [`seq_rgealti()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_rgealti.md)
+  : Create RGE ALTI layers for a Sequoia project
+
 - [`seq_road()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_road.md)
   : Generate road section layer for a Sequoia project
 
@@ -338,6 +344,9 @@
 
 - [`seq_table()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_table.md)
   : Load table definitions from the Sequoia configuration
+
+- [`seq_terrain()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_terrain.md)
+  : Create terrain derivative layers for a Sequoia project
 
 - [`seq_toponyme()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_toponyme.md)
   : Generate toponymic point layer for a Sequoia project

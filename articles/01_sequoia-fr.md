@@ -132,8 +132,7 @@ fonctions `seq_*`) :
   - Orthophotographies de l’IGN
     ([`seq_ortho()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_ortho.md));
 
-  - Données altimétriques de l’IGN
-    ([`seq_elevation()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_elevation.md)).
+  - Données altimétriques de l’IGN (`seq_elevation()`).
 
 Exemple :
 
