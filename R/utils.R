@@ -204,7 +204,7 @@ seq_multi_download <- function(
     return(invisible(TRUE))
   }
 
-  dir.create(dirname(destfiles), recursive = TRUE, showWarnings = FALSE)
+  dir.create(dirname(destfiles) |> unique(), recursive = TRUE, showWarnings = FALSE)
 
   download_once <- function(urls, destfiles) {
 

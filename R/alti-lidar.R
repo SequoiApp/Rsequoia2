@@ -53,7 +53,7 @@ download_lidar <- function(
   }
 
   urls <- dalle$url
-  files <- file.path(cache, dalle$name_download)
+  destfiles <- file.path(cache, dalle$name_download)
 
   if (verbose){
     cli::cli_alert_info("Downloading {toupper(key)} LIDAR tiles.")
@@ -61,7 +61,7 @@ download_lidar <- function(
 
   seq_multi_download(
     urls = urls,
-    destfiles = files,
+    destfiles = destfiles,
     overwrite = overwrite,
     verbose = verbose,
     max_tries = max_tries
