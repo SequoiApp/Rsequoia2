@@ -14,8 +14,7 @@
 #'     \item `"zp"`: zones de production
 #'   }
 #' @param cache A character string defining the cache directory.
-#'   Defaults to a package-specific cache directory created with
-#'   `tools::R_user_dir("Rsequoia2", which = "cache")`.
+#' Defaults to a package-specific cache directory.
 #'
 #' @return
 #' An `sf` object containing the region features intersecting `x`.
@@ -34,9 +33,10 @@
 #' geometry modification (e.g. clipping) is applied.
 #'
 #' @export
-get_ifn <- function(x,
-                    key,
-                    cache = NULL) {
+get_ifn <- function(
+    x,
+    key,
+    cache = seq_cache("ifn")$path) {
 
   # key check
   if (length(key) != 1 || !key %in% get_keys("ifn")) {
@@ -47,10 +47,6 @@ get_ifn <- function(x,
   }
 
   # cache dir
-  if (is.null(cache)) {
-    cache <- tools::R_user_dir("Rsequoia2", which = "cache") |>
-      file.path("ifn")
-  }
   dir.create(cache, showWarnings = FALSE, recursive = TRUE)
 
   # URLs
@@ -137,7 +133,7 @@ get_ifn <- function(x,
 #' @export
 get_ser_pdf <- function(
     id_ser,
-    dirname = NULL,
+    dirname = seq_cache("ifn")$path,
     overwrite = FALSE,
     verbose = TRUE) {
 
@@ -149,10 +145,6 @@ get_ser_pdf <- function(
     cli::cli_abort("{.arg id_ucs} must not contain NA values.")
   }
 
-  if (is.null(dirname)) {
-    dirname <- tools::R_user_dir("Rsequoia2", which = "data") |>
-      file.path("ifn")
-  }
   dir.create(dirname, recursive = TRUE, showWarnings = FALSE)
 
   base_url <- "https://inventaire-forestier.ign.fr/IMG/pdf/"
@@ -164,11 +156,8 @@ get_ser_pdf <- function(
   # Download loop ----
   for (code in id_ser) {
 
-    file_name <- paste0(substr(code, 1, 1),
-                        "_",
-                        substr(code, 2, 3),
-                        ".pdf")
-    url       <- paste0(base_url, file_name)
+    file_name <- sprintf("%s_%s.pdf", substr(code, 1, 1), substr(code, 2, 3))
+    url <- paste0(base_url, file_name)
     destfile  <- file.path(dirname, file_name)
 
     if (file.exists(destfile) && !overwrite) {

@@ -4,7 +4,7 @@
 \alias{get_cog}
 \title{Get COG administrative datasets}
 \usage{
-get_cog(cache = NULL, update = FALSE, verbose = TRUE)
+get_cog(cache = seq_cache("cog")$path, update = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{cache}{Cache directory. If \code{NULL}, uses package cache directory.}

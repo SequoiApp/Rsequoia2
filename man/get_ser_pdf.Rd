@@ -4,7 +4,12 @@
 \alias{get_ser_pdf}
 \title{Download sylvoecoregion PDF reports from INF repository}
 \usage{
-get_ser_pdf(id_ser, dirname = NULL, overwrite = FALSE, verbose = TRUE)
+get_ser_pdf(
+  id_ser,
+  dirname = seq_cache("ifn")$path,
+  overwrite = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{id_ser}{\code{character} used to identify pedology reports.

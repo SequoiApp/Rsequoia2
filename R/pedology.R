@@ -49,8 +49,7 @@ get_pedology <- function(x) {
 #'
 #' @param id_ucs `character` used to identify pedology reports.
 #'   It can be got by using `get_pedology()$id_ucs`.
-#' @param dirname `character`; directory where the PDF will be saved. Defaults to
-#' [tools::R_user_dir()]
+#' @param dirname `character`; directory where the PDF will be saved.
 #' @param verbose `logical`. If `TRUE`, display progress messages.
 #'
 #' @return
@@ -71,7 +70,7 @@ get_pedology <- function(x) {
 #' @export
 get_pedology_pdf <- function(
     id_ucs,
-    dirname = NULL,
+    dirname,
     verbose = TRUE
 ) {
 
@@ -83,9 +82,6 @@ get_pedology_pdf <- function(
     cli::cli_abort("{.arg id_ucs} must not contain NA values.")
   }
 
-  if (is.null(dirname)) {
-    dirname <- tools::R_user_dir("Rsequoia2", which = "data")
-  }
   dir.create(dirname, recursive = TRUE, showWarnings = FALSE)
 
   base_url <- "https://data.geopf.fr/annexes/ressources/INRA_carte_des_sols/INRA"

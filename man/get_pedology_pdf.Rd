@@ -4,14 +4,13 @@
 \alias{get_pedology_pdf}
 \title{Download pedology PDF reports from INRA soil maps}
 \usage{
-get_pedology_pdf(id_ucs, dirname = NULL, verbose = TRUE)
+get_pedology_pdf(id_ucs, dirname, verbose = TRUE)
 }
 \arguments{
 \item{id_ucs}{\code{character} used to identify pedology reports.
 It can be got by using \code{get_pedology()$id_ucs}.}
 
-\item{dirname}{\code{character}; directory where the PDF will be saved. Defaults to
-\code{\link[tools:userdir]{tools::R_user_dir()}}}
+\item{dirname}{\code{character}; directory where the PDF will be saved.}
 
 \item{verbose}{\code{logical}. If \code{TRUE}, display progress messages.}
 }

@@ -4,7 +4,7 @@
 \alias{get_ifn}
 \title{Retrieve IFN regional layers by intersecting an area}
 \usage{
-get_ifn(x, key, cache = NULL)
+get_ifn(x, key, cache = seq_cache("ifn")$path)
 }
 \arguments{
 \item{x}{An \code{sf} object defining the input area of interest.}
@@ -20,8 +20,7 @@ Must be one of \code{get_keys("ifn")}:
 }}
 
 \item{cache}{A character string defining the cache directory.
-Defaults to a package-specific cache directory created with
-\code{tools::R_user_dir("Rsequoia2", which = "cache")}.}
+Defaults to a package-specific cache directory.}
 }
 \value{
 An \code{sf} object containing the region features intersecting \code{x}.

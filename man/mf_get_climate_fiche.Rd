@@ -4,13 +4,12 @@
 \alias{mf_get_climate_fiche}
 \title{Download climatological station fiche}
 \usage{
-mf_get_climate_fiche(x, dirname = NULL, verbose = TRUE)
+mf_get_climate_fiche(x, dirname, verbose = TRUE)
 }
 \arguments{
 \item{x}{\code{sf} or \code{sfc}}
 
-\item{dirname}{\code{character}; directory where the PDF will be saved. Defaults to
-\code{\link[tools:userdir]{tools::R_user_dir()}}}
+\item{dirname}{\code{character}; directory where the PDF will be saved}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
 }

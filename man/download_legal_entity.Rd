@@ -4,11 +4,11 @@
 \alias{download_legal_entity}
 \title{Download and cache cadastral data for legal entities ("Personnes Morales")}
 \usage{
-download_legal_entity(cache = NULL, verbose = TRUE)
+download_legal_entity(cache = seq_cache("legal_entity")$path, verbose = TRUE)
 }
 \arguments{
 \item{cache}{\code{character}; Storage directory. Defaults to the user cache
-directory (see \code{\link[tools:userdir]{tools::R_user_dir()}}).}
+directory.}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }

@@ -19,19 +19,17 @@
 #' }
 #'
 #' @export
-get_cog <- function(cache = NULL, update = FALSE, verbose = TRUE) {
+get_cog <- function(
+    cache = seq_cache("cog")$path,
+    update = FALSE,
+    verbose = TRUE) {
 
-  if (is.null(cache)) {
-    cache <- tools::R_user_dir("Rsequoia2", which = "cache")
-  }
-
-  cog_dir <- file.path(cache, "cog")
-  dir.create(cog_dir, recursive = TRUE, showWarnings = FALSE)
+  dir.create(cache, recursive = TRUE, showWarnings = FALSE)
 
   paths <- list(
-    com = file.path(cog_dir, "com.rds"),
-    dep = file.path(cog_dir, "dep.rds"),
-    reg = file.path(cog_dir, "reg.rds")
+    com = file.path(cache, "com.rds"),
+    dep = file.path(cache, "dep.rds"),
+    reg = file.path(cache, "reg.rds")
   )
 
   if (!update && all(file.exists(unlist(paths)))) {
@@ -83,7 +81,7 @@ get_cog <- function(cache = NULL, update = FALSE, verbose = TRUE) {
   saveRDS(reg, paths$reg)
 
   if (verbose) {
-    cli::cli_alert_success("COG cached in {.path {normalizePath(cog_dir)}}")
+    cli::cli_alert_success("COG cached in {.path {normalizePath(cache)}}")
   }
 
   return(list(com = com, dep = dep, reg = reg) |> invisible())

@@ -1,25 +1,53 @@
+cog:
+  label: "COG"
+  cache_dir: ["cog"]
+  description: "Code officiel geographique (COG)"
+  source: "INSEE"
+
 bdcharm50:
   label: "BD Charm-50"
   cache_dir: ["geol", "bdcharm50"]
   description: "Cartes géologiques départementales à 1/50 000"
+  source: "BRGM"
 
 carhab:
   label: "CarHab"
   cache_dir: ["geol", "carhab"]
   description: "Données géologiques dédiées au programme de Cartographie des Habitats Naturels et semi-naturels (CARHAB)"
+  source: "BRGM"
 
 lidar_mnt:
   label: "LIDAR MNT"
   cache_dir: ["lidar", "mnt"]
   description: "IGN LIDAR HD MNT tiles"
+  source: "IGN"
 
 lidar_mns:
   label: "LIDAR MNS"
   cache_dir: ["lidar", "mns"]
   description: "IGN LIDAR HD MNS tiles"
-
+  source: "IGN"
 
 lidar_mnh:
   label: "LIDAR MNH"
   cache_dir: ["lidar", "mnh"]
   description: "IGN LIDAR HD MNH tiles"
+  source: "IGN"
+
+ifn:
+  label: "IFN"
+  cache_dir: ["ifn"]
+  description: "sylvo-ecoregions, regions forestières et zones de production"
+  source: "IFN"
+
+legal_entity:
+  label: "Personne morale"
+  cache_dir: ["legal_entity"]
+  description: "Fichiers recensant les parcelles de personnes morales"
+  source: "DGFIP"
+
+meteo:
+  label: "Météo France"
+  cache_dir: ["meteo", "mensuelles"]
+  description: "Données météorologique mensuelles"
+  source: "METEO FRANCE"

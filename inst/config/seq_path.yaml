@@ -17,7 +17,6 @@ namespace:
   v.secu: "securite"
   r.alt: "altimetrie"
   r.ortho: "imagerie"
-  r.scan: "scan"
   r.sol: "sol"
   r.seq: "raster"
 
@@ -33,7 +32,6 @@ path:
   environnement: "2_VECTOR/ENVIRONNEMENT"
   ifn: "2_VECTOR/IFN"
   raster: "3_RASTER"
-  scan: "3_RASTER/SCAN"
   altimetrie: "3_RASTER/ALTIMETRIE"
   imagerie: "3_RASTER/IMAGERIE"
   securite: "2_VECTOR/SECURITE"

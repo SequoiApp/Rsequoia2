@@ -41,8 +41,7 @@ mf_get_nearest_station <- function(x, n = 1, verbose = TRUE){
 #' The fiche contains station metadata and long-term climatological summaries.
 #'
 #' @param x `sf` or `sfc`
-#' @param dirname `character`; directory where the PDF will be saved. Defaults to
-#' [tools::R_user_dir()]
+#' @param dirname `character`; directory where the PDF will be saved
 #' @param verbose `logical` If `TRUE`, display progress messages.
 #'
 #' @return Path to the downloaded PDF
@@ -53,11 +52,8 @@ mf_get_nearest_station <- function(x, n = 1, verbose = TRUE){
 #' }
 #'
 #' @export
-mf_get_climate_fiche <- function(x, dirname = NULL, verbose = TRUE) {
-  # 1. Prepare dirname folder (R_user_dir by default)
-  if (is.null(dirname)) {
-    dirname <- tools::R_user_dir("Rsequoia2", which = "data")
-  }
+mf_get_climate_fiche <- function(x, dirname, verbose = TRUE) {
+
   dir.create(dirname, recursive = TRUE, showWarnings = FALSE)
 
   station <- mf_get_nearest_station(x, verbose = verbose)
@@ -130,7 +126,11 @@ mf_get_metadata <- function(){
 #' }
 #'
 #' @export
-mf_get_climatology <- function(x, cache = NULL, verbose = TRUE){
+mf_get_climatology <- function(
+    x,
+    cache = seq_cache("meteo")$path,
+    verbose = TRUE
+  ){
 
   if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
@@ -168,7 +168,9 @@ mf_get_climatology <- function(x, cache = NULL, verbose = TRUE){
       clim <- read.csv2(cache_file)
     }
 
-    periode <- regmatches(filename, regexpr("\\d{4}-\\d{4}", filename))
+    year_month <- "AAAAMM"
+    years <- substr(clim[[year_month]], 1, 4) |> as.integer()
+    periode = sprintf("%s-%s",min(years), max(years))
     cbind(PERIODE = periode, clim)
 
   })

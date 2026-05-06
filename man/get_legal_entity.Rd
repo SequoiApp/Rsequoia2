@@ -4,14 +4,14 @@
 \alias{get_legal_entity}
 \title{Create a forest matrice for legal entity from insee code}
 \usage{
-get_legal_entity(x, cache = NULL, verbose = TRUE)
+get_legal_entity(x, cache = seq_cache("legal_entity")$path, verbose = TRUE)
 }
 \arguments{
 \item{x}{\code{character}; Code(s) INSEE or code(s) department (see
 [Rsequoia2::get_cog())}
 
 \item{cache}{\code{character}; Storage directory. Defaults to the user cache
-directory (see \code{\link[tools:userdir]{tools::R_user_dir()}}).}
+directory.}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }

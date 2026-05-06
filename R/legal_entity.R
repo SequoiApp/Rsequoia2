@@ -7,7 +7,7 @@
 #' repeated downloads.
 #'
 #' @param cache `character`; Storage directory. Defaults to the user cache
-#' directory (see [tools::R_user_dir()]).
+#' directory.
 #' @param verbose `logical` If `TRUE`, display messages.
 #'
 #' @importFrom archive archive_extract
@@ -22,18 +22,17 @@
 #' }
 #'
 #' @export
-download_legal_entity <- function(cache = NULL, verbose = TRUE) {
+download_legal_entity <- function(
+    cache = seq_cache("legal_entity")$path,
+    verbose = TRUE
+    ) {
 
   # --- timeout handling (scoped)
   old_timeout <- getOption("timeout")
   options(timeout = max(300, old_timeout))  # e.g. 5 min
   on.exit(options(timeout = old_timeout), add = TRUE)
 
-  if (is.null(cache)){
-    cache <- tools::R_user_dir("Rsequoia2", which = "cache") |>
-      file.path("legal_entity")
-    dir.create(cache, recursive = TRUE, showWarnings = FALSE)
-  }
+  dir.create(cache, recursive = TRUE, showWarnings = FALSE)
 
   # dgfip_id <- "534fff8ea3a7292c64a77f02"
   dataset_id <- "605d268f4661cf23272817c3"
@@ -91,7 +90,7 @@ globalVariables(c(
 #' @export
 get_legal_entity <- function(
     x,
-    cache = NULL,
+    cache = seq_cache("legal_entity")$path,
     verbose = TRUE){
 
   # Check input ---

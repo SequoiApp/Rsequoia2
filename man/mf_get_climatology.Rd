@@ -4,7 +4,7 @@
 \alias{mf_get_climatology}
 \title{Download monthly climatology from Meteo-France}
 \usage{
-mf_get_climatology(x, cache = NULL, verbose = TRUE)
+mf_get_climatology(x, cache = seq_cache("meteo")$path, verbose = TRUE)
 }
 \arguments{
 \item{x}{\code{sf} or \code{sfc}.}

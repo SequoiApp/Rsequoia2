@@ -460,8 +460,7 @@ make_data_actions <- function(path, overwrite = FALSE) {
     "GPU"            = seq_gpu,
     "Patrimoine"     = seq_patrimony,
     "Altimetrie"     = seq_altimetry,
-    "Orthophoto"     = seq_ortho,
-    "Scan"           = seq_scan
+    "Orthophoto"     = seq_ortho
   )
 
   actions <- lapply(fns, function(fn) {
