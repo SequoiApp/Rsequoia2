@@ -8,12 +8,18 @@ carhab:
   cache_dir: ["geol", "carhab"]
   description: "Données géologiques dédiées au programme de Cartographie des Habitats Naturels et semi-naturels (CARHAB)"
 
-lidar_mnh:
-  label: "LIDAR MNH"
-  cache_dir: ["lidar", "mnh"]
-  description: "IGN LIDAR HD MNH tiles"
-
 lidar_mnt:
   label: "LIDAR MNT"
   cache_dir: ["lidar", "mnt"]
   description: "IGN LIDAR HD MNT tiles"
+
+lidar_mns:
+  label: "LIDAR MNS"
+  cache_dir: ["lidar", "mns"]
+  description: "IGN LIDAR HD MNS tiles"
+
+
+lidar_mnh:
+  label: "LIDAR MNH"
+  cache_dir: ["lidar", "mnh"]
+  description: "IGN LIDAR HD MNH tiles"

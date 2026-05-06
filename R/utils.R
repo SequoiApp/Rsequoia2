@@ -171,3 +171,89 @@ check_dep <- function(dep) {
 
   return(dep)
 }
+
+#' Download multiple files with retry
+#'
+#' Internal wrapper around [curl::multi_download()] used to download cached
+#' resources. Existing files are skipped unless `overwrite = TRUE`; failed
+#' downloads are retried up to `max_tries`.
+#'
+#' @param urls `character`; Remote file URLs.
+#' @param destfiles `character`; Local destination paths.
+#' @param overwrite `logical(1)`; If `TRUE`, re-download existing files.
+#' @param verbose `logical(1)`; If `TRUE`, show download progress and messages.
+#' @param max_tries `integer(1)`; Maximum number of download attempts.
+#'
+#' @return Invisibly returns `TRUE` if all required files are available.
+#'
+#' @keywords internal
+seq_multi_download <- function(
+    urls,
+    destfiles,
+    overwrite = FALSE,
+    verbose = TRUE,
+    max_tries = 3
+) {
+
+  to_download <- overwrite | !file.exists(destfiles)
+
+  urls <- urls[to_download]
+  destfiles <- destfiles[to_download]
+
+  if (length(destfiles) == 0) {
+    return(invisible(TRUE))
+  }
+
+  dir.create(dirname(destfiles), recursive = TRUE, showWarnings = FALSE)
+
+  download_once <- function(urls, destfiles) {
+
+    res <- curl::multi_download(
+      urls = urls,
+      destfiles = destfiles,
+      resume = TRUE,
+      progress = verbose,
+      multiplex = TRUE,
+      connecttimeout = 30,
+      timeout = 600
+    )
+
+    failed <- res[!res$success, , drop = FALSE]
+
+    list(
+      urls = failed$url,
+      destfiles = failed$destfile
+    )
+  }
+
+  state <- list(
+    urls = urls,
+    destfiles = destfiles
+  )
+
+  for (attempt in seq_len(max_tries)) {
+
+    if (length(state$destfiles) > 0) {
+      state <- download_once(
+        urls = state$urls,
+        destfiles = state$destfiles
+      )
+    }
+
+    if (verbose && length(state$destfiles) > 0 && attempt < max_tries) {
+      cli::cli_alert_warning(
+        "{length(state$destfiles)} file(s) failed. Retrying..."
+      )
+    }
+  }
+
+  if (length(state$destfiles) > 0) {
+    cli::cli_abort(c(
+      "Some files could not be downloaded.",
+      "x" = "{length(state$destfiles)} file(s) still missing after {max_tries} attempt(s).",
+      "i" = "Missing file(s): {.file {basename(state$destfiles)}}"
+    ))
+  }
+
+  invisible(TRUE)
+}

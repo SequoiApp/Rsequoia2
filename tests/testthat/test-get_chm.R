@@ -45,7 +45,7 @@ test_that("get_chm() calls get_dem() and get_dsm() when x is provided", {
   expect_s4_class(chm, "SpatRaster")
   expect_equal(as.numeric(chm[]), 1) # CHM = DSM_DEM = 2 - 1 = 1
   expect_shape(chm, dim = c(1, 1, 1))
-  expect_named(chm, "chm")
+  expect_named(chm, "chm_rgealti")
 })
 
 test_that("get_chm() computes DSM - DEM in manual mode", {

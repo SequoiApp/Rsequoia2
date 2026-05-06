@@ -425,6 +425,20 @@ menu_legal_entity <- function(path, overwrite = FALSE) {
 #' Build data actions
 #' @noRd
 make_data_actions <- function(path, overwrite = FALSE) {
+
+  seq_altimetry <- function(dirname = ".", overwrite = FALSE, verbose = TRUE, ...) {
+    tryCatch(
+      seq_lidar(dirname = dirname, overwrite = overwrite, verbose = verbose, ...),
+      error = function(e) {
+        cli::cli_alert_warning("LiDAR unavailable. Falling back to RGE ALTI.")
+        cli::cli_alert_info(conditionMessage(e))
+        seq_rgealti(dirname = dirname, overwrite = overwrite, verbose = verbose, ...)
+      }
+    )
+
+    seq_terrain(dirname = dirname, overwrite = overwrite, verbose = verbose)
+  }
+
   fns <- list(
     "Communes"       = seq_com,
     "MNHN"           = seq_mnhn,
@@ -445,7 +459,7 @@ make_data_actions <- function(path, overwrite = FALSE) {
     "IFN"            = seq_ifn,
     "GPU"            = seq_gpu,
     "Patrimoine"     = seq_patrimony,
-    "Altimetrie"     = seq_elevation,
+    "Altimetrie"     = seq_altimetry,
     "Orthophoto"     = seq_ortho,
     "Scan"           = seq_scan
   )
