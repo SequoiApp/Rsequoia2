@@ -260,6 +260,10 @@ make_sequoia_actions <- function(overwrite = FALSE) {
       seq_parca(require_seq_path(), overwrite = overwrite)
     },
 
+    "Telecharger DONNEES" = function() {
+      menu_data(require_seq_path(), overwrite = overwrite)
+    },
+
     "Creer UA & LIMITES" = function() {
       path <- require_seq_path()
       seq_parca_to_ua(path, overwrite = overwrite)
@@ -271,10 +275,6 @@ make_sequoia_actions <- function(overwrite = FALSE) {
       seq_ua(path, overwrite = TRUE)
       seq_parcels(path, overwrite = TRUE)
       seq_wooded(path, overwrite = TRUE)
-    },
-
-    "Telecharger DONNEES" = function() {
-      menu_data(require_seq_path(), overwrite = overwrite)
     },
 
     "Generer synthese UA" = function() {
