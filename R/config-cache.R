@@ -54,3 +54,87 @@ seq_cache <- function(key = NULL, filepath = NULL) {
     description = item$description
   )
 }
+
+#' Report Rsequoia2 cache usage
+#'
+#' Prints a small CLI summary of the total cache size and the size of each
+#' configured cache folder.
+#'
+#' @param filepath `character`. Optional path to a cache configuration file.
+#'   Mostly useful for tests. If `NULL`, the package cache configuration is used.
+#'
+#' @return Invisibly returns a `data.frame` with cache key, label, path, size in
+#'   bytes, and formatted size.
+#'
+#' @export
+seq_cache_report <- function(filepath = NULL) {
+
+  cfg <- seq_cache(filepath = filepath)
+
+  dir_size <- function(path) {
+    if (!dir.exists(path)) {
+      return(0)
+    }
+
+    files <- list.files(
+      path,
+      recursive = TRUE,
+      full.names = TRUE,
+      all.files = TRUE,
+      no.. = TRUE,
+      include.dirs = FALSE
+    )
+
+    files <- files[file.exists(files) & !dir.exists(files)]
+
+    sum(file.info(files)$size, na.rm = TRUE)
+  }
+
+  format_size <- function(x) {
+    format(
+      structure(x, class = "object_size"),
+      units = "auto"
+    )
+  }
+
+  report <- lapply(names(cfg), function(key) {
+    cache <- seq_cache(key, filepath = filepath)
+    size <- dir_size(cache$path)
+
+    data.frame(
+      key = key,
+      label = cache$label,
+      path = cache$path,
+      size = size,
+      size_pretty = format_size(size),
+      stringsAsFactors = FALSE
+    )
+  })
+
+  report <- do.call(rbind, report)
+  total <- sum(report$size, na.rm = TRUE)
+
+  label_width <- max(nchar(report$label), na.rm = TRUE)
+
+  cli::cli_div(theme = list(
+    span.cache_total = list(color = "green", "font-weight" = "bold"),
+    span.cache_size = list(color = "cyan")
+  ))
+
+  cli::cli_h1("Rsequoia2 cache")
+
+  cli::cli_text(
+    "Total: {.cache_total {format_size(total)}}"
+  )
+
+  cli::cli_h2("Detail")
+  for (i in seq_len(nrow(report))) {
+    cli::cli_text(
+      " {.cache_label {report$label[i]}}: {.cache_size {report$size_pretty[i]}}"
+    )
+  }
+
+  cli::cli_end()
+
+  return(invisible(report))
+}
