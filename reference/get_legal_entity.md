@@ -8,7 +8,7 @@ entity.
 ## Usage
 
 ``` r
-get_legal_entity(x, cache = NULL, verbose = TRUE)
+get_legal_entity(x, cache = seq_cache("legal_entity")$path, verbose = TRUE)
 ```
 
 ## Arguments
@@ -20,8 +20,7 @@ get_legal_entity(x, cache = NULL, verbose = TRUE)
 
 - cache:
 
-  `character`; Storage directory. Defaults to the user cache directory
-  (see [`tools::R_user_dir()`](https://rdrr.io/r/tools/userdir.html)).
+  `character`; Storage directory. Defaults to the user cache directory.
 
 - verbose:
 

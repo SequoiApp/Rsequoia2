@@ -6,7 +6,7 @@ station to the provided geometry.
 ## Usage
 
 ``` r
-mf_get_climate_fiche(x, dirname = NULL, verbose = TRUE)
+mf_get_climate_fiche(x, dirname, verbose = TRUE)
 ```
 
 ## Arguments
@@ -17,8 +17,7 @@ mf_get_climate_fiche(x, dirname = NULL, verbose = TRUE)
 
 - dirname:
 
-  `character`; directory where the PDF will be saved. Defaults to
-  [`tools::R_user_dir()`](https://rdrr.io/r/tools/userdir.html)
+  `character`; directory where the PDF will be saved
 
 - verbose:
 

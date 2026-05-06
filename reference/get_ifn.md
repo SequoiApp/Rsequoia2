@@ -6,7 +6,7 @@ intersecting a given area of interest.
 ## Usage
 
 ``` r
-get_ifn(x, key, cache = NULL)
+get_ifn(x, key, cache = seq_cache("ifn")$path)
 ```
 
 ## Arguments
@@ -33,8 +33,7 @@ get_ifn(x, key, cache = NULL)
 - cache:
 
   A character string defining the cache directory. Defaults to a
-  package-specific cache directory created with
-  `tools::R_user_dir("Rsequoia2", which = "cache")`.
+  package-specific cache directory.
 
 ## Value
 

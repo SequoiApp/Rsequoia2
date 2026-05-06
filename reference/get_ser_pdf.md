@@ -6,7 +6,12 @@ repository.
 ## Usage
 
 ``` r
-get_ser_pdf(id_ser, dirname = NULL, overwrite = FALSE, verbose = TRUE)
+get_ser_pdf(
+  id_ser,
+  dirname = seq_cache("ifn")$path,
+  overwrite = FALSE,
+  verbose = TRUE
+)
 ```
 
 ## Arguments

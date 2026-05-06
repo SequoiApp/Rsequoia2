@@ -52,7 +52,7 @@ intersecting a given area of interest.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_ifn</span><span class="op">(</span><span class="va">x</span>, <span class="va">key</span>, cache <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_ifn</span><span class="op">(</span><span class="va">x</span>, <span class="va">key</span>, cache <span class="op">=</span> <span class="fu"><a href="seq_cache.html">seq_cache</a></span><span class="op">(</span><span class="st">"ifn"</span><span class="op">)</span><span class="op">$</span><span class="va">path</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -75,8 +75,7 @@ Must be one of <code>get_keys("ifn")</code>:</p><ul><li><p><code>"ser"</code>: s
 
 <dt id="arg-cache">cache<a class="anchor" aria-label="anchor" href="#arg-cache"></a></dt>
 <dd><p>A character string defining the cache directory.
-Defaults to a package-specific cache directory created with
-<code>tools::R_user_dir("Rsequoia2", which = "cache")</code>.</p></dd>
+Defaults to a package-specific cache directory.</p></dd>
 
 </dl></div>
     <div class="section level2">

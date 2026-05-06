@@ -6,7 +6,7 @@ from data.gouv.fr. Cached data are reused unless `update = TRUE`.
 ## Usage
 
 ``` r
-get_cog(cache = NULL, update = FALSE, verbose = TRUE)
+get_cog(cache = seq_cache("cog")$path, update = FALSE, verbose = TRUE)
 ```
 
 ## Arguments

@@ -9,15 +9,14 @@ repeated downloads.
 ## Usage
 
 ``` r
-download_legal_entity(cache = NULL, verbose = TRUE)
+download_legal_entity(cache = seq_cache("legal_entity")$path, verbose = TRUE)
 ```
 
 ## Arguments
 
 - cache:
 
-  `character`; Storage directory. Defaults to the user cache directory
-  (see [`tools::R_user_dir()`](https://rdrr.io/r/tools/userdir.html)).
+  `character`; Storage directory. Defaults to the user cache directory.
 
 - verbose:
 

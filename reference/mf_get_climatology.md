@@ -6,7 +6,7 @@ stations*.
 ## Usage
 
 ``` r
-mf_get_climatology(x, cache = NULL, verbose = TRUE)
+mf_get_climatology(x, cache = seq_cache("meteo")$path, verbose = TRUE)
 ```
 
 ## Arguments

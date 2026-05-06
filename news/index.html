@@ -46,8 +46,10 @@
 <h2 class="pkg-version" data-toc-text="development version" id="rsequoia2-development-version">Rsequoia2 (development version)<a class="anchor" aria-label="anchor" href="#rsequoia2-development-version"></a></h2>
 <div class="section level3">
 <h3 id="v001-development-version">v0.0.1<a class="anchor" aria-label="anchor" href="#v001-development-version"></a></h3>
-<ul><li>Removed <code>download_brgm()</code> in favor of the more explicit <code><a href="../reference/download_bdcharm50.html">download_bdcharm50()</a></code> and <code><a href="../reference/download_carhab.html">download_carhab()</a></code> functions.</li>
-<li>Added cache configuration in <code>inst/config/seq_caches.yaml</code>, with associated helper functions in <code>config-cache.R</code>.</li>
+<div class="section level4">
+<h4 id="added-development-version">Added<a class="anchor" aria-label="anchor" href="#added-development-version"></a></h4>
+<ul><li>Added cache configuration in <code>inst/config/seq_caches.yaml</code>, with associated helpers in <code>config-cache.R</code>.</li>
+<li>Implemented cache configuration across the package.</li>
 <li>Added LIDAR tile support:
 <ul><li>
 <code><a href="../reference/download_lidar.html">download_lidar()</a></code> downloads LIDAR tiles in parallel and stores them in the cache;</li>
@@ -56,14 +58,23 @@
 <li>
 <code><a href="../reference/seq_lidar.html">seq_lidar()</a></code> orchestrates LIDAR processing within a Sequoia workflow.</li>
 </ul></li>
+</ul></div>
+<div class="section level4">
+<h4 id="changed-development-version">Changed<a class="anchor" aria-label="anchor" href="#changed-development-version"></a></h4>
+<ul><li>Replaced <code>download_brgm()</code> with the more explicit <code><a href="../reference/download_bdcharm50.html">download_bdcharm50()</a></code> and <code><a href="../reference/download_carhab.html">download_carhab()</a></code> functions.</li>
 <li>Split the former <code>seq_elevation()</code> workflow into:
 <ul><li>
 <code><a href="../reference/seq_rgealti.html">seq_rgealti()</a></code> for classic RGE ALTI raster data;</li>
 <li>
-<code><a href="../reference/seq_terrain.html">seq_terrain()</a></code> for slope/aspect</li>
+<code><a href="../reference/seq_terrain.html">seq_terrain()</a></code> for terrain derivatives such as slope and aspect.</li>
 </ul></li>
-<li>Updated <code><a href="../reference/sequoia2.html">sequoia2()</a></code> altimetry workflow: LIDAR data is now attempted first, with fallback to classic WMS raster data.</li>
+<li>Updated the <code><a href="../reference/sequoia2.html">sequoia2()</a></code> altimetry workflow: LIDAR data is now attempted first, with fallback to classic WMS raster data.</li>
 </ul></div>
+<div class="section level4">
+<h4 id="removed-development-version">Removed<a class="anchor" aria-label="anchor" href="#removed-development-version"></a></h4>
+<ul><li>Removed Scan support to comply with IGN diffusion rules.</li>
+</ul></div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

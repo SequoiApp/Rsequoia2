@@ -6,7 +6,7 @@ the INRA soil map repository.
 ## Usage
 
 ``` r
-get_pedology_pdf(id_ucs, dirname = NULL, verbose = TRUE)
+get_pedology_pdf(id_ucs, dirname, verbose = TRUE)
 ```
 
 ## Arguments
@@ -18,8 +18,7 @@ get_pedology_pdf(id_ucs, dirname = NULL, verbose = TRUE)
 
 - dirname:
 
-  `character`; directory where the PDF will be saved. Defaults to
-  [`tools::R_user_dir()`](https://rdrr.io/r/tools/userdir.html)
+  `character`; directory where the PDF will be saved.
 
 - verbose:
 

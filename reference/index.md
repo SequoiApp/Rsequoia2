@@ -148,9 +148,6 @@
 - [`get_road()`](https://sequoiapp.github.io/Rsequoia2/reference/get_road.md)
   : Retrieve road sections around an area
 
-- [`get_scan()`](https://sequoiapp.github.io/Rsequoia2/reference/get_scan.md)
-  : Download IGN scanned maps (SCAN25, SCAN100, OACI or IGN maps)
-
 - [`get_ser_pdf()`](https://sequoiapp.github.io/Rsequoia2/reference/get_ser_pdf.md)
   : Download sylvoecoregion PDF reports from INF repository
 
@@ -335,9 +332,6 @@
 
 - [`seq_roadway()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_roadway.md)
   : Generate graphic road layers for a Sequoia project
-
-- [`seq_scan()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_scan.md)
-  : Download scanned IGN maps for a Sequoia project
 
 - [`seq_summary()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_summary.md)
   : Summarize information for a Sequoia folder
