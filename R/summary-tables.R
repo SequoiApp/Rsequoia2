@@ -404,7 +404,13 @@ build_summary_road <- function(ua, dirname) {
 
 # MNT ----
 build_summary_mnt <- function(pf, dirname) {
-  mnt <- seq_read("r.alt.mnt", dirname = dirname)
+  mnt <- tryCatch(
+    seq_read("r.alt.mnt.lidar", dirname = dirname, verbose = FALSE),
+    error = \(e) tryCatch(
+      seq_read("r.alt.mnt.rge", dirname = dirname, verbose = FALSE),
+      error = \(e) cli::cli_abort("No MNT raster found.")
+    )
+  )
 
   pf_field <- seq_field("pcl_code")$name
   fun <- list(mean = mean, min = min, max = max)
@@ -431,7 +437,13 @@ build_summary_mnt <- function(pf, dirname) {
 
 # MNH ----
 build_summary_mnh <- function(pf, dirname) {
-  mnh <- seq_read("r.alt.mnh", dirname = dirname)
+  mnh <- tryCatch(
+    seq_read("r.alt.mnh.lidar", dirname = dirname, verbose = FALSE),
+    error = \(e) tryCatch(
+      seq_read("r.alt.mnh.rge", dirname = dirname, verbose = FALSE),
+      error = \(e) cli::cli_abort("No MNH raster found.")
+    )
+  )
 
   pf_field <- seq_field("pcl_code")$name
   fun <- list(mean = mean, min = min, max = max)
