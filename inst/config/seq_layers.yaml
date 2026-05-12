@@ -3,18 +3,19 @@ x.seq.matrice: {name: "MATRICE", ext: "xlsx"}
 x.seq.summary: {name: "SYNTHESE", ext: "xlsx"}
 
 # RASTER
-r.alt.mnt.rge:     { name: "MNT_RGE",   ext: "tif" }
-r.alt.mns.rge:     { name: "MNS_RGE",   ext: "tif" }
-r.alt.mnh.rge:     { name: "MNH_RGE",   ext: "tif" }
-r.alt.mnt.lidar:   { name: "MNT_LIDAR", ext: "tif" }
-r.alt.mns.lidar:   { name: "MNS_LIDAR", ext: "tif" }
-r.alt.mnh.lidar:   { name: "MNH_LIDAR", ext: "tif" }
-r.alt.pente:       { name: "PENTE",     ext: "tif" }
-r.alt.expo:        { name: "EXPO",      ext: "tif" }
-r.ortho.irc:       { name: "IRC",       ext: "tif" }
-r.ortho.rgb:       { name: "RGB",       ext: "tif" }
-r.sol.geol:        { name: "GEOL",      ext: "tif" }
-r.seq.plt:         { name: "PLT",       ext: "tif" }
+r.alt.mnt.rge:     { name: "MNT_RGE",     ext: "tif" }
+r.alt.mns.rge:     { name: "MNS_RGE",     ext: "tif" }
+r.alt.mnh.rge:     { name: "MNH_RGE",     ext: "tif" }
+r.alt.mnt.lidar:   { name: "MNT_LIDAR",   ext: "tif" }
+r.alt.mns.lidar:   { name: "MNS_LIDAR",   ext: "tif" }
+r.alt.mnh.lidar:   { name: "MNH_LIDAR",   ext: "tif" }
+r.alt.ombrage.mnh: { name: "OMBRAGE_MNH", ext: "tif" }
+r.alt.pente:       { name: "PENTE",       ext: "tif" }
+r.alt.expo:        { name: "EXPO",        ext: "tif" }
+r.ortho.irc:       { name: "IRC",         ext: "tif" }
+r.ortho.rgb:       { name: "RGB",         ext: "tif" }
+r.sol.geol:        { name: "GEOL",        ext: "tif" }
+r.seq.plt:         { name: "PLT",         ext: "tif" }
 
 # SEQUOIA
 v.seq.parca.poly:   { name: "SEQ_PARCA_poly",  ext: "gpkg" }

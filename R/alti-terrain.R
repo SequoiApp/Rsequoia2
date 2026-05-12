@@ -167,6 +167,38 @@ get_aspect <- function(x = NULL, dem = NULL, agg = 5, verbose = TRUE, ...){
   return(aspect)
 }
 
+#' Compute a hillshade raster from a DHM
+#'
+#' Computes a shaded relief raster from a Digital Height Model using
+#' slope and aspect derived directly from the DHM.
+#'
+#' @param dhm `SpatRaster`; Digital Height Model raster.
+#' @param angle `numeric`; Sun elevation angle in degrees.
+#' @param direction `numeric`; Sun direction/azimuth in degrees.
+#'
+#' @return A `SpatRaster` containing hillshade values.
+#'
+#' @export
+get_shade <- function(
+    r,
+    angle = 30,
+    direction = c(225, 270, 315, 360)
+) {
+
+  if (!inherits(dhm, "SpatRaster")) {
+    cli::cli_abort("{.arg dhm} must be a {.cls SpatRaster} object.")
+  }
+
+  slope <- terra::terrain(r, "slope", unit="radians")
+  aspect <- terra::terrain(r, "aspect", unit="radians")
+  shade <- terra::shade(slope, aspect, angle=angle, direction=direction)
+  shade <- Reduce(terra::mean, shade)
+  shade <- terra::mean(shade)
+
+  names(shade) <- "dhm_shade"
+
+  return(shade)
+}
 
 #' Create terrain derivative layers for a Sequoia project
 #'
@@ -204,6 +236,22 @@ seq_terrain <- function(
             "No MNT raster found for terrain calculation.",
             "x" = "Neither {.val r.alt.mnt.lidar} nor {.val r.alt.mnt.rge} could be read.",
             "i" = "Run {.fun seq_lidar} or {.fun seq_rgealti} first to create MNT data."
+          ))
+        }
+      )
+    }
+  )
+
+  dhm <- tryCatch(
+    seq_read("r.alt.mnh.lidar",dirname = dirname,verbose = FALSE),
+    error = function(e_lidar) {
+      tryCatch(
+        seq_read("r.alt.mnh.rge",dirname = dirname,verbose = FALSE),
+        error = function(e_rgealti) {
+          cli::cli_abort(c(
+            "No MNH raster found for terrain calculation.",
+            "x" = "Neither {.val r.alt.mnh.lidar} nor {.val r.alt.mnh.rge} could be read.",
+            "i" = "Run {.fun seq_lidar} or {.fun seq_rgealti} first to create MNH data."
           ))
         }
       )
@@ -268,9 +316,32 @@ seq_terrain <- function(
     )
   }
 
+  # SHADE_MNH ----
+  ombrage_key <- "r.alt.ombrage.mnh"
+  ombrage_path <- raster_path(ombrage_key)
+
+  if (file.exists(ombrage_path) && !overwrite) {
+    if (verbose) {
+      cli::cli_alert_info("Using existing {.file {basename(ombrage_path)}}.")
+    }
+  }
+
+  if (!file.exists(ombrage_path) || overwrite) {
+    ombrage <- get_shade(r = dhm)
+    ombrage_path <- seq_write(
+      ombrage,
+      key = ombrage_key,
+      dirname = dirname,
+      id = id,
+      overwrite = overwrite,
+      verbose = verbose
+    )
+  }
+
   paths <- list(
     slope = slope_path,
-    aspect = aspect_path
+    aspect = aspect_path,
+    ombrage = ombrage_path
   )
 
   invisible(paths)
