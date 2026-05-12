@@ -208,18 +208,18 @@ build_summary_pf_rich <- function(ua) {
 }
 
 # COUPE ----
-build_summary_coupe <- function(ua) {
+build_summary_coupe <- function(ua, n = 20) {
   coupe <- sum_surf_by(ua, "mgmt_code", "std_type", "std_wealth", "std_stage", "res_spe1") |>
     order_by("mgmt_code", "std_type", "std_wealth", "std_stage", "res_spe1")
 
   actual_year <- as.numeric(format(Sys.Date(), "%Y"))
-  last_year <- actual_year + 20
+  last_year <- actual_year + n
   years <- as.character(actual_year:last_year)
 
   coupe_with_year <- coupe
   coupe_with_year[, years] <- NA
 
-  tot <- c(text = "TOTAL", rep("none", ncol(coupe) - 2), "sum", rep("count", 16))
+  tot <- c(text = "TOTAL", rep("none", ncol(coupe) - 2), "sum", rep("count", n + 1))
 
   list(table = coupe_with_year, total_row = tot)
 }
