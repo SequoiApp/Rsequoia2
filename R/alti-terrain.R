@@ -195,6 +195,9 @@ get_shade <- function(
   shade <- Reduce(terra::mean, shade)
   shade <- terra::mean(shade)
 
+  shade <- terra::clamp(shade, lower = 0, upper = 1, values = TRUE)
+  shade <- terra::round(shade * 255)
+
   names(shade) <- "dhm_shade"
 
   return(shade)
