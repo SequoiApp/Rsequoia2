@@ -21,7 +21,7 @@ Imports:
     happign,
     jsonlite,
     lwgeom,
-    openxlsx2,
+    openxlsx2 (>= 1.23),
     pdftools,
     sf,
     terra (>= 1.9-11),

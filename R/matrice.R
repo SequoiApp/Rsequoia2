@@ -89,7 +89,7 @@ read_matrice <- function(dirname = "."){
     m_path,
     skip_empty_rows = TRUE,
     skip_empty_cols = TRUE,
-    na.strings = c("", " ",  "#N/A"),
+    na = c("", " ",  "#N/A"),
     convert = FALSE
   )
 

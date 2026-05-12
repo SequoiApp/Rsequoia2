@@ -62,7 +62,7 @@ safe_add_seq_table <- function(wb, sheet, fun, verbose = TRUE) {
         openxlsx2::wb_add_data_table(
           sheet = sheet,
           x = table,
-          na.strings = NULL,
+          na = NULL,
           total_row = total_row
         ) |>
         style_table(sheet = sheet, df = table) |>
@@ -139,7 +139,6 @@ sum_surf_by <- function(x, ..., area_key = "cor_area") {
   }
 
   x[by_cols] <- lapply(x[by_cols], \(z) addNA(factor(z)))
-
   by_formula <- paste(by_cols, collapse = " + ")
 
   out <- aggregate(
@@ -150,6 +149,8 @@ sum_surf_by <- function(x, ..., area_key = "cor_area") {
     na.action = stats::na.pass
   )
 
+  # Convert factor as character to avoid weird format when using openxlsx2::wb_add_data_table
+  out[by_cols] <- lapply(out[by_cols], as.character)
   rownames(out) <- NULL
   out
 }
