@@ -67,7 +67,7 @@ download_lidar <- function(
     max_tries = max_tries
   )
 
-  invisible(files)
+  invisible(destfiles)
 }
 
 #' Download and extract LiDAR HD raster
