@@ -177,12 +177,11 @@ seq_write(
 
 seq_parca(seq_dir)
 #> ℹ Downloading BDP from IGN...
-#> ⠙ iterating 1 done (0.45/s) | 2.2s
 #> ✔ 12 of 13 ETALAB geom successfully replaced with BDP geom.
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 13 features saved to 1_SEQUOIA/MY_FOREST_SEQ_PARCA_poly.gpkg.
 #> ✔ Table "x.seq.matrice" saved to MY_FOREST_MATRICE.xlsx.
-#> ✔ _matrice.xlsx also saved as MY_FOREST_MATRICE_20260512T095810.xlsx for safety.
+#> ✔ _matrice.xlsx also saved as MY_FOREST_MATRICE_20260512T131147.xlsx for safety.
 parca <- seq_read("parca", seq_dir)
 
 tm_tiles("OpenStreetMap")+
