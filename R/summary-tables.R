@@ -13,9 +13,9 @@ build_summary_occupation <- function(ua) {
   ua <- sf::st_drop_geometry(ua)
   ua[[is_wooded]] <- ifelse(ua[[is_wooded]] %in% TRUE, "BOISEE", "NON BOISEE")
 
-  tbl <- sum_surf_by(ua, "is_wooded")
+  tbl <- sum_surf_by(ua, "owner", "is_wooded")
 
-  tot <- c(text = "TOTAL", "sum")
+  tot <- c(text = "TOTAL", "none", "sum")
 
   list(table = tbl, total_row = tot)
 }

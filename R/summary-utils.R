@@ -128,35 +128,19 @@ sum_surf_by <- function(x, ..., area_key = "cor_area") {
   by_cols <- vapply(by, resolve_col, character(1))
 
   if (!area_col %in% names(x)) {
-    cli::cli_abort(
-      "Missing area column {.field {area_col}}."
-    )
+    cli::cli_abort("Missing area column {.field {area_col}}.")
   }
 
   missing <- by_cols[!by_cols %in% names(x)]
-
   if (length(missing) > 0) {
     cli::cli_abort(
       "Missing grouping column{?s}: {.field {unname(missing)}}."
     )
   }
 
-  is_all_na <- vapply(
-    by_cols,
-    function(col) all(is.na(x[[col]])),
-    logical(1)
-  )
+  x[by_cols] <- lapply(x[by_cols], \(z) addNA(factor(z)))
 
-  kept_cols <- by_cols[!is_all_na]
-  dropped_cols <- by_cols[is_all_na]
-
-  if (length(kept_cols) == 0) {
-    cli::cli_abort(
-      "Cannot group: field{?s} {.field {by_cols}} is empty."
-    )
-  }
-
-  by_formula <- paste(kept_cols, collapse = " + ")
+  by_formula <- paste(by_cols, collapse = " + ")
 
   out <- aggregate(
     stats::as.formula(paste(area_col, "~", by_formula)),
