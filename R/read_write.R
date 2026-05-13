@@ -77,7 +77,7 @@ seq_read <- function(key, dirname = ".", verbose = FALSE) {
 
   is_xlsx <- (type == "xlsx")
   if (is_xlsx) {
-    x <- openxlsx2::read_xlsx(path, na = NULL, skip_empty_rows = TRUE, skip_empty_cols = TRUE)
+    x <- openxlsx2::read_xlsx(path, na.strings = NULL, skip_empty_rows = TRUE, skip_empty_cols = TRUE)
     if (verbose) {
       cli::cli_alert_success(
         "Loaded xlsx table {.val {key}} from {.file {basename(path)}}."
@@ -152,6 +152,23 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
 
   dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
 
+  # Test if file is locked ----
+  if (file.exists(path) && overwrite) {
+    tmp <- paste0(path, ".locktest")
+    can_rename <- suppressWarnings(file.rename(path, tmp))
+
+    if (!can_rename) {
+      cli::cli_abort(c(
+        "x" = "Cannot overwrite {.file {basename(path)}} because the file is locked.",
+        "i" = "Close it in QGIS or any other application, then try again."
+      ))
+    }
+
+    # Rename back to normal
+    suppressWarnings(file.rename(tmp, path))
+  }
+
+  # Vector ----
   is_vector <- type == "vect"
   if (is_vector) {
     if (!inherits(x, c("sf", "sfc"))) {
@@ -171,7 +188,7 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
       layer_options = c(
         "GEOMETRY_NAME=geom",
         "SPATIAL_INDEX=YES"
-      ),
+      )
 
     )
 
@@ -184,6 +201,7 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
     return(invisible(path))
   }
 
+  # Raster ----
   is_raster <- type == "rast"
   if (is_raster) {
     if (!inherits(x, "SpatRaster")) {
@@ -225,6 +243,7 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
     return(invisible(path))
   }
 
+  # Xlsx ----
   is_xlsx <- type == "xlsx"
   if (is_xlsx) {
     if (!inherits(x, "data.frame")) {
@@ -250,3 +269,4 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
   )
 
 }
+
