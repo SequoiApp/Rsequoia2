@@ -65,7 +65,21 @@ safe_add_seq_table <- function(wb, sheet, fun, verbose = TRUE) {
           na = NULL,
           total_row = total_row
         ) |>
-        style_table(sheet = sheet, df = table) |>
+        openxlsx2::wb_add_cell_style(
+          sheet = sheet,
+          dims = wb_dims(x = table),
+          horizontal = "center"
+        ) |>
+        openxlsx2::wb_set_col_widths(
+          sheet = sheet,
+          cols = seq_along(table),
+          widths = "auto"
+        ) |>
+        openxlsx2::wb_add_numfmt(
+          sheet = sheet,
+          dims = wb_dims(x = table),
+          numfmt = "0.00"
+        ) |>
         openxlsx2::wb_freeze_pane(
           sheet = sheet,
           first_row = TRUE
