@@ -85,7 +85,7 @@ seq_cache_report <- function(filepath = NULL) {
       include.dirs = FALSE
     )
 
-    files <- files[file.exists(files) & !dir.exists(files)]
+    files <- files[!dir.exists(files)]
 
     sum(file.info(files)$size, na.rm = TRUE)
   }
@@ -98,6 +98,7 @@ seq_cache_report <- function(filepath = NULL) {
   }
 
   report <- lapply(names(cfg), function(key) {
+
     cache <- seq_cache(key, filepath = filepath)
     size <- dir_size(cache$path)
 

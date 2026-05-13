@@ -172,7 +172,7 @@ get_aspect <- function(x = NULL, dem = NULL, agg = 5, verbose = TRUE, ...){
 #' Computes a shaded relief raster from a Digital Height Model using
 #' slope and aspect derived directly from the DHM.
 #'
-#' @param dhm `SpatRaster`; Digital Height Model raster.
+#' @param r `SpatRaster`; Digital Height Model raster.
 #' @param angle `numeric`; Sun elevation angle in degrees.
 #' @param direction `numeric`; Sun direction/azimuth in degrees.
 #'
@@ -185,7 +185,7 @@ get_shade <- function(
     direction = c(225, 270, 315, 360)
 ) {
 
-  if (!inherits(dhm, "SpatRaster")) {
+  if (!inherits(r, "SpatRaster")) {
     cli::cli_abort("{.arg dhm} must be a {.cls SpatRaster} object.")
   }
 
