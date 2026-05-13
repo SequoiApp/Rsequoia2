@@ -17,6 +17,10 @@
     an area;
   - [`seq_lidar()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_lidar.md)
     orchestrates LIDAR processing within a Sequoia workflow.
+- Added support for generating shade raster :
+  - `get_shade()` function to calculate multi orientation shade ;
+  - [`seq_terrain()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_terrain.md)
+    now generate shade raster from MNH
 
 #### Changed
 
@@ -34,6 +38,8 @@
   [`sequoia2()`](https://sequoiapp.github.io/Rsequoia2/reference/sequoia2.md)
   altimetry workflow: LIDAR data is now attempted first, with fallback
   to classic WMS raster data.
+- [`seq_summary()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_summary.md)
+  refactor for better message report, table style and values calculation
 
 #### Removed
 
