@@ -10,6 +10,9 @@
   - `download_lidar()` downloads LIDAR tiles in parallel and stores them in the cache;
   - `get_lidar()` loads LIDAR tiles in memory, then crops and masks the raster around an area;
   - `seq_lidar()` orchestrates LIDAR processing within a Sequoia workflow.
+- Added support for generating shade raster :
+  - `get_shade()` function to calculate multi orientation shade ;
+  - `seq_terrain()` now generate shade raster from MNH
 
 ### Changed
 
@@ -18,6 +21,7 @@
   - `seq_rgealti()` for classic RGE ALTI raster data;
   - `seq_terrain()` for terrain derivatives such as slope and aspect.
 - Updated the `sequoia2()` altimetry workflow: LIDAR data is now attempted first, with fallback to classic WMS raster data.
+- `seq_summary()` refactor for better message report, table style and values calculation
 
 ### Removed
 
