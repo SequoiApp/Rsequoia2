@@ -9,9 +9,7 @@
 #' @param df A data frame that has been written to `sheet` and needs styling.
 #' @param numfmt see [openxlsx2::wb_add_numfmt]
 #'
-#' @importFrom openxlsx2 wb_workbook wb_add_data wb_add_worksheet wb_save
-#' wb_dims wb_set_col_widths wb_add_cell_style wb_add_numfmt wb_add_font
-#' wb_add_border wb_color
+#' @importFrom openxlsx2 wb_workbook wb_add_data wb_add_worksheet wb_save wb_dims wb_set_col_widths wb_add_cell_style wb_add_numfmt wb_add_font wb_add_border wb_color
 #'
 #' @return The modified `wb_workbook` object with styles applied.
 #' @export

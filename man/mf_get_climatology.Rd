@@ -10,7 +10,7 @@ mf_get_climatology(x, cache = seq_cache("meteo")$path, verbose = TRUE)
 \item{x}{\code{sf} or \code{sfc}.}
 
 \item{cache}{\code{character}; Storage directory. Defaults to the user cache
-directory (see \code{\link[tools:userdir]{tools::R_user_dir()}})}
+directory (see \code{\link[tools:R_user_dir]{tools::R_user_dir()}})}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
 }

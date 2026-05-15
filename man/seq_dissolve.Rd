@@ -28,16 +28,16 @@ Should be a very small positive value relative to \code{buffer}.
 Default is \code{0.01}.}
 
 \item{endCapStyle}{\code{character}; Shape of line endings used in buffering.
-One of \code{"ROUND"}, \code{"FLAT"}, or \code{"SQUARE"}. Passed to \code{\link[sf:geos_unary]{sf::st_buffer()}}.}
+One of \code{"ROUND"}, \code{"FLAT"}, or \code{"SQUARE"}. Passed to \code{\link[sf:st_buffer]{sf::st_buffer()}}.}
 
 \item{joinStyle}{\code{character}; Shape of corners in buffering.
-One of \code{"ROUND"}, \code{"MITRE"}, or \code{"BEVEL"}. Passed to \code{\link[sf:geos_unary]{sf::st_buffer()}}.}
+One of \code{"ROUND"}, \code{"MITRE"}, or \code{"BEVEL"}. Passed to \code{\link[sf:st_buffer]{sf::st_buffer()}}.}
 
 \item{mitreLimit}{\code{numeric}; Mitre ratio limit (only used if
-\code{joinStyle = "MITRE"}). Passed to \code{\link[sf:geos_unary]{sf::st_buffer()}}.}
+\code{joinStyle = "MITRE"}). Passed to \code{\link[sf:st_buffer]{sf::st_buffer()}}.}
 
 \item{snapping}{\code{logical}; If \code{TRUE}, snaps the resulting geometries back to
-the original input geometries using \code{\link[sf:geos_binary_ops]{sf::st_snap()}} with the same tolerance
+the original input geometries using \code{\link[sf:st_snap]{sf::st_snap()}} with the same tolerance
 as \code{buffer}. This can help reduce spatial drift introduced by buffering.
 Default is \code{FALSE}.}
 }
@@ -72,5 +72,5 @@ positional shifts. The magnitude of these shifts depends on the chosen
 \code{buffer} and \code{eps} values.
 }
 \seealso{
-\code{\link[sf:geos_combine]{sf::st_union()}}, \code{\link[sf:geos_unary]{sf::st_buffer()}}, \code{\link[sf:valid]{sf::st_make_valid()}}, \code{\link[sf:geos_binary_ops]{sf::st_snap()}}
+\code{\link[sf:st_union]{sf::st_union()}}, \code{\link[sf:st_buffer]{sf::st_buffer()}}, \code{\link[sf:st_make_valid]{sf::st_make_valid()}}, \code{\link[sf:st_snap]{sf::st_snap()}}
 }

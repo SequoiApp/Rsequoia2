@@ -13,10 +13,10 @@ extract_visual_data(pdf)
 A \code{data.frame} with columns from \code{pdf_data()} plus \code{page} (integer)
 }
 \description{
-Wrapper around \code{\link[pdftools:pdftools]{pdftools::pdf_data()}} that adds page numbers
+Wrapper around \code{\link[pdftools:pdf_data]{pdftools::pdf_data()}} that adds page numbers
 to each extracted text element.
 }
 \seealso{
-\code{\link[pdftools:pdftools]{pdftools::pdf_data()}}.
+\code{\link[pdftools:pdf_data]{pdftools::pdf_data()}}.
 }
 \keyword{internal}

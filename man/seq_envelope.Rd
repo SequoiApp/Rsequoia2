@@ -45,6 +45,6 @@ spatial generalization. The resulting convex hulls are therefore dependent on
 the chosen \code{dist} value.
 }
 \seealso{
-\code{\link[sf:geos_unary]{sf::st_convex_hull()}}, \code{\link[sf:geos_combine]{sf::st_union()}}, \code{\link[sf:geos_unary]{sf::st_buffer()}},
-\code{\link[sf:valid]{sf::st_make_valid()}}
+\code{\link[sf:st_convex_hull]{sf::st_convex_hull()}}, \code{\link[sf:st_union]{sf::st_union()}}, \code{\link[sf:st_buffer]{sf::st_buffer()}},
+\code{\link[sf:st_make_valid]{sf::st_make_valid()}}
 }

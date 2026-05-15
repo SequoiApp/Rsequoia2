@@ -25,5 +25,5 @@ The input \code{parca} with four additional fields:
 }
 \description{
 This function compares cadastral areas (in m2) with
-cartographic areas computed from geometry (\code{\link[sf:geos_measures]{sf::st_area()}}).
+cartographic areas computed from geometry (\code{\link[sf:st_area]{sf::st_area()}}).
 }

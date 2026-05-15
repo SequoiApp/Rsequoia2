@@ -2,5 +2,6 @@ url: https://sequoiapp.github.io/Rsequoia2/
 template:
   bootstrap: 5
   footer:
-    left: "Developed collaboratively by the Rsequoia2 team"
-    right: "© 2026 Rsequoia2"
+    left: Developed collaboratively by the Rsequoia2 team
+    right: © 2026 Rsequoia2
+

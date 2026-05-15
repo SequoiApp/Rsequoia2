@@ -7,11 +7,11 @@
 get_shade(r, angle = 30, direction = c(225, 270, 315, 360))
 }
 \arguments{
+\item{r}{\code{SpatRaster}; Digital Height Model raster.}
+
 \item{angle}{\code{numeric}; Sun elevation angle in degrees.}
 
 \item{direction}{\code{numeric}; Sun direction/azimuth in degrees.}
-
-\item{dhm}{\code{SpatRaster}; Digital Height Model raster.}
 }
 \value{
 A \code{SpatRaster} containing hillshade values.

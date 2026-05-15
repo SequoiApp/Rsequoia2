@@ -16,7 +16,7 @@ seq_meteo_france(
 Defaults to the current working directory.}
 
 \item{cache}{\code{character}; Storage directory. Defaults to the user cache
-directory (see \code{\link[tools:userdir]{tools::R_user_dir()}})}
+directory (see \code{\link[tools:R_user_dir]{tools::R_user_dir()}})}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
