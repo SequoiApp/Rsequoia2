@@ -10,3 +10,5 @@
 ^vignettes/articles/
 ^data-raw$
 ^README\.Rmd$
+^\.positai$
+^\.claude$

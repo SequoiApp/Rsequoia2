@@ -60,8 +60,12 @@ seq_summary <- function(dirname = ".", verbose = TRUE) {
     plt_rich = function() build_summary_plt_rich(ua_wooded),
     plt_stade = function() build_summary_plt_stade(ua_wooded),
     plt_ess = function() build_summary_plt_ess(ua_wooded),
-    plt = function() build_summary_plt(ua_wooded),
-    pf_plt = function() build_summary_pf_plt(ua_wooded),
+    plt_type_rich = function() build_summary_plt_type_rich(ua_wooded),
+    plt_type_rich_stade = function() build_summary_plt_type_rich_stade(ua_wooded),
+    plt_type_rich_stade_ess = function() build_summary_plt_type_rich_stade_ess(ua_wooded),
+    pf_plt_type = function() build_summary_pf_plt_type(ua_wooded),
+    pf_plt_type_rich = function() build_summary_pf_plt_type_rich(ua_wooded),
+    pf_plt_type_rich_stade = function() build_summary_pf_plt_type_rich_stade(ua_wooded),
     plt_pf = function() build_summary_plt_pf(ua_wooded),
     pf_rich = function() build_summary_pf_rich(ua_wooded),
     coupe = function() build_summary_coupe(ua_wooded),
@@ -90,7 +94,12 @@ seq_summary <- function(dirname = ".", verbose = TRUE) {
   for (name in names(builders)) {
     sheet <- toupper(name)
 
-    res <- safe_add_seq_table(wb, sheet, builders[[name]], verbose)
+    res <- safe_add_seq_table(
+      wb = wb,
+      sheet = sheet,
+      fun = builders[[name]],
+      verbose = verbose
+    )
 
     wb <- res$wb
     if (isTRUE(res$ok)) {

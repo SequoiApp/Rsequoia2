@@ -78,7 +78,7 @@ safe_add_seq_table <- function(wb, sheet, fun, verbose = TRUE) {
         openxlsx2::wb_add_numfmt(
           sheet = sheet,
           dims = wb_dims(x = table),
-          numfmt = "0.00"
+          numfmt = "0.0000"
         ) |>
         openxlsx2::wb_freeze_pane(
           sheet = sheet,
@@ -227,9 +227,11 @@ order_by <- function(x, ..., decreasing = FALSE, na.last = TRUE) {
 pivot <- function(x, row, col) {
   row_keys <- row
   col_key <- col
+  surf_key <- "cor_area"
 
   row_cols <- vapply(row_keys, function(key) seq_field(key)$name, character(1))
-  col_col <- seq_field(col_key)$name
+  col_col <- vapply(col_key, function(key) seq_field(key)$name, character(1))
+  surf <- seq_field(surf_key)$name
 
   existing_row_cols <- row_cols[row_cols %in% names(x)]
   ignored_row_keys <- row_keys[!row_cols %in% names(x)]
@@ -239,16 +241,22 @@ pivot <- function(x, row, col) {
     )
   }
 
-  if (!col_col %in% names(x)) {
+  if (!all(col_col %in% names(x))) {
     cli::cli_abort(
       "Cannot pivot: column field {.field {col_col}} is missing."
     )
   }
 
+  x$key <- apply(x[col_col], 1, \(z) {
+    z <- na.omit(trimws(z))
+    z <- z[z != ""]
+    if (length(z)) paste(z, collapse = "__") else "(no data)"
+  })
+
   pivoted <- stats::reshape(
-    x,
+    x[c(existing_row_cols, "key", surf)],
     idvar = existing_row_cols,
-    timevar = col_col,
+    timevar = "key",
     sep = "___",
     direction = "wide"
   )
