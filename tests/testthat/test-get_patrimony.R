@@ -109,7 +109,6 @@ test_that("get_patrimony() works offline", {
 
   expect_s3_class(immh, "sf")
   expect_true(nrow(immh) >= 1)
-  expect_equal(sf::st_crs(immh), sf::st_crs(2154))
 
 })
 

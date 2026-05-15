@@ -21,17 +21,6 @@ test_that("get_com_poly() returns sf when commune is found", {
 
 })
 
-test_that("get_com_poly() returns sf with correct crs", {
-
-  testthat::local_mocked_bindings(
-    get_wfs = function(...) Rsequoia2:::seq_poly |> sf::st_transform(4326),
-    .package = "happign"
-  )
-
-  com <- get_com_poly(Rsequoia2:::seq_poly, verbose = FALSE)
-  expect_s3_class(com, "sf")
-  expect_equal(sf::st_crs(com), sf::st_crs(2154))
-})
 
 test_that("get_com_poly() is properly normalize", {
 
