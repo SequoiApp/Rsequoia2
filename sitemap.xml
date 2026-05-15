@@ -79,6 +79,7 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_roadway_line.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_roadway_poly.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_ser_pdf.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_shade.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_siren.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_slope.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/get_toponyme.html</loc></url>
@@ -125,6 +126,7 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_access.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_boundaries.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_cache.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_cache_report.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_com.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_curves.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_dissolve.html</loc></url>

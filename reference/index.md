@@ -151,6 +151,9 @@
 - [`get_ser_pdf()`](https://sequoiapp.github.io/Rsequoia2/reference/get_ser_pdf.md)
   : Download sylvoecoregion PDF reports from INF repository
 
+- [`get_shade()`](https://sequoiapp.github.io/Rsequoia2/reference/get_shade.md)
+  : Compute a hillshade raster from a DHM
+
 - [`get_siren()`](https://sequoiapp.github.io/Rsequoia2/reference/get_siren.md)
   : Get SIREN from pattern
 
@@ -237,6 +240,9 @@
 
 - [`seq_cache()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_cache.md)
   : Get Rsequoia2 cache configuration
+
+- [`seq_cache_report()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_cache_report.md)
+  : Report Rsequoia2 cache usage
 
 - [`seq_com()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_com.md)
   : Generates commune polygon, line and point layers for a Sequoia

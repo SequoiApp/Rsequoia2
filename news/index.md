@@ -18,7 +18,8 @@
   - [`seq_lidar()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_lidar.md)
     orchestrates LIDAR processing within a Sequoia workflow.
 - Added support for generating shade raster :
-  - `get_shade()` function to calculate multi orientation shade ;
+  - [`get_shade()`](https://sequoiapp.github.io/Rsequoia2/reference/get_shade.md)
+    function to calculate multi orientation shade ;
   - [`seq_terrain()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_terrain.md)
     now generate shade raster from MNH
 

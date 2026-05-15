@@ -13,6 +13,7 @@
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="R package to help french forest manager">
 <meta name="description" content="Provides tools to help French forest managers retrieve, process, and create spatial datasets related to forestry management.">
 <meta property="og:description" content="Provides tools to help French forest managers retrieve, process, and create spatial datasets related to forestry management.">
+<meta property="og:image" content="https://sequoiapp.github.io/Rsequoia2/logo.png">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -59,27 +60,69 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="rsequoia2-">Rsequoia2 <img src="reference/figures/Rsequoia2_logo.png" align="right" height="138"><a class="anchor" aria-label="anchor" href="#rsequoia2-"></a>
-</h1></div>
+<div class="page-header">
+<img src="logo.png" class="logo" alt=""><h1 id="rsequoia2-">Rsequoia2 
+<a class="anchor" aria-label="anchor" href="#rsequoia2-"></a>
+</h1>
+</div>
 <!-- badges: start -->
 
-<p>The goal of Rsequoia2 is to help french forest manager by retrieving and creating spatial data</p>
+<div class="section level2">
+<h2 id="français">Français<a class="anchor" aria-label="anchor" href="#fran%C3%A7ais"></a>
+</h2>
+<p><code>Rsequoia2</code> est un package R conçu pour accompagner les gestionnaires forestiers Français.</p>
+<p>Il permet de récupérer, préparer, corriger et synthétiser les données spatiales utilisées dans les projets forestiers.</p>
+<p><code>Rsequoia2</code> est principalement pensé pour travailler avec des données spatiales produites ou utilisées dans QGIS, notamment en complément du plugin QGIS <code>Qsequoia2</code>.</p>
+</div>
+<div class="section level2">
+<h2 id="english">English<a class="anchor" aria-label="anchor" href="#english"></a>
+</h2>
+<p><code>Rsequoia2</code> is an R package designed to support French forest management workflows.</p>
+<p>It helps retrieve, prepare, clean and summarize spatial data used in Sequoia forestry projects.</p>
+<p><code>Rsequoia2</code> is mainly intended to work with spatial data produced or used in QGIS and can be used together with the <code>Qsequoia2</code> QGIS plugin.</p>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of Rsequoia2 from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the development version of <code>Rsequoia2</code> from GitHub with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"SequoiApp/Rsequoia2"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#| eval: false</span></span>
+<span><span class="co"># install.packages("pak")</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"SequoiApp/Rsequoia2"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="quick-execution">Quick execution<a class="anchor" aria-label="anchor" href="#quick-execution"></a>
+<h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<p>For a quick package execution, try:</p>
+<p>Load the package and launch the main interactive workflow:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sequoiapp.github.io/Rsequoia2/">Rsequoia2</a></span><span class="op">)</span></span>
-<span><span class="fu">sequoia</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>The <code>sequoia()</code> function launches the main interactive workflow for <code>Rsequoia2</code>.</p>
+<span><span class="fu"><a href="reference/sequoia2.html">sequoia2</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>The <code><a href="reference/sequoia2.html">sequoia2()</a></code> function launches the main interactive menu for running the package workflows.</p>
+</div>
+<div class="section level2">
+<h2 id="relationship-with-qsequoia2">Relationship with Qsequoia2<a class="anchor" aria-label="anchor" href="#relationship-with-qsequoia2"></a>
+</h2>
+<p><code>Rsequoia2</code> handles data preparation, correction, download and synthesis workflows from R.</p>
+<p><code>Qsequoia2</code> is the companion QGIS plugin used to load, edit, visualize and lay out Sequoia project layers inside QGIS.</p>
+<p>Both tools are designed to work together in the same forestry project workflow.</p>
+</div>
+<div class="section level2">
+<h2 id="development-status">Development status<a class="anchor" aria-label="anchor" href="#development-status"></a>
+</h2>
+<p><code>Rsequoia2</code> is currently experimental.</p>
+<p>The package is under active development and the API may change as workflows are improved.</p>
+</div>
+<div class="section level2">
+<h2 id="bug-reports-and-suggestions">Bug reports and suggestions<a class="anchor" aria-label="anchor" href="#bug-reports-and-suggestions"></a>
+</h2>
+<p>Please report bugs, suggestions or workflow issues on GitHub:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/browseURL.html" class="external-link">browseURL</a></span><span class="op">(</span><span class="st">"https://github.com/SequoiApp/Rsequoia2/issues"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
+</h2>
+<p>Please note that the usethis project is released with a <a href="https://sequoiapp.github.io/Rsequoia2/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
@@ -116,7 +159,7 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
-<li><a href="https://github.com/mucau/Rsequoia2/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/SequoiApp/Rsequoia2/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://github.com/SequoiApp/Rsequoia2/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/SequoiApp/Rsequoia2/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 
