@@ -13,6 +13,7 @@
 - Added support for generating shade raster :
   - `get_shade()` function to calculate multi orientation shade ;
   - `seq_terrain()` now generate shade raster from MNH
+- Added `seq_dir_rename()` for renaming a folder (layername & id)
 
 ### Changed
 
@@ -22,6 +23,7 @@
   - `seq_terrain()` for terrain derivatives such as slope and aspect.
 - Updated the `sequoia2()` altimetry workflow: LIDAR data is now attempted first, with fallback to classic WMS raster data.
 - `seq_summary()` refactor for better message report, table style and values calculation
+- `seq_summary()` generate new tables
 
 ### Removed
 
