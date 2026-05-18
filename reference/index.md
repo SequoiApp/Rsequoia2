@@ -251,6 +251,9 @@
 - [`seq_curves()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_curves.md)
   : Generate hypsometric curves line layer for a Sequoia project
 
+- [`seq_dir_rename()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_dir_rename.md)
+  : Rename a Sequoia directory
+
 - [`seq_dissolve()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_dissolve.md)
   : Dissolve polygons using buffer-based tolerance
 

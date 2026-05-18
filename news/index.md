@@ -22,6 +22,9 @@
     function to calculate multi orientation shade ;
   - [`seq_terrain()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_terrain.md)
     now generate shade raster from MNH
+- Added
+  [`seq_dir_rename()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_dir_rename.md)
+  for renaming a folder (layername & id)
 
 #### Changed
 
@@ -41,6 +44,8 @@
   to classic WMS raster data.
 - [`seq_summary()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_summary.md)
   refactor for better message report, table style and values calculation
+- [`seq_summary()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_summary.md)
+  generate new tables
 
 #### Removed
 
