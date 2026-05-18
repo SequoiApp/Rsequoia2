@@ -1,59 +1,69 @@
 identifier:
   name: "IDENTIFIANT"
+  libelle: "Foret"
   alias: ["foret"]
   class: "character"
   definition: "Forest identifier"
 
 owner:
   name: "PROPRIETAIRE"
+  libelle: "Proprietaire"
   alias: ["prop", "owner", "proprio", "proprietaire"]
   class: "character"
   definition: "Owner name"
 
 is_wooded:
   name: "BOISE"
+  libelle: "Est_boise"
   class: "boolean"
   definition: "Land use field specific for forest"
 
 # cog ----
 reg_code:
   name: "REG_CODE"
+  libelle: "Region_code"
   alias: ["reg", "code_insee_de_la_region"]
   class: "character"
   definition: "Region INSEE code"
 
 reg_name:
   name: "REG_NOM"
+  libelle: "Region"
   alias: ["ncc_reg"]
   class: "character"
   definition: "Region INSEE name"
 
 dep_code:
   name: "DEP_CODE"
+  libelle: "Departement_code"
   alias: ["dep", "dep_code", "code_insee_du_departement"]
   class: "character"
   definition: "Department INSEE code"
 
 dep_name:
   name: "DEP_NOM"
+  libelle: "Departement"
   alias: ["NCC_DEP"]
   class: "character"
   definition: "Department INSEE name"
 
 com_code:
   name: "COM_CODE"
+  libelle: "Commune_code"
   alias: ["com"]
   class: "character"
   definition: "Town INSEE code"
 
 com_name:
   name: "COM_NOM"
+  libelle: "Commune"
   alias: ["ncc_com", "nom_officiel"]
   class: "character"
   definition: "Town INSEE name"
 
 insee:
   name: "INSEE"
+  libelle: "Code_INSEE"
   alias: ["code_insee"]
   class: "character"
   definition: "Town full INSEE code"
@@ -61,6 +71,7 @@ insee:
 # com ----
 postal:
   name: "POSTAL"
+  libelle: "Code_POSTAL"
   alias: ["code_postal"]
   class: "character"
   definition: "Postal town code"
@@ -68,36 +79,42 @@ postal:
 # cadastre ----
 idu:
   name: "IDU"
+  libelle: "IDU_cadastral"
   alias: ["idu"]
   class: "character"
   definition: "Unique cadastral identifier"
 
 prefix:
   name: "PREFIXE"
+  libelle: "Prefixe"
   alias: ["com_abs", "prefixe"]
   class: "character"
   definition: "Cadastral prefix code (3 integer)"
 
 section:
   name: "SECTION"
+  libelle: "Section"
   alias: ["section"]
   class: "character"
   definition: "Cadastral section code (2 character or integer)"
 
 number:
   name: "NUMERO"
+  libelle: "Numero"
   alias: ["numero", "n_parca"]
   class: "character"
   definition: "Cadastral number code(4 integer)"
 
 locality:
   name: "LIEU_DIT"
+  libelle: "Lieu-dit"
   alias: ["LIEUDIT", "lieu_dit"]
   class: "character"
   definition: "Locality / called place"
 
 cad_area:
   name: "SURF_CAD"
+  libelle: "Surface_cadastrale"
   alias: ["contenance", "SURF_CA"]
   class: numeric
   definition: "Cadastral area (hectares)"
@@ -105,149 +122,177 @@ cad_area:
 # surfaces ----
 gis_area:
   name: "SURF_SIG"
+  libelle: "Surface_sig"
   class: numeric
   definition: "GIS area (hectares)"
 
 cor_area:
   name: "SURF_COR"
+  libelle: "Surface_corrigee"
   class: numeric
   definition: "Cadastral corrected area (hectares)"
 
 # ua ----
 mgmt_code:
   name: "PARFOR"
+  libelle: "Unite_de_gestion"
   alias: ["ug"]
   class: "character"
   definition: "Management unit code"
 
 pcl_code:
   name: "N_PARFOR"
+  libelle: "Parcelle"
   alias: ["PF", "PRF", "PARCELLE", "PAR"]
   class: "character"
   definition: "Parcel unit code"
 
 sub_code:
   name: "N_SSPARFOR"
+  libelle: "Sous-parcelle"
   alias: ["SSPF", "SSPRF", "SOUS_PARCELLE", "SPAR"]
   class: "character"
   definition: "Sub-parcel unit code"
 
 std_type:
   name: "PLT_PLMT"
+  libelle: "Type_de_peuplement"
   alias: ["PLT_TYPE"]
   class: "character"
   definition: "Forest stand type"
 
 std_wealth:
   name: "PLT_RICH"
+  libelle: "Richesse"
   class: "character"
   definition: "Stand wealth"
 
 std_stage:
   name: "PLT_STAD"
+  libelle: "Stade"
   class: "character"
   definition: "Stand development stage"
 
 std_year:
   name: "PLT_ANNE"
+  libelle: "Annee_d_origine"
   class: "integer"
   definition: "Year of stand establishment"
 
 is_damaged:
   name: "SINISTRE"
+  libelle: "Est_sinitre"
   class: "boolean"
   definition: "Is damaged ?"
 
 is_available:
   name: "DISPONIBLE"
+  libelle: "Est_disponible"
   class: "boolean"
   definition: "Is available for production ?"
 
 is_compartmented:
   name: "CLOISONNE"
+  libelle: "Est_cloisonne"
   class: "boolean"
   definition: ""
 
 res_spe1:
   name: "RES_ESS1"
+  libelle: "Essence_principale"
   alias: ["PLT_ESS", "PLT_COMS"]
   class: "character"
   definition: "Main specie of reserves"
 
 res_spe2:
   name: "RES_ESSS"
+  libelle: "Autres_essences"
   class: "character"
   definition: "Other species of reserves"
 
 res_struct:
   name: "RES_STRUCTURE"
+  libelle: "Structure"
   alias: ["PLT_STR", "REV_CA"]
   class: "character"
   definition: "Stand structure of reserves"
 
 cop_spe1:
   name: "TSE_ESS1"
+  libelle: "Essence_principale_taillis"
   class: "character"
   definition: "Main specie of coppice"
 
 cop_spe2:
   name: "TSE_ESSS"
+  libelle: "Autres_essences_taillis"
   class: "character"
   definition: "Other species of coppice"
 
 cop_density:
   name: "TSE_DENSITE"
+  libelle: "Densite_taillis"
   class: "character"
   definition: "Density of coppice"
 
 cop_nature:
   name: "TSE_NATURE"
+  libelle: "Nature_taillis"
   class: "character"
   definition: "Nature of coppice"
 
 reg_spe1:
   name: "JEU_ESS1"
+  libelle: "Essence_principale_jeunesse"
   class: "character"
   definition: "Main specie of regeneration"
 
 reg_spe2:
   name: "JEU_ESSS"
+  libelle: "Autres_essences_jeunesse"
   class: "character"
   definition: "Other species of regeneration"
 
 reg_stage:
   name: "JEU_STADE"
+  libelle: "Stade_jeunesse"
   class: "character"
   definition: "Regeneration growth stage"
 
 reg_density:
   name: "JEU_DENSITE"
+  libelle: "Densite_jeunesse"
   class: "character"
   definition: "Regeneration density"
 
 treatment:
   name: "AME_TYPE"
+  libelle: "Type_d_amenagement"
   class: "character"
   definition: "Treatment chosen by the forest manager"
 
 is_subsidized:
   name: "SUBVENTIONNE"
+  libelle: "Est_subventionne"
   class: "boolean"
   definition: "Is subsidized ?"
 
 subsidy:
   name: "SUB_DISPOSITIF"
+  libelle: "Dispositif_subvention"
   alias: ["DISP_TYPE"]
   class: "character"
   definition: "Subsidy scheme"
 
 comment:
   name: "COMMENTS"
+  libelle: "Commentaires"
   class: "character"
   definition: "Comments"
 
 station:
   name: "STATION"
+  libelle: "Station"
   alias: ["GEOL_TYPE", "SOL_TYPE"]
   class: "character"
   definition: "Soil classification"
@@ -255,33 +300,39 @@ station:
 # vector ----
 source:
   name: "SOURCE"
+  libelle: "Source"
   class: "character"
   definition: "Source from which the data comes"
 
 type:
   name: "TYPE"
+  libelle: "Type"
   class: "character"
   definition: "Acronym used in SEQUOIA process"
 
 nature:
   name: "NATURE"
+  libelle: "Nature"
   alias: ["nature"]
   class: "character"
   definition: "Nature from IGN BDTopo"
 
 name:
   name: "NOM"
+  libelle: "Nom"
   class: "character"
   definition: "Name from IGN BDTopo"
 
 offset:
   name: "DECALAGE"
+  libelle: "Decalage_graphique"
   alias: ["DECA"]
   class: "character"
   definition: "Offset used in SEQUOIA process"
 
 rotation:
   name: "ROTATION"
+  libelle: "Rotation"
   alias: ["ROT"]
   class: "character"
   definition: "Rotation used in SEQUOIA process"
@@ -289,18 +340,21 @@ rotation:
 # road ----
 importance:
   name: "IMPORTANCE"
+  libelle: "Importance"
   alias: ["importance"]
   class: "integer"
   definition: "Importance from IGN BDTopo"
 
 is_private:
   name: "PRIVE"
+  libelle: "Est_prive"
   alias: ["prive"]
   class: "boolean"
   definition: "Private from IGN BDTopo"
 
 restriction:
   name: "RESTRICTION"
+  libelle: "Restriction"
   alias: ["restriction_de_poids_total"]
   class: "character"
   definition: "Weight restriction from IGN BDTopo"
