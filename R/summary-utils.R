@@ -248,7 +248,7 @@ pivot <- function(x, row, col) {
   }
 
   x$key <- apply(x[col_col], 1, \(z) {
-    z <- na.omit(trimws(z))
+    z <- stats::na.omit(trimws(z))
     z <- z[z != ""]
     if (length(z)) paste(z, collapse = "__") else "(no data)"
   })

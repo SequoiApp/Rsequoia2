@@ -24,6 +24,7 @@ Imports:
     openxlsx2 (>= 1.23),
     pdftools,
     sf,
+    stats,
     terra (>= 1.9-11),
     tmap,
     units,

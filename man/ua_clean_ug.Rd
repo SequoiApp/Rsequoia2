@@ -12,12 +12,12 @@ with at least the UG identifier field and relevant attribute fields.}
 
 \item{atol}{Absolute tolerance for surface correction (default 0.50 ha).}
 
-\item{rtol}{Relative tolerance for surface correction within a UG (default 10%).}
+\item{rtol}{Relative tolerance for surface correction within a UG (default 0.10).}
 }
 \value{
 An `sf` object identical to `ua`, with minor inconsistent lines
-corrected and an additional logical column `ug_valid` indicating UG
-consistency.
+  corrected and an additional logical column `ug_valid` indicating UG
+  consistency.
 }
 \description{
 Detects and corrects minor inconsistencies within management units
@@ -26,9 +26,11 @@ to match the dominant description.
 }
 \details{
 The function works by:
-1. Checking UG consistency with `ua_check_ug()`.
-2. Identifying the dominant row per UG (largest total surface).
-3. Correcting rows that differ from the dominant description and whose
-   surface is smaller than `atol` and represents less than `rtol` of UG total.
-4. Returning the corrected UA and rechecking inconsistencies.
+  \itemize{
+    \item Checking UG consistency with \code{ua_check_ug()}.
+    \item Identifying the dominant row per UG (largest total surface).
+    \item Correcting rows that differ from the dominant description and whose
+      surface is smaller than \code{atol} and represents less than \code{rtol} of UG total.
+    \item Returning the corrected UA and rechecking inconsistencies.
+  }
 }
