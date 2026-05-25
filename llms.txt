@@ -372,20 +372,12 @@ contributing to this project, you agree to abide by its terms.
 
 ### All vignettes
 
-- [Sequoia
-  (FR)](https://sequoiapp.github.io/Rsequoia2/articles/01_sequoia-fr.md):
-- [Parcelles Cadastrales
-  (FR)](https://sequoiapp.github.io/Rsequoia2/articles/02_cadastral-parcels-fr.md):
-- [Parcelles cadastrales - Personne morale
-  (FR)](https://sequoiapp.github.io/Rsequoia2/articles/03_cadastral-parcels-legal-entity-fr.md):
+- [Sequoia](https://sequoiapp.github.io/Rsequoia2/articles/01_sequoia.md):
+- [Parcelles
+  cadastrales](https://sequoiapp.github.io/Rsequoia2/articles/02_cadastral-parcels.md):
+- [Parcelles cadastrales - Personne
+  morale](https://sequoiapp.github.io/Rsequoia2/articles/03_cadastral-parcels-legal-entity.md):
 - [Téléchargement de données
-  vectorielles](https://sequoiapp.github.io/Rsequoia2/articles/04_vector-fr.md):
-- [Unité
-  d'analyse](https://sequoiapp.github.io/Rsequoia2/articles/06_analysis_units-fr.md):
-- [Sequoia](https://sequoiapp.github.io/Rsequoia2/articles/11_sequoia.md):
-- [Cadastral
-  parcels](https://sequoiapp.github.io/Rsequoia2/articles/12_cadastral-parcels.md):
-- [Cadastral parcels - legal entity
-  (FR)](https://sequoiapp.github.io/Rsequoia2/articles/13_cadastral-parcels-legal-entity.md):
-- [Analysis
-  units](https://sequoiapp.github.io/Rsequoia2/articles/16_analysis_units.md):
+  vectorielles](https://sequoiapp.github.io/Rsequoia2/articles/04_vector.md):
+- [Unités
+  d'analyse](https://sequoiapp.github.io/Rsequoia2/articles/06_analysis_units.md):
