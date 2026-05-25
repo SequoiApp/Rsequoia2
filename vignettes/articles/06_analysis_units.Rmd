@@ -1,8 +1,8 @@
 ---
-title: "Unité d'analyse"
+title: "Unités d'analyse"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Unité d'analyse}
+  %\VignetteIndexEntry{Unités d'analyse}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -20,11 +20,16 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, include = FALSE}
-library(Rsequoia2)
-library(sf)
 library(tmap)
 tmap_mode("view")
 tmap_options(scale = 0.75)
+```
+
+```{r package}
+library(Rsequoia2)
+library(tmap)
+library(openxlsx2)
+library(sf)
 ```
 
 ```{r definition, include = FALSE}
@@ -115,7 +120,7 @@ Les **sous-parcelles** (*sspf*) correspondent à la subdivision dans la parcelle
 
 Comme indiqué précédement, la couche *UA* doit contenir les attributs cadastraux. C'est pourquoi, la couche *UA* est créée à partir de la couche des parcelles cadastrales *PARCA*.
 
-Suivez les intructions de la rubrique dédié au [parcellaire cadastral](https://sequoiapp.github.io/Rsequoia2/articles/02_cadastral-parcels-fr.html).
+Suivez les intructions de la rubrique dédié au [parcellaire cadastral](https://sequoiapp.github.io/Rsequoia2/articles/02_cadastral-parcels.html).
 
 Pour être valide, la topologie de la couche *PARCA* doit avoir été vérifiée !
 
@@ -143,10 +148,10 @@ Pour rappel, il suffit d'utiliser la fonction `seq_parca()` en indiquant le doss
 ```{r eckmuhl_parca, fig.height = 3.5}
 
 # Project folder creation
-eckmuhl_matrice <- openxlsx2::read_xlsx(system.file("extdata/ECKMUHL_matrice.xlsx", package = "Rsequoia2"))
+eckmuhl_matrice <- read_xlsx(system.file("extdata/ECKMUHL_matrice.xlsx", package = "Rsequoia2"))
 eckmuhl_sequoia_dir <- file.path(tempdir(), "ECKMUHL")
 dir.create(eckmuhl_sequoia_dir)
-openxlsx2::write_xlsx(eckmuhl_matrice, file.path(eckmuhl_sequoia_dir, "ECKMUHL_matrice.xlsx"))
+write_xlsx(eckmuhl_matrice, file.path(eckmuhl_sequoia_dir, "ECKMUHL_matrice.xlsx"))
 
 # PARCA creation
 eckmuhl_parca_path <- seq_parca(eckmuhl_sequoia_dir)

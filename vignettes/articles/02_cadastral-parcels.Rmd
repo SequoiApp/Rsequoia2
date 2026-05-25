@@ -1,8 +1,8 @@
 ---
-title: "Parcelles Cadastrales (FR)"
+title: "Parcelles cadastrales"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Parcelles Cadastrales (FR)}
+  %\VignetteIndexEntry{Parcelles cadastrales}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -11,15 +11,22 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   out.width = "100%",
+  out.height = "400px",
   dpi = 300,
-  fig.width = 7.2916667,
+  # fig.width = 7.2916667,
+  # fig.height = 4,
   comment = "#>"
 )
 ```
 
 ```{r, echo = FALSE, message = FALSE}
 library(tmap)
+tmap_mode("view")
 tmap_options(scale = 0.75)
+tmap_options(
+  basemaps = c(OpenStreetMap = "OpenStreetMap",
+               Esri.WorldGrayCanvas = "Esri.WorldGrayCanvas")
+  )
 ```
 
 ```{r package}
@@ -70,7 +77,6 @@ idu <- c("29158000AX0696")
 
 cp <- get_parca(idu)
 
-tm_tiles("OpenStreetMap")+
 tm_shape(cp)+
   tm_borders(col = "red", lwd = 2)+
 tm_layout(bg = F)
@@ -84,7 +90,6 @@ idus <- paste0("29158000AX0", 696:704)
 
 cp <- get_parca(idus)
 
-tm_tiles("OpenStreetMap")+
 tm_shape(cp)+
   tm_borders(col = "firebrick", lwd = 2)
 
@@ -110,7 +115,6 @@ idus <- paste0("545400000C0", 101:109)
 etalab <- get_parca(idus, bdp_geom = FALSE)
 bdp <- get_parca(idus, bdp_geom = TRUE)
 
-tm_tiles("OpenStreetMap")+
 tm_shape(etalab)+
   tm_borders(col = "firebrick", lwd = 2)+
 tm_shape(bdp)+
@@ -133,7 +137,6 @@ idus <- paste0("29158000BD00", c(10:12, 14:19, 21:25, 29, 31:36, 38, 39, 41, 43:
 
 with_lieu_dit <- get_parca(idus, lieu_dit = TRUE)
 
-tm_tiles("OpenStreetMap")+
 tm_shape(with_lieu_dit)+
   tm_polygons(
     fill = "LIEU_DIT",
@@ -268,7 +271,6 @@ parca <- read_sf(parca_path)
 # ou utilisation de seq_read avec un répertoire personnalisé
 parca <- seq_read("parca", dirname = sequoia_dir)
 
-tm_tiles("OpenStreetMap") +
 tm_shape(parca) +
   tm_borders(col = "firebrick", lwd = 2)
 ```

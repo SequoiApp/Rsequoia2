@@ -20,11 +20,15 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, include = FALSE}
-library(Rsequoia2)
-library(sf)
 library(tmap)
 tmap_mode("view")
 tmap_options(scale = 0.75)
+```
+
+```{r package}
+library(Rsequoia2)
+library(tmap)
+library(sf)
 ```
 
 # Introduction
