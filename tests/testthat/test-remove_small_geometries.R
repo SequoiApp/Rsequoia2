@@ -41,3 +41,32 @@ test_that("remove_small_geometries fails on bad inputs", {
   expect_error(remove_small_geometries(g, tol = c(1, 2)))
 })
 
+test_that("remove_small_geometries with tol = 0 keeps all geometries", {
+
+  small_poly <- sf::st_polygon(list(matrix(c(
+    0, 0,
+    0.1, 0,
+    0.1, 0.1,
+    0, 0.1,
+    0, 0
+  ), ncol = 2, byrow = TRUE)))
+
+  large_poly <- sf::st_polygon(list(matrix(c(
+    0, 0,
+    10, 0,
+    10, 10,
+    0, 10,
+    0, 0
+  ), ncol = 2, byrow = TRUE)))
+
+  sf_obj <- sf::st_sf(
+    id = c(1, 2),
+    geometry = sf::st_sfc(small_poly, large_poly, crs = 2154)
+  )
+
+  result <- remove_small_geometries(sf_obj, tol = 0)
+
+  expect_equal(nrow(result), 2)
+  expect_true(all(result$id %in% c(1, 2)))
+  expect_equal(sf::st_area(result), sf::st_area(sf_obj))
+})

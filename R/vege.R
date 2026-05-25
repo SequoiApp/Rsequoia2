@@ -54,8 +54,7 @@ get_vege_poly <- function(x, tol = 500) {
   # Intersection create mixed geometry type (POLYGON, MULTIPOLYGON)
   # Because st_cast cannot deal with mixed geometry, first is casted to multipoly, then poly
   external <- sf::st_cast(intersect, "MULTIPOLYGON") |>
-    sf::st_cast("POLYGON", warn = FALSE) |>
-    remove_interior_ring()
+    sf::st_cast("POLYGON", warn = FALSE)
 
   # Remove forest boundary
   difference <- sf::st_difference(external, forest) |>
@@ -79,26 +78,6 @@ get_vege_poly <- function(x, tol = 500) {
 
 }
 
-#' Remove interior rings from polygons
-#'
-#' Keeps only the exterior ring of each polygon, removing holes.
-#'
-#' @param x `sf` or `sfc`. Input geometries (POLYGON / MULTIPOLYGON).
-#'
-#' @return An `sf` object with polygons stripped of interior rings.
-#'
-#' @keywords internal
-remove_interior_ring <- function(x) {
-  sf::st_sf(
-    geometry = sf::st_sfc(
-      lapply(sf::st_geometry(sf::st_cast(x, "POLYGON")), function(p) {
-        sf::st_polygon(list(p[[1]]))  # keep only outer ring
-      }),
-      crs = sf::st_crs(x)
-    )
-  ) |> quiet()
-}
-
 #' Remove geometries below a minimum area threshold
 #'
 #' Filters geometries whose area is smaller than a given threshold (in m²).
@@ -113,7 +92,7 @@ remove_interior_ring <- function(x) {
 #' @keywords internal
 remove_small_geometries <- function(x, tol, crs = 2154) {
 
-  # --- Checks ----
+  # Checks
   if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort("{.arg x} must be of class {.cls sf} or {.cls sfc}.")
   }
@@ -122,22 +101,22 @@ remove_small_geometries <- function(x, tol, crs = 2154) {
     cli::cli_abort("{.arg tol} must be a single numeric value (area in m^2).")
   }
 
-  # --- Transform ----
+  # Transform
   x_proj <- sf::st_transform(x, crs)
 
-  # --- Validate ----
+  # Validate
   x_proj <- sf::st_make_valid(x_proj) |> quiet()
 
-  # --- Areas ----
+  # Areas
   areas <- sf::st_area(x_proj)
 
-  # --- Filter ----
+  # Filter
   keep <- as.numeric(areas) >= tol
   n_removed <- sum(!keep)
 
   x_filtered <- x_proj[keep, , drop = FALSE]
 
-  # --- Back to original CRS ----
+  # Back to original CRS
   x_filtered <- sf::st_transform(x_filtered, sf::st_crs(x))
 
   return(x_filtered)
