@@ -7,11 +7,11 @@
 mf_get_climate_fiche(x, dirname, verbose = TRUE)
 }
 \arguments{
-\item{x}{\code{sf} or \code{sfc}}
+\item{x}{`sf` or `sfc`}
 
-\item{dirname}{\code{character}; directory where the PDF will be saved}
+\item{dirname}{`character`; directory where the PDF will be saved}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+\item{verbose}{`logical` If `TRUE`, display progress messages.}
 }
 \value{
 Path to the downloaded PDF

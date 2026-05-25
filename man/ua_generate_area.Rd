@@ -2,17 +2,17 @@
 % Please edit documentation in R/ua.R
 \name{ua_generate_area}
 \alias{ua_generate_area}
-\title{Calculate areas in the \emph{UA} sf object}
+\title{Calculate areas in the _UA_ sf object}
 \usage{
 ua_generate_area(ua, verbose = TRUE)
 }
 \arguments{
-\item{ua}{\code{sf} object containing analysis units.}
+\item{ua}{`sf` object containing analysis units.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+\item{verbose}{`logical` If `TRUE`, display progress messages.}
 }
 \value{
-\code{sf} object with updated areas
+`sf` object with updated areas
 }
 \description{
 Computes the corrected cadastral areas for units of analysis according to

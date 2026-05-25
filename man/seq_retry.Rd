@@ -13,7 +13,7 @@ seq_retry(expr, times = 3, wait = 0.5, verbose = TRUE)
 
 \item{wait}{Time to wait between retry}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{`logical` If `TRUE`, display messages.}
 }
 \description{
 Internal helper used to retry download when failing

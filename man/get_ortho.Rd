@@ -15,39 +15,37 @@ get_ortho(
 )
 }
 \arguments{
-\item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
+\item{x}{`sf` or `sfc`; Geometry located in France.}
 
-\item{type}{\code{character}; Type of orthophoto to download. Must be one of:
-\itemize{
-\item \code{"rgb"} - true-color orthophoto
-\item \code{"irc"} - near-infrared orthophoto
-}}
+\item{type}{`character`; Type of orthophoto to download. Must be one of:
+- `"rgb"` - true-color orthophoto
+- `"irc"` - near-infrared orthophoto}
 
-\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
+\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge
 the download area.}
 
-\item{zoom}{\code{integer} between 0 and 21. The smaller the zoom level, the less
-precise the resolution(see \code{\link[happign:get_wmts]{happign::get_wmts()}})}
+\item{zoom}{`integer` between 0 and 21. The smaller the zoom level, the less
+precise the resolution(see [happign::get_wmts()])}
 
-\item{crs}{\code{numeric} or \code{character}; CRS of the returned raster (see
-\code{\link[happign:get_wmts]{happign::get_wmts()}})}
+\item{crs}{`numeric` or `character`; CRS of the returned raster (see
+[happign::get_wmts()])}
 
-\item{overwrite}{\code{logical}; If \code{TRUE}, file is overwritten.}
+\item{overwrite}{`logical`; If `TRUE`, file is overwritten.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
+\item{verbose}{`logical`; If `TRUE`, display messages.}
 }
 \value{
-\code{SpatRaster} object from \code{terra} package
+`SpatRaster` object from `terra` package
 }
 \description{
 Downloads an orthophoto (RGB or infrared/IRC) from the IGN WMTS service for the
-area covering \code{x} expanded with a buffer.
-The result is returned as a masked \code{SpatRaster}, clipped to the input geometry
+area covering `x` expanded with a buffer.
+The result is returned as a masked `SpatRaster`, clipped to the input geometry
 to keep file size minimal.
 }
 \details{
 The orthophoto retrieved contains data for the whole bounding
-box (bbox) of \code{x} (plus the buffer).
+box (bbox) of `x` (plus the buffer).
 To reduce the final file size and avoid unnecessary pixels, the raster is
 immediately masked with the buffered geometry.
 }
@@ -66,5 +64,5 @@ terra::plotRGB(irc)
 
 }
 \seealso{
-\code{\link[happign:get_wmts]{happign::get_wmts()}}
+[happign::get_wmts()]
 }

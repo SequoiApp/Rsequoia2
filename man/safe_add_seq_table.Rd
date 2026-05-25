@@ -7,46 +7,46 @@
 safe_add_seq_table(wb, sheet, fun, verbose = TRUE)
 }
 \arguments{
-\item{wb}{An \code{openxlsx2} workbook object.}
+\item{wb}{An `openxlsx2` workbook object.}
 
 \item{sheet}{Character string. Internal table name used for console messages.}
 
 \item{fun}{Function. A zero-argument builder function returning a table
 specification list.}
 
-\item{verbose}{Logical. If \code{TRUE}, prints an \code{OK} or \code{BAD} message with
-\code{cli} for this table.}
+\item{verbose}{Logical. If `TRUE`, prints an `OK` or `BAD` message with
+`cli` for this table.}
 }
 \value{
 A list with:
 \describe{
-\item{\code{wb}}{The updated workbook if successful, otherwise the unchanged
-workbook.}
-\item{\code{ok}}{Logical. \code{TRUE} if the table was built and written
-successfully, \code{FALSE} otherwise.}
-\item{\code{table}}{The generated table on success, or \code{NULL} on failure.}
+  \item{`wb`}{The updated workbook if successful, otherwise the unchanged
+    workbook.}
+  \item{`ok`}{Logical. `TRUE` if the table was built and written
+    successfully, `FALSE` otherwise.}
+  \item{`table`}{The generated table on success, or `NULL` on failure.}
 }
 }
 \description{
 Executes a summary table builder, validates its output, writes the table to
-an \code{openxlsx2} workbook, and captures any error without stopping the full
+an `openxlsx2` workbook, and captures any error without stopping the full
 summary workflow.
 }
 \details{
-This helper is used by \code{\link[=seq_summary]{seq_summary()}} to process tables one by one. If a
+This helper is used by [seq_summary()] to process tables one by one. If a
 table fails during either the build step or the Excel writing step, the error
-is reported with \code{cli} and the workflow continues with the next table.
+is reported with `cli` and the workflow continues with the next table.
 
 A builder function must return a list with at least:
 
 \describe{
-\item{\code{table}}{A \code{data.frame}-like object to write.}
-\item{\code{sheet_name}}{Character string. Name of the Excel worksheet.}
-\item{\code{total_row}}{Optional total row specification passed to
-\code{\link[openxlsx2:wb_add_data_table]{openxlsx2::wb_add_data_table()}}. If missing, \code{FALSE} is used.}
+  \item{`table`}{A `data.frame`-like object to write.}
+  \item{`sheet_name`}{Character string. Name of the Excel worksheet.}
+  \item{`total_row`}{Optional total row specification passed to
+    [openxlsx2::wb_add_data_table()]. If missing, `FALSE` is used.}
 }
 }
 \seealso{
-\code{\link[=seq_summary]{seq_summary()}}
+[seq_summary()]
 }
 \keyword{internal}

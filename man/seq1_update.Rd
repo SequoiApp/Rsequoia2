@@ -2,24 +2,24 @@
 % Please edit documentation in R/update.R
 \name{seq1_update}
 \alias{seq1_update}
-\title{Update \code{R_SEQUOIA} projet to \code{Rsequoia2}}
+\title{Update `R_SEQUOIA` projet to `Rsequoia2`}
 \usage{
 seq1_update(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the \code{R_SEQUOIA} files are located.
+\item{dirname}{`character` Directory where the `R_SEQUOIA` files are located.
 Defaults to the current working directory.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.
-Defaults to \code{TRUE}.}
+\item{verbose}{`logical` If `TRUE`, display progress messages.
+Defaults to `TRUE`.}
 
-\item{overwrite}{\code{logical}; whether to overwrite existing files.
-Defaults to \code{FALSE}.}
+\item{overwrite}{`logical`; whether to overwrite existing files.
+Defaults to `FALSE`.}
 }
 \value{
-Invisibly returns a named vector of file paths written by \code{\link[=seq_write]{seq_write()}}.
-Returns \code{NULL} invisibly when no layer are found.
+Invisibly returns a named vector of file paths written by [seq_write()].
+Returns `NULL` invisibly when no layer are found.
 }
 \description{
-Update \code{R_SEQUOIA} projet to \code{Rsequoia2}
+Update `R_SEQUOIA` projet to `Rsequoia2`
 }

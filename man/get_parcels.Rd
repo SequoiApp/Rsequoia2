@@ -7,11 +7,11 @@
 get_parcels(pdf)
 }
 \arguments{
-\item{pdf}{\code{character}. Path to PDF file}
+\item{pdf}{`character`. Path to PDF file}
 }
 \value{
-A complete parcel \code{data.frame} with all processed fields and
-commune/owner information
+A complete parcel `data.frame` with all processed fields and
+  commune/owner information
 }
 \description{
 Orchestrates the full extraction pipeline: raw parcel data, reference info,

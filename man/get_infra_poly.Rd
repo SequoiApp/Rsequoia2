@@ -7,38 +7,34 @@
 get_infra_poly(x, buffer = 1000)
 }
 \arguments{
-\item{x}{An \code{sf} object used as the input area.}
+\item{x}{An `sf` object used as the input area.}
 
-\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
+\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge}
 }
 \value{
-An \code{sf} object of type \code{POLYGON} containing infrastructure
-features with standardized fields, including:
-\itemize{
-\item \code{TYPE} - Infrastructure type code:
-\itemize{
-\item \code{AER} = Aerodrome runway
-\item \code{BAT} = Building
-\item \code{CIM} = Cemetery
-\item \code{CST} = Surface construction
-\item \code{HAB} = Residential area
-\item \code{SPO} = Sports ground
-\item \code{VIL} = Urbanized area (importance 1-2)
-}
-\item \code{NAME} - Toponym when available
-\item \code{SOURCE} - Data source (\code{IGNF_BDTOPO_V3})
-}
+An `sf` object of type `POLYGON` containing infrastructure
+  features with standardized fields, including:
+  * `TYPE` - Infrastructure type code:
+    - `AER` = Aerodrome runway
+    - `BAT` = Building
+    - `CIM` = Cemetery
+    - `CST` = Surface construction
+    - `HAB` = Residential area
+    - `SPO` = Sports ground
+    - `VIL` = Urbanized area (importance 1-2)
+  * `NAME` - Toponym when available
+  * `SOURCE` - Data source (`IGNF_BDTOPO_V3`)
 }
 \description{
 Retrieve infrastructure polygon features around an area
 }
 \details{
 The function retrieves several polygon infrastructure layers from
-the IGN BDTOPO V3 dataset within a convex buffer around \code{x}.
+the IGN BDTOPO V3 dataset within a convex buffer around `x`.
 
 Retrieved layers include buildings, cemeteries, surface constructions,
 aerodrome runways, sports grounds, and residential or urbanized areas.
 
 If no infrastructure data are found, the function returns an empty
-standardized \code{sf} object.
+standardized `sf` object.
 }

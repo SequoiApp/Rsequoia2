@@ -7,29 +7,27 @@
 seq_drias(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{`character` Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{`logical` If `TRUE`, display messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
 }
 \value{
-A named \code{character} vector:
-\itemize{
-\item \code{"drias"}: Path to the generated Excel workbook
-}
+A named `character` vector:
+- `"drias"`: Path to the generated Excel workbook
 }
 \description{
 Reads, formats, and exports climate projection data from DRIAS.
-The function expects a DRIAS projection \code{.txt} file located in the
-\verb{4_METEO} directory of the Sequoia project. It extracts metadata,
+The function expects a DRIAS projection `.txt` file located in the
+`4_METEO` directory of the Sequoia project. It extracts metadata,
 raw climatology, ombrothermic summaries, and evapotranspiration (ETP)
 indicators. Results are written to an Excel workbook based on the
-internal template \code{CLIMAT_DRIAS.xlsx}.
+internal template `CLIMAT_DRIAS.xlsx`.
 }
 \details{
-The function looks for a single \code{.txt} file in the \verb{4_METEO} directory.
+The function looks for a single `.txt` file in the `4_METEO` directory.
 This file must be downloaded beforehand from the DRIAS portal
 (https://drias-climat.fr/).
 }

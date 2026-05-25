@@ -2,19 +2,19 @@
 % Please edit documentation in R/update.R
 \name{update_ua}
 \alias{update_ua}
-\title{Update \code{R_SEQUOIA} \emph{UA} layer to \code{Rsequoia2}}
+\title{Update `R_SEQUOIA` _UA_ layer to `Rsequoia2`}
 \usage{
 update_ua(ua, id)
 }
 \arguments{
-\item{ua}{\code{sf} object containing analysis units}
+\item{ua}{`sf` object containing analysis units}
 
-\item{id}{\code{character} Identifier of the project}
+\item{id}{`character` Identifier of the project}
 }
 \value{
-An \code{sf} object containing analysis units, normalized for
-\code{Rsequoia2} use.
+An `sf` object containing analysis units, normalized for
+`Rsequoia2` use.
 }
 \description{
-Update \code{R_SEQUOIA} \emph{UA} layer to \code{Rsequoia2}
+Update `R_SEQUOIA` _UA_ layer to `Rsequoia2`
 }

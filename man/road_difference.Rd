@@ -7,12 +7,12 @@
 road_difference(buffers, order)
 }
 \arguments{
-\item{buffers}{A named list of \code{sf} polygon buffers.}
+\item{buffers}{A named list of `sf` polygon buffers.}
 
 \item{order}{Character vector. Defines the processing order of road types.}
 }
 \value{
-An \code{sf} object with combined polygons after hierarchical differences.
+An `sf` object with combined polygons after hierarchical differences.
 }
 \description{
 Performs sequential differences between buffered road polygons according to a given hierarchy.

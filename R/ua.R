@@ -5,6 +5,7 @@
 #'
 #' @return An `sf` object containing the analysis units.
 #'
+#' @export
 parca_to_ua <- function(parca) {
   ua <- seq_normalize(parca, "ua")
 

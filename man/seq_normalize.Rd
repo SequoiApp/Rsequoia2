@@ -7,52 +7,51 @@
 seq_normalize(x, table)
 }
 \arguments{
-\item{x}{\code{data.frame} to normalize.}
+\item{x}{`data.frame` to normalize.}
 
-\item{table}{\code{character} A single table name as defined in
-\code{config/seq_tables.yaml}.}
+\item{table}{`character` A single table name as defined in
+`config/seq_tables.yaml`.}
 }
 \value{
-A normalized \code{data.frame} matching the structure required by the
-selected Sequoia table.
+A normalized `data.frame` matching the structure required by the
+  selected Sequoia table.
 }
 \description{
-\code{seq_normalize()} standardizes the structure of a \code{data.frame} using the
-Sequoia configuration stored in \code{inst/config/seq_fields.yaml} and
-\code{seq_tables.yaml}.
+`seq_normalize()` standardizes the structure of a `data.frame` using the
+Sequoia configuration stored in `inst/config/seq_fields.yaml` and
+`seq_tables.yaml`.
 }
 \details{
 The normalization process applies, in order:
-\enumerate{
-\item \strong{Field renaming} using configured aliases
-\item \strong{Field selection}: add missing required fields and drop invalid ones
-\item \strong{Type coercion} to the classes defined in the configuration
-\item \strong{Column reordering} according to the table definition
-}
+
+1. **Field renaming** using configured aliases
+2. **Field selection**: add missing required fields and drop invalid ones
+3. **Type coercion** to the classes defined in the configuration
+4. **Column reordering** according to the table definition
 
 This ensures that the resulting data frame matches exactly the schema
 expected for the selected Sequoia table.
 
-\strong{Field aliases} defined in \code{seq_fields.yaml} allow multiple column names
-(e.g. \code{"foret"}, \code{"id"}) to be mapped to the canonical field name
-(e.g. \code{"IDENTIFIANT"}).
+
+**Field aliases** defined in `seq_fields.yaml` allow multiple column names
+(e.g. `"foret"`, `"id"`) to be mapped to the canonical field name
+(e.g. `"IDENTIFIANT"`).
 Aliases are automatically detected and replaced during normalization.
 
 For example, if the configuration contains:
-
-\if{html}{\out{<div class="sourceCode yaml">}}\preformatted{id:
+```yaml
+id:
   name: "IDENTIFIANT"
   alias: ["id", "foret"]
-}\if{html}{\out{</div>}}
-
+```
 Then:
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{names(df)
+```r
+names(df)
 #> c("foret", "contenance")
 
 df <- seq_normalize(df, "parca")
 
 names(df)
 #> c("IDENTIFIANT", "SURF_CAD")
-}\if{html}{\out{</div>}}
+```
 }

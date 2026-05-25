@@ -7,7 +7,7 @@
 sequoia2(overwrite = FALSE)
 }
 \arguments{
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
 }
 \value{
 Invisibly returns current Sequoia path.

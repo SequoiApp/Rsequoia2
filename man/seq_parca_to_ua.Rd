@@ -7,22 +7,22 @@
 seq_parca_to_ua(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Path to the directory. Defaults to the current
+\item{dirname}{`character` Path to the directory. Defaults to the current
 working directory.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{`logical` If `TRUE`, display messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, filename is overwritten.}
+\item{overwrite}{`logical` If `TRUE`, filename is overwritten.}
 }
 \value{
-An \code{sf} object
+An `sf` object
 }
 \description{
 This function reads the cadastral layer file from a project directory
 and create the analysis units layer.
 }
 \details{
-The resulting object is returned invisibly as an \code{sf} polygons layer.
+The resulting object is returned invisibly as an `sf` polygons layer.
 The output file is automatically written into the working directory defined
-by \code{dirname}.
+by `dirname`.
 }

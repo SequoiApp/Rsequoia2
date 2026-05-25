@@ -7,10 +7,10 @@
 remove_interior_ring(x)
 }
 \arguments{
-\item{x}{\code{sf} or \code{sfc}. Input geometries (POLYGON / MULTIPOLYGON).}
+\item{x}{`sf` or `sfc`. Input geometries (POLYGON / MULTIPOLYGON).}
 }
 \value{
-An \code{sf} object with polygons stripped of interior rings.
+An `sf` object with polygons stripped of interior rings.
 }
 \description{
 Keeps only the exterior ring of each polygon, removing holes.

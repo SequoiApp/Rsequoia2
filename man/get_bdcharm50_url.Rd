@@ -7,8 +7,8 @@
 get_bdcharm50_url()
 }
 \value{
-A named \code{character} vector. Names are ZIP filenames and values are
-download URLs.
+A named `character` vector. Names are ZIP filenames and values are
+  download URLs.
 }
 \description{
 Scrapes the BDCharm50 download directory and returns available ZIP archive

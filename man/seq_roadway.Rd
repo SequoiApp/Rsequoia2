@@ -7,29 +7,29 @@
 seq_roadway(source, dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{source}{\code{character} Source layer key to use to generate polygon
-features. Must be \code{v.cad.vides.poly} or \code{v.road.line}.}
+\item{source}{`character` Source layer key to use to generate polygon
+features. Must be `v.cad.vides.poly` or `v.road.line`.}
 
-\item{dirname}{\code{character} Path to the project directory.
+\item{dirname}{`character` Path to the project directory.
 Defaults to the current working directory.}
 
-\item{verbose}{\code{logical}; whether to display informational messages.
-Defaults to \code{TRUE}.}
+\item{verbose}{`logical`; whether to display informational messages.
+Defaults to `TRUE`.}
 
-\item{overwrite}{\code{logical}; whether to overwrite existing files.
-Defaults to \code{FALSE}.}
+\item{overwrite}{`logical`; whether to overwrite existing files.
+Defaults to `FALSE`.}
 }
 \value{
-Invisibly returns a named list of file paths written by \code{\link[=seq_write]{seq_write()}}.
-Returns \code{NULL} invisibly when no features are created.
+Invisibly returns a named list of file paths written by [seq_write()].
+Returns `NULL` invisibly when no features are created.
 }
 \description{
 Create graphic road layers from a completed cadastral gaps layer.
 }
 \details{
 Features are created from a completed cadastral gaps layer obtained by using
-\code{seq_voids()}.
+`seq_voids()`.
 }
 \seealso{
-\code{\link[=seq_voids]{seq_voids()}}, \code{\link[=seq_write]{seq_write()}}
+[seq_voids()], [seq_write()]
 }

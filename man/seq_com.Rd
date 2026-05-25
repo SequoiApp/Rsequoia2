@@ -7,44 +7,45 @@
 seq_com(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Path to the project directory.
+\item{dirname}{`character` Path to the project directory.
 Defaults to the current working directory.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{`logical` If `TRUE`, display messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
 }
 \value{
-A named list of file paths written by \code{\link[=seq_write]{seq_write()}},
+A named list of file paths written by [seq_write()],
 one per commune layer.
 }
 \description{
-This function is a convenience wrapper around \code{\link[=get_com_poly]{get_com_poly()}},
-\code{\link[=get_com_line]{get_com_line()}} and \code{\link[=get_com_point]{get_com_point()}}, allowing the user to retrieve
+This function is a convenience wrapper around [get_com_poly()],
+[get_com_line()] and [get_com_point()], allowing the user to retrieve
 administrative boundary products and automatically write them to the
-project directory using \code{\link[=seq_write]{seq_write()}}.
+project directory using [seq_write()].
 }
 \details{
 Both topological (full extent) and graphical (restricted extent)
 representations are generated when relevant.
+
 
 Commune layers are built from BDTOPO commune boundaries intersecting
 the project area defined by the PARCA polygon.
 
 The following layers are produced:
 \describe{
-\item{Topological layers}{Full commune geometry (polygon, boundary lines, centroids)}
-\item{Graphical layers}{Line and point representations clipped to a reduced
-convex buffer around the project area, intended for cartographic display}
+  \item{Topological layers}{Full commune geometry (polygon, boundary lines, centroids)}
+  \item{Graphical layers}{Line and point representations clipped to a reduced
+  convex buffer around the project area, intended for cartographic display}
 }
 
-Each layer is always written to disk using \code{\link[=seq_write]{seq_write()}},
-even when it contains no features (\code{nrow == 0}).
+Each layer is always written to disk using [seq_write()],
+even when it contains no features (`nrow == 0`).
 
 Informational messages are displayed to indicate whether a layer
 contains features or is empty.
 }
 \seealso{
-\code{\link[=get_com_poly]{get_com_poly()}}, \code{\link[=get_com_line]{get_com_line()}}, \code{\link[=get_com_point]{get_com_point()}},
-\code{\link[=seq_write]{seq_write()}}
+[get_com_poly()], [get_com_line()], [get_com_point()],
+[seq_write()]
 }

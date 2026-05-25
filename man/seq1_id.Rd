@@ -2,17 +2,17 @@
 % Please edit documentation in R/update.R
 \name{seq1_id}
 \alias{seq1_id}
-\title{Retrieve old \code{R_SEQUOIA} \emph{PARCA} identifier}
+\title{Retrieve old `R_SEQUOIA` _PARCA_ identifier}
 \usage{
 seq1_id(dirname = ".")
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the file \emph{PARCA} is located.
+\item{dirname}{`character` Directory where the file _PARCA_ is located.
 Defaults to the current working directory.}
 }
 \value{
-The \code{character} identifier
+The `character` identifier
 }
 \description{
-Retrieve old \code{R_SEQUOIA} \emph{PARCA} identifier
+Retrieve old `R_SEQUOIA` _PARCA_ identifier
 }

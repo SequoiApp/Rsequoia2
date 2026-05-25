@@ -7,16 +7,16 @@
 extract_visual_data(pdf)
 }
 \arguments{
-\item{pdf}{\code{character}. Path to PDF file}
+\item{pdf}{`character`. Path to PDF file}
 }
 \value{
-A \code{data.frame} with columns from \code{pdf_data()} plus \code{page} (integer)
+A `data.frame` with columns from `pdf_data()` plus `page` (integer)
 }
 \description{
-Wrapper around \code{\link[pdftools:pdf_data]{pdftools::pdf_data()}} that adds page numbers
+Wrapper around [pdftools::pdf_data()] that adds page numbers
 to each extracted text element.
 }
 \seealso{
-\code{\link[pdftools:pdf_data]{pdftools::pdf_data()}}.
+[pdftools::pdf_data()].
 }
 \keyword{internal}

@@ -12,26 +12,24 @@ seq_meteo_france(
 )
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{`character` Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{cache}{\code{character}; Storage directory. Defaults to the user cache
-directory (see \code{\link[tools:R_user_dir]{tools::R_user_dir()}})}
+\item{cache}{`character`; Storage directory. Defaults to the user cache
+directory (see [tools::R_user_dir()])}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{`logical` If `TRUE`, display messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
 }
 \value{
-A named \code{list} of file paths :
-\itemize{
-\item `"fiche.meteo"``: Path to the downloaded climatological station PDF
-\item `"meteofrance"``: Path to the generated Excel workbook
-}
+A named `list` of file paths :
+- `"fiche.meteo"``: Path to the downloaded climatological station PDF
+- `"meteofrance"``: Path to the generated Excel workbook
 }
 \description{
 Downloads and formats meteorological data from Meteo-France.
 This includes download of the nearest climatological station fiche (PDF),
 ombrothermic summaries, precipitation statistics. Results are written
-to an Excel workbook based on the internal template \code{CLIMAT_MF.xlsx}.
+to an Excel workbook based on the internal template `CLIMAT_MF.xlsx`.
 }

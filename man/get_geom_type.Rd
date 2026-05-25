@@ -7,7 +7,7 @@
 get_geom_type(x)
 }
 \arguments{
-\item{x}{\code{sf}}
+\item{x}{`sf`}
 }
 \description{
 Use to get type of a geometry

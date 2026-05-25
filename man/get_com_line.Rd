@@ -7,27 +7,27 @@
 get_com_line(x, graphic = FALSE, verbose = TRUE)
 }
 \arguments{
-\item{x}{An \code{sf} object used as the input area.}
+\item{x}{An `sf` object used as the input area.}
 
-\item{graphic}{Logical. If \code{TRUE}, line geometries are clipped to a
-500 m convex buffer around \code{x} for graphical purposes.}
+\item{graphic}{Logical. If `TRUE`, line geometries are clipped to a
+500 m convex buffer around `x` for graphical purposes.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{`logical` If `TRUE`, display messages.}
 }
 \value{
-An \code{sf} object of type \code{LINESTRING} representing commune boundaries.
-Returns \code{NULL} if no commune intersects the input area.
+An `sf` object of type `LINESTRING` representing commune boundaries.
+  Returns `NULL` if no commune intersects the input area.
 }
 \description{
 Converts commune boundary polygons into line features, optionally
 clipped for cartographic display.
 }
 \details{
-The function retrieves commune polygons using \code{get_com_poly()},
-converts them to line geometries using \code{poly_to_line()},
+The function retrieves commune polygons using `get_com_poly()`,
+converts them to line geometries using `poly_to_line()`,
 and optionally intersects them with a reduced convex buffer
 to limit graphical extent.
 }
 \seealso{
-\code{\link[=get_com_poly]{get_com_poly()}}
+[get_com_poly()]
 }

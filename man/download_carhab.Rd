@@ -12,20 +12,20 @@ download_carhab(
 )
 }
 \arguments{
-\item{dep}{\code{character} or \code{numeric}; Department code(s), such as \code{"08"} or
-\code{8}. Codes are checked against \code{\link[=get_cog]{get_cog()}}.}
+\item{dep}{`character` or `numeric`; Department code(s), such as `"08"` or
+`8`. Codes are checked against [Rsequoia2::get_cog()].}
 
-\item{cache}{\code{character}; Directory where ZIP archives are stored.
+\item{cache}{`character`; Directory where ZIP archives are stored.
 Defaults to the Rsequoia2 BD Charm 50 cache directory, see
-\code{\link[=seq_cache]{seq_cache()}}.}
+[Rsequoia2::seq_cache()].}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display progress messages.}
+\item{verbose}{`logical`; If `TRUE`, display progress messages.}
 
-\item{overwrite}{\code{logical}; If \code{TRUE}, re-download archives even when
-they already exist in \code{cache}.}
+\item{overwrite}{`logical`; If `TRUE`, re-download archives even when
+they already exist in `cache`.}
 }
 \value{
-Invisibly returns a named \code{character} vector of local ZIP file paths,
+Invisibly returns a named `character` vector of local ZIP file paths,
 with department codes as names.
 }
 \description{
@@ -34,6 +34,6 @@ stores them in the Rsequoia2 cache.
 }
 \details{
 CarHab is a harmonised geological map database produced by
-BRGM used to created the \code{CarHab} dataset of PatriNat. The downloaded
-ZIP files are cached and reused on later calls unless \code{overwrite = TRUE}.
+BRGM used to created the `CarHab` dataset of PatriNat. The downloaded
+ZIP files are cached and reused on later calls unless `overwrite = TRUE`.
 }

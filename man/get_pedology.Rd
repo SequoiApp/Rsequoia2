@@ -7,10 +7,10 @@
 get_pedology(x)
 }
 \arguments{
-\item{x}{An \code{sf} object defining the input area of interest.}
+\item{x}{An `sf` object defining the input area of interest.}
 }
 \value{
-An \code{sf} object containing pedology polygon features
+An `sf` object containing pedology polygon features
 intersecting the input geometry, with additional surface fields.
 }
 \description{
@@ -19,10 +19,10 @@ intersecting an area of interest and computes surface attributes.
 }
 \details{
 The function retrieves pedology polygon features from the
-\code{INRA.CARTE.SOLS:geoportail_vf} layer intersecting the input geometry \code{x}.
-The resulting geometries are intersected with \code{x}, cast to polygons,
-and surface attributes are computed using \code{ua_generate_area()}.
+`INRA.CARTE.SOLS:geoportail_vf` layer intersecting the input geometry `x`.
+The resulting geometries are intersected with `x`, cast to polygons,
+and surface attributes are computed using `ua_generate_area()`.
 }
 \seealso{
-\code{\link[=ua_generate_area]{ua_generate_area()}}
+[ua_generate_area()]
 }
