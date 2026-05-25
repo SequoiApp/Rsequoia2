@@ -24,9 +24,9 @@ cadastral surfaces** and not cartographic surfaces.
 
 This package offers an integrative approach.
 
-## 0. Sequoia definitions
+## 1. Sequoia definitions
 
-### Analysis unit
+### 1.1. Analysis unit
 
 An **analysis unit** (AU) corresponds to the smallest fraction of a
 cadastral parcel that is **homogeneous in terms of its descriptive
@@ -45,7 +45,7 @@ In other words, each *AU* :
 - receives a forest management unit identifier composed by a forest
   parcel number (N_PARFOR) and a sub-parcel number (N_SSPARFOR).
 
-### Management unit
+### 1.2. Management unit
 
 An **management unit** (MU) corresponds to an area that is homogeneous
 in terms of its forest description and that is managed under **a single
@@ -57,7 +57,7 @@ In other words, each *AU* of a *MU* must have :
 
 - the same forestry destiny (same point of arrival).
 
-### Forest parcels
+### 1.3. Forest parcels
 
 **Forest parcels** (FP) division corresponds to **an arbitrary
 subdivision** of a forest, decided by owner or last forest manager.
@@ -74,17 +74,17 @@ subdivision** of a forest, decided by owner or last forest manager.
   structural elements. Do not use stands because forest can be evolve
   quickly.
 
-## 1. How do I create the analysis unit layer?
+## 2. How do I create the analysis unit layer?
 
 As mentioned before, the *AU* layer must keep cadastral attribute.
 That’s why the *AU* layer is created from the cadastral parcels layers
 *CP*.
 
-### Before creation, check topology
+### 2.1. Before creation, check topology
 
 …
 
-### Run `seq_parca_to_ua()` and load the layer
+### 2.2. Run `seq_parca_to_ua()` and load the layer
 
 At the time of its creation, the analysis unit layer is nothing more
 than the cadastral parcel layer enriched with additional attribute
@@ -102,7 +102,7 @@ tm_shape(ua)+
   tm_borders(col = "firebrick", lwd = 2)
 ```
 
-## 2. How do I work with the analysis unit layer?
+## 3. How do I work with the analysis unit layer?
 
 Our approach consists of dividing cadastral parcels into fractions (the
 units of analysis), according to logical steps.
@@ -121,7 +121,7 @@ As segmentation steps, we recommend :
 At each step, the user is required to complete the attribute fields
 table.
 
-## 3. How do I obtains the cadastral area?
+## 4. How do I obtains the cadastral area?
 
 When you have finish to segmentize the *AU* layer, you can get validate
 the *UA* layer by running
@@ -152,14 +152,14 @@ This function overwrite the *AU* layer: it’s the same layer, but with:
 
 - management unit consistency checked and corrected.
 
-## 4. How can I use the updated *AU* layer after ?
+## 5. How can I use the updated *AU* layer after ?
 
-### Before, check topology
+### 5.1. Before, check topology
 
 Ensure that the layer does not contain any topological errors by
 checking it from your GIS software.
 
-### Run `seq_parcels()` and load layers
+### 5.2. Run `seq_parcels()` and load layers
 
 When you have updated the *AU* layer, you can get new products:
 

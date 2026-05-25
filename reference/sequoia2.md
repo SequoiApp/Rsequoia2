@@ -14,7 +14,7 @@ sequoia2(overwrite = FALSE)
 
 - overwrite:
 
-  `logical` If `TRUE`, file is overwritten.
+  \`logical\` If \`TRUE\`, file is overwritten.
 
 ## Value
 

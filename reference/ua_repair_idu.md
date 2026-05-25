@@ -1,6 +1,7 @@
-# Repair *UA* cadastral IDU from *PARCA*
+# Repair \_UA\_ cadastral IDU from \_PARCA\_
 
-Repairs *UA* IDU values from the dominant intersecting *PARCA* polygon.
+Repairs \_UA\_ IDU values from the dominant intersecting \_PARCA\_
+polygon.
 
 ## Usage
 
@@ -12,23 +13,21 @@ ua_repair_idu(ua, parca, verbose = TRUE)
 
 - ua:
 
-  `sf` Object containing analysis units.
+  \`sf\` Object containing analysis units.
 
 - parca:
 
-  `sf` Object containing cadastral parcels.
+  \`sf\` Object containing cadastral parcels.
 
 - verbose:
 
-  `logical` If `TRUE`, display messages.
+  \`logical\` If \`TRUE\`, display messages.
 
 ## Value
 
-The input `ua` object with corrected IDU values.
+The input \`ua\` object with corrected IDU values.
 
 ## Details
 
-The spatial match is based on
-[`sf::st_join()`](https://r-spatial.github.io/sf/reference/st_join.html)
-with `largest = TRUE`, so the *PARCA* polygon with the largest overlap
-is used as reference.
+The spatial match is based on \[sf::st_join()\] with \`largest = TRUE\`,
+so the \_PARCA\_ polygon with the largest overlap is used as reference.

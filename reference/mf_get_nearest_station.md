@@ -13,16 +13,16 @@ mf_get_nearest_station(x, n = 1, verbose = TRUE)
 
 - x:
 
-  `sf` or `sfc`.
+  \`sf\` or \`sfc\`.
 
 - n:
 
-  `integer`; number of nearest stations to return. Default is 1.
+  \`integer\`; number of nearest stations to return. Default is 1.
 
 - verbose:
 
-  `logical` If `TRUE`, display progress messages.
+  \`logical\` If \`TRUE\`, display progress messages.
 
 ## Value
 
-An `sf` object containing the nearest meteorological stations.
+An \`sf\` object containing the nearest meteorological stations.

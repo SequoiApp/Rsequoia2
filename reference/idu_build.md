@@ -12,20 +12,20 @@ idu_build(dep, com, prefix, section, numero)
 
 - dep:
 
-  `character` dep code
+  \`character\` dep code
 
 - com:
 
-  `character` com code
+  \`character\` com code
 
 - prefix:
 
-  `character` prefic code
+  \`character\` prefic code
 
 - section:
 
-  `character` section code
+  \`character\` section code
 
 - numero:
 
-  `character` numero code
+  \`character\` numero code

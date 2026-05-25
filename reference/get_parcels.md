@@ -14,9 +14,9 @@ get_parcels(pdf)
 
 - pdf:
 
-  `character`. Path to PDF file
+  \`character\`. Path to PDF file
 
 ## Value
 
-A complete parcel `data.frame` with all processed fields and
+A complete parcel \`data.frame\` with all processed fields and
 commune/owner information

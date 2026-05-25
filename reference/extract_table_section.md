@@ -13,17 +13,16 @@ extract_table_section(page_data, non_anchor, has_total)
 
 - page_data:
 
-  A `data.frame` for a single pdf page
+  A \`data.frame\` for a single pdf page
 
 - non_anchor:
 
-  Anchor row from
-  [`identify_non_anchors()`](https://sequoiapp.github.io/Rsequoia2/reference/identify_non_anchors.md)
+  Anchor row from \[identify_non_anchors()\]
 
 - has_total:
 
-  `logical`, whether page contains "totale" anchor
+  \`logical\`, whether page contains "totale" anchor
 
 ## Value
 
-Filtered `data.frame` containing only table rows
+Filtered \`data.frame\` containing only table rows

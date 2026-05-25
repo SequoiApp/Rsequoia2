@@ -22,6 +22,7 @@
     <li><a class="dropdown-item" href="../articles/02_cadastral-parcels-fr.html">Parcelles Cadastrales (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/03_cadastral-parcels-legal-entity-fr.html">Parcelles cadastrales - Personne morale (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/04_vector-fr.html">Téléchargement de données vectorielles</a></li>
+    <li><a class="dropdown-item" href="../articles/06_analysis_units-fr.html">Unité d'analyse</a></li>
     <li><a class="dropdown-item" href="../articles/11_sequoia.html">Sequoia</a></li>
     <li><a class="dropdown-item" href="../articles/12_cadastral-parcels.html">Cadastral parcels</a></li>
     <li><a class="dropdown-item" href="../articles/13_cadastral-parcels-legal-entity.html">Cadastral parcels - legal entity (FR)</a></li>
@@ -56,35 +57,36 @@
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>An <code>sf</code> object used as the input area.</p></dd>
+<dd><p>An `sf` object used as the input area.</p></dd>
 
 
 <dt id="arg-buffer">buffer<a class="anchor" aria-label="anchor" href="#arg-buffer"></a></dt>
-<dd><p><code>numeric</code>; Buffer around <code>x</code> (in <strong>meters</strong>) used to enlarge</p></dd>
+<dd><p>`numeric`; Buffer around `x` (in **meters**) used to enlarge</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An <code>sf</code> object of type <code>POLYGON</code> containing infrastructure
-features with standardized fields, including:</p><ul><li><p><code>TYPE</code> - Infrastructure type code:</p><ul><li><p><code>AER</code> = Aerodrome runway</p></li>
-<li><p><code>BAT</code> = Building</p></li>
-<li><p><code>CIM</code> = Cemetery</p></li>
-<li><p><code>CST</code> = Surface construction</p></li>
-<li><p><code>HAB</code> = Residential area</p></li>
-<li><p><code>SPO</code> = Sports ground</p></li>
-<li><p><code>VIL</code> = Urbanized area (importance 1-2)</p></li>
-</ul></li>
-<li><p><code>NAME</code> - Toponym when available</p></li>
-<li><p><code>SOURCE</code> - Data source (<code>IGNF_BDTOPO_V3</code>)</p></li>
-</ul></div>
+    <p>An `sf` object of type `POLYGON` containing infrastructure
+  features with standardized fields, including:
+  * `TYPE` - Infrastructure type code:
+    - `AER` = Aerodrome runway
+    - `BAT` = Building
+    - `CIM` = Cemetery
+    - `CST` = Surface construction
+    - `HAB` = Residential area
+    - `SPO` = Sports ground
+    - `VIL` = Urbanized area (importance 1-2)
+  * `NAME` - Toponym when available
+  * `SOURCE` - Data source (`IGNF_BDTOPO_V3`)</p>
+    </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The function retrieves several polygon infrastructure layers from
-the IGN BDTOPO V3 dataset within a convex buffer around <code>x</code>.</p>
+the IGN BDTOPO V3 dataset within a convex buffer around `x`.</p>
 <p>Retrieved layers include buildings, cemeteries, surface constructions,
 aerodrome runways, sports grounds, and residential or urbanized areas.</p>
 <p>If no infrastructure data are found, the function returns an empty
-standardized <code>sf</code> object.</p>
+standardized `sf` object.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

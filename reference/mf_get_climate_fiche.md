@@ -13,15 +13,15 @@ mf_get_climate_fiche(x, dirname, verbose = TRUE)
 
 - x:
 
-  `sf` or `sfc`
+  \`sf\` or \`sfc\`
 
 - dirname:
 
-  `character`; directory where the PDF will be saved
+  \`character\`; directory where the PDF will be saved
 
 - verbose:
 
-  `logical` If `TRUE`, display progress messages.
+  \`logical\` If \`TRUE\`, display progress messages.
 
 ## Value
 

@@ -22,6 +22,7 @@
     <li><a class="dropdown-item" href="../articles/02_cadastral-parcels-fr.html">Parcelles Cadastrales (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/03_cadastral-parcels-legal-entity-fr.html">Parcelles cadastrales - Personne morale (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/04_vector-fr.html">Téléchargement de données vectorielles</a></li>
+    <li><a class="dropdown-item" href="../articles/06_analysis_units-fr.html">Unité d'analyse</a></li>
     <li><a class="dropdown-item" href="../articles/11_sequoia.html">Sequoia</a></li>
     <li><a class="dropdown-item" href="../articles/12_cadastral-parcels.html">Cadastral parcels</a></li>
     <li><a class="dropdown-item" href="../articles/13_cadastral-parcels-legal-entity.html">Cadastral parcels - legal entity (FR)</a></li>
@@ -56,24 +57,24 @@
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p><code>sf</code> or <code>sfc</code>; Geometry located in France.</p></dd>
+<dd><p>`sf` or `sfc`; Geometry located in France.</p></dd>
 
 
 <dt id="arg-tol">tol<a class="anchor" aria-label="anchor" href="#arg-tol"></a></dt>
-<dd><p><code>numeric</code>. Minimum area threshold in square meters.</p></dd>
+<dd><p>`numeric`. Minimum area threshold in square meters.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An <code>sf</code> object containing forest vegetation polygons</p>
+    <p>An `sf` object containing forest vegetation polygons</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The function retrieves the IGN forest mask layer within a 1000 m
-convex buffer around <code>x</code>. Retrieved polygons are then intersected
+convex buffer around `x`. Retrieved polygons are then intersected
 with a 1500 m convex buffer, cast to polygons, and normalized.</p>
 <p>If no forest data are found, the function returns an empty
-<code>sf</code> object with a standardized structure.</p>
+`sf` object with a standardized structure.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

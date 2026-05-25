@@ -1,7 +1,7 @@
 # Download MNHN vector layer from IGN WFS (RGB or IRC)
 
 Downloads a vector layer from the IGN WFS service for the area covering
-`x` expanded with a buffer. Available layer are from MNHN (Nationale
+\`x\` expanded with a buffer. Available layer are from MNHN (Nationale
 Museum of Natural History)
 
 ## Usage
@@ -14,28 +14,29 @@ get_mnhn(x, key, buffer = 500, verbose = TRUE)
 
 - x:
 
-  `sf` or `sfc`; Geometry located in France.
+  \`sf\` or \`sfc\`; Geometry located in France.
 
 - key:
 
-  `character`; Layer to download. Must be one of from `get_keys("mnhn")`
+  \`character\`; Layer to download. Must be one of from
+  \`get_keys("mnhn")\`
 
 - buffer:
 
-  `numeric`; Buffer around `x` (in **meters**) used to enlarge the
-  download area.
+  \`numeric\`; Buffer around \`x\` (in \*\*meters\*\*) used to enlarge
+  the download area.
 
 - verbose:
 
-  `logical`; If `TRUE`, display messages.
+  \`logical\`; If \`TRUE\`, display messages.
 
 ## Value
 
-`sf` object from `sf` package
+\`sf\` object from \`sf\` package
 
 ## See also
 
-[`happign::get_wfs()`](https://paul-carteron.github.io/happign/reference/get_wfs.html)
+\[happign::get_wfs()\]
 
 ## Examples
 

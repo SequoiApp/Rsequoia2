@@ -13,17 +13,17 @@ prepare_dem_terrain(dem, agg = 5, verbose = TRUE)
 
 - dem:
 
-  `SpatRaster`; DEM/MNT raster.
+  \`SpatRaster\`; DEM/MNT raster.
 
 - agg:
 
-  `numeric(1)`; Target working resolution in meters. If `NULL`, no
+  \`numeric(1)\`; Target working resolution in meters. If \`NULL\`, no
   aggregation is applied.
 
 - verbose:
 
-  `logical(1)`; If `TRUE`, display messages.
+  \`logical(1)\`; If \`TRUE\`, display messages.
 
 ## Value
 
-A `SpatRaster`, unchanged or aggregated.
+A \`SpatRaster\`, unchanged or aggregated.

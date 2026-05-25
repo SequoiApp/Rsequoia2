@@ -24,6 +24,7 @@ from the INRA soil map repository."><meta property="og:image" content="https://s
     <li><a class="dropdown-item" href="../articles/02_cadastral-parcels-fr.html">Parcelles Cadastrales (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/03_cadastral-parcels-legal-entity-fr.html">Parcelles cadastrales - Personne morale (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/04_vector-fr.html">Téléchargement de données vectorielles</a></li>
+    <li><a class="dropdown-item" href="../articles/06_analysis_units-fr.html">Unité d'analyse</a></li>
     <li><a class="dropdown-item" href="../articles/11_sequoia.html">Sequoia</a></li>
     <li><a class="dropdown-item" href="../articles/12_cadastral-parcels.html">Cadastral parcels</a></li>
     <li><a class="dropdown-item" href="../articles/13_cadastral-parcels-legal-entity.html">Cadastral parcels - legal entity (FR)</a></li>
@@ -59,35 +60,35 @@ from the INRA soil map repository.</p>
 
 
 <dl><dt id="arg-id-ucs">id_ucs<a class="anchor" aria-label="anchor" href="#arg-id-ucs"></a></dt>
-<dd><p><code>character</code> used to identify pedology reports.
-It can be got by using <code>get_pedology()$id_ucs</code>.</p></dd>
+<dd><p>`character` used to identify pedology reports.
+It can be got by using `get_pedology()$id_ucs`.</p></dd>
 
 
 <dt id="arg-dirname">dirname<a class="anchor" aria-label="anchor" href="#arg-dirname"></a></dt>
-<dd><p><code>character</code>; directory where the PDF will be saved.</p></dd>
+<dd><p>`character`; directory where the PDF will be saved.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p><code>logical</code>. If <code>TRUE</code>, display progress messages.</p></dd>
+<dd><p>`logical`. If `TRUE`, display progress messages.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Invisibly returns the normalized path to <code>out_dir</code>. Returns
-<code>NULL</code> invisibly if no valid <code>id_ucs</code> is found.</p>
+    <p>Invisibly returns the normalized path to `out_dir`. Returns
+`NULL` invisibly if no valid `id_ucs` is found.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The function needs unique UCS identifiers typically got from the <code>id_ucs</code>
-field of <code>pedology</code>, builds download URLs pointing to the INRA
+    <p>The function needs unique UCS identifiers typically got from the `id_ucs`
+field of `pedology`, builds download URLs pointing to the INRA
 soil map repository, and downloads the corresponding PDF documents.</p>
-<p>Existing files are skipped unless <code>overwrite = TRUE</code>. All user
-feedback is handled via the <code>cli</code> package and can be silenced by
-setting <code>verbose = FALSE</code>.</p>
+<p>Existing files are skipped unless `overwrite = TRUE`. All user
+feedback is handled via the `cli` package and can be silenced by
+setting `verbose = FALSE`.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="get_pedology.html">get_pedology()</a></code></p></div>
+    <div class="dont-index"><p>[get_pedology()]</p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

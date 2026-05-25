@@ -14,41 +14,36 @@ seq_pedology(dirname = ".", verbose = TRUE, overwrite = FALSE)
 
 - dirname:
 
-  `character` Path to the project directory. Defaults to the current
+  \`character\` Path to the project directory. Defaults to the current
   working directory.
 
 - verbose:
 
-  `logical`; whether to display informational messages. Defaults to
-  `TRUE`.
+  \`logical\`; whether to display informational messages. Defaults to
+  \`TRUE\`.
 
 - overwrite:
 
-  `logical`; whether to overwrite existing files. Defaults to `FALSE`.
+  \`logical\`; whether to overwrite existing files. Defaults to
+  \`FALSE\`.
 
 ## Value
 
-Invisibly returns a named list of file paths written by
-[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
-Returns `NULL` invisibly when no pedology features are found.
+Invisibly returns a named list of file paths written by \[seq_write()\].
+Returns \`NULL\` invisibly when no pedology features are found.
 
 ## Details
 
-Pedology polygon features are retrieved using
-[`get_pedology()`](https://sequoiapp.github.io/Rsequoia2/reference/get_pedology.md).
+Pedology polygon features are retrieved using \[get_pedology()\].
 
 If no pedology features intersect the project area, the function returns
-`NULL` invisibly and no file is written.
+\`NULL\` invisibly and no file is written.
 
 When pedology features are present, the polygon layer is written to disk
-using
-[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
-with the key `"v.sol.pedo.poly"`. Associated UCS PDF reports are then
-downloaded into `dirname` using
-[`get_pedology_pdf()`](https://sequoiapp.github.io/Rsequoia2/reference/get_pedology_pdf.md).
+using \[seq_write()\] with the key \`"v.sol.pedo.poly"\`. Associated UCS
+PDF reports are then downloaded into \`dirname\` using
+\[get_pedology_pdf()\].
 
 ## See also
 
-[`get_pedology()`](https://sequoiapp.github.io/Rsequoia2/reference/get_pedology.md),
-[`get_pedology_pdf()`](https://sequoiapp.github.io/Rsequoia2/reference/get_pedology_pdf.md),
-[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
+\[get_pedology()\], \[get_pedology_pdf()\], \[seq_write()\]

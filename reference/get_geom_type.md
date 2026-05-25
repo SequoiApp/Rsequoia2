@@ -12,4 +12,4 @@ get_geom_type(x)
 
 - x:
 
-  `sf`
+  \`sf\`

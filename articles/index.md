@@ -10,6 +10,8 @@
   (FR)](https://sequoiapp.github.io/Rsequoia2/articles/03_cadastral-parcels-legal-entity-fr.md):
 - [Téléchargement de données
   vectorielles](https://sequoiapp.github.io/Rsequoia2/articles/04_vector-fr.md):
+- [Unité
+  d'analyse](https://sequoiapp.github.io/Rsequoia2/articles/06_analysis_units-fr.md):
 - [Sequoia](https://sequoiapp.github.io/Rsequoia2/articles/11_sequoia.md):
 - [Cadastral
   parcels](https://sequoiapp.github.io/Rsequoia2/articles/12_cadastral-parcels.md):

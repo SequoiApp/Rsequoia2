@@ -13,37 +13,34 @@ seq_voids(dirname = ".", verbose = TRUE, overwrite = FALSE)
 
 - dirname:
 
-  `character` Path to the project directory. Defaults to the current
+  \`character\` Path to the project directory. Defaults to the current
   working directory.
 
 - verbose:
 
-  `logical`; whether to display informational messages. Defaults to
-  `TRUE`.
+  \`logical\`; whether to display informational messages. Defaults to
+  \`TRUE\`.
 
 - overwrite:
 
-  `logical`; whether to overwrite existing files. Defaults to `FALSE`.
+  \`logical\`; whether to overwrite existing files. Defaults to
+  \`FALSE\`.
 
 ## Value
 
-Invisibly returns a named list of file paths written by
-[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
-Returns `NULL` invisibly when no features are found.
+Invisibly returns a named list of file paths written by \[seq_write()\].
+Returns \`NULL\` invisibly when no features are found.
 
 ## Details
 
-Cadastral gaps are retrieved using
-[`get_voids()`](https://sequoiapp.github.io/Rsequoia2/reference/get_voids.md).
+Cadastral gaps are retrieved using \`get_voids()\`.
 
-If no features are found, the function returns `NULL` invisibly and no
+If no features are found, the function returns \`NULL\` invisibly and no
 file is written.
 
 When features are present, the layer is written to disk using
-[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
-with the key `"v.cad.vides.poly"`.
+\[seq_write()\] with the key \`"v.cad.vides.poly"\`.
 
 ## See also
 
-[`get_voids()`](https://sequoiapp.github.io/Rsequoia2/reference/get_voids.md),
-[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
+\[get_voids()\], \[seq_write()\]

@@ -13,9 +13,9 @@ get_reference(pdf)
 
 - pdf:
 
-  `character`. Path to PDF file
+  \`character\`. Path to PDF file
 
 ## Value
 
-A `data.frame` with columns: year, department_code, commune_code,
+A \`data.frame\` with columns: year, department_code, commune_code,
 commune_name, tres, communal_num, file_name, file_path, insee

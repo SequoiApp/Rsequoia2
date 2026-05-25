@@ -12,21 +12,21 @@ get_vege_poly(x, tol = 500)
 
 - x:
 
-  `sf` or `sfc`; Geometry located in France.
+  \`sf\` or \`sfc\`; Geometry located in France.
 
 - tol:
 
-  `numeric`. Minimum area threshold in square meters.
+  \`numeric\`. Minimum area threshold in square meters.
 
 ## Value
 
-An `sf` object containing forest vegetation polygons
+An \`sf\` object containing forest vegetation polygons
 
 ## Details
 
 The function retrieves the IGN forest mask layer within a 1000 m convex
-buffer around `x`. Retrieved polygons are then intersected with a 1500 m
-convex buffer, cast to polygons, and normalized.
+buffer around \`x\`. Retrieved polygons are then intersected with a 1500
+m convex buffer, cast to polygons, and normalized.
 
-If no forest data are found, the function returns an empty `sf` object
+If no forest data are found, the function returns an empty \`sf\` object
 with a standardized structure.

@@ -13,28 +13,28 @@ seq_ua(dirname = ".", secure = TRUE, verbose = TRUE, overwrite = TRUE)
 
 - dirname:
 
-  `character` Directory where the matrice file is located. Defaults to
+  \`character\` Directory where the matrice file is located. Defaults to
   the current working directory.
 
 - secure:
 
-  `logical`. If `TRUE`, also writes a timestamped secure copy of the
+  \`logical\`. If \`TRUE\`, also writes a timestamped secure copy of the
   file.
 
 - verbose:
 
-  `logical` If `TRUE`, display messages.
+  \`logical\` If \`TRUE\`, display messages.
 
 - overwrite:
 
-  `logical` If `TRUE`, file is overwritten.
+  \`logical\` If \`TRUE\`, file is overwritten.
 
 ## Value
 
-An `sf` object
+An \`sf\` object
 
 ## Details
 
-The resulting object is returned invisibly as an `sf` polygons layer.
+The resulting object is returned invisibly as an \`sf\` polygons layer.
 The output file is automatically written into the working directory
-defined by `dirname`.
+defined by \`dirname\`.

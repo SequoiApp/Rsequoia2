@@ -13,17 +13,16 @@ mf_ombro(clim, periods = c(30, 5))
 
 - clim:
 
-  `data.frame` Raw climatology data from
-  [`mf_get_climatology()`](https://sequoiapp.github.io/Rsequoia2/reference/mf_get_climatology.md)
+  \`data.frame\` Raw climatology data from \[mf_get_climatology()\]
 
 - periods:
 
-  `integer` Vector of periods (in years) used to compute averages.
-  Default is `c(30, 5)`.
+  \`integer\` Vector of periods (in years) used to compute averages.
+  Default is \`c(30, 5)\`.
 
 ## Value
 
-A `data.frame` containing monthly averages of temperature and
+A \`data.frame\` containing monthly averages of temperature and
 precipitation for each period.
 
 ## Examples

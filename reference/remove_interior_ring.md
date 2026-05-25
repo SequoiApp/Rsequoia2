@@ -12,8 +12,8 @@ remove_interior_ring(x)
 
 - x:
 
-  `sf` or `sfc`. Input geometries (POLYGON / MULTIPOLYGON).
+  \`sf\` or \`sfc\`. Input geometries (POLYGON / MULTIPOLYGON).
 
 ## Value
 
-An `sf` object with polygons stripped of interior rings.
+An \`sf\` object with polygons stripped of interior rings.

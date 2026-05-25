@@ -13,31 +13,30 @@ get_com_point(x, graphic = FALSE, verbose = TRUE)
 
 - x:
 
-  An `sf` object used as the input area.
+  An \`sf\` object used as the input area.
 
 - graphic:
 
-  Logical. If `TRUE`, centroids are computed only on the intersection
-  between commune polygons and a 500 m convex buffer around `x`, for
+  Logical. If \`TRUE\`, centroids are computed only on the intersection
+  between commune polygons and a 500 m convex buffer around \`x\`, for
   cartographic display.
 
 - verbose:
 
-  `logical` If `TRUE`, display messages.
+  \`logical\` If \`TRUE\`, display messages.
 
 ## Value
 
-An `sf` object of type `POINT` representing commune centroids. Returns
-`NULL` if no commune intersects the input area.
+An \`sf\` object of type \`POINT\` representing commune centroids.
+Returns \`NULL\` if no commune intersects the input area.
 
 ## Details
 
-The function retrieves commune polygons using
-[`get_com_poly()`](https://sequoiapp.github.io/Rsequoia2/reference/get_com_poly.md),
-then computes their centroids. When `graphic = TRUE`, centroids are
+The function retrieves commune polygons using \`get_com_poly()\`, then
+computes their centroids. When \`graphic = TRUE\`, centroids are
 calculated from the clipped geometries to ensure points fall within the
 display extent.
 
 ## See also
 
-[`get_com_poly()`](https://sequoiapp.github.io/Rsequoia2/reference/get_com_poly.md)
+\[get_com_poly()\]

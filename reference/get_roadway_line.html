@@ -24,6 +24,7 @@ internal edges using a buffer difference and convex hull splitting."><meta prope
     <li><a class="dropdown-item" href="../articles/02_cadastral-parcels-fr.html">Parcelles Cadastrales (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/03_cadastral-parcels-legal-entity-fr.html">Parcelles cadastrales - Personne morale (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/04_vector-fr.html">Téléchargement de données vectorielles</a></li>
+    <li><a class="dropdown-item" href="../articles/06_analysis_units-fr.html">Unité d'analyse</a></li>
     <li><a class="dropdown-item" href="../articles/11_sequoia.html">Sequoia</a></li>
     <li><a class="dropdown-item" href="../articles/12_cadastral-parcels.html">Cadastral parcels</a></li>
     <li><a class="dropdown-item" href="../articles/13_cadastral-parcels-legal-entity.html">Cadastral parcels - legal entity (FR)</a></li>
@@ -59,24 +60,25 @@ internal edges using a buffer difference and convex hull splitting.</p>
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>An <code>sf</code> polygon object produced by <code><a href="get_roadway_poly.html">get_roadway_poly()</a></code>.</p></dd>
+<dd><p>An `sf` polygon object produced by `get_roadway_poly()`.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An <code>sf</code> object with LINESTRING geometries normalized as
+    <p>An `sf` object with LINESTRING geometries normalized as
 roadway lines.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The function derives line features from roadway polygons through the
-following steps:</p><ol><li><p>Polygon boundaries are cast to MULTILINESTRING.</p></li>
-<li><p>Internal edges are extracted using a negative buffer difference.</p></li>
-<li><p>The resulting lines are split using points derived from a simplified
-convex hull of the polygons.</p></li>
-<li><p>The result is normalized with <code><a href="seq_normalize.html">seq_normalize()</a></code> using the
-<code>"road_line"</code> schema.</p></li>
-</ol></div>
+following steps:</p>
+<p>1. Polygon boundaries are cast to MULTILINESTRING.
+2. Internal edges are extracted using a negative buffer difference.
+3. The resulting lines are split using points derived from a simplified
+convex hull of the polygons.
+4. The result is normalized with `seq_normalize()` using the
+`"road_line"` schema.</p>
+    </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

@@ -15,9 +15,7 @@ style_table(wb, sheet, df, numfmt = "0.00")
 
 - wb:
 
-  A
-  [openxlsx2::wb_workbook](https://janmarvin.github.io/openxlsx2/reference/wb_workbook.html)
-  object.
+  A \[openxlsx2::wb_workbook\] object.
 
 - sheet:
 
@@ -25,16 +23,15 @@ style_table(wb, sheet, df, numfmt = "0.00")
 
 - df:
 
-  A data frame that has been written to `sheet` and needs styling.
+  A data frame that has been written to \`sheet\` and needs styling.
 
 - numfmt:
 
-  see
-  [openxlsx2::wb_add_numfmt](https://janmarvin.github.io/openxlsx2/reference/wb_add_numfmt.html)
+  see \[openxlsx2::wb_add_numfmt\]
 
 ## Value
 
-The modified `wb_workbook` object with styles applied.
+The modified \`wb_workbook\` object with styles applied.
 
 ## Examples
 

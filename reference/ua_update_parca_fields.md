@@ -1,6 +1,7 @@
-# Update *UA* fields from *PARCA*
+# Update \_UA\_ fields from \_PARCA\_
 
-Refreshes *UA* cadastral fields from *PARCA* using the IDU field as key.
+Refreshes \_UA\_ cadastral fields from \_PARCA\_ using the IDU field as
+key.
 
 ## Usage
 
@@ -12,16 +13,16 @@ ua_update_parca_fields(ua, parca)
 
 - ua:
 
-  `sf` Object containing analysis units.
+  \`sf\` Object containing analysis units.
 
 - parca:
 
-  `sf` Object containing cadastral parcels.
+  \`sf\` Object containing cadastral parcels.
 
 ## Value
 
-A `sf` *UA* object with cadastral fields updated from *PARCA*.
+A \`sf\` \_UA\_ object with cadastral fields updated from \_PARCA\_.
 
 ## Details
 
-This function assumes that *UA* IDU values are already correct.
+This function assumes that \_UA\_ IDU values are already correct.

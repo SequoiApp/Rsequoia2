@@ -1,6 +1,6 @@
-# Create management unit field (UG) in the *UA* sf object
+# Create management unit field (UG) in the \_UA\_ sf object
 
-Generates a standardized management unit identifier (UG) in the *UA*
+Generates a standardized management unit identifier (UG) in the \_UA\_
 object based on configured parcel keys.
 
 ## Usage
@@ -13,17 +13,17 @@ ua_generate_ug(ua, separator = ".", verbose = TRUE)
 
 - ua:
 
-  `sf` object containing analysis units; must contain fields used by
-  `ug_keys`.
+  \`sf\` object containing analysis units; must contain fields used by
+  \`ug_keys\`.
 
 - separator:
 
-  `character`, default `"."`. Separator between keys.
+  \`character\`, default \`"."\`. Separator between keys.
 
 - verbose:
 
-  `logical` If `TRUE`, display progress messages.
+  \`logical\` If \`TRUE\`, display progress messages.
 
 ## Value
 
-`sf` object UA with UG field filled.
+\`sf\` object UA with UG field filled.

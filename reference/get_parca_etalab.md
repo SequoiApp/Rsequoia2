@@ -12,8 +12,8 @@ get_parca_etalab(idu)
 
 - idu:
 
-  `character` Cadastral parcel identifier.
+  \`character\` Cadastral parcel identifier.
 
 ## Value
 
-An `sf` object containing the parcel geometry.
+An \`sf\` object containing the parcel geometry.

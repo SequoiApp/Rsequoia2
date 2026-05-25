@@ -37,6 +37,7 @@
     <li><a class="dropdown-item" href="../articles/02_cadastral-parcels-fr.html">Parcelles Cadastrales (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/03_cadastral-parcels-legal-entity-fr.html">Parcelles cadastrales - Personne morale (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/04_vector-fr.html">Téléchargement de données vectorielles</a></li>
+    <li><a class="dropdown-item" href="../articles/06_analysis_units-fr.html">Unité d'analyse</a></li>
     <li><a class="dropdown-item" href="../articles/11_sequoia.html">Sequoia</a></li>
     <li><a class="dropdown-item" href="../articles/12_cadastral-parcels.html">Cadastral parcels</a></li>
     <li><a class="dropdown-item" href="../articles/13_cadastral-parcels-legal-entity.html">Cadastral parcels - legal entity (FR)</a></li>
@@ -91,10 +92,10 @@ with cadastral surfaces</strong> and not cartographic surfaces.</p>
 <p>This package offers an integrative approach.</p>
 </div>
 <div class="section level2">
-<h2 id="sequoia-definitions">0. Sequoia definitions<a class="anchor" aria-label="anchor" href="#sequoia-definitions"></a>
+<h2 id="sequoia-definitions">1. Sequoia definitions<a class="anchor" aria-label="anchor" href="#sequoia-definitions"></a>
 </h2>
 <div class="section level3">
-<h3 id="analysis-unit">Analysis unit<a class="anchor" aria-label="anchor" href="#analysis-unit"></a>
+<h3 id="analysis-unit">1.1. Analysis unit<a class="anchor" aria-label="anchor" href="#analysis-unit"></a>
 </h3>
 <p>An <strong>analysis unit</strong> (AU) corresponds to the smallest
 fraction of a cadastral parcel that is <strong>homogeneous in terms of
@@ -113,7 +114,7 @@ parcel number (N_PARFOR) and a sub-parcel number (N_SSPARFOR).</p></li>
 </ul>
 </div>
 <div class="section level3">
-<h3 id="management-unit">Management unit<a class="anchor" aria-label="anchor" href="#management-unit"></a>
+<h3 id="management-unit">1.2. Management unit<a class="anchor" aria-label="anchor" href="#management-unit"></a>
 </h3>
 <p>An <strong>management unit</strong> (MU) corresponds to an area that
 is homogeneous in terms of its forest description and that is managed
@@ -126,7 +127,7 @@ several analysis units.</p>
 </ul>
 </div>
 <div class="section level3">
-<h3 id="forest-parcels">Forest parcels<a class="anchor" aria-label="anchor" href="#forest-parcels"></a>
+<h3 id="forest-parcels">1.3. Forest parcels<a class="anchor" aria-label="anchor" href="#forest-parcels"></a>
 </h3>
 <p><strong>Forest parcels</strong> (FP) division corresponds to
 <strong>an arbitrary subdivision</strong> of a forest, decided by owner
@@ -144,18 +145,18 @@ quickly.</p></li>
 </div>
 </div>
 <div class="section level2">
-<h2 id="how-do-i-create-the-analysis-unit-layer">1. How do I create the analysis unit layer?<a class="anchor" aria-label="anchor" href="#how-do-i-create-the-analysis-unit-layer"></a>
+<h2 id="how-do-i-create-the-analysis-unit-layer">2. How do I create the analysis unit layer?<a class="anchor" aria-label="anchor" href="#how-do-i-create-the-analysis-unit-layer"></a>
 </h2>
 <p>As mentioned before, the <em>AU</em> layer must keep cadastral
 attribute. That’s why the <em>AU</em> layer is created from the
 cadastral parcels layers <em>CP</em>.</p>
 <div class="section level3">
-<h3 id="before-creation-check-topology">Before creation, check topology<a class="anchor" aria-label="anchor" href="#before-creation-check-topology"></a>
+<h3 id="before-creation-check-topology">2.1. Before creation, check topology<a class="anchor" aria-label="anchor" href="#before-creation-check-topology"></a>
 </h3>
 <p>…</p>
 </div>
 <div class="section level3">
-<h3 id="run-seq_parca_to_ua-and-load-the-layer">Run <code>seq_parca_to_ua()</code> and load the layer<a class="anchor" aria-label="anchor" href="#run-seq_parca_to_ua-and-load-the-layer"></a>
+<h3 id="run-seq_parca_to_ua-and-load-the-layer">2.2. Run <code>seq_parca_to_ua()</code> and load the layer<a class="anchor" aria-label="anchor" href="#run-seq_parca_to_ua-and-load-the-layer"></a>
 </h3>
 <p>At the time of its creation, the analysis unit layer is nothing more
 than the cadastral parcel layer enriched with additional attribute
@@ -172,7 +173,7 @@ fields.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="how-do-i-work-with-the-analysis-unit-layer">2. How do I work with the analysis unit layer?<a class="anchor" aria-label="anchor" href="#how-do-i-work-with-the-analysis-unit-layer"></a>
+<h2 id="how-do-i-work-with-the-analysis-unit-layer">3. How do I work with the analysis unit layer?<a class="anchor" aria-label="anchor" href="#how-do-i-work-with-the-analysis-unit-layer"></a>
 </h2>
 <p>Our approach consists of dividing cadastral parcels into fractions
 (the units of analysis), according to logical steps.</p>
@@ -190,7 +191,7 @@ suite</a>.</p>
 table.</p>
 </div>
 <div class="section level2">
-<h2 id="how-do-i-obtains-the-cadastral-area">3. How do I obtains the cadastral area?<a class="anchor" aria-label="anchor" href="#how-do-i-obtains-the-cadastral-area"></a>
+<h2 id="how-do-i-obtains-the-cadastral-area">4. How do I obtains the cadastral area?<a class="anchor" aria-label="anchor" href="#how-do-i-obtains-the-cadastral-area"></a>
 </h2>
 <p>When you have finish to segmentize the <em>AU</em> layer, you can get
 validate the <em>UA</em> layer by running <code><a href="../reference/seq_ua.html">seq_ua()</a></code>.</p>
@@ -216,16 +217,16 @@ added;</p></li>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="how-can-i-use-the-updated-au-layer-after">4. How can I use the updated <em>AU</em> layer after ?<a class="anchor" aria-label="anchor" href="#how-can-i-use-the-updated-au-layer-after"></a>
+<h2 id="how-can-i-use-the-updated-au-layer-after">5. How can I use the updated <em>AU</em> layer after ?<a class="anchor" aria-label="anchor" href="#how-can-i-use-the-updated-au-layer-after"></a>
 </h2>
 <div class="section level3">
-<h3 id="before-check-topology">Before, check topology<a class="anchor" aria-label="anchor" href="#before-check-topology"></a>
+<h3 id="before-check-topology">5.1. Before, check topology<a class="anchor" aria-label="anchor" href="#before-check-topology"></a>
 </h3>
 <p>Ensure that the layer does not contain any topological errors by
 checking it from your GIS software.</p>
 </div>
 <div class="section level3">
-<h3 id="run-seq_parcels-and-load-layers">Run <code>seq_parcels()</code> and load layers<a class="anchor" aria-label="anchor" href="#run-seq_parcels-and-load-layers"></a>
+<h3 id="run-seq_parcels-and-load-layers">5.2. Run <code>seq_parcels()</code> and load layers<a class="anchor" aria-label="anchor" href="#run-seq_parcels-and-load-layers"></a>
 </h3>
 <p>When you have updated the <em>AU</em> layer, you can get new
 products:</p>

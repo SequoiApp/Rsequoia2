@@ -37,6 +37,7 @@
     <li><a class="dropdown-item" href="../articles/02_cadastral-parcels-fr.html">Parcelles Cadastrales (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/03_cadastral-parcels-legal-entity-fr.html">Parcelles cadastrales - Personne morale (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/04_vector-fr.html">Téléchargement de données vectorielles</a></li>
+    <li><a class="dropdown-item" href="../articles/06_analysis_units-fr.html">Unité d'analyse</a></li>
     <li><a class="dropdown-item" href="../articles/11_sequoia.html">Sequoia</a></li>
     <li><a class="dropdown-item" href="../articles/12_cadastral-parcels.html">Cadastral parcels</a></li>
     <li><a class="dropdown-item" href="../articles/13_cadastral-parcels-legal-entity.html">Cadastral parcels - legal entity (FR)</a></li>
@@ -76,16 +77,31 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://janmarvin.github.io/openxlsx2/" class="external-link">openxlsx2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE</span></span></code></pre></div>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<div class="section level3">
+<h3 id="de-quoi-parle-t-on">De quoi parle-t-on ?<a class="anchor" aria-label="anchor" href="#de-quoi-parle-t-on"></a>
+</h3>
+<p>La gestion forestière est une gestion foncière. Toute gestion
+foncière s’appuie sur le cadastre.</p>
+<p>Afin de localiser les parcelles, le plan cadastral est utilisé.</p>
 <p>Cette vignette montre comment récupérer des parcelles cadastrales
 avec <code>Rsequoia2</code>.</p>
+<hr>
+</div>
+</div>
 <div class="section level2">
-<h2 id="fonctionnement">Fonctionnement<a class="anchor" aria-label="anchor" href="#fonctionnement"></a>
+<h2 id="fonction-base">1. Fonction “base”<a class="anchor" aria-label="anchor" href="#fonction-base"></a>
 </h2>
 <p><code>Rsequoia2</code> permet de télécharger les parcelles
 cadastrales à partir de leur IDU à l’aide de la fonction
 <code><a href="../reference/get_parca.html">get_parca()</a></code>.</p>
-<p><em>Remarque :</em> L’IDU est un code à 14 caractères qui identifie
-de manière unique une parcelle cadastrale en France.</p>
+<div class="section level3">
+<h3 id="lidentifiant-unique">1.1. L’Identifiant unique<a class="anchor" aria-label="anchor" href="#lidentifiant-unique"></a>
+</h3>
+<p>L’IDU est un code à 14 caractères qui identifie de manière unique une
+parcelle cadastrale en France.</p>
 <p>Il est composé :</p>
 <ul>
 <li>du code département (2 caractères)</li>
@@ -133,15 +149,14 @@ de manière unique une parcelle cadastrale en France.</p>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"firebrick"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="02_cadastral-parcels-fr_files/figure-html/multiple_idu-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
-<div class="section level2">
-<h2 id="bdp-et-lieux-dits">BDP et lieux-dits<a class="anchor" aria-label="anchor" href="#bdp-et-lieux-dits"></a>
-</h2>
+<div class="section level3">
+<h3 id="bdp-et-lieux-dits">1.2. BDP et lieux-dits<a class="anchor" aria-label="anchor" href="#bdp-et-lieux-dits"></a>
+</h3>
 <p><code><a href="../reference/get_parca.html">get_parca()</a></code> propose deux arguments :
 <code>bdp_geom</code> et <code>lieu_dit</code>.</p>
-<div class="section level3">
-<h3 id="bdp_geom---bd-parcellaire">
-<code>bdp_geom</code> - BD Parcellaire<a class="anchor" aria-label="anchor" href="#bdp_geom---bd-parcellaire"></a>
-</h3>
+<div class="section level4">
+<h4 id="bdp_geom---bd-parcellaire">1.2.1. <code>bdp_geom</code> - BD Parcellaire<a class="anchor" aria-label="anchor" href="#bdp_geom---bd-parcellaire"></a>
+</h4>
 <p>La BDP (Base de Données Parcellaire) est un ancien produit de l’IGN
 qui n’est aujourd’hui plus maintenu.</p>
 <p>Elle a été initialement construite à partir des parcelles cadastrales
@@ -162,6 +177,8 @@ correspondante.</p>
 <span><span class="va">etalab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_parca.html">get_parca</a></span><span class="op">(</span><span class="va">idus</span>, bdp_geom <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">bdp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_parca.html">get_parca</a></span><span class="op">(</span><span class="va">idus</span>, bdp_geom <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading BDP from IGN...</span></span>
+<span><span class="co">#&gt; ⠙ iterating 1 done (0.47/s) | 2.1s</span></span>
+<span><span class="co">#&gt; iterating <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> 9 of 9 ETALAB geom successfully replaced with BDP geom.</span></span>
 <span></span>
 <span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_basemap.html" class="external-link">tm_tiles</a></span><span class="op">(</span><span class="st">"OpenStreetMap"</span><span class="op">)</span><span class="op">+</span></span>
@@ -171,10 +188,9 @@ correspondante.</p>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"blue"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="02_cadastral-parcels-fr_files/figure-html/etalab_vs_bdp-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
-<div class="section level3">
-<h3 id="lieu-dit---lieu-dit">
-<code>lieu-dit</code> - Lieu-dit<a class="anchor" aria-label="anchor" href="#lieu-dit---lieu-dit"></a>
-</h3>
+<div class="section level4">
+<h4 id="lieu-dit---lieu-dit">1.2.2. <code>lieu-dit</code> - Lieu-dit<a class="anchor" aria-label="anchor" href="#lieu-dit---lieu-dit"></a>
+</h4>
 <p>Un lieu-dit est un nom de localisation associé à une parcelle
 cadastrale. Bien qu’il ne soit pas indispensable pour les traitements
 cadastraux, il est souvent utile pour vérifier que les parcelles
@@ -200,8 +216,65 @@ grand nombre de parcelles.</p>
 <p><img src="02_cadastral-parcels-fr_files/figure-html/lieu_dit-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 </div>
+<div class="section level3">
+<h3 id="application-à-un-exemple-forestier">1.3. Application à un exemple forestier<a class="anchor" aria-label="anchor" href="#application-%C3%A0-un-exemple-forestier"></a>
+</h3>
+<p>La forêt étudiée dans l’article sera la forêt de Brin, propriété de
+l’école forestière de Nancy, située à Brin-Sur-Seille, dans le
+département de Meurthe-Et-Moselle (54).</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">idu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"540120000C0001"</span>, <span class="st">"540120000C0005"</span>, <span class="st">"540120000C0007"</span>, <span class="st">"540120000C0008"</span>,</span>
+<span>  <span class="st">"540120000C0009"</span>, <span class="st">"540120000C0010"</span>, <span class="st">"540120000C0011"</span>, <span class="st">"540120000C0012"</span>,</span>
+<span>  <span class="st">"540120000C0016"</span>, <span class="st">"540120000C0018"</span>, <span class="st">"540120000C0069"</span>, <span class="st">"540120000C0071"</span>,</span>
+<span>  <span class="st">"540120000C0073"</span>, <span class="st">"540120000C0077"</span>, <span class="st">"540700000C0002"</span>, <span class="st">"540700000C0003"</span>,</span>
+<span>  <span class="st">"540700000C0004"</span>, <span class="st">"540700000C0005"</span>, <span class="st">"540700000C0006"</span>, <span class="st">"540700000C0007"</span>,</span>
+<span>  <span class="st">"540700000C0008"</span>, <span class="st">"540700000C0009"</span>, <span class="st">"540700000C0010"</span>, <span class="st">"540700000C0011"</span>,</span>
+<span>  <span class="st">"540700000C0012"</span>, <span class="st">"540700000C0013"</span>, <span class="st">"540700000C0108"</span>, <span class="st">"540700000C0109"</span>,</span>
+<span>  <span class="st">"540700000C0110"</span>, <span class="st">"540700000C0111"</span>, <span class="st">"540700000C0112"</span>, <span class="st">"540700000C0113"</span>,</span>
+<span>  <span class="st">"540700000C0114"</span>, <span class="st">"540700000C0115"</span>, <span class="st">"540700000C0116"</span>, <span class="st">"540700000C0117"</span>,</span>
+<span>  <span class="st">"540700000C0118"</span>, <span class="st">"540700000C0119"</span>, <span class="st">"540700000C0120"</span>, <span class="st">"540700000C0121"</span>,</span>
+<span>  <span class="st">"54070000ZB0060"</span>, <span class="st">"540890000C0927"</span>, <span class="st">"540890000C0928"</span>, <span class="st">"540890000C1031"</span>,</span>
+<span>  <span class="st">"541000000A0001"</span>, <span class="st">"541000000A0002"</span>, <span class="st">"541000000A0003"</span>, <span class="st">"541000000A0004"</span>,</span>
+<span>  <span class="st">"541000000A0005"</span>, <span class="st">"541000000A0006"</span>, <span class="st">"541000000A0007"</span>, <span class="st">"541000000A0008"</span>,</span>
+<span>  <span class="st">"541000000A0009"</span>, <span class="st">"541000000A0010"</span>, <span class="st">"541000000A0011"</span>, <span class="st">"541000000A0012"</span>,</span>
+<span>  <span class="st">"541000000A0013"</span>, <span class="st">"541000000A0014"</span>, <span class="st">"541000000A0015"</span>, <span class="st">"541000000A0016"</span>,</span>
+<span>  <span class="st">"541000000A0018"</span>, <span class="st">"541000000A0019"</span>, <span class="st">"541000000A0029"</span>, <span class="st">"541000000A0030"</span>,</span>
+<span>  <span class="st">"541000000A0031"</span>, <span class="st">"541000000A0032"</span>, <span class="st">"541000000A0033"</span>, <span class="st">"541000000A0034"</span>,</span>
+<span>  <span class="st">"541000000A0035"</span>, <span class="st">"541000000A0036"</span>, <span class="st">"541000000A0037"</span>, <span class="st">"541000000A0038"</span>,</span>
+<span>  <span class="st">"541000000A0039"</span>, <span class="st">"541000000A0040"</span>, <span class="st">"541000000A0041"</span>, <span class="st">"541000000A0042"</span>,</span>
+<span>  <span class="st">"541000000A0043"</span>, <span class="st">"541000000A0044"</span>, <span class="st">"541000000A0045"</span>, <span class="st">"541000000A0046"</span>,</span>
+<span>  <span class="st">"541000000A0055"</span>, <span class="st">"541000000A0056"</span>, <span class="st">"541000000A0057"</span>, <span class="st">"541000000A0058"</span>,</span>
+<span>  <span class="st">"541000000A0059"</span>, <span class="st">"541000000A0060"</span>, <span class="st">"541000000A0061"</span>, <span class="st">"541000000A0062"</span>,</span>
+<span>  <span class="st">"541000000A0063"</span>, <span class="st">"541000000A0064"</span>, <span class="st">"541000000A0066"</span>, <span class="st">"541000000A0067"</span>,</span>
+<span>  <span class="st">"541000000A0076"</span>, <span class="st">"541000000A0080"</span>, <span class="st">"541000000A0081"</span>, <span class="st">"541000000A0083"</span>,</span>
+<span>  <span class="st">"541000000A0085"</span>, <span class="st">"541000000A0086"</span>, <span class="st">"541000000A0092"</span>, <span class="st">"541000000A0093"</span>,</span>
+<span>  <span class="st">"541000000A0094"</span>, <span class="st">"541000000A0095"</span>, <span class="st">"541000000A0098"</span>, <span class="st">"541000000A0099"</span>,</span>
+<span>  <span class="st">"541000000A0148"</span>, <span class="st">"541000000A0149"</span>, <span class="st">"541000000A0150"</span>, <span class="st">"541000000A0151"</span>,</span>
+<span>  <span class="st">"541000000A0152"</span>, <span class="st">"541000000A0153"</span>, <span class="st">"541000000A0156"</span>, <span class="st">"541000000A0157"</span>,</span>
+<span>  <span class="st">"54100000ZH0004"</span>, <span class="st">"54100000ZI0011"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">parca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_parca.html">get_parca</a></span><span class="op">(</span><span class="va">idu</span>, bdp_geom <span class="op">=</span> <span class="cn">TRUE</span>, lieu_dit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/transform.html" class="external-link">transform</a></span><span class="op">(</span>IDENTIFIANT <span class="op">=</span> <span class="st">"BRIN"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading BDP from IGN...</span></span>
+<span><span class="co">#&gt; ⠙ iterating 1 done (0.32/s) | 3.2s</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> 104 of 114 ETALAB geom successfully replaced with BDP geom.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading and joining Lieux dits...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Lieux dits joined.</span></span>
+<span></span>
+<span><span class="va">foret</span> <span class="op">&lt;-</span> <span class="fu">Rsequoia2</span><span class="fu">::</span><span class="fu"><a href="../reference/seq_dissolve.html">seq_dissolve</a></span><span class="op">(</span><span class="va">parca</span>, <span class="fl">5.5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">parca</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"blue"</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">+</span></span>
+<span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">foret</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="02_cadastral-parcels-fr_files/figure-html/foret-1.png" class="r-plt" alt="" width="100%"></p>
+<hr>
+</div>
+</div>
 <div class="section level2">
-<h2 id="fonctionnement-dans-un-processus-sequoia">Fonctionnement dans un processus Sequoia<a class="anchor" aria-label="anchor" href="#fonctionnement-dans-un-processus-sequoia"></a>
+<h2 id="fonction-process">2. Fonction “process”<a class="anchor" aria-label="anchor" href="#fonction-process"></a>
 </h2>
 <p>Comme présenté précédemment, <code><a href="../reference/get_parca.html">get_parca()</a></code> permet de
 récupérer directement les parcelles cadastrales à partir de leur IDU.
@@ -219,7 +292,7 @@ parcelles à partir de cette matrice.</p>
 <li>Laisser Sequoia gérer automatiquement le reste.</li>
 </ul>
 <div class="section level3">
-<h3 id="création-de-la-matrice-excel">1. Création de la matrice Excel<a class="anchor" aria-label="anchor" href="#cr%C3%A9ation-de-la-matrice-excel"></a>
+<h3 id="création-de-la-matrice-excel">2.1. Création de la matrice Excel<a class="anchor" aria-label="anchor" href="#cr%C3%A9ation-de-la-matrice-excel"></a>
 </h3>
 <p>La matrice Excel doit contenir les colonnes suivantes :</p>
 <ul>
@@ -250,15 +323,15 @@ le répertoire Sequoia</li>
 </ul>
 <p>Afin d’éviter toute erreur de format, vous pouvez générer une matrice
 vide avec :</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_forest_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"MY_FOREST"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">my_forest_dir</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">matrice_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_matrice.html">create_matrice</a></span><span class="op">(</span><span class="va">my_forest_dir</span>, id <span class="op">=</span> <span class="st">"MY_FOREST"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Excel file created at: <span style="color: #0000BB;">/tmp/RtmpdFMONf/MY_FOREST/MY_FOREST_matrice.xlsx</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Excel file created at: <span style="color: #0000BB;">/tmp/Rtmpb6ojpH/MY_FOREST/MY_FOREST_matrice.xlsx</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="récupération-des-parcelles-avec-sequoia">2. Récupération des parcelles avec Sequoia<a class="anchor" aria-label="anchor" href="#r%C3%A9cup%C3%A9ration-des-parcelles-avec-sequoia"></a>
+<h3 id="récupération-des-parcelles-avec-sequoia">2.2. Récupération des parcelles avec Sequoia<a class="anchor" aria-label="anchor" href="#r%C3%A9cup%C3%A9ration-des-parcelles-avec-sequoia"></a>
 </h3>
 <p>Une fois la matrice préparée, l’ensemble du processus cadastral est
 pris en charge par <code><a href="../reference/seq_parca.html">seq_parca()</a></code>.</p>
@@ -277,10 +350,10 @@ Sequoia ;</li>
 <p>Pour illustrer ce workflow, une matrice exemple est fournie dans
 <code>Rsequoia2</code>.</p>
 <div class="section level4">
-<h4 id="étape-1---créer-un-répertoire-sequoia-et-y-copier-la-matrice-exemple">Étape 1 - Créer un répertoire Sequoia et y copier la matrice
-exemple<a class="anchor" aria-label="anchor" href="#%C3%A9tape-1---cr%C3%A9er-un-r%C3%A9pertoire-sequoia-et-y-copier-la-matrice-exemple"></a>
+<h4 id="créer-un-répertoire-sequoia-et-y-copier-la-matrice-exemple">2.2.1. Créer un répertoire Sequoia et y copier la matrice
+exemple<a class="anchor" aria-label="anchor" href="#cr%C3%A9er-un-r%C3%A9pertoire-sequoia-et-y-copier-la-matrice-exemple"></a>
 </h4>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">matrice</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://janmarvin.github.io/openxlsx2/reference/wb_to_df.html" class="external-link">read_xlsx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/ECKMUHL_matrice.xlsx"</span>, package <span class="op">=</span> <span class="st">"Rsequoia2"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">sequoia_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ECKMUHL"</span><span class="op">)</span></span>
@@ -289,17 +362,17 @@ exemple<a class="anchor" aria-label="anchor" href="#%C3%A9tape-1---cr%C3%A9er-un
 <span><span class="fu"><a href="https://janmarvin.github.io/openxlsx2/reference/write_xlsx.html" class="external-link">write_xlsx</a></span><span class="op">(</span><span class="va">matrice</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">sequoia_dir</span>, <span class="st">"ECKMUHL_matrice.xlsx"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="étape-2---exécuter-seq_parca-et-charger-les-parcelles">Étape 2 - Exécuter <code>seq_parca()</code> et charger les
-parcelles<a class="anchor" aria-label="anchor" href="#%C3%A9tape-2---ex%C3%A9cuter-seq_parca-et-charger-les-parcelles"></a>
+<h4 id="exécuter-seq_parca-et-charger-les-parcelles">2.2.2. Exécuter <code>seq_parca()</code> et charger les
+parcelles<a class="anchor" aria-label="anchor" href="#ex%C3%A9cuter-seq_parca-et-charger-les-parcelles"></a>
 </h4>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">parca_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/seq_parca.html">seq_parca</a></span><span class="op">(</span><span class="va">sequoia_dir</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading BDP from IGN...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> 9 of 9 ETALAB geom successfully replaced with BDP geom.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> No area inconsistencies (cadastre vs GIS) detected.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Layer <span style="color: #0000BB;">"v.seq.parca.poly"</span> with 9 features saved to <span style="color: #0000BB;">1_SEQUOIA/ECKMUHL_SEQ_PARCA_poly.gpkg</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Table <span style="color: #0000BB;">"x.seq.matrice"</span> saved to <span style="color: #0000BB;">ECKMUHL_MATRICE.xlsx</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">_matrice.xlsx</span> also saved as <span style="color: #0000BB;">ECKMUHL_matrice_20260525T084326.xlsx</span> for safety.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">_matrice.xlsx</span> also saved as <span style="color: #0000BB;">ECKMUHL_matrice_20260525T121623.xlsx</span> for safety.</span></span>
 <span></span>
 <span><span class="co"># lecture directe depuis le chemin retourné</span></span>
 <span><span class="va">parca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="va">parca_path</span><span class="op">)</span></span>

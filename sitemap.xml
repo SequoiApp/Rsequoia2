@@ -7,6 +7,7 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/articles/02_cadastral-parcels-fr.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/articles/03_cadastral-parcels-legal-entity-fr.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/articles/04_vector-fr.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/articles/06_analysis_units-fr.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/articles/11_sequoia.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/articles/12_cadastral-parcels.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/articles/13_cadastral-parcels-legal-entity.html</loc></url>
@@ -15,6 +16,8 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/authors.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/index.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/news/index.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/brin_parca.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/brin_ua.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/check_dep.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/create_empty_sf.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/create_matrice.html</loc></url>

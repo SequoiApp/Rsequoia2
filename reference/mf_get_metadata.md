@@ -11,11 +11,11 @@ mf_get_metadata()
 
 ## Value
 
-A `data.frame` with two columns
+A \`data.frame\` with two columns
 
 ## Details
 
-The function retrieves the `descriptif_champs` resource from the
+The function retrieves the \`descriptif_champs\` resource from the
 corresponding data.gouv.fr dataset and returns a structured table
 containing variable names and their descriptions.
 

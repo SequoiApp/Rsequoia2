@@ -1,8 +1,7 @@
 # Extract visual data from PDF with page numbers
 
-Wrapper around
-[`pdftools::pdf_data()`](https://docs.ropensci.org/pdftools//reference/pdftools.html)
-that adds page numbers to each extracted text element.
+Wrapper around \[pdftools::pdf_data()\] that adds page numbers to each
+extracted text element.
 
 ## Usage
 
@@ -14,12 +13,13 @@ extract_visual_data(pdf)
 
 - pdf:
 
-  `character`. Path to PDF file
+  \`character\`. Path to PDF file
 
 ## Value
 
-A `data.frame` with columns from `pdf_data()` plus `page` (integer)
+A \`data.frame\` with columns from \`pdf_data()\` plus \`page\`
+(integer)
 
 ## See also
 
-[`pdftools::pdf_data()`](https://docs.ropensci.org/pdftools//reference/pdftools.html).
+\[pdftools::pdf_data()\].

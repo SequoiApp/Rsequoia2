@@ -24,6 +24,7 @@ intersecting a given area of interest."><meta property="og:image" content="https
     <li><a class="dropdown-item" href="../articles/02_cadastral-parcels-fr.html">Parcelles Cadastrales (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/03_cadastral-parcels-legal-entity-fr.html">Parcelles cadastrales - Personne morale (FR)</a></li>
     <li><a class="dropdown-item" href="../articles/04_vector-fr.html">Téléchargement de données vectorielles</a></li>
+    <li><a class="dropdown-item" href="../articles/06_analysis_units-fr.html">Unité d'analyse</a></li>
     <li><a class="dropdown-item" href="../articles/11_sequoia.html">Sequoia</a></li>
     <li><a class="dropdown-item" href="../articles/12_cadastral-parcels.html">Cadastral parcels</a></li>
     <li><a class="dropdown-item" href="../articles/13_cadastral-parcels-legal-entity.html">Cadastral parcels - legal entity (FR)</a></li>
@@ -59,16 +60,16 @@ intersecting a given area of interest.</p>
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>An <code>sf</code> object defining the input area of interest.</p></dd>
+<dd><p>An `sf` object defining the input area of interest.</p></dd>
 
 
 <dt id="arg-key">key<a class="anchor" aria-label="anchor" href="#arg-key"></a></dt>
-<dd><p>A <code>character</code> string specifying the IFN regional dataset to use.
-Must be one of <code>get_keys("ifn")</code>:</p><ul><li><p><code>"ser"</code>: sylvo-ecoregions</p></li>
-<li><p><code>"ser_ar"</code>: sylvo-ecoregions (aggregated regions)</p></li>
-<li><p><code>"rfn"</code>: region forestiere nationale</p></li>
-<li><p><code>"rfd"</code>: region forestiere departementale</p></li>
-<li><p><code>"zp"</code>: zones de production</p></li>
+<dd><p>A `character` string specifying the IFN regional dataset to use.
+Must be one of `get_keys("ifn")`:</p><ul><li><p>`"ser"`: sylvo-ecoregions</p></li>
+<li><p>`"ser_ar"`: sylvo-ecoregions (aggregated regions)</p></li>
+<li><p>`"rfn"`: region forestiere nationale</p></li>
+<li><p>`"rfd"`: region forestiere departementale</p></li>
+<li><p>`"zp"`: zones de production</p></li>
 </ul></dd>
 
 
@@ -79,8 +80,8 @@ Defaults to a package-specific cache directory.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An <code>sf</code> object containing the region features intersecting <code>x</code>.
-Returns <code>NULL</code> if no region intersects the input geometry.</p>
+    <p>An `sf` object containing the region features intersecting `x`.
+Returns `NULL` if no region intersects the input geometry.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -88,7 +89,7 @@ Returns <code>NULL</code> if no region intersects the input geometry.</p>
 shapefiles in Lambert-93 projection. Downloaded archives are stored
 locally and reused on subsequent calls.</p>
 <p>The regional layer is automatically reprojected to match the
-coordinate reference system of <code>x</code> before computing spatial
+coordinate reference system of `x` before computing spatial
 intersections.</p>
 <p>Only features intersecting the input geometry are returned. No
 geometry modification (e.g. clipping) is applied.</p>

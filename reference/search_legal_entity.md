@@ -13,22 +13,22 @@ search_legal_entity(x, prop = NULL, lieu_dit = NULL)
 
 - x:
 
-  `data.frame`; The matrix containing parcel legal entity information in
-  a format readable by SEQUOIA.
+  \`data.frame\`; The matrix containing parcel legal entity information
+  in a format readable by SEQUOIA.
 
 - prop:
 
-  `character`; Owner name(s) used to further filter results. Defaults to
-  `NULL`. Multiple owners can be specified.
+  \`character\`; Owner name(s) used to further filter results. Defaults
+  to \`NULL\`. Multiple owners can be specified.
 
 - lieu_dit:
 
-  `character`; Locality name(s) used to further filter results. Defaults
-  to `NULL`. Multiple locality names can be specified.
+  \`character\`; Locality name(s) used to further filter results.
+  Defaults to \`NULL\`. Multiple locality names can be specified.
 
 ## Value
 
-A `data.frame`.
+A \`data.frame\`.
 
 ## Details
 
@@ -37,13 +37,9 @@ inputs and the corresponding columns of the matrice. This makes the
 search robust to accents, punctuation, spacing irregularities and case
 differences.
 
-**Examples of normalization:**
-
-- `"Etat / Forets"` -\> `"ETATFORETS"`
-
-- `" Le Bois-de l'Orme "` -\> `"LEBOISDELORME"`
-
-- `"Societe du Chene"` -\> `"SOCIETEDUCHENE"`
+\*\*Examples of normalization:\*\* - \`"Etat / Forets"\` -\>
+\`"ETATFORETS"\` - \`" Le Bois-de l'Orme "\` -\> \`"LEBOISDELORME"\` -
+\`"Societe du Chene"\` -\> \`"SOCIETEDUCHENE"\`
 
 ## Examples
 

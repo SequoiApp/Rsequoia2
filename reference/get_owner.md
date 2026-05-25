@@ -13,9 +13,9 @@ get_owner(pdf)
 
 - pdf:
 
-  `character`. Path to PDF file
+  \`character\`. Path to PDF file
 
 ## Value
 
-A `data.frame` with columns: type, type_code, code, name, firstname,
+A \`data.frame\` with columns: type, type_code, code, name, firstname,
 address, seq_name, file_name, file_path

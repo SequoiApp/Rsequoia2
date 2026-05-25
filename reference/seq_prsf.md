@@ -13,40 +13,36 @@ seq_prsf(dirname = ".", buffer = 5000, verbose = TRUE, overwrite = FALSE)
 
 - dirname:
 
-  `character` Directory where the matrice file is located. Defaults to
+  \`character\` Directory where the matrice file is located. Defaults to
   the current working directory.
 
 - buffer:
 
-  `numeric`; Buffer around `x` (in **meters**) used to enlarge
+  \`numeric\`; Buffer around \`x\` (in \*\*meters\*\*) used to enlarge
 
 - verbose:
 
-  `logical` If `TRUE`, display messages.
+  \`logical\` If \`TRUE\`, display messages.
 
 - overwrite:
 
-  `logical` If `TRUE`, file is overwritten.
+  \`logical\` If \`TRUE\`, file is overwritten.
 
 ## Value
 
-Invisibly returns a named list of file paths written by
-[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
-Returns `NULL` invisibly when no PRSF point features are found.
+Invisibly returns a named list of file paths written by \[seq_write()\].
+Returns \`NULL\` invisibly when no PRSF point features are found.
 
 ## Details
 
-PRSF point features are retrieved using
-[`get_prsf()`](https://sequoiapp.github.io/Rsequoia2/reference/get_prsf.md).
+PRSF point features are retrieved using \[get_prsf()\].
 
-If no PRSF point features are found, the function returns `NULL`
+If no PRSF point features are found, the function returns \`NULL\`
 invisibly and no file is written.
 
 When features are present, the layer is written to disk using
-[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
-with the key `"v.prsf.point"`.
+\[seq_write()\] with the key \`"v.prsf.point"\`.
 
 ## See also
 
-[`get_prsf()`](https://sequoiapp.github.io/Rsequoia2/reference/get_prsf.md),
-[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
+\[get_prsf()\], \[seq_write()\]

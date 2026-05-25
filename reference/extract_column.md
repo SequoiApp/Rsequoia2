@@ -12,12 +12,11 @@ extract_column(line_data, col_name, col_positions)
 
 - line_data:
 
-  A `data.frame` for a single line
+  A \`data.frame\` for a single line
 
 - col_name:
 
-  `character`. Column name from
-  [`define_column_positions()`](https://sequoiapp.github.io/Rsequoia2/reference/define_column_positions.md)
+  \`character\`. Column name from \[define_column_positions()\]
 
 - col_positions:
 
