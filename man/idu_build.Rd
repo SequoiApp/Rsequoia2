@@ -7,15 +7,15 @@
 idu_build(dep, com, prefix, section, numero)
 }
 \arguments{
-\item{dep}{`character` dep code}
+\item{dep}{\code{character} dep code}
 
-\item{com}{`character` com code}
+\item{com}{\code{character} com code}
 
-\item{prefix}{`character` prefic code}
+\item{prefix}{\code{character} prefic code}
 
-\item{section}{`character` section code}
+\item{section}{\code{character} section code}
 
-\item{numero}{`character` numero code}
+\item{numero}{\code{character} numero code}
 }
 \description{
 Internal helper used to build idu

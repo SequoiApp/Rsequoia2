@@ -2,22 +2,24 @@
 % Please edit documentation in R/voids.R
 \name{get_voids}
 \alias{get_voids}
-\title{Retrieve cadastral gaps around the _PARCA_}
+\title{Retrieve cadastral gaps around the \emph{PARCA}}
 \usage{
 get_voids(x)
 }
 \arguments{
-\item{x}{An `sf` object used as the input area.
-It must contain a source field with `bdp` or `etalab` value.}
+\item{x}{An \code{sf} object used as the input area.
+It must contain a source field with \code{bdp} or \code{etalab} value.}
 }
 \value{
-An `sf` object of type `POLYGON` containing cadastral gaps
-  with standardized fields, including:
-  * `TYPE` - Empty, to complete
-  * `NATURE` - Empty
-  * `NAME` - Empty, to complete
-  * `SOURCE` - Empty
+An \code{sf} object of type \code{POLYGON} containing cadastral gaps
+with standardized fields, including:
+\itemize{
+\item \code{TYPE} - Empty, to complete
+\item \code{NATURE} - Empty
+\item \code{NAME} - Empty, to complete
+\item \code{SOURCE} - Empty
+}
 }
 \description{
-Retrieve cadastral gaps around the _PARCA_
+Retrieve cadastral gaps around the \emph{PARCA}
 }

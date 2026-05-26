@@ -7,10 +7,10 @@
 get_roadway_line(x)
 }
 \arguments{
-\item{x}{An `sf` polygon object produced by `get_roadway_poly()`.}
+\item{x}{An \code{sf} polygon object produced by \code{get_roadway_poly()}.}
 }
 \value{
-An `sf` object with LINESTRING geometries normalized as
+An \code{sf} object with LINESTRING geometries normalized as
 roadway lines.
 }
 \description{
@@ -20,12 +20,13 @@ internal edges using a buffer difference and convex hull splitting.
 \details{
 The function derives line features from roadway polygons through the
 following steps:
-
-1. Polygon boundaries are cast to MULTILINESTRING.
-2. Internal edges are extracted using a negative buffer difference.
-3. The resulting lines are split using points derived from a simplified
+\enumerate{
+\item Polygon boundaries are cast to MULTILINESTRING.
+\item Internal edges are extracted using a negative buffer difference.
+\item The resulting lines are split using points derived from a simplified
 convex hull of the polygons.
-4. The result is normalized with `seq_normalize()` using the
-`"road_line"` schema.
+\item The result is normalized with \code{seq_normalize()} using the
+\code{"road_line"} schema.
+}
 }
 \keyword{internal}

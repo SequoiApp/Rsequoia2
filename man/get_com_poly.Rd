@@ -7,23 +7,23 @@
 get_com_poly(x, buffer = 2000, verbose = TRUE)
 }
 \arguments{
-\item{x}{An `sf` object used as the input area.}
+\item{x}{An \code{sf} object used as the input area.}
 
-\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge}
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
-An `sf` object of type `POLYGON` containing commune boundaries,
-  with standardized fields as defined by `seq_normalize("com_poly")`.
-  Returns `NULL` if no commune intersects the search area.
+An \code{sf} object of type \code{POLYGON} containing commune boundaries,
+with standardized fields as defined by \code{seq_normalize("com_poly")}.
+Returns \code{NULL} if no commune intersects the search area.
 }
 \description{
 Builds a convex buffer around the input geometry, retrieves commune
 boundaries from BDTOPO, normalizes them, and returns a polygon layer.
 }
 \details{
-The function builds a 2000 m convex buffer around `x`, retrieves
-the BDTOPO commune layer (`BDTOPO_V3:commune`) intersecting this buffer,
+The function builds a 2000 m convex buffer around \code{x}, retrieves
+the BDTOPO commune layer (\code{BDTOPO_V3:commune}) intersecting this buffer,
 and normalizes the resulting geometries and attributes.
 }

@@ -32,6 +32,23 @@ pad_right <- function(x, width, fill = "0") {
   gsub(" ", fill, sprintf(paste0("%-", width, "s"), as.character(x)))
 }
 
+#' Clean names
+#'
+#' Internal helper used to clean df names
+#'
+#' @param x `character` String to clean
+#'
+#' @return A cleaned string.
+#' @keywords internal
+#'
+clean_names <- function(x) {
+  x <- iconv(x, to = "ASCII//TRANSLIT")
+  x <- tolower(x)
+  x <- gsub("[^a-z0-9]+", "_", x)
+  x <- gsub("^_|_$", "", x)
+  make.unique(x, sep = "_")
+}
+
 #' Split IDU
 #'
 #' Internal helper used to split idu
@@ -170,6 +187,37 @@ check_dep <- function(dep) {
   }
 
   return(dep)
+}
+
+#' Validate insee codes
+#'
+#' Checks that insee codes are non-empty and exist in the COG reference.
+#' Values are converted to character, padded to two digits, and deduplicated.
+#'
+#' @param insee insee code vector.
+#'
+#' @return A normalized `character` vector of valid insee codes.
+#'
+#' @keywords internal
+check_insee <- function(insee) {
+  if (missing(insee) || is.null(insee) || length(insee) == 0) {
+    cli::cli_abort("{.arg insee} must be a non-empty insee code vector.")
+  }
+
+  insee <- unique(pad_left(as.character(insee), 5))
+
+  valid_insee <- get_cog(verbose = FALSE)$com$COM
+  invalid_insee <- insee[!insee %in% valid_insee]
+
+  if (length(invalid_insee) > 0) {
+    cli::cli_abort(c(
+      "Invalid insee code.",
+      "x" = "Invalid insee code(s): {.vals {invalid_insee}}",
+      "i" = "See {.run get_cog()$com} for valid insee codes."
+    ))
+  }
+
+  return(insee)
 }
 
 #' Download multiple files with retry

@@ -7,14 +7,14 @@
 mf_get_nearest_station(x, n = 1, verbose = TRUE)
 }
 \arguments{
-\item{x}{`sf` or `sfc`.}
+\item{x}{\code{sf} or \code{sfc}.}
 
-\item{n}{`integer`; number of nearest stations to return. Default is 1.}
+\item{n}{\code{integer}; number of nearest stations to return. Default is 1.}
 
-\item{verbose}{`logical` If `TRUE`, display progress messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
 }
 \value{
-An `sf` object containing the nearest meteorological stations.
+An \code{sf} object containing the nearest meteorological stations.
 }
 \description{
 Finds the nearest meteorological stations from Meteo-France to the provided

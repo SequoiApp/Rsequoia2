@@ -7,21 +7,21 @@
 get_vege_poly(x, tol = 500)
 }
 \arguments{
-\item{x}{`sf` or `sfc`; Geometry located in France.}
+\item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
 
-\item{tol}{`numeric`. Minimum area threshold in square meters.}
+\item{tol}{\code{numeric}. Minimum area threshold in square meters.}
 }
 \value{
-An `sf` object containing forest vegetation polygons
+An \code{sf} object containing forest vegetation polygons
 }
 \description{
 Retrieve forest vegetation polygons around an area
 }
 \details{
 The function retrieves the IGN forest mask layer within a 1000 m
-convex buffer around `x`. Retrieved polygons are then intersected
+convex buffer around \code{x}. Retrieved polygons are then intersected
 with a 1500 m convex buffer, cast to polygons, and normalized.
 
 If no forest data are found, the function returns an empty
-`sf` object with a standardized structure.
+\code{sf} object with a standardized structure.
 }

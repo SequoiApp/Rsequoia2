@@ -7,10 +7,10 @@
 poly_to_line(x)
 }
 \arguments{
-\item{x}{`sf POLYGONS`, using a projected CRS}
+\item{x}{\verb{sf POLYGONS}, using a projected CRS}
 }
 \value{
-An `sf` object with two `MULTILINESTRING` geometry is returned
+An \code{sf} object with two \code{MULTILINESTRING} geometry is returned
 }
 \description{
 This function convert polygon to line and remove shared lines

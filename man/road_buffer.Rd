@@ -7,14 +7,14 @@
 road_buffer(x, type, dist)
 }
 \arguments{
-\item{x}{An `sf` object with road line geometries.}
+\item{x}{An \code{sf} object with road line geometries.}
 
 \item{type}{Character. Road type to process (e.g., "RN", "RD").}
 
 \item{dist}{Numeric. Buffer distance in layer units.}
 }
 \value{
-An `sf` object containing a single (multi)polygon geometry for the road type.
+An \code{sf} object containing a single (multi)polygon geometry for the road type.
 }
 \description{
 Generates a polygon buffer for a given road type from a line layer.

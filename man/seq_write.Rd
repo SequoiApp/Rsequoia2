@@ -7,24 +7,24 @@
 seq_write(x, key, dirname = ".", id = NULL, verbose = FALSE, overwrite = FALSE)
 }
 \arguments{
-\item{x}{An `sf` object (for vector outputs) or a `SpatRaster` (for raster outputs).}
+\item{x}{An \code{sf} object (for vector outputs) or a \code{SpatRaster} (for raster outputs).}
 
-\item{key}{`character` Name of a layer key to match against the entries
-defined in `inst/config/seq_layers.yaml`. (see *Details* for partial matching).}
+\item{key}{\code{character} Name of a layer key to match against the entries
+defined in \code{inst/config/seq_layers.yaml}. (see \emph{Details} for partial matching).}
 
-\item{dirname}{`character` Directory where the matrice file is located.
+\item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{id}{`character`. Project identifier used to prefix the output filename.
-If `NULL`, the identifier is automatically inferred. The function first
-attempts to extract a single, non-missing value from the `IDENTIFIANT`
-field of layer `x`; if this fails, it then looks for a valid identifier in
-a `*_matrice.xlsx` file found in `dirname`. If no unique identifier can be
+\item{id}{\code{character}. Project identifier used to prefix the output filename.
+If \code{NULL}, the identifier is automatically inferred. The function first
+attempts to extract a single, non-missing value from the \code{IDENTIFIANT}
+field of layer \code{x}; if this fails, it then looks for a valid identifier in
+a \verb{*_matrice.xlsx} file found in \code{dirname}. If no unique identifier can be
 determined, the filename is left unchanged.}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
-\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
+\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
 }
 \value{
 Invisibly returns the filepath used for writing.

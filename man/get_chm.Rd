@@ -7,34 +7,36 @@
 get_chm(x = NULL, dem = NULL, dsm = NULL, minmax = c(0, 50), ...)
 }
 \arguments{
-\item{x}{`sf` or `sfc`; Geometry located in France.}
+\item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
 
-\item{dem}{`SpatRaster` representing ground elevation (DEM). Must be supplied
-only when `x` is `NULL`.}
+\item{dem}{\code{SpatRaster} representing ground elevation (DEM). Must be supplied
+only when \code{x} is \code{NULL}.}
 
-\item{dsm}{A `SpatRaster` representing surface elevation (DSM). Must be supplied
-only when `x` is `NULL`.}
+\item{dsm}{A \code{SpatRaster} representing surface elevation (DSM). Must be supplied
+only when \code{x} is \code{NULL}.}
 
-\item{minmax}{`numeric` length-2 vector giving the accepted CHM range as
-`c(min, max)`. Default: `c(0, 50)`.}
+\item{minmax}{\code{numeric} length-2 vector giving the accepted CHM range as
+\code{c(min, max)}. Default: \code{c(0, 50)}.}
 
-\item{...}{Additional parameters passed to [get_dem()] and [get_dem()] when
-`x` is supplied.}
+\item{...}{Additional parameters passed to \code{\link[=get_dem]{get_dem()}} and \code{\link[=get_dem]{get_dem()}} when
+\code{x} is supplied.}
 }
 \value{
-A `SpatRaster` containing the CHM.
+A \code{SpatRaster} containing the CHM.
 }
 \description{
-Computes a **Canopy Height Model** (CHM = DSM - DEM) either by:
-  - downloading the necessary DEM and DSM from IGN WMS services using `x`, or
-  - using DEM and DSM rasters directly supplied by the user.
+Computes a \strong{Canopy Height Model} (CHM = DSM - DEM) either by:
+\itemize{
+\item downloading the necessary DEM and DSM from IGN WMS services using \code{x}, or
+\item using DEM and DSM rasters directly supplied by the user.
+}
 }
 \details{
-When `x` is provided, both DEM and DSM are automatically fetched via
-[get_dem()] and [get_dsm()].
-When `x` is not provided, both `dem` and `dsm` must be manually supplied.
+When \code{x} is provided, both DEM and DSM are automatically fetched via
+\code{\link[=get_dem]{get_dem()}} and \code{\link[=get_dsm]{get_dsm()}}.
+When \code{x} is not provided, both \code{dem} and \code{dsm} must be manually supplied.
 
-Output values outside `minmax` are clamped: negative values are set to `NA`
+Output values outside \code{minmax} are clamped: negative values are set to \code{NA}
 and excessively high values are capped.
 }
 \examples{

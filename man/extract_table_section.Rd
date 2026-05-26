@@ -7,14 +7,14 @@
 extract_table_section(page_data, non_anchor, has_total)
 }
 \arguments{
-\item{page_data}{A `data.frame` for a single pdf page}
+\item{page_data}{A \code{data.frame} for a single pdf page}
 
-\item{non_anchor}{Anchor row from [identify_non_anchors()]}
+\item{non_anchor}{Anchor row from \code{\link[=identify_non_anchors]{identify_non_anchors()}}}
 
-\item{has_total}{`logical`, whether page contains "totale" anchor}
+\item{has_total}{\code{logical}, whether page contains "totale" anchor}
 }
 \value{
-Filtered `data.frame` containing only table rows
+Filtered \code{data.frame} containing only table rows
 }
 \description{
 Extracts the data table section from a PDF page using anchor positions.

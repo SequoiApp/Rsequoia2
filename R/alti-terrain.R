@@ -42,7 +42,7 @@ prepare_dem_terrain <- function(dem, agg = 5, verbose = TRUE) {
 
 #' Compute a Slope Raster from a DEM
 #'
-#' Computes a slope raster (in degrees) either by:
+#' Computes a slope raster in percent from a DEM, either by:
 #'   - downloading a DEM automatically using `x`, or
 #'   - using a DEM raster supplied manually through the `dem` argument.
 #'
@@ -52,6 +52,33 @@ prepare_dem_terrain <- function(dem, agg = 5, verbose = TRUE) {
 #'
 #' If the DEM resolution is finer than `agg`, the raster is aggregated to
 #' avoid artefacts and reduce computation time.
+#'
+#' @inheritParams get_chm
+#' @param agg `numeric`; Target resolution, in meters, to which the DEM is
+#' aggregated if its native resolution is finer. Default: `5`.
+#' @param verbose `logical`; If `TRUE`, display messages.
+#' @param ... Additional parameters passed to [get_dem()] when `x` is supplied.
+#'
+#' @details
+#' Slope is computed with `terra::terrain()` using Horn's 8-neighbor algorithm.
+#' The slope is first computed in degrees, then converted to percent using:
+#'
+#' `tan(slope_degrees * pi / 180) * 100`
+#'
+#' A 45-degree slope is therefore equal to a 100 percent slope.
+#'
+#' @return A `SpatRaster` containing slope values in percent.
+#'
+#' @examples
+#' \dontrun{
+#' # Automatic download mode
+#' s <- get_slope(x = my_polygon, buffer = 200)
+#'
+#' # Manual mode
+#' dem <- get_dem(my_polygon)
+#' s <- get_slope(dem = dem)
+#' }
+#' @export
 #'
 #' @inheritParams get_chm
 #' @param agg `numeric`; Target resolution (in meters) to which the DEM is
@@ -100,10 +127,11 @@ get_slope <- function(x = NULL, dem = NULL, agg = 5, verbose = TRUE, ...) {
   }
 
   dem <- prepare_dem_terrain(dem = dem, agg = agg, verbose = verbose)
-  slope <- terra::terrain(dem,v = "slope", neighbors = 8, unit = "degrees")
-  names(slope) <- "slope"
+  slope_deg <- terra::terrain(dem,v = "slope", neighbors = 8, unit = "degrees")
+  slope_pct <- tan(slope_deg * pi / 180) * 100
+  names(slope_pct) <- "slope"
 
-  return(slope)
+  return(slope_pct)
 }
 
 #' Compute a Aspect Raster from a DEM

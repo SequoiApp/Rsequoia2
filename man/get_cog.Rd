@@ -7,7 +7,7 @@
 get_cog(cache = seq_cache("cog")$path, update = FALSE, verbose = TRUE)
 }
 \arguments{
-\item{cache}{Cache directory. If `NULL`, uses package cache directory.}
+\item{cache}{Cache directory. If \code{NULL}, uses package cache directory.}
 
 \item{update}{Force re-download even if cached.}
 
@@ -15,13 +15,15 @@ get_cog(cache = seq_cache("cog")$path, update = FALSE, verbose = TRUE)
 }
 \value{
 Named list of data frames:
-- `com`: communes
-- `dep`: departments
-- `reg`: regions
+\itemize{
+\item \code{com}: communes
+\item \code{dep}: departments
+\item \code{reg}: regions
+}
 }
 \description{
 Download and cache French COG datasets (communes, departments, regions)
-from data.gouv.fr. Cached data are reused unless `update = TRUE`.
+from data.gouv.fr. Cached data are reused unless \code{update = TRUE}.
 }
 \examples{
 \dontrun{

@@ -2,21 +2,21 @@
 % Please edit documentation in R/ua.R
 \name{ua_to_parca}
 \alias{ua_to_parca}
-\title{Create _PARCA_ sf object from _UA_ sf object}
+\title{Create \emph{PARCA} sf object from \emph{UA} sf object}
 \usage{
 ua_to_parca(ua)
 }
 \arguments{
-\item{ua}{`sf` object containing analysis units}
+\item{ua}{\code{sf} object containing analysis units}
 }
 \value{
-An `sf` object containing cadastral parcels.
+An \code{sf} object containing cadastral parcels.
 }
 \description{
-Create _PARCA_ sf object from _UA_ sf object
+Create \emph{PARCA} sf object from \emph{UA} sf object
 }
 \details{
 This function deviates from the traditional process.
-It allows the _PARCA_ layer to be recreated from a _UA_ layer
+It allows the \emph{PARCA} layer to be recreated from a \emph{UA} layer
 in the case of a folder where the first layer is missing.
 }

@@ -2,21 +2,21 @@
 % Please edit documentation in R/ua.R
 \name{ua_update_parca_fields}
 \alias{ua_update_parca_fields}
-\title{Update _UA_ fields from _PARCA_}
+\title{Update \emph{UA} fields from \emph{PARCA}}
 \usage{
 ua_update_parca_fields(ua, parca)
 }
 \arguments{
-\item{ua}{`sf` Object containing analysis units.}
+\item{ua}{\code{sf} Object containing analysis units.}
 
-\item{parca}{`sf` Object containing cadastral parcels.}
+\item{parca}{\code{sf} Object containing cadastral parcels.}
 }
 \value{
-A `sf` _UA_ object with cadastral fields updated from _PARCA_.
+A \code{sf} \emph{UA} object with cadastral fields updated from \emph{PARCA}.
 }
 \description{
-Refreshes _UA_ cadastral fields from _PARCA_ using the IDU field as key.
+Refreshes \emph{UA} cadastral fields from \emph{PARCA} using the IDU field as key.
 }
 \details{
-This function assumes that _UA_ IDU values are already correct.
+This function assumes that \emph{UA} IDU values are already correct.
 }

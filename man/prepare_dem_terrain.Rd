@@ -7,15 +7,15 @@
 prepare_dem_terrain(dem, agg = 5, verbose = TRUE)
 }
 \arguments{
-\item{dem}{`SpatRaster`; DEM/MNT raster.}
+\item{dem}{\code{SpatRaster}; DEM/MNT raster.}
 
-\item{agg}{`numeric(1)`; Target working resolution in meters. If `NULL`,
+\item{agg}{\code{numeric(1)}; Target working resolution in meters. If \code{NULL},
 no aggregation is applied.}
 
-\item{verbose}{`logical(1)`; If `TRUE`, display messages.}
+\item{verbose}{\code{logical(1)}; If \code{TRUE}, display messages.}
 }
 \value{
-A `SpatRaster`, unchanged or aggregated.
+A \code{SpatRaster}, unchanged or aggregated.
 }
 \description{
 Aggregates a DEM to a coarser working resolution before computing terrain

@@ -7,24 +7,28 @@
 get_hydro_poly(x, buffer = 1000)
 }
 \arguments{
-\item{x}{An `sf` object used as the input area.}
+\item{x}{An \code{sf} object used as the input area.}
 
-\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge}
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
 }
 \value{
-An `sf` object containing hydrographic polygons with two fields:
-  * `TYPE` - hydrographic class
-    - `RSO` = Reservoir or water tower
-    - `SFP` = Permanent hydrographic surface
-    - `SFI` = Intermittent hydrographic surface
-  * `NATURE` - Original BDTOPO nature field
-  * `NAME` - Official hydrographic name (when available)
+An \code{sf} object containing hydrographic polygons with two fields:
+\itemize{
+\item \code{TYPE} - hydrographic class
+\itemize{
+\item \code{RSO} = Reservoir or water tower
+\item \code{SFP} = Permanent hydrographic surface
+\item \code{SFI} = Intermittent hydrographic surface
+}
+\item \code{NATURE} - Original BDTOPO nature field
+\item \code{NAME} - Official hydrographic name (when available)
+}
 }
 \description{
 Retrieve hydrographic polygons around an area
 }
 \details{
 The function retrieves BDTOPO layers within a convex buffer
-around `x`, assigns the hydrographic types, and combines them into
+around \code{x}, assigns the hydrographic types, and combines them into
 a single layer.
 }

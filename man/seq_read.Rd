@@ -7,16 +7,16 @@
 seq_read(key, dirname = ".", verbose = FALSE)
 }
 \arguments{
-\item{key}{`character` Name of a layer key to match against the entries
-defined in `inst/config/seq_layers.yaml`. (see *Details* for partial matching).}
+\item{key}{\code{character} Name of a layer key to match against the entries
+defined in \code{inst/config/seq_layers.yaml}. (see \emph{Details} for partial matching).}
 
-\item{dirname}{`character` Directory where the matrice file is located.
+\item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
-Object of class `SpatRaster` for raster and `sf` for vector
+Object of class \code{SpatRaster} for raster and \code{sf} for vector
 }
 \description{
 Open file based on key name

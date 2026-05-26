@@ -7,18 +7,18 @@
 seq_pedology(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{`character` Path to the project directory.
+\item{dirname}{\code{character} Path to the project directory.
 Defaults to the current working directory.}
 
-\item{verbose}{`logical`; whether to display informational messages.
-Defaults to `TRUE`.}
+\item{verbose}{\code{logical}; whether to display informational messages.
+Defaults to \code{TRUE}.}
 
-\item{overwrite}{`logical`; whether to overwrite existing files.
-Defaults to `FALSE`.}
+\item{overwrite}{\code{logical}; whether to overwrite existing files.
+Defaults to \code{FALSE}.}
 }
 \value{
-Invisibly returns a named list of file paths written by [seq_write()].
-Returns `NULL` invisibly when no pedology features are found.
+Invisibly returns a named list of file paths written by \code{\link[=seq_write]{seq_write()}}.
+Returns \code{NULL} invisibly when no pedology features are found.
 }
 \description{
 Retrieves pedology polygon features intersecting the project area,
@@ -26,16 +26,16 @@ writes the resulting layer to disk and downloads associated pedology
 PDF reports into the project directory.
 }
 \details{
-Pedology polygon features are retrieved using [get_pedology()].
+Pedology polygon features are retrieved using \code{\link[=get_pedology]{get_pedology()}}.
 
 If no pedology features intersect the project area, the function
-returns `NULL` invisibly and no file is written.
+returns \code{NULL} invisibly and no file is written.
 
 When pedology features are present, the polygon layer is written
-to disk using [seq_write()] with the key `"v.sol.pedo.poly"`.
-Associated UCS PDF reports are then downloaded into `dirname`
-using [get_pedology_pdf()].
+to disk using \code{\link[=seq_write]{seq_write()}} with the key \code{"v.sol.pedo.poly"}.
+Associated UCS PDF reports are then downloaded into \code{dirname}
+using \code{\link[=get_pedology_pdf]{get_pedology_pdf()}}.
 }
 \seealso{
-[get_pedology()], [get_pedology_pdf()], [seq_write()]
+\code{\link[=get_pedology]{get_pedology()}}, \code{\link[=get_pedology_pdf]{get_pedology_pdf()}}, \code{\link[=seq_write]{seq_write()}}
 }

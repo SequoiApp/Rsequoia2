@@ -7,38 +7,42 @@
 get_road(x, buffer = 1000)
 }
 \arguments{
-\item{x}{An `sf` object used as the input area.}
+\item{x}{An \code{sf} object used as the input area.}
 
-\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge}
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
 }
 \value{
-An `sf` object of type `LINESTRING` containing road sections
-  with standardized fields, including:
-  * `TYPE` - Road section type code, deduced from surface, numbering
-    and importance attributes:
-    - `RN` = National road (autoroutes, European roads, numbered roads
-      starting with `A`, `E`, `N`, or departmental roads numbered > 900,
-      as well as major slip roads)
-    - `RD` = Departmental road (numbered roads starting with `D`)
-    - `RC` = Communal road (other paved roads)
-    - `RF` = Forest or gravel road (unpaved / empierree)
-    - `PN` = Natural path (tracks, trails, footpaths)
-    - `LY` = Tie ridge
-  * `NATURE` - Original BDTOPO road nature (surface / usage description)
-  * `IMPORTANCE` - Road importance, taken from `importance` when available,
-  * `PRIVE` - Road status, taken from `prive` when available,
-  * `RESTRICTION` - Road restriction, taken from `restriction_de_poids_total` when available,
-  * `NOM` - Road identifier, taken from `cpx_numero` when available,
-    otherwise from `cpx_toponyme_route_nommee`
-  * `SOURCE` - Data source (`BDTOPO V3`)
+An \code{sf} object of type \code{LINESTRING} containing road sections
+with standardized fields, including:
+\itemize{
+\item \code{TYPE} - Road section type code, deduced from surface, numbering
+and importance attributes:
+\itemize{
+\item \code{RN} = National road (autoroutes, European roads, numbered roads
+starting with \code{A}, \code{E}, \code{N}, or departmental roads numbered > 900,
+as well as major slip roads)
+\item \code{RD} = Departmental road (numbered roads starting with \code{D})
+\item \code{RC} = Communal road (other paved roads)
+\item \code{RF} = Forest or gravel road (unpaved / empierree)
+\item \code{PN} = Natural path (tracks, trails, footpaths)
+\item \code{LY} = Tie ridge
+}
+\item \code{NATURE} - Original BDTOPO road nature (surface / usage description)
+\item \code{IMPORTANCE} - Road importance, taken from \code{importance} when available,
+\item \code{PRIVE} - Road status, taken from \code{prive} when available,
+\item \code{RESTRICTION} - Road restriction, taken from \code{restriction_de_poids_total} when available,
+\item \code{NOM} - Road identifier, taken from \code{cpx_numero} when available,
+otherwise from \code{cpx_toponyme_route_nommee}
+\item \code{SOURCE} - Data source (\verb{BDTOPO V3})
+}
 }
 \description{
 Retrieve road sections around an area
 }
 \details{
 The function retrieves road section layer from
-the IGN BDTOPO V3 dataset within a convex buffer around `x`.
+the IGN BDTOPO V3 dataset within a convex buffer around \code{x}.
 
 If no road section data are found, the function returns an empty
-standardized `sf` object.
+standardized \code{sf} object.
 }

@@ -7,12 +7,12 @@
 road_to_roadway(x, dist = 3.5)
 }
 \arguments{
-\item{x}{An `sf` object with road line geometries.}
+\item{x}{An \code{sf} object with road line geometries.}
 
 \item{dist}{Numeric. Base buffer distance (default 3.5 units).}
 }
 \value{
-An `sf` object with the final road polygons.
+An \code{sf} object with the final road polygons.
 }
 \description{
 Creates hierarchical road polygons from line features using buffers, differences, and an external mask.

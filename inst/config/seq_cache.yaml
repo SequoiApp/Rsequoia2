@@ -7,13 +7,13 @@ cog:
 bdcharm50:
   label: "BD Charm-50"
   cache_dir: ["geol", "bdcharm50"]
-  description: "Cartes géologiques départementales à 1/50 000"
+  description: "Cartes geologiques departementales a 150000"
   source: "BRGM"
 
 carhab:
   label: "CarHab"
   cache_dir: ["geol", "carhab"]
-  description: "Données géologiques dédiées au programme de Cartographie des Habitats Naturels et semi-naturels (CARHAB)"
+  description: "Donnees geologiques dediees au programme de Cartographie des Habitats Naturels et semi-naturels (CARHAB)"
   source: "BRGM"
 
 lidar_mnt:
@@ -37,7 +37,7 @@ lidar_mnh:
 ifn:
   label: "IFN"
   cache_dir: ["ifn"]
-  description: "sylvo-ecoregions, regions forestières et zones de production"
+  description: "sylvo-ecoregions, regions forestieres et zones de production"
   source: "IFN"
 
 legal_entity:
@@ -47,7 +47,7 @@ legal_entity:
   source: "DGFIP"
 
 meteo:
-  label: "Météo France"
+  label: "Meteo France"
   cache_dir: ["meteo", "mensuelles"]
-  description: "Données météorologique mensuelles"
+  description: "Donnees meteorologique mensuelles"
   source: "METEO FRANCE"

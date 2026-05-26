@@ -10,7 +10,7 @@ check_dep(dep)
 \item{dep}{Department code vector.}
 }
 \value{
-A normalized `character` vector of valid department codes.
+A normalized \code{character} vector of valid department codes.
 }
 \description{
 Checks that department codes are non-empty and exist in the COG reference.

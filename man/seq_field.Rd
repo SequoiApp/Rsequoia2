@@ -7,19 +7,19 @@
 seq_field(field = NULL, filepath = NULL)
 }
 \arguments{
-\item{field}{`character` or `NULL`; If provided, must match a key in
-`inst/config/seq_fields.yaml`.}
+\item{field}{\code{character} or \code{NULL}; If provided, must match a key in
+\code{inst/config/seq_fields.yaml}.}
 
-\item{filepath}{`character` or `NULL`; override for the path to the default
-YAML configuration file (`inst/config/seq_fields.yaml`). Used mainly for
+\item{filepath}{\code{character} or \code{NULL}; override for the path to the default
+YAML configuration file (\code{inst/config/seq_fields.yaml}). Used mainly for
 testing.}
 }
 \value{
 A list describing all fields, or a single field definition.
 }
 \description{
-Internal helper used by `seq_normalize()` to access field metadata
-defined in `inst/config/seq_fields.yaml`. When `field` is `NULL`, the full
+Internal helper used by \code{seq_normalize()} to access field metadata
+defined in \code{inst/config/seq_fields.yaml}. When \code{field} is \code{NULL}, the full
 configuration list is returned. Otherwise, the corresponding field
 definition is extracted.
 }

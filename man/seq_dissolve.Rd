@@ -15,34 +15,34 @@ seq_dissolve(
 )
 }
 \arguments{
-\item{x}{An `sf` object containing only `POLYGON` or `MULTIPOLYGON`
+\item{x}{An \code{sf} object containing only \code{POLYGON} or \code{MULTIPOLYGON}
 geometries.}
 
-\item{buffer}{`numeric`; Buffer distance (in coordinate units) used to expand
+\item{buffer}{\code{numeric}; Buffer distance (in coordinate units) used to expand
 geometries before union. This value controls the tolerance for merging
-nearby or slightly disconnected polygons. Default is `5`.}
+nearby or slightly disconnected polygons. Default is \code{5}.}
 
-\item{eps}{`numeric`; Small offset applied during the negative buffer step
-(`-buffer + eps`) to prevent topology collapse or invalid geometries.
-Should be a very small positive value relative to `buffer`.
-Default is `0.01`.}
+\item{eps}{\code{numeric}; Small offset applied during the negative buffer step
+(\code{-buffer + eps}) to prevent topology collapse or invalid geometries.
+Should be a very small positive value relative to \code{buffer}.
+Default is \code{0.01}.}
 
-\item{endCapStyle}{`character`; Shape of line endings used in buffering.
-One of `"ROUND"`, `"FLAT"`, or `"SQUARE"`. Passed to [sf::st_buffer()].}
+\item{endCapStyle}{\code{character}; Shape of line endings used in buffering.
+One of \code{"ROUND"}, \code{"FLAT"}, or \code{"SQUARE"}. Passed to \code{\link[sf:st_buffer]{sf::st_buffer()}}.}
 
-\item{joinStyle}{`character`; Shape of corners in buffering.
-One of `"ROUND"`, `"MITRE"`, or `"BEVEL"`. Passed to [sf::st_buffer()].}
+\item{joinStyle}{\code{character}; Shape of corners in buffering.
+One of \code{"ROUND"}, \code{"MITRE"}, or \code{"BEVEL"}. Passed to \code{\link[sf:st_buffer]{sf::st_buffer()}}.}
 
-\item{mitreLimit}{`numeric`; Mitre ratio limit (only used if
-`joinStyle = "MITRE"`). Passed to [sf::st_buffer()].}
+\item{mitreLimit}{\code{numeric}; Mitre ratio limit (only used if
+\code{joinStyle = "MITRE"}). Passed to \code{\link[sf:st_buffer]{sf::st_buffer()}}.}
 
-\item{snapping}{`logical`; If `TRUE`, snaps the resulting geometries back to
-the original input geometries using [sf::st_snap()] with the same tolerance
-as `buffer`. This can help reduce spatial drift introduced by buffering.
-Default is `FALSE`.}
+\item{snapping}{\code{logical}; If \code{TRUE}, snaps the resulting geometries back to
+the original input geometries using \code{\link[sf:st_snap]{sf::st_snap()}} with the same tolerance
+as \code{buffer}. This can help reduce spatial drift introduced by buffering.
+Default is \code{FALSE}.}
 }
 \value{
-An `sf` object containing dissolved polygon geometries.
+An \code{sf} object containing dissolved polygon geometries.
 }
 \description{
 Performs a topological dissolve (union) of polygon geometries using a
@@ -59,18 +59,18 @@ coverages (e.g. digitizing errors, micro-gaps, or near-adjacent features).
 \details{
 The algorithm proceeds as follows:
 \enumerate{
-  \item Cast geometries to `POLYGON`
-  \item Apply a positive buffer (`+buffer`)
-  \item Perform a geometric union (`st_union`)
-  \item Apply a negative buffer (`-buffer + eps`)
-  \item Validate geometries (`st_make_valid`)
-  \item Recast to `POLYGON`
+\item Cast geometries to \code{POLYGON}
+\item Apply a positive buffer (\code{+buffer})
+\item Perform a geometric union (\code{st_union})
+\item Apply a negative buffer (\code{-buffer + eps})
+\item Validate geometries (\code{st_make_valid})
+\item Recast to \code{POLYGON}
 }
 
 Note that this method modifies geometry boundaries and may introduce slight
 positional shifts. The magnitude of these shifts depends on the chosen
-`buffer` and `eps` values.
+\code{buffer} and \code{eps} values.
 }
 \seealso{
-[sf::st_union()], [sf::st_buffer()], [sf::st_make_valid()], [sf::st_snap()]
+\code{\link[sf:st_union]{sf::st_union()}}, \code{\link[sf:st_buffer]{sf::st_buffer()}}, \code{\link[sf:st_make_valid]{sf::st_make_valid()}}, \code{\link[sf:st_snap]{sf::st_snap()}}
 }

@@ -12,17 +12,17 @@ get_accessibility(
 )
 }
 \arguments{
-\item{x}{An `sf` object defining the input area of interest.}
+\item{x}{An \code{sf} object defining the input area of interest.}
 
-\item{type}{`character` Accessibility type. One of `"porter"` or `"skidder"`.}
+\item{type}{\code{character} Accessibility type. One of \code{"porter"} or \code{"skidder"}.}
 
-\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
 the download area.}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
-An `sf` object containing accessibility features, or `NULL` if none found.
+An \code{sf} object containing accessibility features, or \code{NULL} if none found.
 }
 \description{
 Builds a convex buffer around the input geometry and retrieves accessibility

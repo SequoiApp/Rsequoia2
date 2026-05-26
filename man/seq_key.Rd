@@ -7,18 +7,18 @@
 seq_key(key = NULL, allow_multiple = FALSE)
 }
 \arguments{
-\item{key}{`character` Search pattern to resolve.}
+\item{key}{\code{character} Search pattern to resolve.}
 
-\item{allow_multiple}{`logical` If `TRUE`, allow and return multiple matches.}
+\item{allow_multiple}{\code{logical} If \code{TRUE}, allow and return multiple matches.}
 }
 \value{
 A character vector of matching configuration keys.
 }
 \description{
 Resolves a user-provided key or pattern against the keys defined in
-`inst/config/seq_layers.yaml`.
+\code{inst/config/seq_layers.yaml}.
 }
 \details{
 Partial matching is used. If no key matches, the function aborts.
-If multiple keys match and `allow_multiple = FALSE`, the function aborts.
+If multiple keys match and \code{allow_multiple = FALSE}, the function aborts.
 }

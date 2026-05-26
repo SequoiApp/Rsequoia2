@@ -7,25 +7,25 @@
 seq_ua(dirname = ".", secure = TRUE, verbose = TRUE, overwrite = TRUE)
 }
 \arguments{
-\item{dirname}{`character` Directory where the matrice file is located.
+\item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{secure}{`logical`. If `TRUE`, also writes a timestamped secure copy
+\item{secure}{\code{logical}. If \code{TRUE}, also writes a timestamped secure copy
 of the file.}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
-\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
+\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
 }
 \value{
-An `sf` object
+An \code{sf} object
 }
 \description{
 This function reads the analysis units layer file from a project directory,
 check and udapte attributes and overwrite it.
 }
 \details{
-The resulting object is returned invisibly as an `sf` polygons layer.
+The resulting object is returned invisibly as an \code{sf} polygons layer.
 The output file is automatically written into the working directory defined
-by `dirname`.
+by \code{dirname}.
 }

@@ -2,19 +2,19 @@
 % Please edit documentation in R/update.R
 \name{update_parca}
 \alias{update_parca}
-\title{Update `R_SEQUOIA` _PARCA_ layer to `Rsequoia2`}
+\title{Update \code{R_SEQUOIA} \emph{PARCA} layer to \code{Rsequoia2}}
 \usage{
 update_parca(parca, id)
 }
 \arguments{
-\item{parca}{`sf` object containing cadastrals parcels}
+\item{parca}{\code{sf} object containing cadastrals parcels}
 
-\item{id}{`character` Identifier of the project}
+\item{id}{\code{character} Identifier of the project}
 }
 \value{
-An `sf` object containing cadastral parcels, normalized for
-`Rsequoia2` use.
+An \code{sf} object containing cadastral parcels, normalized for
+\code{Rsequoia2} use.
 }
 \description{
-Update `R_SEQUOIA` _PARCA_ layer to `Rsequoia2`
+Update \code{R_SEQUOIA} \emph{PARCA} layer to \code{Rsequoia2}
 }

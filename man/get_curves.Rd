@@ -7,18 +7,18 @@
 get_curves(x, verbose = TRUE)
 }
 \arguments{
-\item{x}{An `sf` object defining the input area of interest.}
+\item{x}{An \code{sf} object defining the input area of interest.}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
-An `sf` object containing hypsometric curves.
+An \code{sf} object containing hypsometric curves.
 }
 \description{
 Builds a convex buffer around the input geometry, retrieves hypsometric
-curves and returns an `sf` line layer.
+curves and returns an \code{sf} line layer.
 }
 \details{
-The function creates a 1000 m convex buffer around the input geometry `x`
-and retrieves hypsometric curves before returns as a single `sf` point layer.
+The function creates a 1000 m convex buffer around the input geometry \code{x}
+and retrieves hypsometric curves before returns as a single \code{sf} point layer.
 }

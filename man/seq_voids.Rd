@@ -7,32 +7,32 @@
 seq_voids(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{`character` Path to the project directory.
+\item{dirname}{\code{character} Path to the project directory.
 Defaults to the current working directory.}
 
-\item{verbose}{`logical`; whether to display informational messages.
-Defaults to `TRUE`.}
+\item{verbose}{\code{logical}; whether to display informational messages.
+Defaults to \code{TRUE}.}
 
-\item{overwrite}{`logical`; whether to overwrite existing files.
-Defaults to `FALSE`.}
+\item{overwrite}{\code{logical}; whether to overwrite existing files.
+Defaults to \code{FALSE}.}
 }
 \value{
-Invisibly returns a named list of file paths written by [seq_write()].
-Returns `NULL` invisibly when no features are found.
+Invisibly returns a named list of file paths written by \code{\link[=seq_write]{seq_write()}}.
+Returns \code{NULL} invisibly when no features are found.
 }
 \description{
 Retrieves cadastral gaps features intersecting and surrounding
 the project area and writes the resulting layer to disk.
 }
 \details{
-Cadastral gaps are retrieved using `get_voids()`.
+Cadastral gaps are retrieved using \code{get_voids()}.
 
-If no features are found, the function returns `NULL`
+If no features are found, the function returns \code{NULL}
 invisibly and no file is written.
 
 When features are present, the layer is written to disk using
-[seq_write()] with the key `"v.cad.vides.poly"`.
+\code{\link[=seq_write]{seq_write()}} with the key \code{"v.cad.vides.poly"}.
 }
 \seealso{
-[get_voids()], [seq_write()]
+\code{\link[=get_voids]{get_voids()}}, \code{\link[=seq_write]{seq_write()}}
 }

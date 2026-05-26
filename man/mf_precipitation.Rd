@@ -7,10 +7,10 @@
 mf_precipitation(clim)
 }
 \arguments{
-\item{clim}{`data.frame` Raw climatology data from [mf_get_climatology()].}
+\item{clim}{\code{data.frame} Raw climatology data from \code{\link[=mf_get_climatology]{mf_get_climatology()}}.}
 }
 \value{
-A `data.frame` containing annual precipitation averages.
+A \code{data.frame} containing annual precipitation averages.
 }
 \description{
 Computes annual precipitation averages from raw climatology data.

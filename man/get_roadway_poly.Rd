@@ -7,12 +7,14 @@
 get_roadway_poly(x)
 }
 \arguments{
-\item{x}{An `sf` object containing either:
-- LINE geometries representing road centerlines, or
-- POLYGON geometries representing completed cadastral gaps.}
+\item{x}{An \code{sf} object containing either:
+\itemize{
+\item LINE geometries representing road centerlines, or
+\item POLYGON geometries representing completed cadastral gaps.
+}}
 }
 \value{
-An `sf` object with POLYGON or MULTIPOLYGON geometries
+An \code{sf} object with POLYGON or MULTIPOLYGON geometries
 normalized as roadway polygons.
 }
 \description{
@@ -21,14 +23,14 @@ or completed cadastral voids polygons.
 }
 \details{
 The function dispatches internally depending on the geometry type:
+\itemize{
+\item If \code{x} contains LINESTRING geometries, road polygons are created using
+hierarchical buffering and masking via \code{road_to_roadway()}.
+\item If \code{x} contains POLYGON geometries, the polygons are cleaned and
+normalized via \code{voids_to_roadway()}.
+}
 
-- If `x` contains LINESTRING geometries, road polygons are created using
-  hierarchical buffering and masking via `road_to_roadway()`.
-
-- If `x` contains POLYGON geometries, the polygons are cleaned and
-  normalized via `voids_to_roadway()`.
-
-The resulting polygons are standardized using `seq_normalize()`
-with the `"road_poly"` schema.
+The resulting polygons are standardized using \code{seq_normalize()}
+with the \code{"road_poly"} schema.
 }
 \keyword{internal}

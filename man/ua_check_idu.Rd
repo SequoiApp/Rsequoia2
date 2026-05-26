@@ -2,22 +2,22 @@
 % Please edit documentation in R/ua.R
 \name{ua_check_idu}
 \alias{ua_check_idu}
-\title{Check cadastral IDU consistency between _UA_ and _PARCA_}
+\title{Check cadastral IDU consistency between \emph{UA} and \emph{PARCA}}
 \usage{
 ua_check_idu(ua, parca, verbose = FALSE)
 }
 \arguments{
-\item{ua}{`sf` Object containing analysis units.}
+\item{ua}{\code{sf} Object containing analysis units.}
 
-\item{parca}{`sf` Object containing cadastral parcels.}
+\item{parca}{\code{sf} Object containing cadastral parcels.}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
-`TRUE` if IDU values are consistent; `FALSE` otherwise,
+\code{TRUE} if IDU values are consistent; \code{FALSE} otherwise,
 with CLI warnings.
 }
 \description{
-Checks that all _PARCA_ IDU values are present in _UA_, and that all _UA_
-IDU values exist in _PARCA_.
+Checks that all \emph{PARCA} IDU values are present in \emph{UA}, and that all \emph{UA}
+IDU values exist in \emph{PARCA}.
 }

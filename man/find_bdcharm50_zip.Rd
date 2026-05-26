@@ -9,11 +9,11 @@ find_bdcharm50_zip(dep, urls)
 \arguments{
 \item{dep}{Department code.}
 
-\item{urls}{Named `character` vector of archive URLs, usually returned by
-[get_bdcharm50_url()].}
+\item{urls}{Named \code{character} vector of archive URLs, usually returned by
+\code{\link[=get_bdcharm50_url]{get_bdcharm50_url()}}.}
 }
 \value{
-A `character(1)` ZIP filename.
+A \code{character(1)} ZIP filename.
 }
 \description{
 Finds the unique BDCharm50 ZIP archive matching a department code.

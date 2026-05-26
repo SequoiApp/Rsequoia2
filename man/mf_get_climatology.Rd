@@ -7,18 +7,18 @@
 mf_get_climatology(x, cache = seq_cache("meteo")$path, verbose = TRUE)
 }
 \arguments{
-\item{x}{`sf` or `sfc`.}
+\item{x}{\code{sf} or \code{sfc}.}
 
-\item{cache}{`character`; Storage directory. Defaults to the user cache
-directory (see [tools::R_user_dir()])}
+\item{cache}{\code{character}; Storage directory. Defaults to the user cache
+directory (see \code{\link[tools:R_user_dir]{tools::R_user_dir()}})}
 
-\item{verbose}{`logical` If `TRUE`, display progress messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
 }
 \value{
-A `data.frame` containing monthly climatology records for the nearest stations.
+A \code{data.frame} containing monthly climatology records for the nearest stations.
 }
 \description{
-Downloads monthly climatological data for the *3 nearest meteorological stations*.
+Downloads monthly climatological data for the \emph{3 nearest meteorological stations}.
 }
 \details{
 Cached files are reused to avoid redundant downloads.

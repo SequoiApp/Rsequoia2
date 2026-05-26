@@ -7,10 +7,10 @@
 drias_ombro(txt)
 }
 \arguments{
-\item{txt}{`character` string. Path to a DRIAS `.txt` file.}
+\item{txt}{\code{character} string. Path to a DRIAS \code{.txt} file.}
 }
 \value{
-A `data.frame` containing monthly averages of temperature and precipitation
+A \code{data.frame} containing monthly averages of temperature and precipitation
 for each period.
 }
 \description{

@@ -42,6 +42,7 @@ get_siren <- function(pattern, verbose = TRUE){
   on.exit(DBI::dbDisconnect(con, shutdown = TRUE), add = TRUE)
 
   DBI::dbExecute(con, "SET enable_progress_bar=false;")
+  DBI::dbExecute(con, "INSTALL httpfs;")
   DBI::dbExecute(con, "LOAD httpfs;")
 
   if (verbose) cli::cli_alert_info("Recherche SIREN en cours...")

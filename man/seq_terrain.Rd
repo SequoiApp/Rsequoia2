@@ -7,23 +7,23 @@
 seq_terrain(dirname = ".", agg = 5, overwrite = FALSE, verbose = TRUE)
 }
 \arguments{
-\item{dirname}{`character` Directory where the matrice file is located.
+\item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{agg}{`numeric`; Target working resolution in meters before terrain
-calculation. Use `NULL` to keep native resolution.}
+\item{agg}{\code{numeric}; Target working resolution in meters before terrain
+calculation. Use \code{NULL} to keep native resolution.}
 
-\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
+\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
 
-\item{verbose}{`logical`; If `TRUE`, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
 }
 \value{
-Invisibly returns a named `character` vector of output raster paths.
+Invisibly returns a named \code{character} vector of output raster paths.
 }
 \description{
 Uses the project's MNT raster to compute slope and aspect rasters, then
-writes them to the project directory with [seq_write()].
+writes them to the project directory with \code{\link[=seq_write]{seq_write()}}.
 }
 \seealso{
-[get_slope()], [get_aspect()]
+\code{\link[=get_slope]{get_slope()}}, \code{\link[=get_aspect]{get_aspect()}}
 }

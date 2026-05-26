@@ -15,39 +15,41 @@ seq_ortho(
 )
 }
 \arguments{
-\item{dirname}{`character` Directory where the matrice file is located.
+\item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{type}{`character` One or several orthophoto types to download.
+\item{type}{\code{character} One or several orthophoto types to download.
 Must be one or both of:
-  - `"rgb"` - true-color orthophoto
-  - `"irc"` - near-infrared orthophoto}
+\itemize{
+\item \code{"rgb"} - true-color orthophoto
+\item \code{"irc"} - near-infrared orthophoto
+}}
 
-\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
 the download area.}
 
-\item{zoom}{`integer` between 0 and 21. The smaller the zoom level, the less
-precise the resolution(see [happign::get_wmts()])}
+\item{zoom}{\code{integer} between 0 and 21. The smaller the zoom level, the less
+precise the resolution(see \code{\link[happign:get_wmts]{happign::get_wmts()}})}
 
-\item{crs}{`numeric` or `character`; CRS of the returned raster (see
-[happign::get_wmts()])}
+\item{crs}{\code{numeric} or \code{character}; CRS of the returned raster (see
+\code{\link[happign:get_wmts]{happign::get_wmts()}})}
 
-\item{overwrite}{`logical`; If `TRUE`, file is overwritten.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, file is overwritten.}
 
-\item{verbose}{`logical`; If `TRUE`, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
 }
 \value{
-A named list of file paths written by [seq_write()], one per `type`.
+A named list of file paths written by \code{\link[=seq_write]{seq_write()}}, one per \code{type}.
 }
 \description{
 Downloads one or several orthophotos (RGB and/or IRC) from the IGN WMTS service
-for the `parca` layer of a Sequoia project.
+for the \code{parca} layer of a Sequoia project.
 }
 \details{
-This function is a convenience wrapper looping over [get_ortho()], allowing
+This function is a convenience wrapper looping over \code{\link[=get_ortho]{get_ortho()}}, allowing
 the user to download both products in one call and automatically write them
-to the project directory using [seq_write()].
+to the project directory using \code{\link[=seq_write]{seq_write()}}.
 }
 \seealso{
-[get_ortho()], [seq_write()]
+\code{\link[=get_ortho]{get_ortho()}}, \code{\link[=seq_write]{seq_write()}}
 }

@@ -575,15 +575,14 @@ build_summary_pente <- function(pf, dirname) {
 
   m <- matrix(c(
     -Inf, 10, 1,
-    10,  40,  2,
-    40,  60,  3,
-    60,  80,  4,
-    80,  Inf, 5
+    10,  30,  2,
+    30,  Inf, 3
   ), ncol = 3, byrow = TRUE)
 
-  pente_class <- terra::classify(pente, m)
-  classes <- c("< 10%", "[10% - 40%]", "[40% - 60%]", "[60% - 80%]", "> 80%")
-  levels(pente_class) <- data.frame(value = 1:5, pentes = classes)
+  pente_class <- terra::classify(pente, m, right = FALSE)
+  classes <- c("< 10%", "[10% - 30%[", ">= 30%")
+
+  levels(pente_class) <- data.frame(value = 1:3, pentes = classes)
 
   freq <- terra::extract(pente_class, pf, "table", ID = TRUE, wide = FALSE)
   freq <- stats::xtabs(count ~ ID + pentes, data = freq) |>
@@ -607,7 +606,7 @@ build_summary_pente <- function(pf, dirname) {
   pente_by_pf$PENTE_MAJ <- names(freq)[max.col(freq, ties.method = "first")]
   pente_by_pf$PENTE_MAJ[rs == 0] <- NA_character_
 
-  tot <- c(text = "TOTAL", rep("average", 5), "none")
+  tot <- c(text = "TOTAL", rep("average", length(classes)), "none")
 
   list(table = pente_by_pf, total_row = tot)
 }

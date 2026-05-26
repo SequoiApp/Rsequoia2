@@ -7,33 +7,33 @@
 seq_hydro(dirname = ".", buffer = 1000, verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{`character` Directory where the matrice file is located.
+\item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge}
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
-\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
+\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
 }
 \value{
-A named list of file paths written by [seq_write()],
+A named list of file paths written by \code{\link[=seq_write]{seq_write()}},
 one per hydrographic layer.
 }
 \description{
-This function is a convenience wrapper around [get_hydro_poly()],
-[get_hydro_line()] and [get_hydro_point()], allowing the user to download
+This function is a convenience wrapper around \code{\link[=get_hydro_poly]{get_hydro_poly()}},
+\code{\link[=get_hydro_line]{get_hydro_line()}} and \code{\link[=get_hydro_point]{get_hydro_point()}}, allowing the user to download
 all products in one call and automatically write them to the project
-directory using [seq_write()].
+directory using \code{\link[=seq_write]{seq_write()}}.
 }
 \details{
-Each hydrographic layer is always written to disk using [seq_write()],
-even when it contains no features (`nrow == 0`).
+Each hydrographic layer is always written to disk using \code{\link[=seq_write]{seq_write()}},
+even when it contains no features (\code{nrow == 0}).
 
 Informational messages are displayed to indicate whether a layer
 contains features or is empty.
 }
 \seealso{
-[get_hydro_poly()], [get_hydro_line()], [get_hydro_point()],
-[seq_write()]
+\code{\link[=get_hydro_poly]{get_hydro_poly()}}, \code{\link[=get_hydro_line]{get_hydro_line()}}, \code{\link[=get_hydro_point]{get_hydro_point()}},
+\code{\link[=seq_write]{seq_write()}}
 }

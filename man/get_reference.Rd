@@ -7,11 +7,11 @@
 get_reference(pdf)
 }
 \arguments{
-\item{pdf}{`character`. Path to PDF file}
+\item{pdf}{\code{character}. Path to PDF file}
 }
 \value{
-A `data.frame` with columns: year, department_code, commune_code,
-  commune_name, tres, communal_num, file_name, file_path, insee
+A \code{data.frame} with columns: year, department_code, commune_code,
+commune_name, tres, communal_num, file_name, file_path, insee
 }
 \description{
 Parses the first page of a French cadastral PDF to extract commune,

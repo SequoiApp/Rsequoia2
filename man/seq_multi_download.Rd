@@ -13,22 +13,22 @@ seq_multi_download(
 )
 }
 \arguments{
-\item{urls}{`character`; Remote file URLs.}
+\item{urls}{\code{character}; Remote file URLs.}
 
-\item{destfiles}{`character`; Local destination paths.}
+\item{destfiles}{\code{character}; Local destination paths.}
 
-\item{overwrite}{`logical(1)`; If `TRUE`, re-download existing files.}
+\item{overwrite}{\code{logical(1)}; If \code{TRUE}, re-download existing files.}
 
-\item{verbose}{`logical(1)`; If `TRUE`, show download progress and messages.}
+\item{verbose}{\code{logical(1)}; If \code{TRUE}, show download progress and messages.}
 
-\item{max_tries}{`integer(1)`; Maximum number of download attempts.}
+\item{max_tries}{\code{integer(1)}; Maximum number of download attempts.}
 }
 \value{
-Invisibly returns `TRUE` if all required files are available.
+Invisibly returns \code{TRUE} if all required files are available.
 }
 \description{
-Internal wrapper around [curl::multi_download()] used to download cached
-resources. Existing files are skipped unless `overwrite = TRUE`; failed
-downloads are retried up to `max_tries`.
+Internal wrapper around \code{\link[curl:multi_download]{curl::multi_download()}} used to download cached
+resources. Existing files are skipped unless \code{overwrite = TRUE}; failed
+downloads are retried up to \code{max_tries}.
 }
 \keyword{internal}

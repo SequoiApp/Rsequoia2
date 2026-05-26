@@ -7,11 +7,11 @@
 read_matrice(dirname = ".")
 }
 \arguments{
-\item{dirname}{`character` Directory where the matrice file is located.
+\item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 }
 \value{
-`data.frame` formated as Rsequoia2 matrice
+\code{data.frame} formated as Rsequoia2 matrice
 }
 \description{
 Read matrice and format for Rsequoia2

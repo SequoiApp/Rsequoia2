@@ -7,14 +7,14 @@
 mf_get_metadata()
 }
 \value{
-A `data.frame` with two columns
+A \code{data.frame} with two columns
 }
 \description{
 Downloads and parses the metadata describing variables from the
 Météo-France monthly climate dataset ("MENSQ").
 }
 \details{
-The function retrieves the `descriptif_champs` resource from the
+The function retrieves the \code{descriptif_champs} resource from the
 corresponding data.gouv.fr dataset and returns a structured table
 containing variable names and their descriptions.
 }

@@ -15,15 +15,14 @@ Columns include parcel identifiers, land use, surface (in hectares),
 and administrative codes.
 }
 \description{
-`parse_rp()` extracts and parses non-built parcels from a French cadastral
+\code{parse_rp()} extracts and parses non-built parcels from a French cadastral
 property record PDF (Releve de Propriete - RP).
 }
 \details{
 The function reads the PDF, identifies main parcels and detail rows,
 computes parcel surfaces, and returns a tidy data frame ready for analysis.
 
-
-Only the *non-built* section of the RP is parsed.
+Only the \emph{non-built} section of the RP is parsed.
 Image-only (scanned) PDFs are not supported.
 }
 \examples{

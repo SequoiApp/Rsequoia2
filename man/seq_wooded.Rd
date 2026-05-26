@@ -2,35 +2,34 @@
 % Please edit documentation in R/wooded.R
 \name{seq_wooded}
 \alias{seq_wooded}
-\title{Create wooded-area layer from _UA_ for a Sequoia project}
+\title{Create wooded-area layer from \emph{UA} for a Sequoia project}
 \usage{
 seq_wooded(dirname = ".", verbose = FALSE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{`character` Directory where the matrice file is located.
+\item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
-\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
+\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
 }
 \value{
 An invisible named list containing the file path of the exported wooded
 layer.
 }
 \description{
-This function reads the UA polygon layer (`v.seq.ua.poly`) of a Sequoia
+This function reads the UA polygon layer (\code{v.seq.ua.poly}) of a Sequoia
 project, aggregates corrected surface areas by wooded / non-wooded status,
 and writes the derived layer to the project directory.
 }
 \details{
-Created layers are automatically written using [seq_write()], respecting
-the `dirname`, `overwrite`, and `verbose` parameters.
-
+Created layers are automatically written using \code{\link[=seq_write]{seq_write()}}, respecting
+the \code{dirname}, \code{overwrite}, and \code{verbose} parameters.
 
 Rows of the UA layer are grouped according to the wooded status field
-(`is_wooded`), and corrected surface areas are summed for each class.
+(\code{is_wooded}), and corrected surface areas are summed for each class.
 }
 \seealso{
-[ua_to_wooded()], [seq_read()], [seq_write()], [seq_field()]
+\code{\link[=ua_to_wooded]{ua_to_wooded()}}, \code{\link[=seq_read]{seq_read()}}, \code{\link[=seq_write]{seq_write()}}, \code{\link[=seq_field]{seq_field()}}
 }

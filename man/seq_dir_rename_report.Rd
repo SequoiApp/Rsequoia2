@@ -7,14 +7,14 @@
 seq_dir_rename_report(renamed, report)
 }
 \arguments{
-\item{renamed}{Logical vector returned by `seq_files_rename()`.}
+\item{renamed}{Logical vector returned by \code{seq_files_rename()}.}
 
-\item{report}{Data frame returned by `seq_dir_rename()`.}
+\item{report}{Data frame returned by \code{seq_dir_rename()}.}
 }
 \value{
-Invisibly returns `NULL`.
+Invisibly returns \code{NULL}.
 }
 \description{
-Print a compact `cli` report after renaming files and updating GeoPackages.
+Print a compact \code{cli} report after renaming files and updating GeoPackages.
 }
 \keyword{internal}

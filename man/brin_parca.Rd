@@ -3,14 +3,14 @@
 \docType{data}
 \name{brin_parca}
 \alias{brin_parca}
-\title{BRIN *PARCA* layer}
+\title{BRIN \emph{PARCA} layer}
 \format{
-An `sf` object with 114 obs and 18 colums.
+An \code{sf} object with 114 obs and 18 colums.
 }
 \usage{
 brin_parca
 }
 \description{
-An example of *PARCA* layer for the Brin forest.
+An example of \emph{PARCA} layer for the Brin forest.
 }
 \keyword{datasets}
