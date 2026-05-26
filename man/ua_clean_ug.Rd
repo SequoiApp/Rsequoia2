@@ -2,35 +2,35 @@
 % Please edit documentation in R/ua.R
 \name{ua_clean_ug}
 \alias{ua_clean_ug}
-\title{Clean management units (UG) by correcting minor inconsistencies in the \emph{UA} sf object}
+\title{Clean management units (UG) by correcting minor inconsistencies in the _UA_ sf object}
 \usage{
 ua_clean_ug(ua, atol = 0.5, rtol = 0.1)
 }
 \arguments{
-\item{ua}{\code{sf} object containing analysis units;
+\item{ua}{`sf` object containing analysis units;
 with at least the UG identifier field and relevant attribute fields.}
 
 \item{atol}{Absolute tolerance for surface correction (default 0.50 ha).}
 
-\item{rtol}{Relative tolerance for surface correction within a UG (default 10\%).}
+\item{rtol}{Relative tolerance for surface correction within a UG (default 0.10).}
 }
 \value{
-An \code{sf} object identical to \code{ua}, with minor inconsistent lines
-corrected and an additional logical column \code{ug_valid} indicating UG
-consistency.
+An `sf` object identical to `ua`, with minor inconsistent lines
+  corrected and an additional logical column `ug_valid` indicating UG
+  consistency.
 }
 \description{
 Detects and corrects minor inconsistencies within management units
-(UG) in \emph{UA}. Lines with small surfaces relative to their UG are updated
+(UG) in _UA_. Lines with small surfaces relative to their UG are updated
 to match the dominant description.
 }
 \details{
 The function works by:
-\enumerate{
-\item Checking UG consistency with \code{ua_check_ug()}.
-\item Identifying the dominant row per UG (largest total surface).
-\item Correcting rows that differ from the dominant description and whose
-surface is smaller than \code{atol} and represents less than \code{rtol} of UG total.
-\item Returning the corrected UA and rechecking inconsistencies.
-}
+  \itemize{
+    \item Checking UG consistency with \code{ua_check_ug()}.
+    \item Identifying the dominant row per UG (largest total surface).
+    \item Correcting rows that differ from the dominant description and whose
+      surface is smaller than \code{atol} and represents less than \code{rtol} of UG total.
+    \item Returning the corrected UA and rechecking inconsistencies.
+  }
 }

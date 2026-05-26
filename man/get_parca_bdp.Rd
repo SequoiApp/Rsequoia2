@@ -7,10 +7,10 @@
 get_parca_bdp(idu)
 }
 \arguments{
-\item{idu}{\code{character} Cadastral parcel identifier.}
+\item{idu}{`character` Cadastral parcel identifier.}
 }
 \value{
-An \code{sf} object containing the parcel geometry.
+An `sf` object containing the parcel geometry.
 }
 \description{
 Retrieve a BDP parcel geometry from BDP

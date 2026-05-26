@@ -2,26 +2,26 @@
 % Please edit documentation in R/ua.R
 \name{ua_check_ug}
 \alias{ua_check_ug}
-\title{Check management unit (UG) consistency in the \emph{UA} sf object}
+\title{Check management unit (UG) consistency in the _UA_ sf object}
 \usage{
 ua_check_ug(ua, verbose = TRUE)
 }
 \arguments{
-\item{ua}{\code{sf} object containing analysis units;
+\item{ua}{`sf` object containing analysis units;
 with at least the UG identifier field and relevant attribute fields.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+\item{verbose}{`logical` If `TRUE`, display progress messages.}
 }
 \value{
-An \code{sf} object identical to \code{ua}, with an additional logical column
-\code{ug_valid} indicating if each row is consistent with the dominant UG description.
+An `sf` object identical to `ua`, with an additional logical column
+`ug_valid` indicating if each row is consistent with the dominant UG description.
 }
 \description{
 A management unit must (UG) can only have a single description. Therefore,
 all units of analysis within the same UG must include the same descriptive
 elements.
 This function analyzes the consistency of the descriptive elements for each
-management unit, and marks each row with a logical flag \code{ug_valid}
+management unit, and marks each row with a logical flag `ug_valid`
 indicating whether it is consistent with the dominant description of the UG.
 }
 \details{

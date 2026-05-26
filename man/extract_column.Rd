@@ -7,9 +7,9 @@
 extract_column(line_data, col_name, col_positions)
 }
 \arguments{
-\item{line_data}{A \code{data.frame} for a single line}
+\item{line_data}{A `data.frame` for a single line}
 
-\item{col_name}{\code{character}. Column name from \code{\link[=define_column_positions]{define_column_positions()}}}
+\item{col_name}{`character`. Column name from [define_column_positions()]}
 
 \item{col_positions}{List of column position definitions}
 }

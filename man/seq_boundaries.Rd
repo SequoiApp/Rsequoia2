@@ -2,21 +2,21 @@
 % Please edit documentation in R/boundaries.R
 \name{seq_boundaries}
 \alias{seq_boundaries}
-\title{Create \emph{FOREST} and \emph{OWNER} object from \emph{PARCA} for a Sequoia project}
+\title{Create _FOREST_ and _OWNER_ object from _PARCA_ for a Sequoia project}
 \usage{
 seq_boundaries(dirname = ".", tol = 10, verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{`character` Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{tol}{\code{numeric}; buffer tolerance in meter used to close small gaps.
-Any gap narrower than \code{2 * tol} is filled, causing polygons on both sides to
+\item{tol}{`numeric`; buffer tolerance in meter used to close small gaps.
+Any gap narrower than `2 * tol` is filled, causing polygons on both sides to
 be merged.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{`logical` If `TRUE`, display messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
 }
 \value{
 A named list
@@ -25,24 +25,24 @@ A named list
 Aggregates parcel geometries to build forest and owner boundaries.
 }
 \details{
-\strong{About \code{tol}}
+**About `tol`**
 The gap-closing logic is based on a French forestry rule stating that a forest
 split by a path or narrow road is legally considered a single continuous stand
 
 To reflect this, small linear gaps are removed using the sequence
-\emph{buffer -> union -> unbuffer}, applied with the distance given by \code{tol}.
-Any gap narrower than \code{2 * tol} is closed.
+*buffer -> union -> unbuffer*, applied with the distance given by `tol`.
+Any gap narrower than `2 * tol` is closed.
 
-\strong{Output layers}
+**Output layers**
 The function produces six layers:
-\itemize{
-\item \code{FOREST_poly}   : Forest boundaries with aggregated surface.
-\strong{\code{tol} is applied} to remove small gaps.
-\item \code{FOREST_line}   : Forest boundaries as linestrings.
-\item \code{FOREST_point}  : Centroids of forest polygons.
-\item \code{OWNER_poly}    : Boundaries aggregated per owner.
-\strong{\code{tol} is \emph{not} applied} to avoid merging polygons across owners.
-\item \code{OWNER_line}    : Owner boundaries as linestrings.
-\item \code{OWNER_point}   : Centroids of owner polygons.
-}
+
+- `FOREST_poly`   : Forest boundaries with aggregated surface.
+  **`tol` is applied** to remove small gaps.
+- `FOREST_line`   : Forest boundaries as linestrings.
+- `FOREST_point`  : Centroids of forest polygons.
+
+- `OWNER_poly`    : Boundaries aggregated per owner.
+  **`tol` is *not* applied** to avoid merging polygons across owners.
+- `OWNER_line`    : Owner boundaries as linestrings.
+- `OWNER_point`   : Centroids of owner polygons.
 }

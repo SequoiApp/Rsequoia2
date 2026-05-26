@@ -24,6 +24,7 @@ Imports:
     openxlsx2 (>= 1.23),
     pdftools,
     sf,
+    stats,
     terra (>= 1.9-11),
     tmap,
     units,
@@ -36,3 +37,5 @@ Config/roxygen2/markdown: TRUE
 Config/roxygen2/version: 8.0.0
 Config/Needs/website: rmarkdown
 Config/testthat/edition: 3
+LazyData: true
+RoxygenNote: 7.3.3

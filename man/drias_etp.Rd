@@ -7,14 +7,14 @@
 drias_etp(txt)
 }
 \arguments{
-\item{txt}{\code{character(1)}. Path to a DRIAS \code{.txt} file downloaded from the
-\href{https://www.drias-climat.fr/}{DRIAS portal}}
+\item{txt}{`character(1)`. Path to a DRIAS `.txt` file downloaded from the
+[DRIAS portal](https://www.drias-climat.fr/)}
 }
 \value{
-A \code{data.frame} with one row per month and period
+A `data.frame` with one row per month and period
 }
 \description{
-Reads a DRIAS climate projection \code{.txt} file and computes the mean monthly
+Reads a DRIAS climate projection `.txt` file and computes the mean monthly
 precipitation (P), potential evapotranspiration (ETP), and water balance (P - ETP)
 for each projection period.
 }
@@ -31,5 +31,5 @@ head(etp)
 
 }
 \seealso{
-\code{\link[=drias_read_table]{drias_read_table()}}, \code{\link[=drias_read_metadata]{drias_read_metadata()}}, \code{\link[=drias_ombro]{drias_ombro()}}
+[drias_read_table()], [drias_read_metadata()], [drias_ombro()]
 }

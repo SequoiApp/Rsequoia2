@@ -7,17 +7,17 @@
 seq_cache(key = NULL, filepath = NULL)
 }
 \arguments{
-\item{key}{\code{character} Cache key to retrieve. If \code{NULL}, the full YAML
+\item{key}{`character` Cache key to retrieve. If `NULL`, the full YAML
 configuration is returned.}
 
-\item{filepath}{\code{character} Optional path to a cache configuration file.
+\item{filepath}{`character` Optional path to a cache configuration file.
 Mostly useful for tests.}
 }
 \value{
-If \code{key = NULL}, a \code{list} containing the full cache configuration.
-Otherwise, a \code{list} with \code{label}, \code{path}, and \code{description}.
+If `key = NULL`, a `list` containing the full cache configuration.
+  Otherwise, a `list` with `label`, `path`, and `description`.
 }
 \description{
-Reads the cache registry from \code{seq_cache.yaml} and returns either the full
+Reads the cache registry from `seq_cache.yaml` and returns either the full
 configuration or the resolved cache information for one key.
 }

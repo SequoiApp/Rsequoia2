@@ -7,16 +7,16 @@
 get_parca(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE)
 }
 \arguments{
-\item{idu}{\code{character} Vector of IDU identifiers.}
+\item{idu}{`character` Vector of IDU identifiers.}
 
-\item{bdp_geom}{\code{logical} If \code{TRUE}, replace Etalab geometries with BDP when possible.}
+\item{bdp_geom}{`logical` If `TRUE`, replace Etalab geometries with BDP when possible.}
 
-\item{lieu_dit}{\code{logical} If \code{TRUE}, attach lieux-dits to each parcel.}
+\item{lieu_dit}{`logical` If `TRUE`, attach lieux-dits to each parcel.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+\item{verbose}{`logical` If `TRUE`, display progress messages.}
 }
 \value{
-An \code{sf} object of parcels with harmonized attributes.
+An `sf` object of parcels with harmonized attributes.
 }
 \description{
 Downloads parcel geometries from the Etalab cadastre API and optionally

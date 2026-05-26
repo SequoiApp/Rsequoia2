@@ -2,24 +2,24 @@
 % Please edit documentation in R/ua.R
 \name{ua_repair_idu}
 \alias{ua_repair_idu}
-\title{Repair \emph{UA} cadastral IDU from \emph{PARCA}}
+\title{Repair _UA_ cadastral IDU from _PARCA_}
 \usage{
 ua_repair_idu(ua, parca, verbose = TRUE)
 }
 \arguments{
-\item{ua}{\code{sf} Object containing analysis units.}
+\item{ua}{`sf` Object containing analysis units.}
 
-\item{parca}{\code{sf} Object containing cadastral parcels.}
+\item{parca}{`sf` Object containing cadastral parcels.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{`logical` If `TRUE`, display messages.}
 }
 \value{
-The input \code{ua} object with corrected IDU values.
+The input `ua` object with corrected IDU values.
 }
 \description{
-Repairs \emph{UA} IDU values from the dominant intersecting \emph{PARCA} polygon.
+Repairs _UA_ IDU values from the dominant intersecting _PARCA_ polygon.
 }
 \details{
-The spatial match is based on \code{\link[sf:st_join]{sf::st_join()}} with \code{largest = TRUE}, so the
-\emph{PARCA} polygon with the largest overlap is used as reference.
+The spatial match is based on [sf::st_join()] with `largest = TRUE`, so the
+_PARCA_ polygon with the largest overlap is used as reference.
 }

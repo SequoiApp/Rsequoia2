@@ -15,28 +15,28 @@ get_lidar(
 )
 }
 \arguments{
-\item{x}{\code{sf} or \code{sfc}; Area used to select intersecting LIDAR tiles.}
+\item{x}{`sf` or `sfc`; Area used to select intersecting LIDAR tiles.}
 
-\item{key}{\code{character}; LIDAR product to download. One of \code{"mnt"},
-\code{"mns"} or \code{"mnh"}.}
+\item{key}{`character`; LIDAR product to download. One of `"mnt"`,
+`"mns"` or `"mnh"`.}
 
-\item{buffer}{\code{numeric}; Buffer distance, in meters, applied around \code{x}
+\item{buffer}{`numeric`; Buffer distance, in meters, applied around `x`
 before masking.}
 
-\item{crs}{\code{integer} or \code{character}; Target CRS of the returned raster.
+\item{crs}{`integer` or `character`; Target CRS of the returned raster.
 Defaults to EPSG:2154.}
 
-\item{cache}{\code{character}; Cache directory. If \code{NULL}, the appropriate
-Rsequoia2 LIDAR cache is used, see \code{\link[=seq_cache]{seq_cache()}}.}
+\item{cache}{`character`; Cache directory. If `NULL`, the appropriate
+Rsequoia2 LIDAR cache is used, see [Rsequoia2::seq_cache()].}
 
-\item{overwrite}{\code{logical}; If \code{TRUE}, re-download existing tiles.}
+\item{overwrite}{`logical`; If `TRUE`, re-download existing tiles.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
+\item{verbose}{`logical`; If `TRUE`, display messages.}
 }
 \value{
-Invisibly returns a \code{terra::SpatRaster}.
+Invisibly returns a `terra::SpatRaster`.
 }
 \description{
 Downloads IGN LiDAR HD tiles for an area of interest, builds a VRT, masks
-the raster to a buffered envelope around \code{x}, and returns it in \code{crs}.
+the raster to a buffered envelope around `x`, and returns it in `crs`.
 }

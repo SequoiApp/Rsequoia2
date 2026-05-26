@@ -7,16 +7,16 @@
 style_table(wb, sheet, df, numfmt = "0.00")
 }
 \arguments{
-\item{wb}{A \link[openxlsx2:wb_workbook]{openxlsx2::wb_workbook} object.}
+\item{wb}{A [openxlsx2::wb_workbook] object.}
 
 \item{sheet}{Character or integer. The target worksheet name or index.}
 
-\item{df}{A data frame that has been written to \code{sheet} and needs styling.}
+\item{df}{A data frame that has been written to `sheet` and needs styling.}
 
-\item{numfmt}{see \link[openxlsx2:wb_add_numfmt]{openxlsx2::wb_add_numfmt}}
+\item{numfmt}{see [openxlsx2::wb_add_numfmt]}
 }
 \value{
-The modified \code{wb_workbook} object with styles applied.
+The modified `wb_workbook` object with styles applied.
 }
 \description{
 Applies consistent formatting to a data frame that has been written into a worksheet.

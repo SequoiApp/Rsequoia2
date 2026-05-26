@@ -7,20 +7,20 @@
 get_old(x, buffer = 1000, verbose = TRUE)
 }
 \arguments{
-\item{x}{An \code{sf} object defining the input area of interest.}
+\item{x}{An `sf` object defining the input area of interest.}
 
-\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
+\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{`logical` If `TRUE`, display messages.}
 }
 \value{
-An \code{sf} object containing OLD features.
+An `sf` object containing OLD features.
 }
 \description{
 Builds a convex buffer around the input geometry, retrieves OLD
-features and returns an \code{sf} point layer.
+features and returns an `sf` point layer.
 }
 \details{
-The function creates a convex buffer around the input geometry \code{x}
-and retrieves OLD features before returns as a single \code{sf} point layer.
+The function creates a convex buffer around the input geometry `x`
+and retrieves OLD features before returns as a single `sf` point layer.
 }

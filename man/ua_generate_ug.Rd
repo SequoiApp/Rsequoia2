@@ -2,22 +2,22 @@
 % Please edit documentation in R/ua.R
 \name{ua_generate_ug}
 \alias{ua_generate_ug}
-\title{Create management unit field (UG) in the \emph{UA} sf object}
+\title{Create management unit field (UG) in the _UA_ sf object}
 \usage{
 ua_generate_ug(ua, separator = ".", verbose = TRUE)
 }
 \arguments{
-\item{ua}{\code{sf} object containing analysis units;
-must contain fields used by \code{ug_keys}.}
+\item{ua}{`sf` object containing analysis units;
+must contain fields used by `ug_keys`.}
 
-\item{separator}{\code{character}, default \code{"."}. Separator between keys.}
+\item{separator}{`character`, default `"."`. Separator between keys.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+\item{verbose}{`logical` If `TRUE`, display progress messages.}
 }
 \value{
-\code{sf} object UA with UG field filled.
+`sf` object UA with UG field filled.
 }
 \description{
-Generates a standardized management unit identifier (UG) in the \emph{UA} object
+Generates a standardized management unit identifier (UG) in the _UA_ object
 based on configured parcel keys.
 }

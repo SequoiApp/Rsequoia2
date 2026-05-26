@@ -12,33 +12,33 @@ get_ser_pdf(
 )
 }
 \arguments{
-\item{id_ser}{\code{character} used to identify pedology reports.
-It can be got by using \code{get_ifn("ser")$codeser}.}
+\item{id_ser}{`character` used to identify pedology reports.
+It can be got by using `get_ifn("ser")$codeser`.}
 
 \item{dirname}{Output directory where PDF files are saved.}
 
-\item{overwrite}{\code{logical}; whether to overwrite existing files.
-Defaults to \code{FALSE}.}
+\item{overwrite}{`logical`; whether to overwrite existing files.
+Defaults to `FALSE`.}
 
-\item{verbose}{\code{logical}. If \code{TRUE}, display progress messages.}
+\item{verbose}{`logical`. If `TRUE`, display progress messages.}
 }
 \value{
-Invisibly returns the normalized path to \code{out_dir}. Returns
-\code{NULL} invisibly if no valid \code{id_ucs} is found.
+Invisibly returns the normalized path to `out_dir`. Returns
+`NULL` invisibly if no valid `id_ucs` is found.
 }
 \description{
 Downloads PDF documents associated with SER identifiers
 from the IFN repository.
 }
 \details{
-The function needs unique SER identifiers typically got from the \code{codeser}
-field of \code{ser}, builds download URLs pointing to the INRAE
+The function needs unique SER identifiers typically got from the `codeser`
+field of `ser`, builds download URLs pointing to the INRAE
 soil map repository, and downloads the corresponding PDF documents.
 
-Existing files are skipped unless \code{overwrite = TRUE}. All user
-feedback is handled via the \code{cli} package and can be silenced by
-setting \code{verbose = FALSE}.
+Existing files are skipped unless `overwrite = TRUE`. All user
+feedback is handled via the `cli` package and can be silenced by
+setting `verbose = FALSE`.
 }
 \seealso{
-\code{\link[=get_ifn]{get_ifn()}}
+[get_ifn()]
 }

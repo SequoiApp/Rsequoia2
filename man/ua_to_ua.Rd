@@ -2,29 +2,27 @@
 % Please edit documentation in R/ua.R
 \name{ua_to_ua}
 \alias{ua_to_ua}
-\title{Check and update \emph{UA} consistency with cadastral \emph{PARCA} data}
+\title{Check and update _UA_ consistency with cadastral _PARCA_ data}
 \usage{
 ua_to_ua(ua, parca, verbose = TRUE, check = interactive())
 }
 \arguments{
-\item{ua}{\code{sf} object containing analysis units.}
+\item{ua}{`sf` object containing analysis units.}
 
-\item{parca}{\code{sf} object, typically produced by \code{\link[=seq_parca]{seq_parca()}},
+\item{parca}{`sf` object, typically produced by [Rsequoia2::seq_parca()],
 containing cadastral parcels.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+\item{verbose}{`logical` If `TRUE`, display progress messages.}
 
-\item{check}{\code{logical} If \code{TRUE}, ask user.}
+\item{check}{`logical` If `TRUE`, ask user.}
 }
 \value{
-An updated \code{sf} object identical to \code{ua}, but with:
-\itemize{
-\item IDUs checked against PARCA,
-\item cadastral areas checked and corrected,
-\item management unit fields generated,
-\item corrected cadastral areas added,
-\item management unit consistency checked and corrected.
-}
+An updated `sf` object identical to `ua`, but with:
+- IDUs checked against PARCA,
+- cadastral areas checked and corrected,
+- management unit fields generated,
+- corrected cadastral areas added,
+- management unit consistency checked and corrected.
 }
 \description{
 This function verifies and updates the consistency of analysis units (UA)

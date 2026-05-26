@@ -7,14 +7,14 @@
 remove_small_geometries(x, tol, crs = 2154)
 }
 \arguments{
-\item{x}{\code{sf} or \code{sfc}. Input geometries (POLYGON / MULTIPOLYGON).}
+\item{x}{`sf` or `sfc`. Input geometries (POLYGON / MULTIPOLYGON).}
 
-\item{tol}{\code{numeric}. Minimum area threshold in square meters.}
+\item{tol}{`numeric`. Minimum area threshold in square meters.}
 
-\item{crs}{\code{numeric}. EPSG code of a projected CRS (default: 2154).}
+\item{crs}{`numeric`. EPSG code of a projected CRS (default: 2154).}
 }
 \value{
-An object of the same class as \code{x}, with geometries below the threshold removed.
+An object of the same class as `x`, with geometries below the threshold removed.
 }
 \description{
 Filters geometries whose area is smaller than a given threshold (in m²).

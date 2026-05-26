@@ -7,33 +7,34 @@
 get_keys(pattern = NULL, reduce = TRUE, filepath = NULL)
 }
 \arguments{
-\item{pattern}{\code{character} or \code{NULL}; regular-expression pattern used to
-filter keys. If \code{NULL}, all keys defined in the configuration are returned.}
+\item{pattern}{`character` or `NULL`; regular-expression pattern used to
+filter keys. If `NULL`, all keys defined in the configuration are returned.}
 
-\item{reduce}{\code{logical}; if \code{TRUE} (default), reduce each matching key.}
+\item{reduce}{`logical`; if `TRUE` (default), reduce each matching key.}
 
-\item{filepath}{\code{character} or \code{NULL}; optional override for the path to the
+\item{filepath}{`character` or `NULL`; optional override for the path to the
 YAML configuration file. Mainly used for testing purposes.}
 }
 \value{
 A character vector of matching keys.
-If \code{reduce = TRUE}, the returned keys are the reduced forms.
-If \code{pattern = NULL}, all configuration keys are returned.
+If `reduce = TRUE`, the returned keys are the reduced forms.
+If `pattern = NULL`, all configuration keys are returned.
 }
 \description{
-This helper function searches for keys defined in \code{inst/config/seq_layers.yaml}.
-Keys are matched using a regular-expression \code{pattern}.
+This helper function searches for keys defined in `inst/config/seq_layers.yaml`.
+Keys are matched using a regular-expression `pattern`.
 }
 \details{
-\strong{Reduction process}
+**Reduction process**
 Configuration keys typically follow a three/four-part structure such as
-\code{"v.seq.parca.poly"} or \code{"r.ortho.irc"}. When \code{reduce = TRUE}, each key is
-split on \code{"."} and only the third element is returned (s). This provides a
+`"v.seq.parca.poly"` or `"r.ortho.irc"`. When `reduce = TRUE`, each key is
+split on `"."` and only the third element is returned (s). This provides a
 short, semantic identifier for internal use.
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{"v.seq.parca.poly" -> "parca"
+```
+"v.seq.parca.poly" -> "parca"
 "r.ortho.irc"      -> "irc"
-}\if{html}{\out{</div>}}
+```
 
 If multiple full keys reduce to the same name, the function aborts to
 prevent ambiguity.

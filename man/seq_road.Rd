@@ -7,32 +7,32 @@
 seq_road(dirname = ".", buffer = 1000, verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{`character` Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
+\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{`logical` If `TRUE`, display messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
 }
 \value{
-Invisibly returns a named list of file paths written by \code{\link[=seq_write]{seq_write()}}.
-Returns \code{NULL} invisibly when no features are found.
+Invisibly returns a named list of file paths written by [seq_write()].
+Returns `NULL` invisibly when no features are found.
 }
 \description{
 Retrieves road section line features intersecting and surrounding
 the project area and writes the resulting layer to disk.
 }
 \details{
-Road section line features are retrieved using \code{\link[=get_road]{get_road()}}.
+Road section line features are retrieved using [get_road()].
 
-If no features are found, the function returns \code{NULL} invisibly and no file
+If no features are found, the function returns `NULL` invisibly and no file
 is written.
 
 When features are present, the layer is written to disk using
-\code{\link[=seq_write]{seq_write()}} with the key \code{"v.road.line"}.
+[seq_write()] with the key `"v.road.line"`.
 }
 \seealso{
-\code{\link[=get_road]{get_road()}}, \code{\link[=seq_write]{seq_write()}}
+[get_road()], [seq_write()]
 }

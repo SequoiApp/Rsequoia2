@@ -7,12 +7,12 @@
 group_lines_by_y(table_data, tolerance = 8)
 }
 \arguments{
-\item{table_data}{A \code{data.frame} from \code{\link[=filter_column_headers]{filter_column_headers()}}}
+\item{table_data}{A `data.frame` from [filter_column_headers()]}
 
-\item{tolerance}{\code{Numeric}. Vertical tolerance in pixels (default 8)}
+\item{tolerance}{`Numeric`. Vertical tolerance in pixels (default 8)}
 }
 \value{
-A \code{data.frame} with added \code{y_group} column
+A `data.frame` with added `y_group` column
 }
 \description{
 Groups elements on the same visual line using vertical proximity.

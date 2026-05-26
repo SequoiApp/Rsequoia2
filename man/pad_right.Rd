@@ -7,11 +7,11 @@
 pad_right(x, width, fill = "0")
 }
 \arguments{
-\item{x}{\code{character} String to pad}
+\item{x}{`character` String to pad}
 
-\item{width}{\code{integer} Desired total width}
+\item{width}{`integer` Desired total width}
 
-\item{fill}{\code{character} Filler to pad with}
+\item{fill}{`character` Filler to pad with}
 }
 \value{
 A zero-padded character string.

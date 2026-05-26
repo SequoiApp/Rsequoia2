@@ -7,12 +7,12 @@
 voids_to_roadway(x)
 }
 \arguments{
-\item{x}{An \code{sf} polygon object from \code{\link[=get_voids]{get_voids()}}
+\item{x}{An `sf` polygon object from [Rsequoia2::get_voids()]
 completed by user}
 }
 \value{
-An \code{sf} object with POLYGON or MULTIPOLYGON geometries normalized as
-road polygons.
+An `sf` object with POLYGON or MULTIPOLYGON geometries normalized as
+  road polygons.
 }
 \description{
 Cleans polygon topology and normalizes the result as road polygons.

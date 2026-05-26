@@ -7,18 +7,18 @@
 create_empty_sf(geom_type, ...)
 }
 \arguments{
-\item{geom_type}{\code{character}; one of the geometry types supported by \code{sf}: \code{POLYGON},
-\code{LINESTRING}, \code{POINT}, \code{MULTIPOLYGON}, \code{MULTILINESTRING}, \code{MULTIPOINT}.}
+\item{geom_type}{`character`; one of the geometry types supported by `sf`: `POLYGON`,
+`LINESTRING`, `POINT`, `MULTIPOLYGON`, `MULTILINESTRING`, `MULTIPOINT`.}
 
 \item{...}{Named attributes with their classes. For example, you can pass
-arguments like \code{PLACETTE = character(0)}. Each argument must be named according
+arguments like `PLACETTE = character(0)`. Each argument must be named according
 to the attribute, with the corresponding empty vector of the appropriate class.}
 }
 \value{
-An \code{sf} object
+An `sf` object
 }
 \description{
-This function creates an empty \code{sf} object with the desired geometry type
+This function creates an empty `sf` object with the desired geometry type
 (point, line, polygon, etc.).
 }
 \examples{

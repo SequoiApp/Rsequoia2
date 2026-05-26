@@ -2,40 +2,41 @@
 % Please edit documentation in R/parcels.R
 \name{seq_parcels}
 \alias{seq_parcels}
-\title{Create \emph{PF} and \emph{SSPF} object from \emph{UA} for a Sequoia project}
+\title{Create _PF_ and _SSPF_ object from _UA_ for a Sequoia project}
 \usage{
 seq_parcels(dirname = ".", verbose = FALSE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{`character` Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{`logical` If `TRUE`, display messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
 }
 \value{
 A named list of six file paths, corresponding to the exported PF and SSPF
 polygon and line layers.
 }
 \description{
-This function reads the UA polygon layer (\code{v.seq.ua.poly}) of a Sequoia
-project, aggregates surfaces at the \code{parcelle} and
-\code{sous-parcelle} level and writes four derived layers:
+This function reads the UA polygon layer (`v.seq.ua.poly`) of a Sequoia
+project, aggregates surfaces at the `parcelle` and
+`sous-parcelle` level and writes four derived layers:
 }
 \details{
 Created layers are automatically written to the project directory using
-\code{\link[=seq_write]{seq_write()}}, respecting the \code{dirname}, \code{overwrite}, and \code{verbose}
+[seq_write()], respecting the `dirname`, `overwrite`, and `verbose`
 parameters.
 
+
 The function performs two levels of spatial aggregation ande create 4 layers:
-\enumerate{
-\item \strong{PF (Parcelle)}
-Rows of the UA are grouped using the \code{parcelle} field, and corrected surface
+
+1. **PF (Parcelle)**
+Rows of the UA are grouped using the `parcelle` field, and corrected surface
 areas are summed. A polygon and border lines layer are created.
-\item \strong{SSPF (Sous-parcelle)}
-Rows of the UA are grouped using the \code{parcelle} and \code{sous-parcelle} field, and
+
+2. **SSPF (Sous-parcelle)**
+Rows of the UA are grouped using the `parcelle` and `sous-parcelle` field, and
 corrected surface areas are summed. A polygon and border lines
 layer are created.
-}
 }

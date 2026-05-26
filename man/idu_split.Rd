@@ -7,7 +7,7 @@
 idu_split(idu)
 }
 \arguments{
-\item{idu}{\code{character} IDU(s) to pad}
+\item{idu}{`character` IDU(s) to pad}
 }
 \description{
 Internal helper used to split idu

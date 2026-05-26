@@ -12,7 +12,7 @@ seq_gpkg_id_rename(path, new_id)
 \item{new_id}{Character. New identifier value.}
 }
 \value{
-A list with \code{file}, \code{status}, and \code{message}.
+A list with `file`, `status`, and `message`.
 }
 \description{
 Update the Sequoia identifier field in one GeoPackage.

@@ -7,13 +7,13 @@
 mf_ombro(clim, periods = c(30, 5))
 }
 \arguments{
-\item{clim}{\code{data.frame} Raw climatology data from \code{\link[=mf_get_climatology]{mf_get_climatology()}}}
+\item{clim}{`data.frame` Raw climatology data from [mf_get_climatology()]}
 
-\item{periods}{\code{integer} Vector of periods (in years) used to compute averages.
-Default is \code{c(30, 5)}.}
+\item{periods}{`integer` Vector of periods (in years) used to compute averages.
+Default is `c(30, 5)`.}
 }
 \value{
-A \code{data.frame} containing monthly averages of temperature and precipitation
+A `data.frame` containing monthly averages of temperature and precipitation
 for each period.
 }
 \description{

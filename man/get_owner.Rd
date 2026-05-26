@@ -7,11 +7,11 @@
 get_owner(pdf)
 }
 \arguments{
-\item{pdf}{\code{character}. Path to PDF file}
+\item{pdf}{`character`. Path to PDF file}
 }
 \value{
-A \code{data.frame} with columns: type, type_code, code, name, firstname,
-address, seq_name, file_name, file_path
+A `data.frame` with columns: type, type_code, code, name, firstname,
+  address, seq_name, file_name, file_path
 }
 \description{
 Parses French cadastral PDFs to extract owner details including type,

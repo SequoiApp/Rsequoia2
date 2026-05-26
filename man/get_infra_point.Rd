@@ -7,40 +7,36 @@
 get_infra_point(x, buffer = 1000)
 }
 \arguments{
-\item{x}{An \code{sf} object used as the input area.}
+\item{x}{An `sf` object used as the input area.}
 
-\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
+\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge}
 }
 \value{
-An \code{sf} object of type \code{POINT} containing point infrastructure
-features with standardized fields, including:
-\itemize{
-\item \code{TYPE} - Infrastructure type code derived from BDTOPO nature values:
-\itemize{
-\item \code{PYL} = Pylon / antenna
-\item \code{CLO} = Steeple
-\item \code{CRX} = Cross or calvary
-\item \code{EOL} = Wind turbine
-\item \code{CST} = Other point construction
-\item \code{GRO} = Cave
-\item \code{GOU} = Sinkhole
-\item \code{ORO} = Other orographic detail
-}
-\item \code{NAME} - Toponym when available
-\item \code{SOURCE} - Data source (\code{IGNF_BDTOPO_V3})
-}
+An `sf` object of type `POINT` containing point infrastructure
+  features with standardized fields, including:
+  * `TYPE` - Infrastructure type code derived from BDTOPO nature values:
+    - `PYL` = Pylon / antenna
+    - `CLO` = Steeple
+    - `CRX` = Cross or calvary
+    - `EOL` = Wind turbine
+    - `CST` = Other point construction
+    - `GRO` = Cave
+    - `GOU` = Sinkhole
+    - `ORO` = Other orographic detail
+  * `NAME` - Toponym when available
+  * `SOURCE` - Data source (`IGNF_BDTOPO_V3`)
 }
 \description{
 Retrieve point infrastructure features around an area
 }
 \details{
 The function retrieves point infrastructure layers from the IGN
-BDTOPO V3 dataset within a convex buffer around \code{x}.
+BDTOPO V3 dataset within a convex buffer around `x`.
 
 Retrieved layers include point constructions, orographic details,
 and pylons. Feature types are classified into standardized Sequoia
-codes based on their original \code{nature} attribute.
+codes based on their original `nature` attribute.
 
 If no point infrastructure data are found, the function returns
-an empty standardized \code{sf} object.
+an empty standardized `sf` object.
 }

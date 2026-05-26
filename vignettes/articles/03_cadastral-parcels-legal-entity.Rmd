@@ -1,8 +1,8 @@
 ---
-title: "Parcelles cadastrales - Personne morale (FR)"
+title: "Parcelles cadastrales - Personne morale"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Parcelles cadastrales - Personne morale (FR)}
+  %\VignetteIndexEntry{Parcelles cadastrales - Personne morale}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

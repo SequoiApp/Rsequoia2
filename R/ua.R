@@ -5,6 +5,7 @@
 #'
 #' @return An `sf` object containing the analysis units.
 #'
+#' @export
 parca_to_ua <- function(parca) {
   ua <- seq_normalize(parca, "ua")
 
@@ -468,28 +469,30 @@ ua_check_ug <- function(ua, verbose = TRUE) {
 
 }
 
-#' Clean management units (UG) by correcting minor inconsistencies in the _UA_ sf object
+#' @title Clean management units (UG) by correcting minor inconsistencies in the _UA_ sf object
 #'
+#' @description
 #' Detects and corrects minor inconsistencies within management units
 #' (UG) in _UA_. Lines with small surfaces relative to their UG are updated
 #' to match the dominant description.
 #'
 #' @param ua `sf` object containing analysis units;
-#' with at least the UG identifier field and relevant attribute fields.
+#'   with at least the UG identifier field and relevant attribute fields.
 #' @param atol Absolute tolerance for surface correction (default 0.50 ha).
-#' @param rtol Relative tolerance for surface correction within a UG (default 10%).
+#' @param rtol Relative tolerance for surface correction within a UG (default 0.10).
 #'
 #' @return An `sf` object identical to `ua`, with minor inconsistent lines
-#' corrected and an additional logical column `ug_valid` indicating UG
-#' consistency.
+#'   corrected and an additional logical column `ug_valid` indicating UG
+#'   consistency.
 #'
-#' @details
-#' The function works by:
-#' 1. Checking UG consistency with `ua_check_ug()`.
-#' 2. Identifying the dominant row per UG (largest total surface).
-#' 3. Correcting rows that differ from the dominant description and whose
-#'    surface is smaller than `atol` and represents less than `rtol` of UG total.
-#' 4. Returning the corrected UA and rechecking inconsistencies.
+#' @details The function works by:
+#'   \itemize{
+#'     \item Checking UG consistency with \code{ua_check_ug()}.
+#'     \item Identifying the dominant row per UG (largest total surface).
+#'     \item Correcting rows that differ from the dominant description and whose
+#'       surface is smaller than \code{atol} and represents less than \code{rtol} of UG total.
+#'     \item Returning the corrected UA and rechecking inconsistencies.
+#'   }
 #'
 #' @export
 ua_clean_ug <- function(

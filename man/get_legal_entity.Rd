@@ -7,18 +7,18 @@
 get_legal_entity(x, cache = seq_cache("legal_entity")$path, verbose = TRUE)
 }
 \arguments{
-\item{x}{\code{character}; Code(s) INSEE or code(s) department (see
+\item{x}{`character`; Code(s) INSEE or code(s) department (see
 [Rsequoia2::get_cog())}
 
-\item{cache}{\code{character}; Storage directory. Defaults to the user cache
+\item{cache}{`character`; Storage directory. Defaults to the user cache
 directory.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{`logical` If `TRUE`, display messages.}
 }
 \description{
 Generates a forest matrice used to store general forest
-information (e.g., \code{IDENTIFIANT}, \code{PROPRIETAIRE}) and cadastral attributes
-(\code{CODE_INSEE}, \code{PREFIXE}, \code{SECTION}, \code{NUMERO}, \code{LIEU_DIT}) for legal
+information (e.g., `IDENTIFIANT`, `PROPRIETAIRE`) and cadastral attributes
+(`CODE_INSEE`, `PREFIXE`, `SECTION`, `NUMERO`, `LIEU_DIT`) for legal
 entity.
 }
 \examples{

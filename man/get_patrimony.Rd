@@ -7,20 +7,20 @@
 get_patrimony(x, key, buffer = 500, verbose = TRUE)
 }
 \arguments{
-\item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
+\item{x}{`sf` or `sfc`; Geometry located in France.}
 
-\item{key}{\code{character}; Layer to download.
-Must be one of from \code{get_keys("pat")}}
+\item{key}{`character`; Layer to download.
+Must be one of from `get_keys("pat")`}
 
-\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
+\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge
 the download area.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
+\item{verbose}{`logical`; If `TRUE`, display messages.}
 }
 \value{
-\code{sf} object from \code{sf} package
+`sf` object from `sf` package
 }
 \description{
-Downloads a vector layer with \code{frheritage} for the area covering \code{x}
+Downloads a vector layer with `frheritage` for the area covering `x`
 expanded with a buffer.
 }
