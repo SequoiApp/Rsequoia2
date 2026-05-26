@@ -13,11 +13,10 @@ seq_cache_report(filepath = NULL)
 
 - filepath:
 
-  \`character\`. Optional path to a cache configuration file. Mostly
-  useful for tests. If \`NULL\`, the package cache configuration is
-  used.
+  `character`. Optional path to a cache configuration file. Mostly
+  useful for tests. If `NULL`, the package cache configuration is used.
 
 ## Value
 
-Invisibly returns a \`data.frame\` with cache key, label, path, size in
+Invisibly returns a `data.frame` with cache key, label, path, size in
 bytes, and formatted size.

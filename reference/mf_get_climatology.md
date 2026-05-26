@@ -1,7 +1,7 @@
 # Download monthly climatology from Meteo-France
 
-Downloads monthly climatological data for the \*3 nearest meteorological
-stations\*.
+Downloads monthly climatological data for the *3 nearest meteorological
+stations*.
 
 ## Usage
 
@@ -13,20 +13,20 @@ mf_get_climatology(x, cache = seq_cache("meteo")$path, verbose = TRUE)
 
 - x:
 
-  \`sf\` or \`sfc\`.
+  `sf` or `sfc`.
 
 - cache:
 
-  \`character\`; Storage directory. Defaults to the user cache directory
-  (see \[tools::R_user_dir()\])
+  `character`; Storage directory. Defaults to the user cache directory
+  (see [`tools::R_user_dir()`](https://rdrr.io/r/tools/userdir.html))
 
 - verbose:
 
-  \`logical\` If \`TRUE\`, display progress messages.
+  `logical` If `TRUE`, display progress messages.
 
 ## Value
 
-A \`data.frame\` containing monthly climatology records for the nearest
+A `data.frame` containing monthly climatology records for the nearest
 stations.
 
 ## Details

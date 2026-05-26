@@ -1,7 +1,7 @@
 # Retrieve layer metadata from the Sequoia configuration
 
 Resolves a layer key against the config defined in
-\`inst/config/seq_layers.yaml\` and \`inst/config/seq_path.yaml\` and
+`inst/config/seq_layers.yaml` and `inst/config/seq_path.yaml` and
 returns the associated metadata: name, extension, filename, path,
 fullpath
 
@@ -15,13 +15,13 @@ seq_layer(key, verbose = FALSE)
 
 - key:
 
-  \`character\` Name of a layer key to match against the entries defined
-  in \`inst/config/seq_layers.yaml\`. (see \*Details\* for partial
+  `character` Name of a layer key to match against the entries defined
+  in `inst/config/seq_layers.yaml`. (see *Details* for partial
   matching).
 
 - verbose:
 
-  \`logical\` If \`TRUE\`, display messages.
+  `logical` If `TRUE`, display messages.
 
 ## Value
 
@@ -41,18 +41,18 @@ A named list containing layer metadata, including:
 
 ## Details
 
-The function resolves the input \`key\` using \*\*partial matching\*\*
-against the keys defined in \`inst/config/seq_layers.yaml\`.
+The function resolves the input `key` using **partial matching** against
+the keys defined in `inst/config/seq_layers.yaml`.
 
-\- If exactly \*\*one\*\* entry matches, it is selected. For example,
-\`key = "znieff1"\` can be used to match \`"v.mnhn.znieff1.poly"\` when
-this is the only key containing \`"znieff1"\`.
+- If exactly **one** entry matches, it is selected. For example,
+  `key = "znieff1"` can be used to match `"v.mnhn.znieff1.poly"` when
+  this is the only key containing `"znieff1"`.
 
-\- If \*\*multiple\*\* entries match, the function aborts and displays
-the ambiguous keys, prompting the user to provide a more specific key.
+- If **multiple** entries match, the function aborts and displays the
+  ambiguous keys, prompting the user to provide a more specific key.
 
-Note: \*\*\`seq_layers.yaml\` is part of the package and must not be
-modified.\*\*
+Note: **`seq_layers.yaml` is part of the package and must not be
+modified.**
 
 ## Examples
 

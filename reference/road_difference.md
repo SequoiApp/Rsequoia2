@@ -13,7 +13,7 @@ road_difference(buffers, order)
 
 - buffers:
 
-  A named list of \`sf\` polygon buffers.
+  A named list of `sf` polygon buffers.
 
 - order:
 
@@ -21,4 +21,4 @@ road_difference(buffers, order)
 
 ## Value
 
-An \`sf\` object with combined polygons after hierarchical differences.
+An `sf` object with combined polygons after hierarchical differences.

@@ -13,8 +13,8 @@ filter_column_headers(table_data)
 
 - table_data:
 
-  A \`data.frame\` of extracted table content
+  A `data.frame` of extracted table content
 
 ## Value
 
-Filtered \`data.frame\` without header rows
+Filtered `data.frame` without header rows

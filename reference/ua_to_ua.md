@@ -1,4 +1,4 @@
-# Check and update \_UA\_ consistency with cadastral \_PARCA\_ data
+# Check and update *UA* consistency with cadastral *PARCA* data
 
 This function verifies and updates the consistency of analysis units
 (UA) using cadastral parcel data (PARCA). It checks matching IDUs,
@@ -15,24 +15,32 @@ ua_to_ua(ua, parca, verbose = TRUE, check = interactive())
 
 - ua:
 
-  \`sf\` object containing analysis units.
+  `sf` object containing analysis units.
 
 - parca:
 
-  \`sf\` object, typically produced by \[Rsequoia2::seq_parca()\],
+  `sf` object, typically produced by
+  [`seq_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parca.md),
   containing cadastral parcels.
 
 - verbose:
 
-  \`logical\` If \`TRUE\`, display progress messages.
+  `logical` If `TRUE`, display progress messages.
 
 - check:
 
-  \`logical\` If \`TRUE\`, ask user.
+  `logical` If `TRUE`, ask user.
 
 ## Value
 
-An updated \`sf\` object identical to \`ua\`, but with: - IDUs checked
-against PARCA, - cadastral areas checked and corrected, - management
-unit fields generated, - corrected cadastral areas added, - management
-unit consistency checked and corrected.
+An updated `sf` object identical to `ua`, but with:
+
+- IDUs checked against PARCA,
+
+- cadastral areas checked and corrected,
+
+- management unit fields generated,
+
+- corrected cadastral areas added,
+
+- management unit consistency checked and corrected.

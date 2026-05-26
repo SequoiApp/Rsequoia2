@@ -1,8 +1,9 @@
 # Load table definitions from the Sequoia configuration
 
-Internal helper used by \`seq_normalize()\` to determine which fields
-belong to a given table. Table definitions are stored in
-\`inst/config/seq_tables.yaml\`.
+Internal helper used by
+[`seq_normalize()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_normalize.md)
+to determine which fields belong to a given table. Table definitions are
+stored in `inst/config/seq_tables.yaml`.
 
 ## Usage
 
@@ -14,13 +15,13 @@ seq_table(table = NULL, filepath = NULL)
 
 - table:
 
-  \`character\` or \`NULL\`; If provided, must match a key in
-  \`inst/config/seq_tables.yaml\`.
+  `character` or `NULL`; If provided, must match a key in
+  `inst/config/seq_tables.yaml`.
 
 - filepath:
 
-  \`character\` or \`NULL\`; override for the path to the default YAML
-  configuration file (\`inst/config/seq_fields.yaml\`). Used mainly for
+  `character` or `NULL`; override for the path to the default YAML
+  configuration file (`inst/config/seq_fields.yaml`). Used mainly for
   testing.
 
 ## Value

@@ -13,8 +13,8 @@ get_matrice(pdf)
 
 - pdf:
 
-  \`character\` vector. Paths to PDF file
+  `character` vector. Paths to PDF file
 
 ## Value
 
-List with three \`data.frame\`: \`refs\`, \`owners\`, \`parcels\`
+List with three `data.frame`: `refs`, `owners`, `parcels`

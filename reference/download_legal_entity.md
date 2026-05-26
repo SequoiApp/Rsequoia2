@@ -16,16 +16,15 @@ download_legal_entity(cache = seq_cache("legal_entity")$path, verbose = TRUE)
 
 - cache:
 
-  \`character\`; Storage directory. Defaults to the user cache
-  directory.
+  `character`; Storage directory. Defaults to the user cache directory.
 
 - verbose:
 
-  \`logical\` If \`TRUE\`, display messages.
+  `logical` If `TRUE`, display messages.
 
 ## Value
 
-\`character\`;
+`character`;
 
 ## Examples
 

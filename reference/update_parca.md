@@ -1,6 +1,6 @@
-# Update \`R_SEQUOIA\` \_PARCA\_ layer to \`Rsequoia2\`
+# Update `R_SEQUOIA` *PARCA* layer to `Rsequoia2`
 
-Update \`R_SEQUOIA\` \_PARCA\_ layer to \`Rsequoia2\`
+Update `R_SEQUOIA` *PARCA* layer to `Rsequoia2`
 
 ## Usage
 
@@ -12,13 +12,13 @@ update_parca(parca, id)
 
 - parca:
 
-  \`sf\` object containing cadastrals parcels
+  `sf` object containing cadastrals parcels
 
 - id:
 
-  \`character\` Identifier of the project
+  `character` Identifier of the project
 
 ## Value
 
-An \`sf\` object containing cadastral parcels, normalized for
-\`Rsequoia2\` use.
+An `sf` object containing cadastral parcels, normalized for `Rsequoia2`
+use.

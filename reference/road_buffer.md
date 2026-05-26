@@ -12,7 +12,7 @@ road_buffer(x, type, dist)
 
 - x:
 
-  An \`sf\` object with road line geometries.
+  An `sf` object with road line geometries.
 
 - type:
 
@@ -24,5 +24,5 @@ road_buffer(x, type, dist)
 
 ## Value
 
-An \`sf\` object containing a single (multi)polygon geometry for the
-road type.
+An `sf` object containing a single (multi)polygon geometry for the road
+type.

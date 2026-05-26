@@ -1,6 +1,6 @@
-# Retrieve old \`R_SEQUOIA\` \_PARCA\_ identifier
+# Retrieve old `R_SEQUOIA` *PARCA* identifier
 
-Retrieve old \`R_SEQUOIA\` \_PARCA\_ identifier
+Retrieve old `R_SEQUOIA` *PARCA* identifier
 
 ## Usage
 
@@ -12,9 +12,9 @@ seq1_id(dirname = ".")
 
 - dirname:
 
-  \`character\` Directory where the file \_PARCA\_ is located. Defaults
-  to the current working directory.
+  `character` Directory where the file *PARCA* is located. Defaults to
+  the current working directory.
 
 ## Value
 
-The \`character\` identifier
+The `character` identifier

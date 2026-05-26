@@ -12,12 +12,14 @@ extract_rows(table_data, col_positions)
 
 - table_data:
 
-  A \`data.frame\` from \[group_lines_by_y()\]
+  A `data.frame` from
+  [`group_lines_by_y()`](https://sequoiapp.github.io/Rsequoia2/reference/group_lines_by_y.md)
 
 - col_positions:
 
-  List from \[define_column_positions()\]
+  List from
+  [`define_column_positions()`](https://sequoiapp.github.io/Rsequoia2/reference/define_column_positions.md)
 
 ## Value
 
-List of \`data.frame\`, one per extracted row
+List of `data.frame`, one per extracted row

@@ -13,9 +13,10 @@ process_raw_parcels(df)
 
 - df:
 
-  Raw \`data.frame\` from \[get_raw_parcels()\]
+  Raw `data.frame` from
+  [`get_raw_parcels()`](https://sequoiapp.github.io/Rsequoia2/reference/get_raw_parcels.md)
 
 ## Value
 
-Processed \`data.frame\` with normalized fields, row types, IDs, and
+Processed `data.frame` with normalized fields, row types, IDs, and
 calculated columns

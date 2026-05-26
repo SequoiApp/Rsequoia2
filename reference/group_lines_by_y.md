@@ -13,12 +13,13 @@ group_lines_by_y(table_data, tolerance = 8)
 
 - table_data:
 
-  A \`data.frame\` from \[filter_column_headers()\]
+  A `data.frame` from
+  [`filter_column_headers()`](https://sequoiapp.github.io/Rsequoia2/reference/filter_column_headers.md)
 
 - tolerance:
 
-  \`Numeric\`. Vertical tolerance in pixels (default 8)
+  `Numeric`. Vertical tolerance in pixels (default 8)
 
 ## Value
 
-A \`data.frame\` with added \`y_group\` column
+A `data.frame` with added `y_group` column

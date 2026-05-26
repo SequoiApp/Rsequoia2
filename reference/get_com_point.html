@@ -56,34 +56,34 @@ restricted to a graphical extent.</p>
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>An `sf` object used as the input area.</p></dd>
+<dd><p>An <code>sf</code> object used as the input area.</p></dd>
 
 
 <dt id="arg-graphic">graphic<a class="anchor" aria-label="anchor" href="#arg-graphic"></a></dt>
-<dd><p>Logical. If `TRUE`, centroids are computed only on the
+<dd><p>Logical. If <code>TRUE</code>, centroids are computed only on the
 intersection between commune polygons and a 500 m convex buffer
-around `x`, for cartographic display.</p></dd>
+around <code>x</code>, for cartographic display.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>`logical` If `TRUE`, display messages.</p></dd>
+<dd><p><code>logical</code> If <code>TRUE</code>, display messages.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An `sf` object of type `POINT` representing commune centroids.
-  Returns `NULL` if no commune intersects the input area.</p>
+    <p>An <code>sf</code> object of type <code>POINT</code> representing commune centroids.
+Returns <code>NULL</code> if no commune intersects the input area.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The function retrieves commune polygons using `get_com_poly()`,
-then computes their centroids. When `graphic = TRUE`, centroids
+    <p>The function retrieves commune polygons using <code><a href="get_com_poly.html">get_com_poly()</a></code>,
+then computes their centroids. When <code>graphic = TRUE</code>, centroids
 are calculated from the clipped geometries to ensure points
 fall within the display extent.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>[get_com_poly()]</p></div>
+    <div class="dont-index"><p><code><a href="get_com_poly.html">get_com_poly()</a></code></p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

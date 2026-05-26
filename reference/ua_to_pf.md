@@ -1,8 +1,9 @@
-# Aggregate \_UA\_ surfaces at the \`parcelle\` field level
+# Aggregate *UA* surfaces at the `parcelle` field level
 
-Aggregates corrected surface areas from a \_UA\_ layer by grouping rows
+Aggregates corrected surface areas from a *UA* layer by grouping rows
 according to the parcel unit field, as defined by the configuration
-returned by \[seq_field()\].
+returned by
+[`seq_field()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_field.md).
 
 ## Usage
 
@@ -14,20 +15,23 @@ ua_to_pf(ua)
 
 - ua:
 
-  \`sf\` object containing analysis units
+  `sf` object containing analysis units
 
 ## Value
 
-\`sf\` object where polygons are aggregated at the \_PF\_ level, with
+`sf` object where polygons are aggregated at the *PF* level, with
 corrected surfaces.
 
 ## Details
 
-This function is typically used internally by \[seq_parcels()\], but may
-also be called directly when a PF-level summary of a UA dataset is
-required.
+This function is typically used internally by
+[`seq_parcels()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parcels.md),
+but may also be called directly when a PF-level summary of a UA dataset
+is required.
 
 ## See also
 
-\[ua_to_sspf()\], \[seq_parcels()\], \[seq_field()\],
-\[seq_normalize()\]
+[`ua_to_sspf()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_to_sspf.md),
+[`seq_parcels()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parcels.md),
+[`seq_field()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_field.md),
+[`seq_normalize()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_normalize.md)

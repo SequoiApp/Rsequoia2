@@ -1,8 +1,7 @@
-# Check spatial coverage between \_UA\_ and \_PARCA\_
+# Check spatial coverage between *UA* and *PARCA*
 
-Checks that every \_UA\_ feature intersects at least one \_PARCA\_
-feature, and that every \_PARCA\_ feature intersects at least one \_UA\_
-feature.
+Checks that every *UA* feature intersects at least one *PARCA* feature,
+and that every *PARCA* feature intersects at least one *UA* feature.
 
 ## Usage
 
@@ -14,13 +13,13 @@ ua_check_coverage(ua, parca)
 
 - ua:
 
-  \`sf\` Object containing analysis units.
+  `sf` Object containing analysis units.
 
 - parca:
 
-  \`sf\` Object containing cadastral parcels.
+  `sf` Object containing cadastral parcels.
 
 ## Value
 
-The input \`ua\` object, invisibly, if spatial coverage is valid. Aborts
+The input `ua` object, invisibly, if spatial coverage is valid. Aborts
 otherwise.

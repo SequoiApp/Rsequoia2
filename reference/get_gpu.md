@@ -1,6 +1,6 @@
 # Download GPU vector layer
 
-Downloads a vector layer with \`hhapign\` for the area covering \`x\`
+Downloads a vector layer with `hhapign` for the area covering `x`
 expanded with a buffer.
 
 ## Usage
@@ -13,17 +13,17 @@ get_gpu(x, key, verbose = TRUE)
 
 - x:
 
-  \`sf\` or \`sfc\`; Geometry located in France.
+  `sf` or `sfc`; Geometry located in France.
 
 - key:
 
-  \`character\`; Layer to download. Must be one of from
-  \`get_keys("gpu", reduce = FALSE)\`
+  `character`; Layer to download. Must be one of from
+  `get_keys("gpu", reduce = FALSE)`
 
 - verbose:
 
-  \`logical\`; If \`TRUE\`, display messages.
+  `logical`; If `TRUE`, display messages.
 
 ## Value
 
-\`sf\` object from \`sf\` package
+`sf` object from `sf` package

@@ -13,8 +13,9 @@ identify_non_anchors(all_visual_data)
 
 - all_visual_data:
 
-  A \`data.frame\` from \[extract_visual_data()\]
+  A `data.frame` from
+  [`extract_visual_data()`](https://sequoiapp.github.io/Rsequoia2/reference/extract_visual_data.md)
 
 ## Value
 
-A \`data.frame\` of anchor positions with same columns as input
+A `data.frame` of anchor positions with same columns as input

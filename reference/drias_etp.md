@@ -1,6 +1,6 @@
 # Compute monthly precipitation, evapotranspiration and water balance from DRIAS projections
 
-Reads a DRIAS climate projection \`.txt\` file and computes the mean
+Reads a DRIAS climate projection `.txt` file and computes the mean
 monthly precipitation (P), potential evapotranspiration (ETP), and water
 balance (P - ETP) for each projection period.
 
@@ -14,12 +14,12 @@ drias_etp(txt)
 
 - txt:
 
-  \`character(1)\`. Path to a DRIAS \`.txt\` file downloaded from the
-  \[DRIAS portal\](https://www.drias-climat.fr/)
+  `character(1)`. Path to a DRIAS `.txt` file downloaded from the [DRIAS
+  portal](https://www.drias-climat.fr/)
 
 ## Value
 
-A \`data.frame\` with one row per month and period
+A `data.frame` with one row per month and period
 
 ## Details
 
@@ -29,7 +29,9 @@ avoid biased averages.
 
 ## See also
 
-\[drias_read_table()\], \[drias_read_metadata()\], \[drias_ombro()\]
+[`drias_read_table()`](https://sequoiapp.github.io/Rsequoia2/reference/drias_read_table.md),
+[`drias_read_metadata()`](https://sequoiapp.github.io/Rsequoia2/reference/drias_read_metadata.md),
+[`drias_ombro()`](https://sequoiapp.github.io/Rsequoia2/reference/drias_ombro.md)
 
 ## Examples
 

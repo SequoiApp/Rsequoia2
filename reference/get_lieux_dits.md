@@ -12,8 +12,8 @@ get_lieux_dits(idu)
 
 - idu:
 
-  \`character\` Cadastral parcel identifier.
+  `character` Cadastral parcel identifier.
 
 ## Value
 
-An \`sf\` object containing the parcel geometry.
+An `sf` object containing the parcel geometry.

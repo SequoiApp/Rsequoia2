@@ -12,11 +12,11 @@ poly_to_line(x)
 
 - x:
 
-  \`sf POLYGONS\`, using a projected CRS
+  `sf POLYGONS`, using a projected CRS
 
 ## Value
 
-An \`sf\` object with two \`MULTILINESTRING\` geometry is returned
+An `sf` object with two `MULTILINESTRING` geometry is returned
 
 ## Note
 

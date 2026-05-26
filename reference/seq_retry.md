@@ -24,4 +24,4 @@ seq_retry(expr, times = 3, wait = 0.5, verbose = TRUE)
 
 - verbose:
 
-  \`logical\` If \`TRUE\`, display messages.
+  `logical` If `TRUE`, display messages.

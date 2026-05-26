@@ -1,6 +1,6 @@
-# Open old \`R_SEQUOIA\` vector file
+# Open old `R_SEQUOIA` vector file
 
-Open old \`R_SEQUOIA\` vector file
+Open old `R_SEQUOIA` vector file
 
 ## Usage
 
@@ -12,13 +12,13 @@ seq1_read(dirname = ".", layer)
 
 - dirname:
 
-  \`character\` Directory where the file is located. Defaults to the
+  `character` Directory where the file is located. Defaults to the
   current working directory.
 
 - layer:
 
-  \`character\` Layer name.
+  `character` Layer name.
 
 ## Value
 
-An \`sf\` object or an empty \`sf\` object if no file are matched.
+An `sf` object or an empty `sf` object if no file are matched.

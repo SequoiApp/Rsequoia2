@@ -13,7 +13,7 @@ road_to_roadway(x, dist = 3.5)
 
 - x:
 
-  An \`sf\` object with road line geometries.
+  An `sf` object with road line geometries.
 
 - dist:
 
@@ -21,4 +21,4 @@ road_to_roadway(x, dist = 3.5)
 
 ## Value
 
-An \`sf\` object with the final road polygons.
+An `sf` object with the final road polygons.

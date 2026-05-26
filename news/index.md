@@ -4,6 +4,10 @@
 
 ### v0.0.1
 
+#### Fixed
+
+- Correct slope units to ensure result is in percentage
+
 #### Added
 
 - Added cache configuration in `inst/config/seq_caches.yaml`, with
@@ -25,6 +29,10 @@
 - Added
   [`seq_dir_rename()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_dir_rename.md)
   for renaming a folder (layername & id)
+- Abort summary generation when `cor_area` is missing or contains only
+  zero/NA values
+- Use human-readable field labels in summaries from the new `libelle`
+  entries in `seq_fields.yaml`
 
 #### Changed
 

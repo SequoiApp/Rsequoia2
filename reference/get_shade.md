@@ -13,16 +13,16 @@ get_shade(r, angle = 30, direction = c(225, 270, 315, 360))
 
 - r:
 
-  \`SpatRaster\`; Digital Height Model raster.
+  `SpatRaster`; Digital Height Model raster.
 
 - angle:
 
-  \`numeric\`; Sun elevation angle in degrees.
+  `numeric`; Sun elevation angle in degrees.
 
 - direction:
 
-  \`numeric\`; Sun direction/azimuth in degrees.
+  `numeric`; Sun direction/azimuth in degrees.
 
 ## Value
 
-A \`SpatRaster\` containing hillshade values.
+A `SpatRaster` containing hillshade values.

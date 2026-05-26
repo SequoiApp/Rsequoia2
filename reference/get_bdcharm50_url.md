@@ -11,5 +11,5 @@ get_bdcharm50_url()
 
 ## Value
 
-A named \`character\` vector. Names are ZIP filenames and values are
+A named `character` vector. Names are ZIP filenames and values are
 download URLs.

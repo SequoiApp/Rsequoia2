@@ -56,34 +56,33 @@ owner names or location (lieu-dit).</p>
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>`data.frame`; The matrix containing parcel legal entity information
+<dd><p><code>data.frame</code>; The matrix containing parcel legal entity information
 in a format readable by SEQUOIA.</p></dd>
 
 
 <dt id="arg-prop">prop<a class="anchor" aria-label="anchor" href="#arg-prop"></a></dt>
-<dd><p>`character`; Owner name(s) used to further filter results. Defaults to `NULL`.
+<dd><p><code>character</code>; Owner name(s) used to further filter results. Defaults to <code>NULL</code>.
 Multiple owners can be specified.</p></dd>
 
 
 <dt id="arg-lieu-dit">lieu_dit<a class="anchor" aria-label="anchor" href="#arg-lieu-dit"></a></dt>
-<dd><p>`character`; Locality name(s) used to further filter results. Defaults to `NULL`.
+<dd><p><code>character</code>; Locality name(s) used to further filter results. Defaults to <code>NULL</code>.
 Multiple locality names can be specified.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A `data.frame`.</p>
+    <p>A <code>data.frame</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The search relies on a text-normalization step applied to both the inputs and
 the corresponding columns of the matrice. This makes the search robust
 to accents, punctuation, spacing irregularities and case differences.</p>
-<p>**Examples of normalization:**
-  - `"Etat / Forets"` -&gt; `"ETATFORETS"`
-  - `"  Le Bois-de l'Orme  "` -&gt; `"LEBOISDELORME"`
-  - `"Societe du Chene"` -&gt; `"SOCIETEDUCHENE"`</p>
-    </div>
+<p><strong>Examples of normalization:</strong></p><ul><li><p><code>"Etat / Forets"</code> -&gt; <code>"ETATFORETS"</code></p></li>
+<li><p><code>"  Le Bois-de l'Orme  "</code> -&gt; <code>"LEBOISDELORME"</code></p></li>
+<li><p><code>"Societe du Chene"</code> -&gt; <code>"SOCIETEDUCHENE"</code></p></li>
+</ul></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

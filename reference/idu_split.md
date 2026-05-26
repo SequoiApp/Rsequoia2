@@ -12,4 +12,4 @@ idu_split(idu)
 
 - idu:
 
-  \`character\` IDU(s) to pad
+  `character` IDU(s) to pad

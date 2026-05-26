@@ -18,4 +18,4 @@ check_dep(dep)
 
 ## Value
 
-A normalized \`character\` vector of valid department codes.
+A normalized `character` vector of valid department codes.

@@ -13,17 +13,17 @@ remove_small_geometries(x, tol, crs = 2154)
 
 - x:
 
-  \`sf\` or \`sfc\`. Input geometries (POLYGON / MULTIPOLYGON).
+  `sf` or `sfc`. Input geometries (POLYGON / MULTIPOLYGON).
 
 - tol:
 
-  \`numeric\`. Minimum area threshold in square meters.
+  `numeric`. Minimum area threshold in square meters.
 
 - crs:
 
-  \`numeric\`. EPSG code of a projected CRS (default: 2154).
+  `numeric`. EPSG code of a projected CRS (default: 2154).
 
 ## Value
 
-An object of the same class as \`x\`, with geometries below the
-threshold removed.
+An object of the same class as `x`, with geometries below the threshold
+removed.

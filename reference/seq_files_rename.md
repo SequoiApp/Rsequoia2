@@ -1,6 +1,6 @@
 # Rename matching files
 
-Rename files recursively by replacing \`old_id\` with \`new_id\` in file
+Rename files recursively by replacing `old_id` with `new_id` in file
 names.
 
 ## Usage
@@ -25,4 +25,5 @@ seq_files_rename(path, old_id, new_id)
 
 ## Value
 
-Logical vector returned by \[file.rename()\].
+Logical vector returned by
+[`file.rename()`](https://rdrr.io/r/base/files.html).

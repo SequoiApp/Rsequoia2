@@ -12,8 +12,8 @@ drias_read_table(txt)
 
 - txt:
 
-  \`character\` string. Path to a DRIAS \`.txt\` file.
+  `character` string. Path to a DRIAS `.txt` file.
 
 ## Value
 
-A \`data.frame\` containing raw data.
+A `data.frame` containing raw data.

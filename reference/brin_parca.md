@@ -1,6 +1,6 @@
-# BRIN \*PARCA\* layer
+# BRIN *PARCA* layer
 
-An example of \*PARCA\* layer for the Brin forest.
+An example of *PARCA* layer for the Brin forest.
 
 ## Usage
 
@@ -10,4 +10,4 @@ brin_parca
 
 ## Format
 
-An \`sf\` object with 114 obs and 18 colums.
+An `sf` object with 114 obs and 18 colums.

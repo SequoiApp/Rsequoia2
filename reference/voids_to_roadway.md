@@ -12,10 +12,11 @@ voids_to_roadway(x)
 
 - x:
 
-  An \`sf\` polygon object from \[Rsequoia2::get_voids()\] completed by
-  user
+  An `sf` polygon object from
+  [`get_voids()`](https://sequoiapp.github.io/Rsequoia2/reference/get_voids.md)
+  completed by user
 
 ## Value
 
-An \`sf\` object with POLYGON or MULTIPOLYGON geometries normalized as
+An `sf` object with POLYGON or MULTIPOLYGON geometries normalized as
 road polygons.

@@ -12,29 +12,40 @@ get_infra_line(x, buffer = 1000)
 
 - x:
 
-  An \`sf\` object used as the input area.
+  An `sf` object used as the input area.
 
 - buffer:
 
-  \`numeric\`; Buffer around \`x\` (in \*\*meters\*\*) used to enlarge
+  `numeric`; Buffer around `x` (in **meters**) used to enlarge
 
 ## Value
 
-An \`sf\` object of type \`LINESTRING\` containing linear infrastructure
-features with standardized fields, including: \* \`TYPE\` -
-Infrastructure type code: - \`CST\` = Linear construction - \`LEL\` =
-Power line - \`ORO\` = Orographic line - \`VFE\` = Railway line \*
-\`NAME\` - Toponym when available \* \`NATURE\` - Additional attribute
-(e.g. voltage for power lines) \* \`SOURCE\` - Data source
-(\`IGNF_BDTOPO_V3\`)
+An `sf` object of type `LINESTRING` containing linear infrastructure
+features with standardized fields, including:
+
+- `TYPE` - Infrastructure type code:
+
+  - `CST` = Linear construction
+
+  - `LEL` = Power line
+
+  - `ORO` = Orographic line
+
+  - `VFE` = Railway line
+
+- `NAME` - Toponym when available
+
+- `NATURE` - Additional attribute (e.g. voltage for power lines)
+
+- `SOURCE` - Data source (`IGNF_BDTOPO_V3`)
 
 ## Details
 
 The function retrieves linear infrastructure layers from the IGN BDTOPO
-V3 dataset within a convex buffer around \`x\`.
+V3 dataset within a convex buffer around `x`.
 
 Retrieved layers include linear constructions, power lines, orographic
 lines, and railway segments.
 
 If no linear infrastructure data are found, the function returns an
-empty standardized \`sf\` object.
+empty standardized `sf` object.

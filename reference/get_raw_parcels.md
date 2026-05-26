@@ -13,9 +13,9 @@ get_raw_parcels(pdf)
 
 - pdf:
 
-  \`character\`. Path to PDF file
+  `character`. Path to PDF file
 
 ## Value
 
-A \`data.frame\` with raw parcel data, column names from
-\[define_column_positions()\]
+A `data.frame` with raw parcel data, column names from
+[`define_column_positions()`](https://sequoiapp.github.io/Rsequoia2/reference/define_column_positions.md)

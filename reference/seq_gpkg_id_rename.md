@@ -20,4 +20,4 @@ seq_gpkg_id_rename(path, new_id)
 
 ## Value
 
-A list with \`file\`, \`status\`, and \`message\`.
+A list with `file`, `status`, and `message`.

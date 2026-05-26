@@ -53,34 +53,34 @@
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>An `sf` object (for vector outputs) or a `SpatRaster` (for raster outputs).</p></dd>
+<dd><p>An <code>sf</code> object (for vector outputs) or a <code>SpatRaster</code> (for raster outputs).</p></dd>
 
 
 <dt id="arg-key">key<a class="anchor" aria-label="anchor" href="#arg-key"></a></dt>
-<dd><p>`character` Name of a layer key to match against the entries
-defined in `inst/config/seq_layers.yaml`. (see *Details* for partial matching).</p></dd>
+<dd><p><code>character</code> Name of a layer key to match against the entries
+defined in <code>inst/config/seq_layers.yaml</code>. (see <em>Details</em> for partial matching).</p></dd>
 
 
 <dt id="arg-dirname">dirname<a class="anchor" aria-label="anchor" href="#arg-dirname"></a></dt>
-<dd><p>`character` Directory where the matrice file is located.
+<dd><p><code>character</code> Directory where the matrice file is located.
 Defaults to the current working directory.</p></dd>
 
 
 <dt id="arg-id">id<a class="anchor" aria-label="anchor" href="#arg-id"></a></dt>
-<dd><p>`character`. Project identifier used to prefix the output filename.
-If `NULL`, the identifier is automatically inferred. The function first
-attempts to extract a single, non-missing value from the `IDENTIFIANT`
-field of layer `x`; if this fails, it then looks for a valid identifier in
-a `*_matrice.xlsx` file found in `dirname`. If no unique identifier can be
+<dd><p><code>character</code>. Project identifier used to prefix the output filename.
+If <code>NULL</code>, the identifier is automatically inferred. The function first
+attempts to extract a single, non-missing value from the <code>IDENTIFIANT</code>
+field of layer <code>x</code>; if this fails, it then looks for a valid identifier in
+a <code>*_matrice.xlsx</code> file found in <code>dirname</code>. If no unique identifier can be
 determined, the filename is left unchanged.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>`logical` If `TRUE`, display messages.</p></dd>
+<dd><p><code>logical</code> If <code>TRUE</code>, display messages.</p></dd>
 
 
 <dt id="arg-overwrite">overwrite<a class="anchor" aria-label="anchor" href="#arg-overwrite"></a></dt>
-<dd><p>`logical` If `TRUE`, file is overwritten.</p></dd>
+<dd><p><code>logical</code> If <code>TRUE</code>, file is overwritten.</p></dd>
 
 </dl></div>
     <div class="section level2">

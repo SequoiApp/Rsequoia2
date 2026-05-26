@@ -1,6 +1,6 @@
-# Create \_UA\_ sf object from \_PARCA\_ sf object
+# Create *UA* sf object from *PARCA* sf object
 
-Create \_UA\_ sf object from \_PARCA\_ sf object
+Create *UA* sf object from *PARCA* sf object
 
 ## Usage
 
@@ -12,9 +12,10 @@ parca_to_ua(parca)
 
 - parca:
 
-  \`sf\` Object from \[Rsequoia2::seq_parca()\] containing cadastral
-  parcels.
+  `sf` Object from
+  [`seq_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_parca.md)
+  containing cadastral parcels.
 
 ## Value
 
-An \`sf\` object containing the analysis units.
+An `sf` object containing the analysis units.

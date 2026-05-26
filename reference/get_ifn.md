@@ -13,22 +13,22 @@ get_ifn(x, key, cache = seq_cache("ifn")$path)
 
 - x:
 
-  An \`sf\` object defining the input area of interest.
+  An `sf` object defining the input area of interest.
 
 - key:
 
-  A \`character\` string specifying the IFN regional dataset to use.
-  Must be one of \`get_keys("ifn")\`:
+  A `character` string specifying the IFN regional dataset to use. Must
+  be one of `get_keys("ifn")`:
 
-  - \`"ser"\`: sylvo-ecoregions
+  - `"ser"`: sylvo-ecoregions
 
-  - \`"ser_ar"\`: sylvo-ecoregions (aggregated regions)
+  - `"ser_ar"`: sylvo-ecoregions (aggregated regions)
 
-  - \`"rfn"\`: region forestiere nationale
+  - `"rfn"`: region forestiere nationale
 
-  - \`"rfd"\`: region forestiere departementale
+  - `"rfd"`: region forestiere departementale
 
-  - \`"zp"\`: zones de production
+  - `"zp"`: zones de production
 
 - cache:
 
@@ -37,8 +37,8 @@ get_ifn(x, key, cache = seq_cache("ifn")$path)
 
 ## Value
 
-An \`sf\` object containing the region features intersecting \`x\`.
-Returns \`NULL\` if no region intersects the input geometry.
+An `sf` object containing the region features intersecting `x`. Returns
+`NULL` if no region intersects the input geometry.
 
 ## Details
 
@@ -47,7 +47,7 @@ shapefiles in Lambert-93 projection. Downloaded archives are stored
 locally and reused on subsequent calls.
 
 The regional layer is automatically reprojected to match the coordinate
-reference system of \`x\` before computing spatial intersections.
+reference system of `x` before computing spatial intersections.
 
 Only features intersecting the input geometry are returned. No geometry
 modification (e.g. clipping) is applied.

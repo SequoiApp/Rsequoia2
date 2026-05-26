@@ -12,11 +12,12 @@ mf_precipitation(clim)
 
 - clim:
 
-  \`data.frame\` Raw climatology data from \[mf_get_climatology()\].
+  `data.frame` Raw climatology data from
+  [`mf_get_climatology()`](https://sequoiapp.github.io/Rsequoia2/reference/mf_get_climatology.md).
 
 ## Value
 
-A \`data.frame\` containing annual precipitation averages.
+A `data.frame` containing annual precipitation averages.
 
 ## Details
 

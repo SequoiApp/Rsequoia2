@@ -24,19 +24,19 @@ seq_gpu(
 
 - key:
 
-  \`character\`; List of layer identifiers to download. If not provided,
-  the function uses \`get_keys("gpu", reduce = FALSE)\` to automatically
+  `character`; List of layer identifiers to download. If not provided,
+  the function uses `get_keys("gpu", reduce = FALSE)` to automatically
   select all GPU layers defined in the Sequoia configuration
-  (\`inst/config/seq_layers.yaml\`)
+  (`inst/config/seq_layers.yaml`)
 
 - verbose:
 
-  Logical. Whether to display progress messages. Defaults to \`TRUE\`.
+  Logical. Whether to display progress messages. Defaults to `TRUE`.
 
 - overwrite:
 
   Logical. Whether to overwrite existing output files. Defaults to
-  \`FALSE\`.
+  `FALSE`.
 
 ## Value
 
@@ -46,19 +46,28 @@ included.
 
 ## Details
 
-The function queries the GPU API via the \`happign\` package for the
+The function queries the GPU API via the `happign` package for the
 following thematic layers:
 
-\* Municipality boundaries \* Urban planning documents \* Urban zones \*
-Surface, linear and point prescriptions \* SUP assiettes (SUPA) \* SUP
-generateurs (SUPG)
+- Municipality boundaries
+
+- Urban planning documents
+
+- Urban zones
+
+- Surface, linear and point prescriptions
+
+- SUP assiettes (SUPA)
+
+- SUP generateurs (SUPG)
 
 Only layers intersecting the project area are written. Empty or
 unavailable layers are silently skipped.
 
 Output file names, formats and locations are fully driven by the project
-configuration (see \`files_structure.yaml\`).
+configuration (see `files_structure.yaml`).
 
 ## See also
 
-\[seq_write()\], \[happign::get_apicarto_gpu()\]
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md),
+[`happign::get_apicarto_gpu()`](https://paul-carteron.github.io/happign/reference/get_apicarto_gpu.html)

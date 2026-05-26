@@ -18,23 +18,22 @@ get_accessibility(
 
 - x:
 
-  An \`sf\` object defining the input area of interest.
+  An `sf` object defining the input area of interest.
 
 - type:
 
-  \`character\` Accessibility type. One of \`"porter"\` or
-  \`"skidder"\`.
+  `character` Accessibility type. One of `"porter"` or `"skidder"`.
 
 - buffer:
 
-  \`numeric\`; Buffer around \`x\` (in \*\*meters\*\*) used to enlarge
-  the download area.
+  `numeric`; Buffer around `x` (in **meters**) used to enlarge the
+  download area.
 
 - verbose:
 
-  \`logical\` If \`TRUE\`, display messages.
+  `logical` If `TRUE`, display messages.
 
 ## Value
 
-An \`sf\` object containing accessibility features, or \`NULL\` if none
+An `sf` object containing accessibility features, or `NULL` if none
 found.

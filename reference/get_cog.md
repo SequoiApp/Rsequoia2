@@ -1,7 +1,7 @@
 # Get COG administrative datasets
 
 Download and cache French COG datasets (communes, departments, regions)
-from data.gouv.fr. Cached data are reused unless \`update = TRUE\`.
+from data.gouv.fr. Cached data are reused unless `update = TRUE`.
 
 ## Usage
 
@@ -13,7 +13,7 @@ get_cog(cache = seq_cache("cog")$path, update = FALSE, verbose = TRUE)
 
 - cache:
 
-  Cache directory. If \`NULL\`, uses package cache directory.
+  Cache directory. If `NULL`, uses package cache directory.
 
 - update:
 
@@ -25,8 +25,13 @@ get_cog(cache = seq_cache("cog")$path, update = FALSE, verbose = TRUE)
 
 ## Value
 
-Named list of data frames: - \`com\`: communes - \`dep\`: departments -
-\`reg\`: regions
+Named list of data frames:
+
+- `com`: communes
+
+- `dep`: departments
+
+- `reg`: regions
 
 ## Examples
 

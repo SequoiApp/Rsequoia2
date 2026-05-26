@@ -13,36 +13,36 @@ drias_read_metadata(txt)
 
 - txt:
 
-  \`character\` string. Path to a DRIAS \`.txt\` file.
+  `character` string. Path to a DRIAS `.txt` file.
 
 ## Value
 
-A \`list\` with the following elements:
+A `list` with the following elements:
 
 - date_extraction:
 
-  \`character\` string. Extraction date.
+  `character` string. Extraction date.
 
 - producteur:
 
-  \`character\` string. Data producer.
+  `character` string. Data producer.
 
 - experience:
 
-  \`character\` string. Climate experiment.
+  `character` string. Climate experiment.
 
 - modele:
 
-  \`character\` string. Climate model.
+  `character` string. Climate model.
 
 - scenario:
 
-  \`list\` with \`code\` and \`description\`.
+  `list` with `code` and `description`.
 
 - horizons:
 
-  \`data.frame\` with columns \`code\` and \`libelle\`.
+  `data.frame` with columns `code` and `libelle`.
 
 - indices:
 
-  \`data.frame\` with columns \`code\` and \`description\`.
+  `data.frame` with columns `code` and `description`.

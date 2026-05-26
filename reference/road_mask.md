@@ -13,7 +13,7 @@ road_mask(x, dist)
 
 - x:
 
-  An \`sf\` object with road lines.
+  An `sf` object with road lines.
 
 - dist:
 
@@ -21,4 +21,4 @@ road_mask(x, dist)
 
 ## Value
 
-An \`sf\` object containing a polygon mask of the road network.
+An `sf` object containing a polygon mask of the road network.

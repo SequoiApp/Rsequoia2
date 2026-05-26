@@ -1,8 +1,11 @@
 # Compute Canopy Height Model (CHM)
 
-Computes a \*\*Canopy Height Model\*\* (CHM = DSM - DEM) either by: -
-downloading the necessary DEM and DSM from IGN WMS services using \`x\`,
-or - using DEM and DSM rasters directly supplied by the user.
+Computes a **Canopy Height Model** (CHM = DSM - DEM) either by:
+
+- downloading the necessary DEM and DSM from IGN WMS services using `x`,
+  or
+
+- using DEM and DSM rasters directly supplied by the user.
 
 ## Usage
 
@@ -14,40 +17,46 @@ get_chm(x = NULL, dem = NULL, dsm = NULL, minmax = c(0, 50), ...)
 
 - x:
 
-  \`sf\` or \`sfc\`; Geometry located in France.
+  `sf` or `sfc`; Geometry located in France.
 
 - dem:
 
-  \`SpatRaster\` representing ground elevation (DEM). Must be supplied
-  only when \`x\` is \`NULL\`.
+  `SpatRaster` representing ground elevation (DEM). Must be supplied
+  only when `x` is `NULL`.
 
 - dsm:
 
-  A \`SpatRaster\` representing surface elevation (DSM). Must be
-  supplied only when \`x\` is \`NULL\`.
+  A `SpatRaster` representing surface elevation (DSM). Must be supplied
+  only when `x` is `NULL`.
 
 - minmax:
 
-  \`numeric\` length-2 vector giving the accepted CHM range as \`c(min,
-  max)\`. Default: \`c(0, 50)\`.
+  `numeric` length-2 vector giving the accepted CHM range as
+  `c(min, max)`. Default: `c(0, 50)`.
 
 - ...:
 
-  Additional parameters passed to \[get_dem()\] and \[get_dem()\] when
-  \`x\` is supplied.
+  Additional parameters passed to
+  [`get_dem()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dem.md)
+  and
+  [`get_dem()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dem.md)
+  when `x` is supplied.
 
 ## Value
 
-A \`SpatRaster\` containing the CHM.
+A `SpatRaster` containing the CHM.
 
 ## Details
 
-When \`x\` is provided, both DEM and DSM are automatically fetched via
-\[get_dem()\] and \[get_dsm()\]. When \`x\` is not provided, both
-\`dem\` and \`dsm\` must be manually supplied.
+When `x` is provided, both DEM and DSM are automatically fetched via
+[`get_dem()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dem.md)
+and
+[`get_dsm()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dsm.md).
+When `x` is not provided, both `dem` and `dsm` must be manually
+supplied.
 
-Output values outside \`minmax\` are clamped: negative values are set to
-\`NA\` and excessively high values are capped.
+Output values outside `minmax` are clamped: negative values are set to
+`NA` and excessively high values are capped.
 
 ## Examples
 

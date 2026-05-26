@@ -1,9 +1,10 @@
 # Load field definitions from the Sequoia configuration
 
-Internal helper used by \`seq_normalize()\` to access field metadata
-defined in \`inst/config/seq_fields.yaml\`. When \`field\` is \`NULL\`,
-the full configuration list is returned. Otherwise, the corresponding
-field definition is extracted.
+Internal helper used by
+[`seq_normalize()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_normalize.md)
+to access field metadata defined in `inst/config/seq_fields.yaml`. When
+`field` is `NULL`, the full configuration list is returned. Otherwise,
+the corresponding field definition is extracted.
 
 ## Usage
 
@@ -15,13 +16,13 @@ seq_field(field = NULL, filepath = NULL)
 
 - field:
 
-  \`character\` or \`NULL\`; If provided, must match a key in
-  \`inst/config/seq_fields.yaml\`.
+  `character` or `NULL`; If provided, must match a key in
+  `inst/config/seq_fields.yaml`.
 
 - filepath:
 
-  \`character\` or \`NULL\`; override for the path to the default YAML
-  configuration file (\`inst/config/seq_fields.yaml\`). Used mainly for
+  `character` or `NULL`; override for the path to the default YAML
+  configuration file (`inst/config/seq_fields.yaml`). Used mainly for
   testing.
 
 ## Value

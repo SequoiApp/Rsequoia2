@@ -53,41 +53,40 @@
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>An `sf` object used as the input area.</p></dd>
+<dd><p>An <code>sf</code> object used as the input area.</p></dd>
 
 
 <dt id="arg-buffer">buffer<a class="anchor" aria-label="anchor" href="#arg-buffer"></a></dt>
-<dd><p>`numeric`; Buffer around `x` (in **meters**) used to enlarge</p></dd>
+<dd><p><code>numeric</code>; Buffer around <code>x</code> (in <strong>meters</strong>) used to enlarge</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An `sf` object of type `LINESTRING` containing road sections
-  with standardized fields, including:
-  * `TYPE` - Road section type code, deduced from surface, numbering
-    and importance attributes:
-    - `RN` = National road (autoroutes, European roads, numbered roads
-      starting with `A`, `E`, `N`, or departmental roads numbered &gt; 900,
-      as well as major slip roads)
-    - `RD` = Departmental road (numbered roads starting with `D`)
-    - `RC` = Communal road (other paved roads)
-    - `RF` = Forest or gravel road (unpaved / empierree)
-    - `PN` = Natural path (tracks, trails, footpaths)
-    - `LY` = Tie ridge
-  * `NATURE` - Original BDTOPO road nature (surface / usage description)
-  * `IMPORTANCE` - Road importance, taken from `importance` when available,
-  * `PRIVE` - Road status, taken from `prive` when available,
-  * `RESTRICTION` - Road restriction, taken from `restriction_de_poids_total` when available,
-  * `NOM` - Road identifier, taken from `cpx_numero` when available,
-    otherwise from `cpx_toponyme_route_nommee`
-  * `SOURCE` - Data source (`BDTOPO V3`)</p>
-    </div>
+    <p>An <code>sf</code> object of type <code>LINESTRING</code> containing road sections
+with standardized fields, including:</p><ul><li><p><code>TYPE</code> - Road section type code, deduced from surface, numbering
+and importance attributes:</p><ul><li><p><code>RN</code> = National road (autoroutes, European roads, numbered roads
+starting with <code>A</code>, <code>E</code>, <code>N</code>, or departmental roads numbered &gt; 900,
+as well as major slip roads)</p></li>
+<li><p><code>RD</code> = Departmental road (numbered roads starting with <code>D</code>)</p></li>
+<li><p><code>RC</code> = Communal road (other paved roads)</p></li>
+<li><p><code>RF</code> = Forest or gravel road (unpaved / empierree)</p></li>
+<li><p><code>PN</code> = Natural path (tracks, trails, footpaths)</p></li>
+<li><p><code>LY</code> = Tie ridge</p></li>
+</ul></li>
+<li><p><code>NATURE</code> - Original BDTOPO road nature (surface / usage description)</p></li>
+<li><p><code>IMPORTANCE</code> - Road importance, taken from <code>importance</code> when available,</p></li>
+<li><p><code>PRIVE</code> - Road status, taken from <code>prive</code> when available,</p></li>
+<li><p><code>RESTRICTION</code> - Road restriction, taken from <code>restriction_de_poids_total</code> when available,</p></li>
+<li><p><code>NOM</code> - Road identifier, taken from <code>cpx_numero</code> when available,
+otherwise from <code>cpx_toponyme_route_nommee</code></p></li>
+<li><p><code>SOURCE</code> - Data source (<code>BDTOPO V3</code>)</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The function retrieves road section layer from
-the IGN BDTOPO V3 dataset within a convex buffer around `x`.</p>
+the IGN BDTOPO V3 dataset within a convex buffer around <code>x</code>.</p>
 <p>If no road section data are found, the function returns an empty
-standardized `sf` object.</p>
+standardized <code>sf</code> object.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

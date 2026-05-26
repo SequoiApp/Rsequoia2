@@ -13,23 +13,23 @@ seq_parca_to_ua(dirname = ".", verbose = TRUE, overwrite = FALSE)
 
 - dirname:
 
-  \`character\` Path to the directory. Defaults to the current working
+  `character` Path to the directory. Defaults to the current working
   directory.
 
 - verbose:
 
-  \`logical\` If \`TRUE\`, display messages.
+  `logical` If `TRUE`, display messages.
 
 - overwrite:
 
-  \`logical\` If \`TRUE\`, filename is overwritten.
+  `logical` If `TRUE`, filename is overwritten.
 
 ## Value
 
-An \`sf\` object
+An `sf` object
 
 ## Details
 
-The resulting object is returned invisibly as an \`sf\` polygons layer.
+The resulting object is returned invisibly as an `sf` polygons layer.
 The output file is automatically written into the working directory
-defined by \`dirname\`.
+defined by `dirname`.

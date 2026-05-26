@@ -13,33 +13,36 @@ seq_curves(dirname = ".", verbose = TRUE, overwrite = FALSE)
 
 - dirname:
 
-  \`character\` Directory where the matrice file is located. Defaults to
+  `character` Directory where the matrice file is located. Defaults to
   the current working directory.
 
 - verbose:
 
-  \`logical\` If \`TRUE\`, display messages.
+  `logical` If `TRUE`, display messages.
 
 - overwrite:
 
-  \`logical\` If \`TRUE\`, file is overwritten.
+  `logical` If `TRUE`, file is overwritten.
 
 ## Value
 
-Invisibly returns a named list of file paths written by \[seq_write()\].
-Returns \`NULL\` invisibly when no hypsometric curves features are
-found.
+Invisibly returns a named list of file paths written by
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
+Returns `NULL` invisibly when no hypsometric curves features are found.
 
 ## Details
 
-Hypsometric curves line features are retrieved using \[get_curves()\].
+Hypsometric curves line features are retrieved using
+[`get_curves()`](https://sequoiapp.github.io/Rsequoia2/reference/get_curves.md).
 
-If no hypsometric curves features are found, the function returns
-\`NULL\` invisibly and no file is written.
+If no hypsometric curves features are found, the function returns `NULL`
+invisibly and no file is written.
 
 When features are present, the layer is written to disk using
-\[seq_write()\] with the key \`"v.curves.line"\`.
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
+with the key `"v.curves.line"`.
 
 ## See also
 
-\[get_curves()\], \[seq_write()\]
+[`get_curves()`](https://sequoiapp.github.io/Rsequoia2/reference/get_curves.md),
+[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
