@@ -30,12 +30,24 @@ seq_summary <- function(dirname = ".", verbose = TRUE) {
 
   # BUILD CONTEXT ----
   ua <- seq_read("v.seq.ua.poly", dirname = dirname)
-  pf <- ua_to_pf(ua)
 
   is_wooded <- seq_field("is_wooded")$name
-
   if (!is_wooded %in% names(ua)) {
     cli::cli_abort("Missing {.field is_wooded} column: {.field {is_wooded}}.")
+  }
+
+  cor_area <- seq_field("cor_area")$name
+  if (!cor_area %in% names(ua)) {
+    cli::cli_abort("Missing {.field cor_area} column: {.field {cor_area}}.")
+  }
+
+  cor_area_is_empty <- all(is.na(ua[[cor_area]]) | ua[[cor_area]] == 0)
+  if (cor_area_is_empty) {
+    cli::cli_abort(c(
+      "Invalid corrected area column.",
+      "x" = "{.field {cor_area}} contains only missing or zero values.",
+      "i" = "Run the UA correction step before building the summary."
+    ))
   }
 
   if (!is.logical(ua[[is_wooded]])) {
@@ -44,6 +56,7 @@ seq_summary <- function(dirname = ".", verbose = TRUE) {
     )
   }
 
+  pf <- ua_to_pf(ua)
   ua_wooded <- ua[ua[[is_wooded]] %in% TRUE, , drop = FALSE]
 
   # TABLE BUILDERS ----

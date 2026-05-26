@@ -2,6 +2,9 @@
 
 ## v0.0.1
 
+### Fixed
+- Correct slope units to ensure result is in percentage
+
 ### Added
 
 - Added cache configuration in `inst/config/seq_caches.yaml`, with associated helpers in `config-cache.R`.
@@ -14,6 +17,7 @@
   - `get_shade()` function to calculate multi orientation shade ;
   - `seq_terrain()` now generate shade raster from MNH
 - Added `seq_dir_rename()` for renaming a folder (layername & id)
+- Abort summary generation when `cor_area` is missing or contains only zero/NA values
 
 ### Changed
 
