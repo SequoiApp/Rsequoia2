@@ -57,6 +57,16 @@ safe_add_seq_table <- function(wb, sheet, fun, verbose = TRUE) {
         cli::cli_abort("Builder must return a data frame in {.field table}.")
       }
 
+      # use libelle for synthese
+      fields <- seq_field()
+      libelle_map <- setNames(
+        vapply(fields, \(f) f$libelle, character(1)),
+        vapply(fields, \(f) f$name, character(1))
+      )
+
+      hits <- match(names(table), names(libelle_map))
+      names(table) <- replace(names(table), !is.na(hits), libelle_map[hits[!is.na(hits)]])
+
       wb <- wb |>
         openxlsx2::wb_add_worksheet(sheet = sheet) |>
         openxlsx2::wb_add_data_table(

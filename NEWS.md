@@ -18,6 +18,7 @@
   - `seq_terrain()` now generate shade raster from MNH
 - Added `seq_dir_rename()` for renaming a folder (layername & id)
 - Abort summary generation when `cor_area` is missing or contains only zero/NA values
+- Use human-readable field labels in summaries from the new `libelle` entries in `seq_fields.yaml`
 
 ### Changed
 
