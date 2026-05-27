@@ -86,7 +86,7 @@ test_that("get_slope() defaults to percent", {
   )
 
   default <- get_slope(dem = dem, agg = 1, verbose = FALSE)
-  percent <- get_slope(dem = dem, agg = 1, units = "percent", verbose = FALSE)
+  percent <- get_slope(dem = dem, agg = 1, unit = "percent", verbose = FALSE)
 
   expect_equal(
     as.vector(terra::values(default)),
@@ -106,8 +106,8 @@ test_that("get_slope() supports radians", {
     ), nrow = 3, byrow = TRUE)
   )
 
-  degrees <- get_slope(dem = dem, agg = 1, units = "degrees", verbose = FALSE)
-  radians <- get_slope(dem = dem, agg = 1, units = "radians", verbose = FALSE)
+  degrees <- get_slope(dem = dem, agg = 1, unit = "degrees", verbose = FALSE)
+  radians <- get_slope(dem = dem, agg = 1, unit = "radians", verbose = FALSE)
 
   expect_equal(
     as.vector(terra::values(radians)),
@@ -127,8 +127,8 @@ test_that("get_slope() supports degrees", {
     ), nrow = 3, byrow = TRUE)
   )
 
-  radians <- get_slope(dem = dem, agg = 1, units = "radians", verbose = FALSE)
-  degrees <- get_slope(dem = dem, agg = 1, units = "degrees", verbose = FALSE)
+  radians <- get_slope(dem = dem, agg = 1, unit = "radians", verbose = FALSE)
+  degrees <- get_slope(dem = dem, agg = 1, unit = "degrees", verbose = FALSE)
 
   expect_equal(
     as.vector(terra::values(degrees)),
@@ -137,11 +137,11 @@ test_that("get_slope() supports degrees", {
   )
 })
 
-test_that("get_slope() rejects invalid units", {
+test_that("get_slope() rejects invalid unit", {
   dem <- make_dem()
 
   expect_error(
-    get_slope(dem = dem, units = "meter"),
+    get_slope(dem = dem, unit = "meter"),
     "'arg' should be one of"
   )
 })

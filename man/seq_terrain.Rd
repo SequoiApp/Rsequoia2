@@ -7,7 +7,7 @@
 seq_terrain(
   dirname = ".",
   agg = 5,
-  units = "percent",
+  unit = "percent",
   overwrite = FALSE,
   verbose = TRUE
 )
@@ -18,6 +18,8 @@ Defaults to the current working directory.}
 
 \item{agg}{\code{numeric}; Target resolution (in meters) to which the DEM is
 aggregated if its native resolution is finer. Default: \code{5}.}
+
+\item{unit}{\code{character}; "percent", "radians" or "degrees". Default to "percent".}
 
 \item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
 

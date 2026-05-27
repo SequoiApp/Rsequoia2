@@ -17,7 +17,7 @@
 - Added `seq_dir_rename()` to rename a Sequoia folder and its associated layer.
 - Added package version display in the `sequoia2()` menu.
 - Added "ask for help" action in the `sequoia2()` menu.
-- Added `units` argument to `get_slope()` with support for `"degrees"`, `"radians"` and `"percent"`.
+- Added `unit` argument to `get_slope()` with support for `"degrees"`, `"radians"` and `"percent"`.
 - Added human-readable field labels in xlsx generated with `seq_summary()`
 
 ### Changed

@@ -112,11 +112,11 @@ get_slope <- function(
     x = NULL,
     dem = NULL,
     agg = 5,
-    units = "percent",
+    unit = "percent",
     verbose = TRUE,
     ...) {
 
-  units <- match.arg(units, c("percent", "radians", "degrees"))
+  unit <- match.arg(unit, c("percent", "radians", "degrees"))
 
   if (!is.null(x) && !is.null(dem)) {
   cli::cli_abort(c(
@@ -138,10 +138,10 @@ get_slope <- function(
   dem <- prepare_dem_terrain(dem = dem, agg = agg, verbose = verbose)
 
   # If percent, then it's compute in radians
-  units <- if (units == "degrees") "degrees" else "radians"
-  slope <- terra::terrain(dem, v = "slope", neighbors = 8, units)
+  unit <- if (unit == "degrees") "degrees" else "radians"
+  slope <- terra::terrain(dem, v = "slope", neighbors = 8, unit)
 
-  if (units == "percent") {
+  if (unit == "percent") {
     slope <- tan(slope) * 100
   }
 
@@ -205,7 +205,7 @@ get_aspect <- function(x = NULL, dem = NULL, agg = 5, verbose = TRUE, ...){
   }
 
   dem <- prepare_dem_terrain(dem = dem, agg = agg, verbose = verbose)
-  aspect <- terra::terrain(dem,v = "aspect",neighbors = 8,unit = "degrees")
+  aspect <- terra::terrain(dem,v = "aspect",neighbors = 8, unit = "degrees")
   names(aspect) <- "aspect"
 
   return(aspect)
@@ -233,8 +233,8 @@ get_shade <- function(
     cli::cli_abort("{.arg dhm} must be a {.cls SpatRaster} object.")
   }
 
-  slope <- terra::terrain(r, "slope", unit="radians")
-  aspect <- terra::terrain(r, "aspect", unit="radians")
+  slope <- terra::terrain(r, "slope", unit = "radians")
+  aspect <- terra::terrain(r, "aspect", unit = "radians")
   shade <- terra::shade(slope, aspect, angle=angle, direction=direction)
   shade <- Reduce(terra::mean, shade)
   shade <- terra::mean(shade)
@@ -264,7 +264,7 @@ get_shade <- function(
 seq_terrain <- function(
     dirname = ".",
     agg = 5,
-    units = "percent",
+    unit = "percent",
     overwrite = FALSE,
     verbose = TRUE
 ) {
@@ -334,7 +334,7 @@ seq_terrain <- function(
       x = NULL,
       dem = dem,
       agg = agg,
-      units = units,
+      unit = unit,
       verbose = verbose
     )
 
