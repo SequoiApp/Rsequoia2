@@ -293,7 +293,7 @@ make_sequoia_actions <- function(overwrite = FALSE) {
 
     "Demander de l'aide" = function() {
       utils::browseURL("https://github.com/SequoiApp/Rsequoia2/issues")
-    },
+    }
 
   )
 }
