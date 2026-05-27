@@ -1,6 +1,6 @@
 Package: Rsequoia2
 Title: R package to help french forest manager
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: c(
     person("Matthieu", "Chevereau", , "matthieu.chevereau@hotmail.com", role = c("aut", "cre")),
     person("Paul", "Carteron", , "carteronpaul@gmail.com", role = "aut")

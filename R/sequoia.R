@@ -289,7 +289,12 @@ make_sequoia_actions <- function(overwrite = FALSE) {
       if (nzchar(p)) {
         seq1_update(p, overwrite = overwrite)
       }
-    }
+    },
+
+    "Demander de l'aide" = function() {
+      utils::browseURL("https://github.com/SequoiApp/Rsequoia2/issues")
+    },
+
   )
 }
 

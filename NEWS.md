@@ -1,6 +1,6 @@
 # Rsequoia2 (development version)
 
-## v0.0.1
+## v0.0.2
 
 ### Added
 
@@ -16,6 +16,7 @@
   - `seq_terrain()` now generates shade rasters from MNH data.
 - Added `seq_dir_rename()` to rename a Sequoia folder and its associated layer.
 - Added package version display in the `sequoia2()` menu.
+- Added "ask for help" action in the `sequoia2()` menu.
 - Added `units` argument to `get_slope()` with support for `"degrees"`, `"radians"` and `"percent"`.
 - Added human-readable field labels in xlsx generated with `seq_summary()`
 
