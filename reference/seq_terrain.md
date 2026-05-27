@@ -10,7 +10,7 @@ writes them to the project directory with
 seq_terrain(
   dirname = ".",
   agg = 5,
-  units = "percent",
+  unit = "percent",
   overwrite = FALSE,
   verbose = TRUE
 )
@@ -27,6 +27,10 @@ seq_terrain(
 
   `numeric`; Target resolution (in meters) to which the DEM is
   aggregated if its native resolution is finer. Default: `5`.
+
+- unit:
+
+  `character`; "percent", "radians" or "degrees". Default to "percent".
 
 - overwrite:
 

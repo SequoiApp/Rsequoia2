@@ -51,7 +51,7 @@ writes them to the project directory with <code><a href="seq_write.html">seq_wri
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">seq_terrain</span><span class="op">(</span></span>
 <span>  dirname <span class="op">=</span> <span class="st">"."</span>,</span>
 <span>  agg <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  units <span class="op">=</span> <span class="st">"percent"</span>,</span>
+<span>  unit <span class="op">=</span> <span class="st">"percent"</span>,</span>
 <span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -69,6 +69,10 @@ Defaults to the current working directory.</p></dd>
 <dt id="arg-agg">agg<a class="anchor" aria-label="anchor" href="#arg-agg"></a></dt>
 <dd><p><code>numeric</code>; Target resolution (in meters) to which the DEM is
 aggregated if its native resolution is finer. Default: <code>5</code>.</p></dd>
+
+
+<dt id="arg-unit">unit<a class="anchor" aria-label="anchor" href="#arg-unit"></a></dt>
+<dd><p><code>character</code>; "percent", "radians" or "degrees". Default to "percent".</p></dd>
 
 
 <dt id="arg-overwrite">overwrite<a class="anchor" aria-label="anchor" href="#arg-overwrite"></a></dt>

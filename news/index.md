@@ -30,7 +30,7 @@
 - Added “ask for help” action in the
   [`sequoia2()`](https://sequoiapp.github.io/Rsequoia2/reference/sequoia2.md)
   menu.
-- Added `units` argument to
+- Added `unit` argument to
   [`get_slope()`](https://sequoiapp.github.io/Rsequoia2/reference/get_slope.md)
   with support for `"degrees"`, `"radians"` and `"percent"`.
 - Added human-readable field labels in xlsx generated with

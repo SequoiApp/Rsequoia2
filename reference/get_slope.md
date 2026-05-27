@@ -9,14 +9,7 @@ Computes a slope raster in percent from a DEM, either by:
 ## Usage
 
 ``` r
-get_slope(
-  x = NULL,
-  dem = NULL,
-  agg = 5,
-  units = "percent",
-  verbose = TRUE,
-  ...
-)
+get_slope(x = NULL, dem = NULL, agg = 5, unit = "percent", verbose = TRUE, ...)
 ```
 
 ## Arguments
@@ -35,6 +28,10 @@ get_slope(
   `numeric`; Target resolution (in meters) to which the DEM is
   aggregated if its native resolution is finer. Default: `5`.
 
+- unit:
+
+  `character`; "percent", "radians" or "degrees". Default to "percent".
+
 - verbose:
 
   `logical`; If `TRUE`, display messages.
@@ -44,10 +41,6 @@ get_slope(
   Additional parameters passed to
   [`get_dem()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dem.md)
   when `x` is supplied.
-
-- unit:
-
-  `character`; "percent", "radians" or "degrees". Default to "percent".
 
 ## Value
 
