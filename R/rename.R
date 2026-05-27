@@ -138,7 +138,6 @@ seq_gpkg_id_rename <- function(path, new_id) {
       message = ""
     ))
 
-    gpkg_result(path, "updated", "")
   }, error = function(e) {
     return(list(
       file = basename(path),
