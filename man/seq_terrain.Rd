@@ -4,14 +4,20 @@
 \alias{seq_terrain}
 \title{Create terrain derivative layers for a Sequoia project}
 \usage{
-seq_terrain(dirname = ".", agg = 5, overwrite = FALSE, verbose = TRUE)
+seq_terrain(
+  dirname = ".",
+  agg = 5,
+  units = "percent",
+  overwrite = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{agg}{\code{numeric}; Target working resolution in meters before terrain
-calculation. Use \code{NULL} to keep native resolution.}
+\item{agg}{\code{numeric}; Target resolution (in meters) to which the DEM is
+aggregated if its native resolution is finer. Default: \code{5}.}
 
 \item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
 

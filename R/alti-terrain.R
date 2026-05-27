@@ -83,6 +83,7 @@ prepare_dem_terrain <- function(dem, agg = 5, verbose = TRUE) {
 #' @inheritParams get_chm
 #' @param agg `numeric`; Target resolution (in meters) to which the DEM is
 #' aggregated if its native resolution is finer. Default: `5`.
+#' @param unit `character`; "percent", "radians" or "degrees". Default to "percent".
 #' @param verbose `logical`; If `TRUE`, display messages.
 #' @param ... Additional parameters passed to [get_dem()] when `x` is supplied.
 #'
@@ -107,7 +108,15 @@ prepare_dem_terrain <- function(dem, agg = 5, verbose = TRUE) {
 #' }
 #' @export
 #'
-get_slope <- function(x = NULL, dem = NULL, agg = 5, verbose = TRUE, ...) {
+get_slope <- function(
+    x = NULL,
+    dem = NULL,
+    agg = 5,
+    units = "percent",
+    verbose = TRUE,
+    ...) {
+
+  units <- match.arg(units, c("percent", "radians", "degrees"))
 
   if (!is.null(x) && !is.null(dem)) {
   cli::cli_abort(c(
@@ -127,11 +136,18 @@ get_slope <- function(x = NULL, dem = NULL, agg = 5, verbose = TRUE, ...) {
   }
 
   dem <- prepare_dem_terrain(dem = dem, agg = agg, verbose = verbose)
-  slope_deg <- terra::terrain(dem,v = "slope", neighbors = 8, unit = "degrees")
-  slope_pct <- tan(slope_deg * pi / 180) * 100
-  names(slope_pct) <- "slope"
 
-  return(slope_pct)
+  # If percent, then it's compute in radians
+  units <- if (units == "degrees") "degrees" else "radians"
+  slope <- terra::terrain(dem, v = "slope", neighbors = 8, units)
+
+  if (units == "percent") {
+    slope <- tan(slope) * 100
+  }
+
+  names(slope) <- "slope"
+
+  return(slope)
 }
 
 #' Compute a Aspect Raster from a DEM
@@ -237,8 +253,7 @@ get_shade <- function(
 #' writes them to the project directory with [seq_write()].
 #'
 #' @inheritParams seq_write
-#' @param agg `numeric`; Target working resolution in meters before terrain
-#'   calculation. Use `NULL` to keep native resolution.
+#' @inheritParams get_slope
 #' @param verbose `logical`; If `TRUE`, display messages.
 #'
 #' @return Invisibly returns a named `character` vector of output raster paths.
@@ -249,6 +264,7 @@ get_shade <- function(
 seq_terrain <- function(
     dirname = ".",
     agg = 5,
+    units = "percent",
     overwrite = FALSE,
     verbose = TRUE
 ) {
@@ -314,7 +330,14 @@ seq_terrain <- function(
   }
 
   if (!file.exists(slope_path) || overwrite) {
-    slope <- get_slope(x = NULL, dem = dem, agg = agg, verbose = verbose)
+    slope <- get_slope(
+      x = NULL,
+      dem = dem,
+      agg = agg,
+      units = units,
+      verbose = verbose
+    )
+
     slope_path <- seq_write(
       slope,
       key = slope_key,

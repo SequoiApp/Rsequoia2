@@ -436,7 +436,11 @@ make_data_actions <- function(path, overwrite = FALSE) {
       }
     )
 
-    seq_terrain(dirname = dirname, overwrite = overwrite, verbose = verbose)
+    seq_terrain(
+      dirname = dirname,
+      units = "percent",
+      overwrite = overwrite,
+      verbose = verbose)
   }
 
   fns <- list(

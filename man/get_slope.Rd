@@ -4,7 +4,14 @@
 \alias{get_slope}
 \title{Compute a Slope Raster from a DEM}
 \usage{
-get_slope(x = NULL, dem = NULL, agg = 5, verbose = TRUE, ...)
+get_slope(
+  x = NULL,
+  dem = NULL,
+  agg = 5,
+  units = "percent",
+  verbose = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
@@ -18,6 +25,8 @@ aggregated if its native resolution is finer. Default: \code{5}.}
 \item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
 
 \item{...}{Additional parameters passed to \code{\link[=get_dem]{get_dem()}} when \code{x} is supplied.}
+
+\item{unit}{\code{character}; "percent", "radians" or "degrees". Default to "percent".}
 }
 \value{
 A \code{SpatRaster} containing slope values in percent.
