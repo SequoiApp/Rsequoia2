@@ -9,13 +9,13 @@
 ## Citation
 
 Chevereau M, Carteron P (2026). *Rsequoia2: R package to help french
-forest manager*. R package version 0.0.0.9000,
+forest manager*. R package version 0.0.1,
 <https://sequoiapp.github.io/Rsequoia2/>.
 
     @Manual{,
       title = {Rsequoia2: R package to help french forest manager},
       author = {Matthieu Chevereau and Paul Carteron},
       year = {2026},
-      note = {R package version 0.0.0.9000},
+      note = {R package version 0.0.1},
       url = {https://sequoiapp.github.io/Rsequoia2/},
     }
