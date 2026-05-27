@@ -185,10 +185,6 @@ idu <- c(
 parca <- get_parca(idu, bdp_geom = TRUE, lieu_dit = TRUE) |> 
   transform(IDENTIFIANT = "BRIN")
 #> ℹ Downloading BDP from IGN...
-#> ⠙ iterating 1 done (0.47/s) | 2.1s
-#> iterating ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
-#> ⠙ iterating 1 done (0.49/s) | 2s
-#> iterating ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 #> ✔ 104 of 114 ETALAB geom successfully replaced with BDP geom.
 #> ℹ Downloading and joining Lieux dits...
 #> ✔ Lieux dits joined.
@@ -255,7 +251,7 @@ my_forest_dir <- file.path(tempdir(), "MY_FOREST")
 dir.create(my_forest_dir)
 
 matrice_path <- create_matrice(my_forest_dir, id = "MY_FOREST")
-#> ✔ Excel file created at: /tmp/RtmpOEKxlt/MY_FOREST/MY_FOREST_matrice.xlsx
+#> ✔ Excel file created at: /tmp/RtmpQdE9PL/MY_FOREST/MY_FOREST_matrice.xlsx
 ```
 
 ### 2.2. Récupération des parcelles avec Sequoia
@@ -300,7 +296,7 @@ parca_path <- seq_parca(sequoia_dir)
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 9 features saved to 1_SEQUOIA/ECKMUHL_SEQ_PARCA_poly.gpkg.
 #> ✔ Table "x.seq.matrice" saved to ECKMUHL_MATRICE.xlsx.
-#> ✔ _matrice.xlsx also saved as ECKMUHL_matrice_20260526T151807.xlsx for safety.
+#> ✔ _matrice.xlsx also saved as ECKMUHL_matrice_20260527T081052.xlsx for safety.
 
 # lecture directe depuis le chemin retourné
 parca <- read_sf(parca_path)

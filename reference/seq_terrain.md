@@ -7,7 +7,13 @@ writes them to the project directory with
 ## Usage
 
 ``` r
-seq_terrain(dirname = ".", agg = 5, overwrite = FALSE, verbose = TRUE)
+seq_terrain(
+  dirname = ".",
+  agg = 5,
+  units = "percent",
+  overwrite = FALSE,
+  verbose = TRUE
+)
 ```
 
 ## Arguments
@@ -19,8 +25,8 @@ seq_terrain(dirname = ".", agg = 5, overwrite = FALSE, verbose = TRUE)
 
 - agg:
 
-  `numeric`; Target working resolution in meters before terrain
-  calculation. Use `NULL` to keep native resolution.
+  `numeric`; Target resolution (in meters) to which the DEM is
+  aggregated if its native resolution is finer. Default: `5`.
 
 - overwrite:
 
