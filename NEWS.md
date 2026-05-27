@@ -2,34 +2,40 @@
 
 ## v0.0.1
 
-### Fixed
-- Correct slope units to ensure result is in percentage
-
 ### Added
 
-- Added cache configuration in `inst/config/seq_caches.yaml`, with associated helpers in `config-cache.R`.
-- Implemented cache configuration across the package.
-- Added LIDAR tile support:
-  - `download_lidar()` downloads LIDAR tiles in parallel and stores them in the cache;
-  - `get_lidar()` loads LIDAR tiles in memory, then crops and masks the raster around an area;
-  - `seq_lidar()` orchestrates LIDAR processing within a Sequoia workflow.
-- Added support for generating shade raster :
-  - `get_shade()` function to calculate multi orientation shade ;
-  - `seq_terrain()` now generate shade raster from MNH
-- Added `seq_dir_rename()` for renaming a folder (layername & id)
-- Abort summary generation when `cor_area` is missing or contains only zero/NA values
-- Use human-readable field labels in summaries from the new `libelle` entries in `seq_fields.yaml`
+- Implemented package-wide cache configuration support;
+  - Added cache configuration through `inst/config/seq_caches.yaml`
+  - New helpers in `config-cache.R`;
+- Added LIDAR support:
+  - `download_lidar()` downloads LIDAR tiles in parallel and stores them in cache;
+  - `get_lidar()` loads cached LIDAR tiles, then crops and masks them around an area;
+  - `seq_lidar()` integrates LIDAR processing into the Sequoia workflow.
+- Added shade raster generation:
+  - `get_shade()` computes multi-orientation hillshade rasters;
+  - `seq_terrain()` now generates shade rasters from MNH data.
+- Added `seq_dir_rename()` to rename a Sequoia folder and its associated layer.
+- Added package version display in the `sequoia2()` menu.
+- Added `units` argument to `get_slope()` with support for `"degrees"`, `"radians"` and `"percent"`.
+- Added human-readable field labels in xlsx generated with `seq_summary()`
 
 ### Changed
 
-- Replaced `download_brgm()` with the more explicit `download_bdcharm50()` and `download_carhab()` functions.
+- Replaced `download_brgm()` with more explicit download helpers:
+  - `download_bdcharm50()`;
+  - `download_carhab()`.
 - Split the former `seq_elevation()` workflow into:
   - `seq_rgealti()` for classic RGE ALTI raster data;
-  - `seq_terrain()` for terrain derivatives such as slope and aspect.
-- Updated the `sequoia2()` altimetry workflow: LIDAR data is now attempted first, with fallback to classic WMS raster data.
-- `seq_summary()` refactor for better message report, table style and values calculation
-- `seq_summary()` generate new tables
+  - `seq_terrain()` for terrain derivatives such as slope, aspect and shade.
+- Updated the `sequoia2()` altimetry workflow to try LIDAR data first, with fallback to classic WMS raster data.
+- Refactored `seq_summary()` for clearer progress messages, improved table styling and more robust value calculations.
+- Extended `seq_summary()` with new summary tables.
+
+### Fixed
+
+- Fixed slope unit handling to ensure percentage slope is correctly calculated.
+- Abort summary generation when `cor_area` is missing, or contains only zero/`NA` values.
 
 ### Removed
 
-- Removed Scan support to comply with IGN diffusion rules.
+- Removed SCAN support to comply with IGN diffusion rules.
