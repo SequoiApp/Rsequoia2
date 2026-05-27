@@ -4,57 +4,64 @@
 
 ### v0.0.1
 
-#### Fixed
-
-- Correct slope units to ensure result is in percentage
-
 #### Added
 
-- Added cache configuration in `inst/config/seq_caches.yaml`, with
-  associated helpers in `config-cache.R`.
-- Implemented cache configuration across the package.
-- Added LIDAR tile support:
+- Implemented package-wide cache configuration support;
+  - Added cache configuration through `inst/config/seq_caches.yaml`
+  - New helpers in `config-cache.R`;
+- Added LIDAR support:
   - [`download_lidar()`](https://sequoiapp.github.io/Rsequoia2/reference/download_lidar.md)
-    downloads LIDAR tiles in parallel and stores them in the cache;
+    downloads LIDAR tiles in parallel and stores them in cache;
   - [`get_lidar()`](https://sequoiapp.github.io/Rsequoia2/reference/get_lidar.md)
-    loads LIDAR tiles in memory, then crops and masks the raster around
-    an area;
+    loads cached LIDAR tiles, then crops and masks them around an area;
   - [`seq_lidar()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_lidar.md)
-    orchestrates LIDAR processing within a Sequoia workflow.
-- Added support for generating shade raster :
+    integrates LIDAR processing into the Sequoia workflow.
+- Added shade raster generation:
   - [`get_shade()`](https://sequoiapp.github.io/Rsequoia2/reference/get_shade.md)
-    function to calculate multi orientation shade ;
+    computes multi-orientation hillshade rasters;
   - [`seq_terrain()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_terrain.md)
-    now generate shade raster from MNH
+    now generates shade rasters from MNH data.
 - Added
   [`seq_dir_rename()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_dir_rename.md)
-  for renaming a folder (layername & id)
-- Abort summary generation when `cor_area` is missing or contains only
-  zero/NA values
-- Use human-readable field labels in summaries from the new `libelle`
-  entries in `seq_fields.yaml`
+  to rename a Sequoia folder and its associated layer.
+- Added package version display in the
+  [`sequoia2()`](https://sequoiapp.github.io/Rsequoia2/reference/sequoia2.md)
+  menu.
+- Added `units` argument to
+  [`get_slope()`](https://sequoiapp.github.io/Rsequoia2/reference/get_slope.md)
+  with support for `"degrees"`, `"radians"` and `"percent"`.
+- Added human-readable field labels in xlsx generated with
+  [`seq_summary()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_summary.md)
 
 #### Changed
 
-- Replaced `download_brgm()` with the more explicit
-  [`download_bdcharm50()`](https://sequoiapp.github.io/Rsequoia2/reference/download_bdcharm50.md)
-  and
-  [`download_carhab()`](https://sequoiapp.github.io/Rsequoia2/reference/download_carhab.md)
-  functions.
+- Replaced `download_brgm()` with more explicit download helpers:
+  - [`download_bdcharm50()`](https://sequoiapp.github.io/Rsequoia2/reference/download_bdcharm50.md);
+  - [`download_carhab()`](https://sequoiapp.github.io/Rsequoia2/reference/download_carhab.md).
 - Split the former `seq_elevation()` workflow into:
   - [`seq_rgealti()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_rgealti.md)
     for classic RGE ALTI raster data;
   - [`seq_terrain()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_terrain.md)
-    for terrain derivatives such as slope and aspect.
+    for terrain derivatives such as slope, aspect and shade.
 - Updated the
   [`sequoia2()`](https://sequoiapp.github.io/Rsequoia2/reference/sequoia2.md)
-  altimetry workflow: LIDAR data is now attempted first, with fallback
-  to classic WMS raster data.
-- [`seq_summary()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_summary.md)
-  refactor for better message report, table style and values calculation
-- [`seq_summary()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_summary.md)
-  generate new tables
+  altimetry workflow to try LIDAR data first, with fallback to classic
+  WMS raster data.
+- Refactored
+  [`seq_summary()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_summary.md)
+  for clearer progress messages, improved table styling and more robust
+  value calculations.
+- Extended
+  [`seq_summary()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_summary.md)
+  with new summary tables.
+
+#### Fixed
+
+- Fixed slope unit handling to ensure percentage slope is correctly
+  calculated.
+- Abort summary generation when `cor_area` is missing, or contains only
+  zero/`NA` values.
 
 #### Removed
 
-- Removed Scan support to comply with IGN diffusion rules.
+- Removed SCAN support to comply with IGN diffusion rules.
