@@ -307,7 +307,10 @@ make_sequoia_actions <- function(overwrite = FALSE) {
 sequoia2 <- function(overwrite = FALSE) {
   run_menu(
     actions = make_sequoia_actions(overwrite = overwrite),
-    title = "Menu Sequoia",
+    title = sprintf(
+      "Menu Sequoia (%s)",
+      as.character(utils::packageVersion("Rsequoia2"))
+    ),
     show_path = TRUE,
     repeat_menu = TRUE
   )
