@@ -2,7 +2,7 @@
 
 ## Rsequoia2 (development version)
 
-### v0.0.1
+### v0.0.2
 
 #### Added
 
@@ -25,6 +25,9 @@
   [`seq_dir_rename()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_dir_rename.md)
   to rename a Sequoia folder and its associated layer.
 - Added package version display in the
+  [`sequoia2()`](https://sequoiapp.github.io/Rsequoia2/reference/sequoia2.md)
+  menu.
+- Added “ask for help” action in the
   [`sequoia2()`](https://sequoiapp.github.io/Rsequoia2/reference/sequoia2.md)
   menu.
 - Added `units` argument to
