@@ -2,6 +2,10 @@
 
 ## Rsequoia2 (development version)
 
+### v0.0.3
+
+- Add custom formula capabilities in total row of synthese tables
+
 ### v0.0.2
 
 #### Added
