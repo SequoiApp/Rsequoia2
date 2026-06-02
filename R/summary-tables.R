@@ -290,7 +290,7 @@ build_summary_coupe <- function(ua, n = 20) {
       cor_area
     ),
     dims = wb_dims(
-      rows = 3,
+      rows = nrow(coupe) + 2, # 2 : header + total_row
       cols = seq_along(years),
       from_col = ncol(coupe) - length(years) + 1
     )
