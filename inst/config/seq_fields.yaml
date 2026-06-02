@@ -135,7 +135,7 @@ cor_area:
 # ua ----
 mgmt_code:
   name: "PARFOR"
-  libelle: "Unite_de_gestion"
+  libelle: "UNITE DE GESTION"
   alias: ["ug"]
   class: "character"
   definition: "Management unit code"

@@ -265,19 +265,42 @@ build_summary_pf_rich <- function(ua) {
 
 # COUPE ----
 build_summary_coupe <- function(ua, n = 20) {
-  coupe <- sum_surf_by(ua, "mgmt_code", "std_type", "std_wealth", "std_stage", "res_spe1") |>
-    order_by("mgmt_code", "std_type", "std_wealth", "std_stage", "res_spe1")
+  by <- c("mgmt_code", "std_type", "std_wealth", "std_stage", "res_spe1")
+  coupe <- sum_surf_by(ua, by) |>
+    order_by(by)
 
-  actual_year <- as.numeric(format(Sys.Date(), "%Y"))
-  last_year <- actual_year + n
-  years <- as.character(actual_year:last_year)
+  year_start <- as.integer(format(Sys.Date(), "%Y"))
+  year_end <- year_start + n
+  years <- as.character(year_start:year_end)
 
-  coupe_with_year <- coupe
-  coupe_with_year[, years] <- NA
+  coupe[years] <- NA
 
-  tot <- c(text = "TOTAL", rep("none", ncol(coupe) - 2), "sum", rep("count", n + 1))
+  total_row <- c(
+    text = "TOTAL",
+    rep("none", ncol(coupe) - length(years) - 2),
+    "sum",
+    rep("SUMIF()", length(years))
+  )
 
-  list(table = coupe_with_year, total_row = tot)
+  cor_area <- seq_field("cor_area")$libelle
+  custom_formula <- list(
+    formula = sprintf(
+      'SUMIF(coupe[[#Data],[%s]],"<>",coupe[[#Data],[%s]])',
+      years,
+      cor_area
+    ),
+    dims = wb_dims(
+      rows = 3,
+      cols = seq_along(years),
+      from_col = ncol(coupe) - length(years) + 1
+    )
+  )
+
+  list(
+    table = coupe,
+    total_row = total_row,
+    custom_formula = custom_formula
+  )
 }
 
 # GESTION ----

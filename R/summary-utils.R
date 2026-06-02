@@ -71,6 +71,7 @@ safe_add_seq_table <- function(wb, sheet, fun, verbose = TRUE) {
         openxlsx2::wb_add_worksheet(sheet = sheet) |>
         openxlsx2::wb_add_data_table(
           sheet = sheet,
+          table_name = sheet,
           x = table,
           na = NULL,
           total_row = total_row
@@ -94,6 +95,16 @@ safe_add_seq_table <- function(wb, sheet, fun, verbose = TRUE) {
           sheet = sheet,
           first_row = TRUE
         )
+
+      has_custom_formula <- "custom_formula" %in% names(out)
+      if (has_custom_formula){
+        wb <- wb |>
+          openxlsx2::wb_add_formula(
+            sheet = sheet,
+            x = out$custom_formula$formula,
+            dims = out$custom_formula$dims
+          )
+      }
 
       if (verbose) {
         cli::cli_alert_success("{.field {sheet}}")
