@@ -61,7 +61,7 @@ test_that("download_lidar() properly switches WFS layer", {
 
   invisible(
     lapply(
-      c("mnt", "mns", "mnh"),
+      c("mnt", "mnh"),
       function(key) download_lidar(
         x = Rsequoia2:::seq_poly,
         key = key,
@@ -75,7 +75,6 @@ test_that("download_lidar() properly switches WFS layer", {
     calls,
     c(
       "IGNF_MNT-LIDAR-HD:dalle",
-      "IGNF_MNS-LIDAR-HD:dalle",
       "IGNF_MNH-LIDAR-HD:dalle"
     )
   )

@@ -139,3 +139,62 @@ seq_cache_report <- function(filepath = NULL) {
 
   return(invisible(report))
 }
+
+#' Clear Rsequoia2 cache
+#'
+#' Deletes one or all configured Rsequoia2 cache folders after user confirmation.
+#'
+#' @param key `character`. Cache key to clear. If `NULL`, all configured caches
+#'   are cleared.
+#' @param filepath `character`. Optional path to a cache configuration file.
+#'   Mostly useful for tests.
+#' @param ask `logical`. Ask confirmation before deleting cache files.
+#'
+#' @return Invisibly returns `TRUE`.
+#'
+#' @export
+seq_cache_clear <- function(key = NULL, filepath = NULL, ask = TRUE) {
+
+  cfg <- seq_cache(filepath = filepath)
+
+  keys <- if (is.null(key)) names(cfg) else key
+
+  caches <- lapply(keys, seq_cache, filepath = filepath)
+
+  paths <- vapply(caches, `[[`, character(1), "path")
+  labels <- vapply(caches, `[[`, character(1), "label")
+
+  existing <- dir.exists(paths)
+
+  if (!any(existing)) {
+    cli::cli_alert_info("No cache folder to clear.")
+    return(invisible(TRUE))
+  }
+
+  paths <- paths[existing]
+  labels <- labels[existing]
+
+  cli::cli_h1("Clear Rsequoia2 cache")
+
+  for (i in seq_along(paths)) {
+    cli::cli_text("{.strong {labels[i]}}: {.path {paths[i]}}")
+  }
+
+  if (ask && interactive()) {
+    cli::cli_alert_warning("This will permanently delete the cache folder above.")
+
+    choice <- utils::menu(c("Confirm and delete", "Cancel"))
+
+    if (choice != 1) {
+      cli::cli_abort("Cache clearing aborted by user.")
+    }
+  }
+
+  unlink(paths, recursive = TRUE, force = TRUE)
+
+  cli::cli_alert_success(
+    "{length(paths)} cache folder{?s} cleared."
+  )
+
+  invisible(TRUE)
+}

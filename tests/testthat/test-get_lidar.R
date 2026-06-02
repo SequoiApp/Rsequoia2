@@ -50,7 +50,7 @@ test_that("get_lidar() returns a named SpatRaster for each lidar key", {
     .package = "Rsequoia2"
   )
 
-  keys <- c("mnt", "mns", "mnh")
+  keys <- c("mnt", "mnh")
   res <- lapply(
     keys,
     function(key) get_lidar(x = x, key = key, verbose = FALSE)

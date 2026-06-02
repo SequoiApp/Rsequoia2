@@ -39,7 +39,6 @@ mock_lidar_meta <- function(key) {
   switch(
     key,
     "r.alt.mnt.lidar" = list(path = "RASTER/ALT", name = "MNT_LIDAR", ext = "tif"),
-    "r.alt.mns.lidar" = list(path = "RASTER/ALT", name = "MNS_LIDAR", ext = "tif"),
     "r.alt.mnh.lidar" = list(path = "RASTER/ALT", name = "MNH_LIDAR", ext = "tif"),
     stop("Unexpected key: ", key)
   )
@@ -103,27 +102,26 @@ test_that("seq_lidar() generates one output per requested key", {
     )
 
     expect_type(res, "list")
-    expect_identical(names(res), c("mnt", "mns", "mnh"))
+    expect_identical(names(res), c("mnt", "mnh"))
 
-    expect_length(written, 3)
+    expect_length(written, 2)
 
     expect_identical(
       vapply(written, `[[`, character(1), "key"),
       c(
         "r.alt.mnt.lidar",
-        "r.alt.mns.lidar",
         "r.alt.mnh.lidar"
       )
     )
 
     expect_identical(
       vapply(written, `[[`, character(1), "id"),
-      rep("SEQ001", 3)
+      rep("SEQ001", 2)
     )
 
     expect_identical(
       vapply(written, `[[`, character(1), "name"),
-      c("mnt_lidar", "mns_lidar", "mnh_lidar")
+      c("mnt_lidar", "mnh_lidar")
     )
   })
 })

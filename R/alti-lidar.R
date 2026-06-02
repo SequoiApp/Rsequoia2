@@ -16,7 +16,7 @@
 #' @keywords internal
 download_lidar <- function(
     x,
-    key = c("mnt", "mns", "mnh"),
+    key = c("mnt", "mnh"),
     cache = NULL,
     overwrite = FALSE,
     verbose = TRUE,
@@ -85,7 +85,7 @@ download_lidar <- function(
 #' @export
 get_lidar <- function(
     x,
-    key = c("mnt", "mns", "mnh"),
+    key = c("mnt", "mnh"),
     buffer = 200,
     crs = 2154,
     cache = NULL,
@@ -136,9 +136,9 @@ get_lidar <- function(
   r <- terra::crop(vrt, x_vect)
   r <- terra::mask(r, x_vect)
 
-  target_crs <- terra::crs(sf::st_crs(crs)$wkt)
-  if (!terra::same.crs(r, target_crs)) {
-    r <- terra::project(r, target_crs)
+  same_crs <- sf::st_crs(r)$input == sf::st_crs(crs)$input
+  if (!same_crs) {
+    r <- terra::project(r, sf::st_crs(crs)$wkt)
   }
 
   names(r) <- paste0(key, "_lidar")
@@ -161,7 +161,7 @@ get_lidar <- function(
 #' @export
 seq_lidar <- function(
     dirname = ".",
-    key = c("mnt", "mns", "mnh"),
+    key = c("mnt", "mnh"),
     buffer = 200,
     crs = 2154,
     cache = NULL,
