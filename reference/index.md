@@ -251,6 +251,9 @@
 - [`seq_cache()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_cache.md)
   : Get Rsequoia2 cache configuration
 
+- [`seq_cache_clear()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_cache_clear.md)
+  : Clear Rsequoia2 cache
+
 - [`seq_cache_report()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_cache_report.md)
   : Report Rsequoia2 cache usage
 

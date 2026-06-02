@@ -7,7 +7,7 @@ Downloads IGN LIDAR HD tiles intersecting an area of interest.
 ``` r
 download_lidar(
   x,
-  key = c("mnt", "mns", "mnh"),
+  key = c("mnt", "mnh"),
   cache = NULL,
   overwrite = FALSE,
   verbose = TRUE,

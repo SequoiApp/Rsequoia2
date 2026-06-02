@@ -8,7 +8,7 @@ HD altimetry rasters.
 ``` r
 seq_lidar(
   dirname = ".",
-  key = c("mnt", "mns", "mnh"),
+  key = c("mnt", "mnh"),
   buffer = 200,
   crs = 2154,
   cache = NULL,

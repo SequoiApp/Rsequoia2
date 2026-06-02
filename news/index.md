@@ -5,6 +5,10 @@
 ### v0.0.3
 
 - Add custom formula capabilities in total row of synthese tables
+- Add
+  [`seq_cache_clear()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_cache_clear.md)
+- Improve robustness and speed of MNH/MNT downloads
+- Disable MNS LIDAR product download by default
 
 ### v0.0.2
 

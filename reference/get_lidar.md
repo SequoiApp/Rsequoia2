@@ -9,7 +9,7 @@ masks the raster to a buffered envelope around `x`, and returns it in
 ``` r
 get_lidar(
   x,
-  key = c("mnt", "mns", "mnh"),
+  key = c("mnt", "mnh"),
   buffer = 200,
   crs = 2154,
   cache = NULL,
