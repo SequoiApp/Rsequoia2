@@ -215,7 +215,7 @@ seq_lidar <- function(
       buffer = buffer,
       crs = crs,
       cache = cache,
-      overwrite = overwrite,
+      overwrite = FALSE,
       verbose = verbose
     )
 
