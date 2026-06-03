@@ -290,7 +290,7 @@ seq_multi_download <- function(
 
     if (verbose && attempt < max_tries) {
       cli::cli_alert_warning(
-        "{length(state$destfiles)} file(s) failed. Retrying in {wait} seconds..."
+        "{length(state$destfiles)} file(s) failed. Retrying in 5 seconds..."
       )
 
       Sys.sleep(5)
