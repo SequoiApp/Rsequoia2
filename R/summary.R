@@ -30,66 +30,68 @@ seq_summary <- function(dirname = ".", verbose = TRUE) {
 
   # BUILD CONTEXT ----
   ua <- seq_read("v.seq.ua.poly", dirname = dirname)
+  ua <- seq_normalize(ua, "ua")
+  ua <- ua_repair_dgd(ua, verbose = verbose)
 
+  is_dgd <- seq_field("is_dgd")$name
   is_wooded <- seq_field("is_wooded")$name
-  if (!is_wooded %in% names(ua)) {
-    cli::cli_abort("Missing {.field is_wooded} column: {.field {is_wooded}}.")
-  }
-
   cor_area <- seq_field("cor_area")$name
-  if (!cor_area %in% names(ua)) {
-    cli::cli_abort("Missing {.field cor_area} column: {.field {cor_area}}.")
-  }
 
   cor_area_is_empty <- all(is.na(ua[[cor_area]]) | ua[[cor_area]] == 0)
   if (cor_area_is_empty) {
     cli::cli_abort(c(
-      "Invalid corrected area column.",
-      "x" = "{.field {cor_area}} contains only missing or zero values.",
+      "x" = "Invalid corrected area column.",
+      "!" = "{.field {cor_area}} contains only missing or zero values.",
       "i" = "Run the UA correction step before building the summary."
     ))
   }
 
   if (!is.logical(ua[[is_wooded]])) {
     cli::cli_alert_warning(
-      "{.field is_wooded} is not boolean/logical. Current type: {.cls {class(ua[[is_wooded]])}}."
+      "{.field {is_wooded}} is not logical. Current type: {.cls {class(ua[[is_wooded]])}}."
+    )
+  }
+
+  if (!is.logical(ua[[is_dgd]])) {
+    cli::cli_alert_warning(
+      "{.field {is_dgd}} is not logical. Current type: {.cls {class(ua[[is_dgd]])}}."
     )
   }
 
   pf <- ua_to_pf(ua)
-  ua_wooded <- ua[ua[[is_wooded]] %in% TRUE, , drop = FALSE]
+  ua_dgd <- ua[ua[[is_dgd]] %in% TRUE, , drop = FALSE]
 
   # TABLE BUILDERS ----
   builders <- list(
     ua = function() build_summary_ua(ua),
     occupation = function() build_summary_occupation(ua),
-    parca = function() build_summary_parca(ua_wooded),
-    parca_com = function() build_summary_parca_com(ua_wooded),
-    pf = function() build_summary_pf(ua_wooded),
-    sspf = function() build_summary_sspf(ua_wooded),
-    pf_parca = function() build_summary_pf_parca(ua_wooded),
-    parca_pf = function() build_summary_parca_pf(ua_wooded),
-    plt_type = function() build_summary_plt_type(ua_wooded),
-    plt_rich = function() build_summary_plt_rich(ua_wooded),
-    plt_stade = function() build_summary_plt_stade(ua_wooded),
-    plt_ess = function() build_summary_plt_ess(ua_wooded),
-    plt_type_rich = function() build_summary_plt_type_rich(ua_wooded),
-    plt_type_rich_stade = function() build_summary_plt_type_rich_stade(ua_wooded),
-    plt_type_rich_stade_ess = function() build_summary_plt_type_rich_stade_ess(ua_wooded),
-    pf_plt_type = function() build_summary_pf_plt_type(ua_wooded),
-    pf_plt_type_rich = function() build_summary_pf_plt_type_rich(ua_wooded),
-    pf_plt_type_rich_stade = function() build_summary_pf_plt_type_rich_stade(ua_wooded),
-    plt_pf = function() build_summary_plt_pf(ua_wooded),
-    pf_rich = function() build_summary_pf_rich(ua_wooded),
-    coupe = function() build_summary_coupe(ua_wooded),
-    gestion = function() build_summary_gestion(ua_wooded),
-    gestion_plt = function() build_summary_gestion_plt(ua_wooded),
-    plt_gestion = function() build_summary_plt_gestion(ua_wooded),
-    station = function() build_summary_station(ua_wooded),
-    bdcharm50 = function() build_summary_bdcharm50(ua_wooded, dirname),
-    carhab = function() build_summary_carhab(ua_wooded, dirname),
-    pedo = function() build_summary_pedo(ua_wooded, dirname),
-    road = function() build_summary_road(ua_wooded, dirname),
+    parca = function() build_summary_parca(ua_dgd),
+    parca_com = function() build_summary_parca_com(ua_dgd),
+    pf = function() build_summary_pf(ua_dgd),
+    sspf = function() build_summary_sspf(ua_dgd),
+    pf_parca = function() build_summary_pf_parca(ua_dgd),
+    parca_pf = function() build_summary_parca_pf(ua_dgd),
+    plt_type = function() build_summary_plt_type(ua_dgd),
+    plt_rich = function() build_summary_plt_rich(ua_dgd),
+    plt_stade = function() build_summary_plt_stade(ua_dgd),
+    plt_ess = function() build_summary_plt_ess(ua_dgd),
+    plt_type_rich = function() build_summary_plt_type_rich(ua_dgd),
+    plt_type_rich_stade = function() build_summary_plt_type_rich_stade(ua_dgd),
+    plt_type_rich_stade_ess = function() build_summary_plt_type_rich_stade_ess(ua_dgd),
+    pf_plt_type = function() build_summary_pf_plt_type(ua_dgd),
+    pf_plt_type_rich = function() build_summary_pf_plt_type_rich(ua_dgd),
+    pf_plt_type_rich_stade = function() build_summary_pf_plt_type_rich_stade(ua_dgd),
+    plt_pf = function() build_summary_plt_pf(ua_dgd),
+    pf_rich = function() build_summary_pf_rich(ua_dgd),
+    coupe = function() build_summary_coupe(ua_dgd),
+    gestion = function() build_summary_gestion(ua_dgd),
+    gestion_plt = function() build_summary_gestion_plt(ua_dgd),
+    plt_gestion = function() build_summary_plt_gestion(ua_dgd),
+    station = function() build_summary_station(ua_dgd),
+    bdcharm50 = function() build_summary_bdcharm50(ua_dgd, dirname),
+    carhab = function() build_summary_carhab(ua_dgd, dirname),
+    pedo = function() build_summary_pedo(ua_dgd, dirname),
+    road = function() build_summary_road(ua_dgd, dirname),
     mnt = function() build_summary_mnt(pf, dirname),
     mnh = function() build_summary_mnh(pf, dirname),
     expo = function() build_summary_expo(pf, dirname),
