@@ -314,6 +314,11 @@
 - [`seq_normalize()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_normalize.md)
   : Normalize a data frame according to Sequoia table definitions
 
+- [`seq_occupation()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_occupation.md)
+  :
+
+  Create occupation layer from *UA* for a Sequoia project
+
 - [`seq_old()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_old.md)
   : Generate OLD layer for a Sequoia project
 
@@ -377,11 +382,6 @@
 - [`seq_voids()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_voids.md)
   : Generate cadastral gaps layer for a Sequoia project
 
-- [`seq_wooded()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_wooded.md)
-  :
-
-  Create wooded-area layer from *UA* for a Sequoia project
-
 - [`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md)
   : Write a spatial object based on a layer key
 
@@ -403,6 +403,9 @@
   :
 
   Check cadastral IDU consistency between *UA* and *PARCA*
+
+- [`ua_check_non_wooded_threshold()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_check_non_wooded_threshold.md)
+  : Check non-wooded surface threshold
 
 - [`ua_check_ug()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_check_ug.md)
   :
@@ -430,6 +433,14 @@
 
   Repair *UA* cadastral IDU from *PARCA*
 
+- [`ua_repair_wooded()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_repair_wooded.md)
+  : Repair wooded status from DGD status
+
+- [`ua_to_occupation()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_to_occupation.md)
+  :
+
+  Aggregate *UA* surfaces by occupation status
+
 - [`ua_to_parca()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_to_parca.md)
   :
 
@@ -449,11 +460,6 @@
   :
 
   Check and update *UA* consistency with cadastral *PARCA* data
-
-- [`ua_to_wooded()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_to_wooded.md)
-  :
-
-  Aggregate *UA* surfaces by wooded / non-wooded status
 
 - [`ua_update_parca_fields()`](https://sequoiapp.github.io/Rsequoia2/reference/ua_update_parca_fields.md)
   :

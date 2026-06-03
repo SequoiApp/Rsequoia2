@@ -170,7 +170,7 @@ eckmuhl_parca_path <- seq_parca(eckmuhl_sequoia_dir)
 #> ✔ No area inconsistencies (cadastre vs GIS) detected.
 #> ✔ Layer "v.seq.parca.poly" with 9 features saved to 1_SEQUOIA/ECKMUHL_SEQ_PARCA_poly.gpkg.
 #> ✔ Table "x.seq.matrice" saved to ECKMUHL_MATRICE.xlsx.
-#> ✔ _matrice.xlsx also saved as ECKMUHL_matrice_20260603T125337.xlsx for safety.
+#> ✔ _matrice.xlsx also saved as ECKMUHL_matrice_20260603T145401.xlsx for safety.
 eckmuhl_parca <- read_sf(eckmuhl_parca_path)
 eckmuhl_foret <- Rsequoia2::seq_dissolve(eckmuhl_parca, 5.5)
 
@@ -210,7 +210,7 @@ ncol(brin_parca)
 nrow(brin_ua_raw) # same as PARCA
 #> [1] 114
 ncol(brin_ua_raw)
-#> [1] 45
+#> [1] 46
 
 # Plot
 tm_shape(brin_parca)+
@@ -369,10 +369,12 @@ partir de la description dominante de celle-ci.
 ``` r
 
 brin_ua<- ua_to_ua(brin_ua, brin_parca)
-#> ✔ All UA IDU values are already correct.
+#> ✔ UA IDU values are correct.
 #> ✔ UA and PARCA IDU values are consistent.
 #> ✔ UG field PARFOR created.
 #> ✔ Corrected cadastral areas calculated.
+#> ! DGD_SOUMIS is empty and was initialized to "TRUE".
+#> ✔ Non-wooded submitted surface is 0.02%, below the 10% threshold.
 #> ✔ All UG are consistent.
 
 # Plot
