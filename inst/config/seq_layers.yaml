@@ -18,22 +18,22 @@ r.sol.geol:        { name: "GEOL",        ext: "tif" }
 r.seq.plt:         { name: "PLT",         ext: "tif" }
 
 # SEQUOIA
-v.seq.parca.poly:   { name: "SEQ_PARCA_poly",  ext: "gpkg" }
-v.seq.forest.point: { name: "SEQ_FORET_point", ext: "gpkg" }
-v.seq.forest.line:  { name: "SEQ_FORET_line",  ext: "gpkg" }
-v.seq.forest.poly:  { name: "SEQ_FORET_poly",  ext: "gpkg" }
-v.seq.owner.point:  { name: "SEQ_OWNER_point", ext: "gpkg" }
-v.seq.owner.line:   { name: "SEQ_OWNER_line",  ext: "gpkg" }
-v.seq.owner.poly:   { name: "SEQ_OWNER_poly",  ext: "gpkg" }
-v.seq.ua.poly:      { name: "SEQ_UA_poly",     ext: "gpkg" }
-v.seq.pf.point:     { name: "SEQ_PF_point",    ext: "gpkg" }
-v.seq.pf.line:      { name: "SEQ_PF_line",     ext: "gpkg" }
-v.seq.pf.poly:      { name: "SEQ_PF_poly",     ext: "gpkg" }
-v.seq.sspf.point:   { name: "SEQ_SSPF_point",  ext: "gpkg" }
-v.seq.sspf.poly:    { name: "SEQ_SSPF_poly",   ext: "gpkg" }
-v.seq.sspf.line:    { name: "SEQ_SSPF_line",   ext: "gpkg" }
-v.seq.ame.poly:     { name: "SEQ_AME_poly",    ext: "gpkg" }
-v.seq.wooded.point: { name: "SEQ_BOISEE_poly",ext: "gpkg" }
+v.seq.parca.poly:   { name: "SEQ_PARCA_poly",      ext: "gpkg" }
+v.seq.forest.point: { name: "SEQ_FORET_point",     ext: "gpkg" }
+v.seq.forest.line:  { name: "SEQ_FORET_line",      ext: "gpkg" }
+v.seq.forest.poly:  { name: "SEQ_FORET_poly",      ext: "gpkg" }
+v.seq.owner.point:  { name: "SEQ_OWNER_point",     ext: "gpkg" }
+v.seq.owner.line:   { name: "SEQ_OWNER_line",      ext: "gpkg" }
+v.seq.owner.poly:   { name: "SEQ_OWNER_poly",      ext: "gpkg" }
+v.seq.ua.poly:      { name: "SEQ_UA_poly",         ext: "gpkg" }
+v.seq.pf.point:     { name: "SEQ_PF_point",        ext: "gpkg" }
+v.seq.pf.line:      { name: "SEQ_PF_line",         ext: "gpkg" }
+v.seq.pf.poly:      { name: "SEQ_PF_poly",         ext: "gpkg" }
+v.seq.sspf.point:   { name: "SEQ_SSPF_point",      ext: "gpkg" }
+v.seq.sspf.poly:    { name: "SEQ_SSPF_poly",       ext: "gpkg" }
+v.seq.sspf.line:    { name: "SEQ_SSPF_line",       ext: "gpkg" }
+v.seq.ame.poly:     { name: "SEQ_AME_poly",        ext: "gpkg" }
+v.seq.occup.poly:   { name: "SEQ_OCCUPATION_poly", ext: "gpkg" }
 
 # COMMUNE
 v.com.topo.poly:      { name: "COMS_TOPO_poly",     ext: "gpkg" }

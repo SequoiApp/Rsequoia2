@@ -57,6 +57,7 @@ ua:
   - section
   - number
   - locality
+  - is_dgd
   - is_wooded
   - mgmt_code
   - pcl_code

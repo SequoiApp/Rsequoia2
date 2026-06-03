@@ -148,7 +148,7 @@ update_parca <- function(parca, id){
 #' @export
 update_ua <- function(ua, id){
   id_field <- seq_field("identifier")$name
-  is_wooded <- seq_field("is_wooded")$name
+  is_dgd <- seq_field("is_dgd")$name
   gis_area_field <- seq_field("gis_area")$name
   source_field <- seq_field("source")$name
 
@@ -161,7 +161,7 @@ update_ua <- function(ua, id){
   number_field <- seq_field("number")$name
 
   if ("OCCUP_SOL" %in% names(ua)){
-    ua[[is_wooded]] <- ifelse(
+    ua[[is_dgd]] <- ifelse(
       !is.na(ua$OCCUP_SOL),
       ifelse(ua$OCCUP_SOL == "BOISEE", TRUE, FALSE),
       NA

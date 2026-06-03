@@ -274,7 +274,7 @@ make_sequoia_actions <- function(overwrite = FALSE) {
       path <- require_seq_path()
       seq_ua(path, overwrite = TRUE)
       seq_parcels(path, overwrite = TRUE)
-      seq_wooded(path, overwrite = TRUE)
+      seq_occupation(path, overwrite = TRUE)
     },
 
     "Generer synthese UA" = function() {

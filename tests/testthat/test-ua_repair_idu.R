@@ -48,7 +48,7 @@ test_that("ua_repair_idu() prints message when verbose = TRUE and IDU are all va
 
     expect_message(
       ua_repair_idu(ua, p, verbose = TRUE),
-      "All UA IDU values are already correct"
+      "UA IDU values are correct"
     )
 
   })

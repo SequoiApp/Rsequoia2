@@ -1,12 +1,17 @@
 # Rsequoia2 (development version)
 
+## v0.0.4
+- Add new `DGD_SOUMIS` field and rename `BOISE` to `DGD_BOISE`
+- Replace `ua_to_wooded()` and `seq_wooded()` with `ua_to_occupation()` and `seq_occupation()`
+- Add UA consistency checks for DGD occupation:
+  - force `DGD_BOISE = FALSE` when `DGD_SOUMIS = FALSE`
+  - warn when non-wooded surfaces submitted to DGD exceed 10%
+
 ## v0.0.3
 - Add custom formula capabilities in total row of synthese tables
 - Add `seq_cache_clear()`
 - Improve robustness and speed of MNH/MNT downloads
 - Disable MNS LIDAR product download by default
-
-## v0.0.2
 
 ### Added
 

@@ -12,11 +12,19 @@ owner:
   class: "character"
   definition: "Owner name"
 
-is_wooded:
-  name: "BOISE"
-  libelle: "BOISE"
+is_dgd:
+  name: "DGD_SOUMIS"
+  libelle: "SOUMIS"
+  alias: ["soumis", "dgd"]
   class: "boolean"
-  definition: "Land use field specific for forest"
+  definition: "Indique si la surface est soumise au document de gestion durable."
+
+is_wooded:
+  name: "DGD_BOISE"
+  libelle: "BOISE"
+  alias: ["boise", "boisee"]
+  class: "boolean"
+  definition: "Indique si la surface est comptabilisee comme surface boisee ou concourant a la production forestière (desserte)."
 
 # cog ----
 reg_code:
