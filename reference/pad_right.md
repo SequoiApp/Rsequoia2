@@ -12,15 +12,15 @@ pad_right(x, width, fill = "0")
 
 - x:
 
-  `character` String to pad
+  \`character\` String to pad
 
 - width:
 
-  `integer` Desired total width
+  \`integer\` Desired total width
 
 - fill:
 
-  `character` Filler to pad with
+  \`character\` Filler to pad with
 
 ## Value
 

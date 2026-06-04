@@ -59,38 +59,38 @@ PDF reports into the project directory.</p>
 
 
 <dl><dt id="arg-dirname">dirname<a class="anchor" aria-label="anchor" href="#arg-dirname"></a></dt>
-<dd><p><code>character</code> Path to the project directory.
+<dd><p>`character` Path to the project directory.
 Defaults to the current working directory.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p><code>logical</code>; whether to display informational messages.
-Defaults to <code>TRUE</code>.</p></dd>
+<dd><p>`logical`; whether to display informational messages.
+Defaults to `TRUE`.</p></dd>
 
 
 <dt id="arg-overwrite">overwrite<a class="anchor" aria-label="anchor" href="#arg-overwrite"></a></dt>
-<dd><p><code>logical</code>; whether to overwrite existing files.
-Defaults to <code>FALSE</code>.</p></dd>
+<dd><p>`logical`; whether to overwrite existing files.
+Defaults to `FALSE`.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Invisibly returns a named list of file paths written by <code><a href="seq_write.html">seq_write()</a></code>.
-Returns <code>NULL</code> invisibly when no pedology features are found.</p>
+    <p>Invisibly returns a named list of file paths written by [seq_write()].
+Returns `NULL` invisibly when no pedology features are found.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Pedology polygon features are retrieved using <code><a href="get_pedology.html">get_pedology()</a></code>.</p>
+    <p>Pedology polygon features are retrieved using [get_pedology()].</p>
 <p>If no pedology features intersect the project area, the function
-returns <code>NULL</code> invisibly and no file is written.</p>
+returns `NULL` invisibly and no file is written.</p>
 <p>When pedology features are present, the polygon layer is written
-to disk using <code><a href="seq_write.html">seq_write()</a></code> with the key <code>"v.sol.pedo.poly"</code>.
-Associated UCS PDF reports are then downloaded into <code>dirname</code>
-using <code><a href="get_pedology_pdf.html">get_pedology_pdf()</a></code>.</p>
+to disk using [seq_write()] with the key `"v.sol.pedo.poly"`.
+Associated UCS PDF reports are then downloaded into `dirname`
+using [get_pedology_pdf()].</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="get_pedology.html">get_pedology()</a></code>, <code><a href="get_pedology_pdf.html">get_pedology_pdf()</a></code>, <code><a href="seq_write.html">seq_write()</a></code></p></div>
+    <div class="dont-index"><p>[get_pedology()], [get_pedology_pdf()], [seq_write()]</p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

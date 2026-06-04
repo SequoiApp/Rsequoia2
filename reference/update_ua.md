@@ -1,6 +1,6 @@
-# Update `R_SEQUOIA` *UA* layer to `Rsequoia2`
+# Update \`R_SEQUOIA\` \_UA\_ layer to \`Rsequoia2\`
 
-Update `R_SEQUOIA` *UA* layer to `Rsequoia2`
+Update \`R_SEQUOIA\` \_UA\_ layer to \`Rsequoia2\`
 
 ## Usage
 
@@ -12,13 +12,13 @@ update_ua(ua, id)
 
 - ua:
 
-  `sf` object containing analysis units
+  \`sf\` object containing analysis units
 
 - id:
 
-  `character` Identifier of the project
+  \`character\` Identifier of the project
 
 ## Value
 
-An `sf` object containing analysis units, normalized for `Rsequoia2`
+An \`sf\` object containing analysis units, normalized for \`Rsequoia2\`
 use.

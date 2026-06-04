@@ -1,6 +1,6 @@
-# Update `R_SEQUOIA` projet to `Rsequoia2`
+# Update \`R_SEQUOIA\` projet to \`Rsequoia2\`
 
-Update `R_SEQUOIA` projet to `Rsequoia2`
+Update \`R_SEQUOIA\` projet to \`Rsequoia2\`
 
 ## Usage
 
@@ -12,19 +12,20 @@ seq1_update(dirname = ".", verbose = TRUE, overwrite = FALSE)
 
 - dirname:
 
-  `character` Directory where the `R_SEQUOIA` files are located.
+  \`character\` Directory where the \`R_SEQUOIA\` files are located.
   Defaults to the current working directory.
 
 - verbose:
 
-  `logical` If `TRUE`, display progress messages. Defaults to `TRUE`.
+  \`logical\` If \`TRUE\`, display progress messages. Defaults to
+  \`TRUE\`.
 
 - overwrite:
 
-  `logical`; whether to overwrite existing files. Defaults to `FALSE`.
+  \`logical\`; whether to overwrite existing files. Defaults to
+  \`FALSE\`.
 
 ## Value
 
 Invisibly returns a named vector of file paths written by
-[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
-Returns `NULL` invisibly when no layer are found.
+\[seq_write()\]. Returns \`NULL\` invisibly when no layer are found.

@@ -3,7 +3,7 @@
 Builds a fetch_envelope buffer around the input geometry, retrieves
 toponymic point features from the BDTOPO dataset, classifies them by
 thematic type (hydrographic, vegetation, or other), normalizes the
-result, and returns a standardized `sf` point layer.
+result, and returns a standardized \`sf\` point layer.
 
 ## Usage
 
@@ -15,52 +15,32 @@ get_toponyme(x, buffer = 1000, verbose = TRUE)
 
 - x:
 
-  An `sf` object defining the input area of interest.
+  An \`sf\` object defining the input area of interest.
 
 - buffer:
 
-  `numeric`; Buffer around `x` (in **meters**) used to enlarge
+  \`numeric\`; Buffer around \`x\` (in \*\*meters\*\*) used to enlarge
 
 - verbose:
 
-  `logical` If `TRUE`, display messages.
+  \`logical\` If \`TRUE\`, display messages.
 
 ## Value
 
-An `sf` object containing toponymic point features with standardized
-attribute fields:
-
-- `TYPE` - Toponym class
-
-  - `AER` = Aerodrome runway
-
-  - `BAT` = Building
-
-  - `CIM` = Cemetery
-
-  - `CST` = Construction
-
-  - `HAB` = Residential area
-
-  - `HYD` = Hydrographic
-
-  - `ORO` = Orographic
-
-  - `VEG` = Vegetation-related
-
-  - `AUT` = Other toponyms
-
-- `NATURE` - Original BDTOPO object nature
-
-- `NAME` - Official toponym name (when available)
-
-- `SOURCE` - Data source identifier (`IGNF_BDTOPO_V3`)
+An \`sf\` object containing toponymic point features with standardized
+attribute fields: \* \`TYPE\` - Toponym class - \`AER\` = Aerodrome
+runway - \`BAT\` = Building - \`CIM\` = Cemetery - \`CST\` =
+Construction - \`HAB\` = Residential area - \`HYD\` = Hydrographic -
+\`ORO\` = Orographic - \`VEG\` = Vegetation-related - \`AUT\` = Other
+toponyms \* \`NATURE\` - Original BDTOPO object nature \* \`NAME\` -
+Official toponym name (when available) \* \`SOURCE\` - Data source
+identifier (\`IGNF_BDTOPO_V3\`)
 
 ## Details
 
 The function creates a 1000 m fetch_envelope buffer around the input
-geometry `x` and retrieves toponymic point features from the BDTOPO
+geometry \`x\` and retrieves toponymic point features from the BDTOPO
 toponymy layer. Retrieved features are classified into thematic types
 based on their object class, attribute names are standardized, and
-geometries are normalized before being returned as a single `sf` point
+geometries are normalized before being returned as a single \`sf\` point
 layer.

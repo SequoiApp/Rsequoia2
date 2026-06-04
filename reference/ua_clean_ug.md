@@ -1,7 +1,7 @@
-# Clean management units (UG) by correcting minor inconsistencies in the *UA* sf object
+# Clean management units (UG) by correcting minor inconsistencies in the \_UA\_ sf object
 
 Detects and corrects minor inconsistencies within management units (UG)
-in *UA*. Lines with small surfaces relative to their UG are updated to
+in \_UA\_. Lines with small surfaces relative to their UG are updated to
 match the dominant description.
 
 ## Usage
@@ -14,8 +14,8 @@ ua_clean_ug(ua, atol = 0.5, rtol = 0.1)
 
 - ua:
 
-  `sf` object containing analysis units; with at least the UG identifier
-  field and relevant attribute fields.
+  \`sf\` object containing analysis units; with at least the UG
+  identifier field and relevant attribute fields.
 
 - atol:
 
@@ -27,8 +27,8 @@ ua_clean_ug(ua, atol = 0.5, rtol = 0.1)
 
 ## Value
 
-An `sf` object identical to `ua`, with minor inconsistent lines
-corrected and an additional logical column `ug_valid` indicating UG
+An \`sf\` object identical to \`ua\`, with minor inconsistent lines
+corrected and an additional logical column \`ug_valid\` indicating UG
 consistency.
 
 ## Details

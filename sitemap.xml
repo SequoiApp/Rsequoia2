@@ -108,7 +108,6 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/parca_to_ua.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/parse_rp.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/poly_to_line.html</loc></url>
-<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/prepare_dem_terrain.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/process_raw_parcels.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/quiet.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/read_legal_entity.html</loc></url>
@@ -124,6 +123,7 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq1_read.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq1_update.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_access.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_aggregate_dem.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_boundaries.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_cache.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/seq_cache_clear.html</loc></url>
@@ -182,6 +182,7 @@
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/ua_clean_ug.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/ua_generate_area.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/ua_generate_ug.html</loc></url>
+<url><loc>https://sequoiapp.github.io/Rsequoia2/reference/ua_repair_dgd.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/ua_repair_idu.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/ua_repair_wooded.html</loc></url>
 <url><loc>https://sequoiapp.github.io/Rsequoia2/reference/ua_to_occupation.html</loc></url>

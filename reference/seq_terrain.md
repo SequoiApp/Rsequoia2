@@ -1,8 +1,7 @@
 # Create terrain derivative layers for a Sequoia project
 
 Uses the project's MNT raster to compute slope and aspect rasters, then
-writes them to the project directory with
-[`seq_write()`](https://sequoiapp.github.io/Rsequoia2/reference/seq_write.md).
+writes them to the project directory with \[seq_write()\].
 
 ## Usage
 
@@ -20,31 +19,31 @@ seq_terrain(
 
 - dirname:
 
-  `character` Directory where the matrice file is located. Defaults to
+  \`character\` Directory where the matrice file is located. Defaults to
   the current working directory.
 
 - agg:
 
-  `numeric`; Target resolution (in meters) to which the DEM is
-  aggregated if its native resolution is finer. Default: `5`.
+  \`numeric\`; Target resolution (in meters) to which the DEM is
+  aggregated if its native resolution is finer. Default: \`5\`.
 
 - unit:
 
-  `character`; "percent", "radians" or "degrees". Default to "percent".
+  \`character\`; "percent", "radians" or "degrees". Default to
+  "percent".
 
 - overwrite:
 
-  `logical` If `TRUE`, file is overwritten.
+  \`logical\` If \`TRUE\`, file is overwritten.
 
 - verbose:
 
-  `logical`; If `TRUE`, display messages.
+  \`logical\`; If \`TRUE\`, display messages.
 
 ## Value
 
-Invisibly returns a named `character` vector of output raster paths.
+Invisibly returns a named \`character\` vector of output raster paths.
 
 ## See also
 
-[`get_slope()`](https://sequoiapp.github.io/Rsequoia2/reference/get_slope.md),
-[`get_aspect()`](https://sequoiapp.github.io/Rsequoia2/reference/get_aspect.md)
+\[get_slope()\], \[get_aspect()\]

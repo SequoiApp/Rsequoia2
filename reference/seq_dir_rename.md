@@ -27,12 +27,12 @@ seq_dir_rename(path, old_id, new_id, verbose = TRUE)
 
 - verbose:
 
-  Logical. If `TRUE`, print a console report with `cli`.
+  Logical. If \`TRUE\`, print a console report with \`cli\`.
 
 ## Value
 
 Invisibly returns a data frame with one row per GeoPackage and the
-columns `file`, `status`, and `message`.
+columns \`file\`, \`status\`, and \`message\`.
 
 ## Details
 

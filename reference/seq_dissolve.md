@@ -31,74 +31,70 @@ seq_dissolve(
 
 - x:
 
-  An `sf` object containing only `POLYGON` or `MULTIPOLYGON` geometries.
+  An \`sf\` object containing only \`POLYGON\` or \`MULTIPOLYGON\`
+  geometries.
 
 - buffer:
 
-  `numeric`; Buffer distance (in coordinate units) used to expand
+  \`numeric\`; Buffer distance (in coordinate units) used to expand
   geometries before union. This value controls the tolerance for merging
-  nearby or slightly disconnected polygons. Default is `5`.
+  nearby or slightly disconnected polygons. Default is \`5\`.
 
 - eps:
 
-  `numeric`; Small offset applied during the negative buffer step
-  (`-buffer + eps`) to prevent topology collapse or invalid geometries.
-  Should be a very small positive value relative to `buffer`. Default is
-  `0.01`.
+  \`numeric\`; Small offset applied during the negative buffer step
+  (\`-buffer + eps\`) to prevent topology collapse or invalid
+  geometries. Should be a very small positive value relative to
+  \`buffer\`. Default is \`0.01\`.
 
 - endCapStyle:
 
-  `character`; Shape of line endings used in buffering. One of
-  `"ROUND"`, `"FLAT"`, or `"SQUARE"`. Passed to
-  [`sf::st_buffer()`](https://r-spatial.github.io/sf/reference/geos_unary.html).
+  \`character\`; Shape of line endings used in buffering. One of
+  \`"ROUND"\`, \`"FLAT"\`, or \`"SQUARE"\`. Passed to
+  \[sf::st_buffer()\].
 
 - joinStyle:
 
-  `character`; Shape of corners in buffering. One of `"ROUND"`,
-  `"MITRE"`, or `"BEVEL"`. Passed to
-  [`sf::st_buffer()`](https://r-spatial.github.io/sf/reference/geos_unary.html).
+  \`character\`; Shape of corners in buffering. One of \`"ROUND"\`,
+  \`"MITRE"\`, or \`"BEVEL"\`. Passed to \[sf::st_buffer()\].
 
 - mitreLimit:
 
-  `numeric`; Mitre ratio limit (only used if `joinStyle = "MITRE"`).
-  Passed to
-  [`sf::st_buffer()`](https://r-spatial.github.io/sf/reference/geos_unary.html).
+  \`numeric\`; Mitre ratio limit (only used if \`joinStyle = "MITRE"\`).
+  Passed to \[sf::st_buffer()\].
 
 - snapping:
 
-  `logical`; If `TRUE`, snaps the resulting geometries back to the
-  original input geometries using
-  [`sf::st_snap()`](https://r-spatial.github.io/sf/reference/geos_binary_ops.html)
-  with the same tolerance as `buffer`. This can help reduce spatial
-  drift introduced by buffering. Default is `FALSE`.
+  \`logical\`; If \`TRUE\`, snaps the resulting geometries back to the
+  original input geometries using \[sf::st_snap()\] with the same
+  tolerance as \`buffer\`. This can help reduce spatial drift introduced
+  by buffering. Default is \`FALSE\`.
 
 ## Value
 
-An `sf` object containing dissolved polygon geometries.
+An \`sf\` object containing dissolved polygon geometries.
 
 ## Details
 
 The algorithm proceeds as follows:
 
-1.  Cast geometries to `POLYGON`
+1.  Cast geometries to \`POLYGON\`
 
-2.  Apply a positive buffer (`+buffer`)
+2.  Apply a positive buffer (\`+buffer\`)
 
-3.  Perform a geometric union (`st_union`)
+3.  Perform a geometric union (\`st_union\`)
 
-4.  Apply a negative buffer (`-buffer + eps`)
+4.  Apply a negative buffer (\`-buffer + eps\`)
 
-5.  Validate geometries (`st_make_valid`)
+5.  Validate geometries (\`st_make_valid\`)
 
-6.  Recast to `POLYGON`
+6.  Recast to \`POLYGON\`
 
 Note that this method modifies geometry boundaries and may introduce
 slight positional shifts. The magnitude of these shifts depends on the
-chosen `buffer` and `eps` values.
+chosen \`buffer\` and \`eps\` values.
 
 ## See also
 
-[`sf::st_union()`](https://r-spatial.github.io/sf/reference/geos_combine.html),
-[`sf::st_buffer()`](https://r-spatial.github.io/sf/reference/geos_unary.html),
-[`sf::st_make_valid()`](https://r-spatial.github.io/sf/reference/valid.html),
-[`sf::st_snap()`](https://r-spatial.github.io/sf/reference/geos_binary_ops.html)
+\[sf::st_union()\], \[sf::st_buffer()\], \[sf::st_make_valid()\],
+\[sf::st_snap()\]

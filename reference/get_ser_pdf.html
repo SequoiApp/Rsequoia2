@@ -61,8 +61,8 @@ from the IFN repository.</p>
 
 
 <dl><dt id="arg-id-ser">id_ser<a class="anchor" aria-label="anchor" href="#arg-id-ser"></a></dt>
-<dd><p><code>character</code> used to identify pedology reports.
-It can be got by using <code>get_ifn("ser")$codeser</code>.</p></dd>
+<dd><p>`character` used to identify pedology reports.
+It can be got by using `get_ifn("ser")$codeser`.</p></dd>
 
 
 <dt id="arg-dirname">dirname<a class="anchor" aria-label="anchor" href="#arg-dirname"></a></dt>
@@ -70,31 +70,31 @@ It can be got by using <code>get_ifn("ser")$codeser</code>.</p></dd>
 
 
 <dt id="arg-overwrite">overwrite<a class="anchor" aria-label="anchor" href="#arg-overwrite"></a></dt>
-<dd><p><code>logical</code>; whether to overwrite existing files.
-Defaults to <code>FALSE</code>.</p></dd>
+<dd><p>`logical`; whether to overwrite existing files.
+Defaults to `FALSE`.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p><code>logical</code>. If <code>TRUE</code>, display progress messages.</p></dd>
+<dd><p>`logical`. If `TRUE`, display progress messages.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Invisibly returns the normalized path to <code>out_dir</code>. Returns
-<code>NULL</code> invisibly if no valid <code>id_ucs</code> is found.</p>
+    <p>Invisibly returns the normalized path to `out_dir`. Returns
+`NULL` invisibly if no valid `id_ucs` is found.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The function needs unique SER identifiers typically got from the <code>codeser</code>
-field of <code>ser</code>, builds download URLs pointing to the INRAE
+    <p>The function needs unique SER identifiers typically got from the `codeser`
+field of `ser`, builds download URLs pointing to the INRAE
 soil map repository, and downloads the corresponding PDF documents.</p>
-<p>Existing files are skipped unless <code>overwrite = TRUE</code>. All user
-feedback is handled via the <code>cli</code> package and can be silenced by
-setting <code>verbose = FALSE</code>.</p>
+<p>Existing files are skipped unless `overwrite = TRUE`. All user
+feedback is handled via the `cli` package and can be silenced by
+setting `verbose = FALSE`.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="get_ifn.html">get_ifn()</a></code></p></div>
+    <div class="dont-index"><p>[get_ifn()]</p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

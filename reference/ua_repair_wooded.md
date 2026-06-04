@@ -12,7 +12,7 @@ ua_repair_wooded(ua, verbose = TRUE)
 
 - ua:
 
-  `sf` object containing UA polygons.
+  \`sf\` object containing UA polygons.
 
 - verbose:
 
@@ -20,4 +20,4 @@ ua_repair_wooded(ua, verbose = TRUE)
 
 ## Value
 
-The repaired `ua` object.
+The repaired \`ua\` object.

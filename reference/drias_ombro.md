@@ -12,11 +12,11 @@ drias_ombro(txt)
 
 - txt:
 
-  `character` string. Path to a DRIAS `.txt` file.
+  \`character\` string. Path to a DRIAS \`.txt\` file.
 
 ## Value
 
-A `data.frame` containing monthly averages of temperature and
+A \`data.frame\` containing monthly averages of temperature and
 precipitation for each period.
 
 ## Examples

@@ -1,10 +1,8 @@
 # Compute a Slope Raster from a DEM
 
-Computes a slope raster in percent from a DEM, either by:
-
-- downloading a DEM automatically using `x`, or
-
-- using a DEM raster supplied manually through the `dem` argument.
+Computes a slope raster in percent from a DEM, either by: - downloading
+a DEM automatically using \`x\`, or - using a DEM raster supplied
+manually through the \`dem\` argument.
 
 ## Usage
 
@@ -16,65 +14,60 @@ get_slope(x = NULL, dem = NULL, agg = 5, unit = "percent", verbose = TRUE, ...)
 
 - x:
 
-  `sf` or `sfc`; Geometry located in France.
+  \`sf\` or \`sfc\`; Geometry located in France.
 
 - dem:
 
-  `SpatRaster` representing ground elevation (DEM). Must be supplied
-  only when `x` is `NULL`.
+  \`SpatRaster\` representing ground elevation (DEM). Must be supplied
+  only when \`x\` is \`NULL\`.
 
 - agg:
 
-  `numeric`; Target resolution (in meters) to which the DEM is
-  aggregated if its native resolution is finer. Default: `5`.
+  \`numeric\`; Target resolution (in meters) to which the DEM is
+  aggregated if its native resolution is finer. Default: \`5\`.
 
 - unit:
 
-  `character`; "percent", "radians" or "degrees". Default to "percent".
+  \`character\`; "percent", "radians" or "degrees". Default to
+  "percent".
 
 - verbose:
 
-  `logical`; If `TRUE`, display messages.
+  \`logical\`; If \`TRUE\`, display messages.
 
 - ...:
 
-  Additional parameters passed to
-  [`get_dem()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dem.md)
-  when `x` is supplied.
+  Additional parameters passed to \[get_dem()\] when \`x\` is supplied.
 
 ## Value
 
-A `SpatRaster` containing slope values in percent.
+A \`SpatRaster\` containing slope values in percent.
 
-A `SpatRaster` containing slope values in degrees.
+A \`SpatRaster\` containing slope values in degrees.
 
 ## Details
 
-When `x` is provided, the DEM is obtained with
-[`get_dem()`](https://sequoiapp.github.io/Rsequoia2/reference/get_dem.md),
-using by default a resolution equal to `agg`. When `x` is not provided,
-a DEM must be supplied via `dem`.
+When \`x\` is provided, the DEM is obtained with \[get_dem()\], using by
+default a resolution equal to \`agg\`. When \`x\` is not provided, a DEM
+must be supplied via \`dem\`.
 
-If the DEM resolution is finer than `agg`, the raster is aggregated to
+If the DEM resolution is finer than \`agg\`, the raster is aggregated to
 avoid artefacts and reduce computation time.
 
-Slope is computed with
-[`terra::terrain()`](https://rspatial.github.io/terra/reference/terrain.html)
-using Horn's 8-neighbor algorithm. The slope is first computed in
-degrees, then converted to percent using:
+Slope is computed with \`terra::terrain()\` using Horn's 8-neighbor
+algorithm. The slope is first computed in degrees, then converted to
+percent using:
 
-`tan(slope_degrees * pi / 180) * 100`
+\`tan(slope_degrees \* pi / 180) \* 100\`
 
 A 45-degree slope is therefore equal to a 100 percent slope.
 
-Slope is computed with
-[`terra::terrain()`](https://rspatial.github.io/terra/reference/terrain.html)
-using Horn's 8-neighbor algorithm, and returned in **degrees**.
+Slope is computed with \`terra::terrain()\` using Horn's 8-neighbor
+algorithm, and returned in \*\*degrees\*\*.
 
-Aggregation is performed with
-[`terra::aggregate()`](https://rspatial.github.io/terra/reference/aggregate.html)
-using a mean function. This is recommended when high-resolution DEMs
-(\<5 m) would otherwise generate line artefacts.
+Aggregation is performed with \`terra::aggregate()\` using a mean
+function. This is recommended when high-resolution DEMs (\<5 m) would
+otherwise generate line artefacts.
 
 ## Examples
 

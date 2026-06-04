@@ -1,9 +1,8 @@
 # Download multiple files with retry
 
-Internal wrapper around
-[`curl::multi_download()`](https://jeroen.r-universe.dev/curl/reference/multi_download.html)
-used to download cached resources. Existing files are skipped unless
-`overwrite = TRUE`; failed downloads are retried up to `max_tries`.
+Internal wrapper around \[curl::multi_download()\] used to download
+cached resources. Existing files are skipped unless \`overwrite =
+TRUE\`; failed downloads are retried up to \`max_tries\`.
 
 ## Usage
 
@@ -21,24 +20,24 @@ seq_multi_download(
 
 - urls:
 
-  `character`; Remote file URLs.
+  \`character\`; Remote file URLs.
 
 - destfiles:
 
-  `character`; Local destination paths.
+  \`character\`; Local destination paths.
 
 - overwrite:
 
-  `logical(1)`; If `TRUE`, re-download existing files.
+  \`logical(1)\`; If \`TRUE\`, re-download existing files.
 
 - verbose:
 
-  `logical(1)`; If `TRUE`, show download progress and messages.
+  \`logical(1)\`; If \`TRUE\`, show download progress and messages.
 
 - max_tries:
 
-  `integer(1)`; Maximum number of download attempts.
+  \`integer(1)\`; Maximum number of download attempts.
 
 ## Value
 
-Invisibly returns `TRUE` if all required files are available.
+Invisibly returns \`TRUE\` if all required files are available.

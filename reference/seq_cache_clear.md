@@ -13,18 +13,18 @@ seq_cache_clear(key = NULL, filepath = NULL, ask = TRUE)
 
 - key:
 
-  `character`. Cache key to clear. If `NULL`, all configured caches are
-  cleared.
+  \`character\`. Cache key to clear. If \`NULL\`, all configured caches
+  are cleared.
 
 - filepath:
 
-  `character`. Optional path to a cache configuration file. Mostly
+  \`character\`. Optional path to a cache configuration file. Mostly
   useful for tests.
 
 - ask:
 
-  `logical`. Ask confirmation before deleting cache files.
+  \`logical\`. Ask confirmation before deleting cache files.
 
 ## Value
 
-Invisibly returns `TRUE`.
+Invisibly returns \`TRUE\`.

@@ -15,23 +15,24 @@ get_parca(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE)
 
 - idu:
 
-  `character` Vector of IDU identifiers.
+  \`character\` Vector of IDU identifiers.
 
 - bdp_geom:
 
-  `logical` If `TRUE`, replace Etalab geometries with BDP when possible.
+  \`logical\` If \`TRUE\`, replace Etalab geometries with BDP when
+  possible.
 
 - lieu_dit:
 
-  `logical` If `TRUE`, attach lieux-dits to each parcel.
+  \`logical\` If \`TRUE\`, attach lieux-dits to each parcel.
 
 - verbose:
 
-  `logical` If `TRUE`, display progress messages.
+  \`logical\` If \`TRUE\`, display progress messages.
 
 ## Value
 
-An `sf` object of parcels with harmonized attributes.
+An \`sf\` object of parcels with harmonized attributes.
 
 ## Details
 

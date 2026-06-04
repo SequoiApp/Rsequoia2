@@ -12,7 +12,7 @@ clean_names(x)
 
 - x:
 
-  `character` String to clean
+  \`character\` String to clean
 
 ## Value
 

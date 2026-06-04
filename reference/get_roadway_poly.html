@@ -56,24 +56,25 @@ or completed cadastral voids polygons.</p>
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>An <code>sf</code> object containing either:</p><ul><li><p>LINE geometries representing road centerlines, or</p></li>
-<li><p>POLYGON geometries representing completed cadastral gaps.</p></li>
-</ul></dd>
+<dd><p>An `sf` object containing either:
+- LINE geometries representing road centerlines, or
+- POLYGON geometries representing completed cadastral gaps.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An <code>sf</code> object with POLYGON or MULTIPOLYGON geometries
+    <p>An `sf` object with POLYGON or MULTIPOLYGON geometries
 normalized as roadway polygons.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The function dispatches internally depending on the geometry type:</p><ul><li><p>If <code>x</code> contains LINESTRING geometries, road polygons are created using
-hierarchical buffering and masking via <code><a href="road_to_roadway.html">road_to_roadway()</a></code>.</p></li>
-<li><p>If <code>x</code> contains POLYGON geometries, the polygons are cleaned and
-normalized via <code><a href="voids_to_roadway.html">voids_to_roadway()</a></code>.</p></li>
-</ul><p>The resulting polygons are standardized using <code><a href="seq_normalize.html">seq_normalize()</a></code>
-with the <code>"road_poly"</code> schema.</p>
+    <p>The function dispatches internally depending on the geometry type:</p>
+<p>- If `x` contains LINESTRING geometries, road polygons are created using
+  hierarchical buffering and masking via `road_to_roadway()`.</p>
+<p>- If `x` contains POLYGON geometries, the polygons are cleaned and
+  normalized via `voids_to_roadway()`.</p>
+<p>The resulting polygons are standardized using `seq_normalize()`
+with the `"road_poly"` schema.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -1,6 +1,6 @@
 # Create an empty sf object
 
-This function creates an empty `sf` object with the desired geometry
+This function creates an empty \`sf\` object with the desired geometry
 type (point, line, polygon, etc.).
 
 ## Usage
@@ -13,20 +13,20 @@ create_empty_sf(geom_type, ...)
 
 - geom_type:
 
-  `character`; one of the geometry types supported by `sf`: `POLYGON`,
-  `LINESTRING`, `POINT`, `MULTIPOLYGON`, `MULTILINESTRING`,
-  `MULTIPOINT`.
+  \`character\`; one of the geometry types supported by \`sf\`:
+  \`POLYGON\`, \`LINESTRING\`, \`POINT\`, \`MULTIPOLYGON\`,
+  \`MULTILINESTRING\`, \`MULTIPOINT\`.
 
 - ...:
 
   Named attributes with their classes. For example, you can pass
-  arguments like `PLACETTE = character(0)`. Each argument must be named
-  according to the attribute, with the corresponding empty vector of the
-  appropriate class.
+  arguments like \`PLACETTE = character(0)\`. Each argument must be
+  named according to the attribute, with the corresponding empty vector
+  of the appropriate class.
 
 ## Value
 
-An `sf` object
+An \`sf\` object
 
 ## Examples
 

@@ -56,38 +56,38 @@ the project area, and writes the resulting layer to disk.</p>
 
 
 <dl><dt id="arg-dirname">dirname<a class="anchor" aria-label="anchor" href="#arg-dirname"></a></dt>
-<dd><p><code>character</code> Directory where the matrice file is located.
+<dd><p>`character` Directory where the matrice file is located.
 Defaults to the current working directory.</p></dd>
 
 
 <dt id="arg-buffer">buffer<a class="anchor" aria-label="anchor" href="#arg-buffer"></a></dt>
-<dd><p><code>numeric</code>; Buffer around <code>x</code> (in <strong>meters</strong>) used to enlarge</p></dd>
+<dd><p>`numeric`; Buffer around `x` (in **meters**) used to enlarge</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p><code>logical</code> If <code>TRUE</code>, display messages.</p></dd>
+<dd><p>`logical` If `TRUE`, display messages.</p></dd>
 
 
 <dt id="arg-overwrite">overwrite<a class="anchor" aria-label="anchor" href="#arg-overwrite"></a></dt>
-<dd><p><code>logical</code> If <code>TRUE</code>, file is overwritten.</p></dd>
+<dd><p>`logical` If `TRUE`, file is overwritten.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Invisibly returns a named list of file paths written by <code><a href="seq_write.html">seq_write()</a></code>.
-Returns <code>NULL</code> invisibly when no OLD features are found.</p>
+    <p>Invisibly returns a named list of file paths written by [seq_write()].
+Returns `NULL` invisibly when no OLD features are found.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>OLD features are retrieved using <code><a href="get_old.html">get_old()</a></code>.</p>
-<p>If no OLD features are found, the function returns <code>NULL</code>
+    <p>OLD features are retrieved using [get_old()].</p>
+<p>If no OLD features are found, the function returns `NULL`
 invisibly and no file is written.</p>
 <p>When features are present, the layer is written to disk using
-<code><a href="seq_write.html">seq_write()</a></code> with the key <code>"v.old.poly"</code>.</p>
+[seq_write()] with the key `"v.old.poly"`.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="get_prsf.html">get_prsf()</a></code>, <code><a href="seq_write.html">seq_write()</a></code></p></div>
+    <div class="dont-index"><p>[get_prsf()], [seq_write()]</p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

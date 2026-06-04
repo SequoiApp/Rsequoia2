@@ -1,7 +1,6 @@
 # Check non-wooded surface threshold
 
-Checks that non-wooded submitted surfaces do not exceed 10% of submitted
-DGD surfaces.
+Checks that non-wooded submitted surfaces do not exceed 10 DGD surfaces.
 
 ## Usage
 
@@ -13,11 +12,11 @@ ua_check_non_wooded_threshold(ua, threshold = 0.1, verbose = TRUE)
 
 - ua:
 
-  `sf` object containing UA polygons.
+  \`sf\` object containing UA polygons.
 
 - threshold:
 
-  Maximum allowed non-wooded ratio. Defaults to `0.10`.
+  Maximum allowed non-wooded ratio. Defaults to \`0.10\`.
 
 - verbose:
 
@@ -25,4 +24,4 @@ ua_check_non_wooded_threshold(ua, threshold = 0.1, verbose = TRUE)
 
 ## Value
 
-`TRUE` if the threshold is respected, otherwise `FALSE`.
+\`TRUE\` if the threshold is respected, otherwise \`FALSE\`.

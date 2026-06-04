@@ -61,35 +61,35 @@ stores them in the Rsequoia2 cache.</p>
 
 
 <dl><dt id="arg-dep">dep<a class="anchor" aria-label="anchor" href="#arg-dep"></a></dt>
-<dd><p><code>character</code> or <code>numeric</code>; Department code(s), such as <code>"08"</code> or
-<code>8</code>. Codes are checked against <code><a href="get_cog.html">get_cog()</a></code>.</p></dd>
+<dd><p>`character` or `numeric`; Department code(s), such as `"08"` or
+`8`. Codes are checked against [Rsequoia2::get_cog()].</p></dd>
 
 
 <dt id="arg-cache">cache<a class="anchor" aria-label="anchor" href="#arg-cache"></a></dt>
-<dd><p><code>character</code>; Directory where ZIP archives are stored.
+<dd><p>`character`; Directory where ZIP archives are stored.
 Defaults to the Rsequoia2 BD Charm 50 cache directory, see
-<code><a href="seq_cache.html">seq_cache()</a></code>.</p></dd>
+[Rsequoia2::seq_cache()].</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p><code>logical</code>; If <code>TRUE</code>, display progress messages.</p></dd>
+<dd><p>`logical`; If `TRUE`, display progress messages.</p></dd>
 
 
 <dt id="arg-overwrite">overwrite<a class="anchor" aria-label="anchor" href="#arg-overwrite"></a></dt>
-<dd><p><code>logical</code>; If <code>TRUE</code>, re-download archives even when
-they already exist in <code>cache</code>.</p></dd>
+<dd><p>`logical`; If `TRUE`, re-download archives even when
+they already exist in `cache`.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Invisibly returns a named <code>character</code> vector of local ZIP file paths,
+    <p>Invisibly returns a named `character` vector of local ZIP file paths,
 with department codes as names.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>CarHab is a harmonised geological map database produced by
-BRGM used to created the <code>CarHab</code> dataset of PatriNat. The downloaded
-ZIP files are cached and reused on later calls unless <code>overwrite = TRUE</code>.</p>
+BRGM used to created the `CarHab` dataset of PatriNat. The downloaded
+ZIP files are cached and reused on later calls unless `overwrite = TRUE`.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

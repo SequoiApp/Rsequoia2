@@ -18,4 +18,4 @@ check_insee(insee)
 
 ## Value
 
-A normalized `character` vector of valid insee codes.
+A normalized \`character\` vector of valid insee codes.
