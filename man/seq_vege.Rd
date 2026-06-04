@@ -7,28 +7,28 @@
 seq_vege(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{`character` Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{`logical` If `TRUE`, display messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
 }
 \value{
-A named list of file paths written by \code{\link[=seq_write]{seq_write()}},
+A named list of file paths written by [seq_write()],
 one per vegetation layer.
 }
 \description{
-This function is a convenience wrapper around \code{\link[=get_vege_poly]{get_vege_poly()}},
-\code{\link[=get_vege_line]{get_vege_line()}} and \code{\link[=get_vege_point]{get_vege_point()}}, allowing the user to download
+This function is a convenience wrapper around [get_vege_poly()],
+[get_vege_line()] and [get_vege_point()], allowing the user to download
 all products in one call and automatically write them to the project
-directory using \code{\link[=seq_write]{seq_write()}}.
+directory using [seq_write()].
 }
 \details{
-Each vegetation layer is always written to disk using \code{\link[=seq_write]{seq_write()}},
-even when it contains no features (\code{nrow == 0}).
+Each vegetation layer is always written to disk using [seq_write()],
+even when it contains no features (`nrow == 0`).
 }
 \seealso{
-\code{\link[=get_vege_poly]{get_vege_poly()}}, \code{\link[=get_vege_line]{get_vege_line()}}, \code{\link[=get_vege_point]{get_vege_point()}},
-\code{\link[=seq_write]{seq_write()}}
+[get_vege_poly()], [get_vege_line()], [get_vege_point()],
+[seq_write()]
 }

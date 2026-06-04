@@ -7,10 +7,10 @@
 filter_column_headers(table_data)
 }
 \arguments{
-\item{table_data}{A \code{data.frame} of extracted table content}
+\item{table_data}{A `data.frame` of extracted table content}
 }
 \value{
-Filtered \code{data.frame} without header rows
+Filtered `data.frame` without header rows
 }
 \description{
 Filters out repeated column headers based on position and text patterns.

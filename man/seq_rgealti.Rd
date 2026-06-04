@@ -15,29 +15,29 @@ seq_rgealti(
 )
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{`character` Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{key}{\code{character}; RGE ALTI product(s) to create. One or more of
-\code{"mnt"}, \code{"mns"} and \code{"mnh"}.}
+\item{key}{`character`; RGE ALTI product(s) to create. One or more of
+`"mnt"`, `"mns"` and `"mnh"`.}
 
-\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
+\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge
 the download area.}
 
-\item{res}{\code{numeric}; resolution specified in the units of the coordinate
-system (see \code{\link[happign:get_wms_raster]{happign::get_wms_raster()}})}
+\item{res}{`numeric`; resolution specified in the units of the coordinate
+system (see [happign::get_wms_raster()])}
 
-\item{crs}{\code{numeric} or \code{character}; CRS of the returned raster (see
-\code{\link[happign:get_wms_raster]{happign::get_wms_raster()}})}
+\item{crs}{`numeric` or `character`; CRS of the returned raster (see
+[happign::get_wms_raster()])}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
+\item{verbose}{`logical`; If `TRUE`, display messages.}
 }
 \value{
-Invisibly returns a named \code{character} vector of output raster paths.
+Invisibly returns a named `character` vector of output raster paths.
 }
 \description{
-Uses the project's \emph{PARCA} layer to download and write RGE ALTI MNT, MNS
+Uses the project's _PARCA_ layer to download and write RGE ALTI MNT, MNS
 and/or MNH rasters.
 }

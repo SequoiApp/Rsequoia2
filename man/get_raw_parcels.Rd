@@ -7,11 +7,11 @@
 get_raw_parcels(pdf)
 }
 \arguments{
-\item{pdf}{\code{character}. Path to PDF file}
+\item{pdf}{`character`. Path to PDF file}
 }
 \value{
-A \code{data.frame} with raw parcel data, column names from
-\code{\link[=define_column_positions]{define_column_positions()}}
+A `data.frame` with raw parcel data, column names from
+  [define_column_positions()]
 }
 \description{
 Main function that orchestrates the extraction of unbuilt parcel data

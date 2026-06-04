@@ -7,17 +7,17 @@
 search_legal_entity(x, prop = NULL, lieu_dit = NULL)
 }
 \arguments{
-\item{x}{\code{data.frame}; The matrix containing parcel legal entity information
+\item{x}{`data.frame`; The matrix containing parcel legal entity information
 in a format readable by SEQUOIA.}
 
-\item{prop}{\code{character}; Owner name(s) used to further filter results. Defaults to \code{NULL}.
+\item{prop}{`character`; Owner name(s) used to further filter results. Defaults to `NULL`.
 Multiple owners can be specified.}
 
-\item{lieu_dit}{\code{character}; Locality name(s) used to further filter results. Defaults to \code{NULL}.
+\item{lieu_dit}{`character`; Locality name(s) used to further filter results. Defaults to `NULL`.
 Multiple locality names can be specified.}
 }
 \value{
-A \code{data.frame}.
+A `data.frame`.
 }
 \description{
 This function allows searching for parcels in a forest matrix based on
@@ -28,12 +28,10 @@ The search relies on a text-normalization step applied to both the inputs and
 the corresponding columns of the matrice. This makes the search robust
 to accents, punctuation, spacing irregularities and case differences.
 
-\strong{Examples of normalization:}
-\itemize{
-\item \code{"Etat / Forets"} -> \code{"ETATFORETS"}
-\item \code{"  Le Bois-de l'Orme  "} -> \code{"LEBOISDELORME"}
-\item \code{"Societe du Chene"} -> \code{"SOCIETEDUCHENE"}
-}
+**Examples of normalization:**
+  - `"Etat / Forets"` -> `"ETATFORETS"`
+  - `"  Le Bois-de l'Orme  "` -> `"LEBOISDELORME"`
+  - `"Societe du Chene"` -> `"SOCIETEDUCHENE"`
 }
 \examples{
 \dontrun{

@@ -3,15 +3,15 @@
 \docType{data}
 \name{brin_ua}
 \alias{brin_ua}
-\title{BRIN \emph{UA} layer}
+\title{BRIN *UA* layer}
 \format{
-An \code{sf} object with 215 obs and 45 colums.
+An `sf` object with 215 obs and 45 colums.
 }
 \usage{
 brin_ua
 }
 \description{
-An example of \emph{UA} layer for the Brin forest.
+An example of *UA* layer for the Brin forest.
 The information contained therein is entirely imaginary.
 It does not reflect the description or management of the forest at all.
 }

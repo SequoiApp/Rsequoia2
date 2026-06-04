@@ -7,26 +7,26 @@
 seq_access(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Path to the project directory.
+\item{dirname}{`character` Path to the project directory.
 Defaults to the current working directory.}
 
-\item{verbose}{\code{logical}; whether to display informational messages.
-Defaults to \code{TRUE}.}
+\item{verbose}{`logical`; whether to display informational messages.
+Defaults to `TRUE`.}
 
-\item{overwrite}{\code{logical}; whether to overwrite existing files.
-Defaults to \code{FALSE}.}
+\item{overwrite}{`logical`; whether to overwrite existing files.
+Defaults to `FALSE`.}
 }
 \value{
-Invisibly returns a named list of file paths written by \code{\link[=seq_write]{seq_write()}}.
+Invisibly returns a named list of file paths written by [seq_write()].
 }
 \description{
-Create an empty \code{sf} for access point features, and writes the resulting
+Create an empty `sf` for access point features, and writes the resulting
 layer to disk.
 }
 \details{
 The access point layer is an empty layer : user must point access themselves.
-The layer is written to disk using \code{\link[=seq_write]{seq_write()}} with the key \code{"v.access.entry.point"}.
+The layer is written to disk using [seq_write()] with the key `"v.access.entry.point"`.
 }
 \seealso{
-\code{\link[=seq_write]{seq_write()}}
+[seq_write()]
 }

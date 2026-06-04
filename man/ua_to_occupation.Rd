@@ -2,22 +2,22 @@
 % Please edit documentation in R/ua-occupation.R
 \name{ua_to_occupation}
 \alias{ua_to_occupation}
-\title{Aggregate \emph{UA} surfaces by occupation status}
+\title{Aggregate _UA_ surfaces by occupation status}
 \usage{
 ua_to_occupation(ua, verbose = TRUE)
 }
 \arguments{
-\item{ua}{\code{sf} object containing analysis units.}
+\item{ua}{`sf` object containing analysis units.}
 
-\item{verbose}{\code{boolean} if \code{TRUE} print messages}
+\item{verbose}{`boolean` if `TRUE` print messages}
 }
 \value{
-An \code{sf} object aggregated by occupation status.
+An `sf` object aggregated by occupation status.
 }
 \description{
-Aggregates corrected surface areas from a \emph{UA} layer by grouping rows
+Aggregates corrected surface areas from a _UA_ layer by grouping rows
 according to DGD-submitted and wooded status.
 }
 \seealso{
-\code{\link[=seq_occupation]{seq_occupation()}}, \code{\link[=seq_field]{seq_field()}}, \code{\link[=seq_normalize]{seq_normalize()}}
+[seq_occupation()], [seq_field()], [seq_normalize()]
 }

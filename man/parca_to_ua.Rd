@@ -2,17 +2,17 @@
 % Please edit documentation in R/ua-create.R
 \name{parca_to_ua}
 \alias{parca_to_ua}
-\title{Create \emph{UA} sf object from \emph{PARCA} sf object}
+\title{Create _UA_ sf object from _PARCA_ sf object}
 \usage{
 parca_to_ua(parca)
 }
 \arguments{
-\item{parca}{\code{sf} Object from \code{\link[=seq_parca]{seq_parca()}} containing cadastral
+\item{parca}{`sf` Object from [Rsequoia2::seq_parca()] containing cadastral
 parcels.}
 }
 \value{
-An \code{sf} object containing the analysis units.
+An `sf` object containing the analysis units.
 }
 \description{
-Create \emph{UA} sf object from \emph{PARCA} sf object
+Create _UA_ sf object from _PARCA_ sf object
 }

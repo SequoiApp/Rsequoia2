@@ -7,16 +7,16 @@
 ua_check_non_wooded_threshold(ua, threshold = 0.1, verbose = TRUE)
 }
 \arguments{
-\item{ua}{\code{sf} object containing UA polygons.}
+\item{ua}{`sf` object containing UA polygons.}
 
-\item{threshold}{Maximum allowed non-wooded ratio. Defaults to \code{0.10}.}
+\item{threshold}{Maximum allowed non-wooded ratio. Defaults to `0.10`.}
 
 \item{verbose}{Logical. Should messages be printed?}
 }
 \value{
-\code{TRUE} if the threshold is respected, otherwise \code{FALSE}.
+`TRUE` if the threshold is respected, otherwise `FALSE`.
 }
 \description{
-Checks that non-wooded submitted surfaces do not exceed 10\% of submitted
+Checks that non-wooded submitted surfaces do not exceed 10% of submitted
 DGD surfaces.
 }

@@ -10,7 +10,7 @@ check_insee(insee)
 \item{insee}{insee code vector.}
 }
 \value{
-A normalized \code{character} vector of valid insee codes.
+A normalized `character` vector of valid insee codes.
 }
 \description{
 Checks that insee codes are non-empty and exist in the COG reference.

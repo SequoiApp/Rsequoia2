@@ -7,12 +7,12 @@
 seq_cache_report(filepath = NULL)
 }
 \arguments{
-\item{filepath}{\code{character}. Optional path to a cache configuration file.
-Mostly useful for tests. If \code{NULL}, the package cache configuration is used.}
+\item{filepath}{`character`. Optional path to a cache configuration file.
+Mostly useful for tests. If `NULL`, the package cache configuration is used.}
 }
 \value{
-Invisibly returns a \code{data.frame} with cache key, label, path, size in
-bytes, and formatted size.
+Invisibly returns a `data.frame` with cache key, label, path, size in
+  bytes, and formatted size.
 }
 \description{
 Prints a small CLI summary of the total cache size and the size of each

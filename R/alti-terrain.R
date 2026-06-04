@@ -3,32 +3,87 @@
 #' Aggregates a DEM to a coarser working resolution before computing terrain
 #' derivatives such as slope or aspect.
 #'
-#' @param dem `SpatRaster`; DEM/MNT raster.
-#' @param agg `numeric(1)`; Target working resolution in meters. If `NULL`,
-#'   no aggregation is applied.
-#' @param verbose `logical(1)`; If `TRUE`, display messages.
+#' @param dem SpatRaster; DEM/MNT raster.
+#' @param agg numeric(1); Target working resolution in meters. If NULL,
+#' no aggregation is applied.
+#' @param verbose logical(1); If TRUE, display messages.
 #'
-#' @return A `SpatRaster`, unchanged or aggregated.
+#' @return A SpatRaster, unchanged or aggregated.
 #'
-#' @keywords internal
-prepare_dem_terrain <- function(dem, agg = 5, verbose = TRUE) {
+#' @importFrom cli cli_abort cli_alert_info cli_alert_warning
+#' @importFrom terra aggregate res
+#'
+#' @export
+seq_aggregate_dem <- function(dem, agg = 5, verbose = TRUE) {
 
+  # --- Validate arguments ---
+  if (missing(dem) || is.null(dem)) {
+    cli::cli_abort("Argument {.arg dem} is missing.")
+  }
+
+  if (!inherits(dem, "SpatRaster")) {
+    cli::cli_abort("{.arg dem} must be a {.cls SpatRaster}.")
+  }
+
+  if (!is.null(agg)) {
+    if (!is.numeric(agg) ||
+        length(agg) != 1L ||
+        is.na(agg) ||
+        !is.finite(agg) ||
+        agg <= 0) {
+      cli::cli_abort(
+        "{.arg agg} must be a positive numeric scalar or {.val NULL}."
+      )
+    }
+  }
+
+  if (!is.logical(verbose) ||
+      length(verbose) != 1L ||
+      is.na(verbose)) {
+    cli::cli_abort("{.arg verbose} must be TRUE or FALSE.")
+  }
+
+  # --- No aggregation requested ---
   if (is.null(agg)) {
     return(dem)
   }
 
-  resolution <- min(terra::res(dem))
+  # --- Current resolution ---
+  res <- terra::res(dem)
 
-  if (is.na(resolution) || resolution >= agg) {
+  if (any(!is.finite(res)) || any(res <= 0)) {
+    cli::cli_abort("Unable to determine a valid raster resolution.")
+  }
+
+  if (length(unique(round(res, 8))) > 1 && verbose) {
+    cli::cli_alert_warning(
+      "Raster has non-square cells; using the smallest resolution."
+    )
+  }
+
+  resolution <- min(res)
+
+  # --- Aggregation needed? ---
+  if (resolution >= agg) {
     return(dem)
   }
 
-  fact <- max(1, round(agg / resolution))
-  label_resolution <- round(resolution, 1)
+  fact <- round(agg / resolution)
 
+  if (!is.finite(fact) || fact < 1) {
+    cli::cli_abort(
+      "Failed to compute a valid aggregation factor."
+    )
+  }
+
+  if (fact == 1L) {
+    return(dem)
+  }
+
+  # --- Aggregate ---
   if (verbose) {
     cli::cli_alert_info(
-      "Aggregating DEM: {label_resolution}m -> {fact * label_resolution}m to avoid terrain artefacts."
+      "Aggregating DEM: {round(resolution, 1)} m -> {round(fact * resolution, 1)} m to avoid terrain artefacts."
     )
   }
 
@@ -135,7 +190,7 @@ get_slope <- function(
     cli::cli_abort("{.arg dem} must be provided when {.arg x} is NULL.")
   }
 
-  dem <- prepare_dem_terrain(dem = dem, agg = agg, verbose = verbose)
+  dem <- seq_aggregate_dem(dem = dem, agg = agg, verbose = verbose)
 
   # If percent, then it's compute in radians
   unit <- if (unit == "degrees") "degrees" else "radians"
@@ -204,7 +259,7 @@ get_aspect <- function(x = NULL, dem = NULL, agg = 5, verbose = TRUE, ...){
     cli::cli_abort("{.arg dem} must be provided when {.arg x} is NULL.")
   }
 
-  dem <- prepare_dem_terrain(dem = dem, agg = agg, verbose = verbose)
+  dem <- seq_aggregate_dem(dem = dem, agg = agg, verbose = verbose)
   aspect <- terra::terrain(dem,v = "aspect",neighbors = 8, unit = "degrees")
   names(aspect) <- "aspect"
 

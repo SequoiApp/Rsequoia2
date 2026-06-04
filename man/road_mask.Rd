@@ -7,12 +7,12 @@
 road_mask(x, dist)
 }
 \arguments{
-\item{x}{An \code{sf} object with road lines.}
+\item{x}{An `sf` object with road lines.}
 
 \item{dist}{Numeric. Buffer distance in layer units.}
 }
 \value{
-An \code{sf} object containing a polygon mask of the road network.
+An `sf` object containing a polygon mask of the road network.
 }
 \description{
 Generates a mask polygon around road lines, including buffered intersection points.

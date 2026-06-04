@@ -7,36 +7,32 @@
 get_infra_line(x, buffer = 1000)
 }
 \arguments{
-\item{x}{An \code{sf} object used as the input area.}
+\item{x}{An `sf` object used as the input area.}
 
-\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
+\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge}
 }
 \value{
-An \code{sf} object of type \code{LINESTRING} containing linear
-infrastructure features with standardized fields, including:
-\itemize{
-\item \code{TYPE} - Infrastructure type code:
-\itemize{
-\item \code{CST} = Linear construction
-\item \code{LEL} = Power line
-\item \code{ORO} = Orographic line
-\item \code{VFE} = Railway line
-}
-\item \code{NAME} - Toponym when available
-\item \code{NATURE} - Additional attribute (e.g. voltage for power lines)
-\item \code{SOURCE} - Data source (\code{IGNF_BDTOPO_V3})
-}
+An `sf` object of type `LINESTRING` containing linear
+  infrastructure features with standardized fields, including:
+  * `TYPE` - Infrastructure type code:
+    - `CST` = Linear construction
+    - `LEL` = Power line
+    - `ORO` = Orographic line
+    - `VFE` = Railway line
+  * `NAME` - Toponym when available
+  * `NATURE` - Additional attribute (e.g. voltage for power lines)
+  * `SOURCE` - Data source (`IGNF_BDTOPO_V3`)
 }
 \description{
 Retrieve linear infrastructure features around an area
 }
 \details{
 The function retrieves linear infrastructure layers from the IGN
-BDTOPO V3 dataset within a convex buffer around \code{x}.
+BDTOPO V3 dataset within a convex buffer around `x`.
 
 Retrieved layers include linear constructions, power lines,
 orographic lines, and railway segments.
 
 If no linear infrastructure data are found, the function returns
-an empty standardized \code{sf} object.
+an empty standardized `sf` object.
 }

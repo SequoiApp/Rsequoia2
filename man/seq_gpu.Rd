@@ -15,16 +15,16 @@ seq_gpu(
 \item{dirname}{Character. Root directory of the project.
 Defaults to the current directory.}
 
-\item{key}{\code{character}; List of layer identifiers to download. If not
-provided, the function uses \code{get_keys("gpu", reduce = FALSE)} to
+\item{key}{`character`; List of layer identifiers to download. If not
+provided, the function uses `get_keys("gpu", reduce = FALSE)` to
 automatically select all GPU layers defined in the Sequoia configuration
-(\code{inst/config/seq_layers.yaml})}
+(`inst/config/seq_layers.yaml`)}
 
 \item{verbose}{Logical. Whether to display progress messages.
-Defaults to \code{TRUE}.}
+Defaults to `TRUE`.}
 
 \item{overwrite}{Logical. Whether to overwrite existing output files.
-Defaults to \code{FALSE}.}
+Defaults to `FALSE`.}
 }
 \value{
 Invisibly returns a named list of file paths corresponding to the
@@ -36,23 +36,22 @@ Retrieves applicable GPU (Geoportail de l'Urbanisme) layers intersecting
 and surrounding the project area, and writes the resulting layer to disk.
 }
 \details{
-The function queries the GPU API via the \code{happign} package for the
+The function queries the GPU API via the `happign` package for the
 following thematic layers:
-\itemize{
-\item Municipality boundaries
-\item Urban planning documents
-\item Urban zones
-\item Surface, linear and point prescriptions
-\item SUP assiettes (SUPA)
-\item SUP generateurs (SUPG)
-}
+
+* Municipality boundaries
+* Urban planning documents
+* Urban zones
+* Surface, linear and point prescriptions
+* SUP assiettes (SUPA)
+* SUP generateurs (SUPG)
 
 Only layers intersecting the project area are written. Empty or unavailable
 layers are silently skipped.
 
 Output file names, formats and locations are fully driven by the
-project configuration (see \code{files_structure.yaml}).
+project configuration (see `files_structure.yaml`).
 }
 \seealso{
-\code{\link[=seq_write]{seq_write()}}, \code{\link[happign:get_apicarto_gpu]{happign::get_apicarto_gpu()}}
+[seq_write()], [happign::get_apicarto_gpu()]
 }

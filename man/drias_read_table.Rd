@@ -7,10 +7,10 @@
 drias_read_table(txt)
 }
 \arguments{
-\item{txt}{\code{character} string. Path to a DRIAS \code{.txt} file.}
+\item{txt}{`character` string. Path to a DRIAS `.txt` file.}
 }
 \value{
-A \code{data.frame} containing raw data.
+A `data.frame` containing raw data.
 }
 \description{
 Extracts raw data from a DRIAS text file and recompute reference period.

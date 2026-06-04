@@ -7,23 +7,23 @@
 parca_check_area(parca, atol = 500, rtol = 0.05, verbose = TRUE)
 }
 \arguments{
-\item{parca}{\code{sf} Object from \code{\link[=seq_parca]{seq_parca()}} representing cadastral
+\item{parca}{`sf` Object from [Rsequoia2::seq_parca()] representing cadastral
 parcels.}
 
-\item{atol}{\code{numeric} Absolute difference tolerance in m2. Default to \verb{500m}.}
+\item{atol}{`numeric` Absolute difference tolerance in m2. Default to `500m`.}
 
-\item{rtol}{\code{numeric} Relative difference. Default to \code{0.05}}
+\item{rtol}{`numeric` Relative difference. Default to `0.05`}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{`logical` If `TRUE`, display messages.}
 }
 \value{
-The input \code{parca} with four additional fields:
-\code{AREA_SIG} (cartographic area in ha),
-\code{ATOL_AREA} (absolute difference in m2),
-\code{RTOL_AREA} (relative difference),
-\code{CHECK_AREA} (logical flag).
+The input `parca` with four additional fields:
+  `AREA_SIG` (cartographic area in ha),
+  `ATOL_AREA` (absolute difference in m2),
+  `RTOL_AREA` (relative difference),
+  `CHECK_AREA` (logical flag).
 }
 \description{
 This function compares cadastral areas (in m2) with
-cartographic areas computed from geometry (\code{\link[sf:st_area]{sf::st_area()}}).
+cartographic areas computed from geometry ([sf::st_area()]).
 }

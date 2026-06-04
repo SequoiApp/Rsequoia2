@@ -7,7 +7,7 @@
 clean_names(x)
 }
 \arguments{
-\item{x}{\code{character} String to clean}
+\item{x}{`character` String to clean}
 }
 \value{
 A cleaned string.

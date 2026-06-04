@@ -2,19 +2,19 @@
 % Please edit documentation in R/update.R
 \name{seq1_read}
 \alias{seq1_read}
-\title{Open old \code{R_SEQUOIA} vector file}
+\title{Open old `R_SEQUOIA` vector file}
 \usage{
 seq1_read(dirname = ".", layer)
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the file is located.
+\item{dirname}{`character` Directory where the file is located.
 Defaults to the current working directory.}
 
-\item{layer}{\code{character} Layer name.}
+\item{layer}{`character` Layer name.}
 }
 \value{
-An \code{sf} object or an empty \code{sf} object if no file are matched.
+An `sf` object or an empty `sf` object if no file are matched.
 }
 \description{
-Open old \code{R_SEQUOIA} vector file
+Open old `R_SEQUOIA` vector file
 }

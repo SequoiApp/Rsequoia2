@@ -7,43 +7,39 @@
 get_toponyme(x, buffer = 1000, verbose = TRUE)
 }
 \arguments{
-\item{x}{An \code{sf} object defining the input area of interest.}
+\item{x}{An `sf` object defining the input area of interest.}
 
-\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
+\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{`logical` If `TRUE`, display messages.}
 }
 \value{
-An \code{sf} object containing toponymic point features with standardized
+An `sf` object containing toponymic point features with standardized
 attribute fields:
-\itemize{
-\item \code{TYPE} - Toponym class
-\itemize{
-\item \code{AER} = Aerodrome runway
-\item \code{BAT} = Building
-\item \code{CIM} = Cemetery
-\item \code{CST} = Construction
-\item \code{HAB} = Residential area
-\item \code{HYD} = Hydrographic
-\item \code{ORO} = Orographic
-\item \code{VEG} = Vegetation-related
-\item \code{AUT} = Other toponyms
-}
-\item \code{NATURE} - Original BDTOPO object nature
-\item \code{NAME} - Official toponym name (when available)
-\item \code{SOURCE} - Data source identifier (\code{IGNF_BDTOPO_V3})
-}
+  * `TYPE` - Toponym class
+    - `AER` = Aerodrome runway
+    - `BAT` = Building
+    - `CIM` = Cemetery
+    - `CST` = Construction
+    - `HAB` = Residential area
+    - `HYD` = Hydrographic
+    - `ORO` = Orographic
+    - `VEG` = Vegetation-related
+    - `AUT` = Other toponyms
+  * `NATURE` - Original BDTOPO object nature
+  * `NAME` - Official toponym name (when available)
+  * `SOURCE` - Data source identifier (`IGNF_BDTOPO_V3`)
 }
 \description{
 Builds a fetch_envelope buffer around the input geometry, retrieves toponymic
 point features from the BDTOPO dataset, classifies them by thematic type
 (hydrographic, vegetation, or other), normalizes the result, and returns
-a standardized \code{sf} point layer.
+a standardized `sf` point layer.
 }
 \details{
-The function creates a 1000 m fetch_envelope buffer around the input geometry \code{x}
+The function creates a 1000 m fetch_envelope buffer around the input geometry `x`
 and retrieves toponymic point features from the BDTOPO toponymy layer.
 Retrieved features are classified into thematic types based on their
 object class, attribute names are standardized, and geometries are
-normalized before being returned as a single \code{sf} point layer.
+normalized before being returned as a single `sf` point layer.
 }

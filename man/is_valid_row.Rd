@@ -7,10 +7,10 @@
 is_valid_row(line_data)
 }
 \arguments{
-\item{line_data}{A \code{data.frame} for a single line from \code{\link[=group_lines_by_y]{group_lines_by_y()}}}
+\item{line_data}{A `data.frame` for a single line from [group_lines_by_y()]}
 }
 \value{
-\code{logical}. \code{TRUE} if line contains valid data patterns
+`logical`. `TRUE` if line contains valid data patterns
 }
 \description{
 Checks if a line contains valid parcel data based on text patterns.
