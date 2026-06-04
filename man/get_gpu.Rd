@@ -7,17 +7,17 @@
 get_gpu(x, key, verbose = TRUE)
 }
 \arguments{
-\item{x}{`sf` or `sfc`; Geometry located in France.}
+\item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
 
-\item{key}{`character`; Layer to download.
-Must be one of from `get_keys("gpu", reduce = FALSE)`}
+\item{key}{\code{character}; Layer to download.
+Must be one of from \code{get_keys("gpu", reduce = FALSE)}}
 
-\item{verbose}{`logical`; If `TRUE`, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
 }
 \value{
-`sf` object from `sf` package
+\code{sf} object from \code{sf} package
 }
 \description{
-Downloads a vector layer with `hhapign` for the area covering `x`
+Downloads a vector layer with \code{hhapign} for the area covering \code{x}
 expanded with a buffer.
 }

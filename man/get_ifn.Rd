@@ -7,24 +7,24 @@
 get_ifn(x, key, cache = seq_cache("ifn")$path)
 }
 \arguments{
-\item{x}{An `sf` object defining the input area of interest.}
+\item{x}{An \code{sf} object defining the input area of interest.}
 
-\item{key}{A `character` string specifying the IFN regional dataset to use.
-Must be one of `get_keys("ifn")`:
+\item{key}{A \code{character} string specifying the IFN regional dataset to use.
+Must be one of \code{get_keys("ifn")}:
 \itemize{
-  \item `"ser"`: sylvo-ecoregions
-  \item `"ser_ar"`: sylvo-ecoregions (aggregated regions)
-  \item `"rfn"`: region forestiere nationale
-  \item `"rfd"`: region forestiere departementale
-  \item `"zp"`: zones de production
+\item \code{"ser"}: sylvo-ecoregions
+\item \code{"ser_ar"}: sylvo-ecoregions (aggregated regions)
+\item \code{"rfn"}: region forestiere nationale
+\item \code{"rfd"}: region forestiere departementale
+\item \code{"zp"}: zones de production
 }}
 
 \item{cache}{A character string defining the cache directory.
 Defaults to a package-specific cache directory.}
 }
 \value{
-An `sf` object containing the region features intersecting `x`.
-Returns `NULL` if no region intersects the input geometry.
+An \code{sf} object containing the region features intersecting \code{x}.
+Returns \code{NULL} if no region intersects the input geometry.
 }
 \description{
 Downloads (if necessary), caches and extracts IFN regional layers
@@ -36,7 +36,7 @@ shapefiles in Lambert-93 projection. Downloaded archives are stored
 locally and reused on subsequent calls.
 
 The regional layer is automatically reprojected to match the
-coordinate reference system of `x` before computing spatial
+coordinate reference system of \code{x} before computing spatial
 intersections.
 
 Only features intersecting the input geometry are returned. No

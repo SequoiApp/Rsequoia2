@@ -7,34 +7,36 @@
 seq_summary(dirname = ".", verbose = TRUE)
 }
 \arguments{
-\item{dirname}{`character` Directory where the matrice file is located.
+\item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
-`list` of `data.frame`
+\code{list} of \code{data.frame}
 }
 \description{
-Generate synthetic table from Sequoia layers and write them as `.xlsx`
+Generate synthetic table from Sequoia layers and write them as \code{.xlsx}
 inside the current Sequoia dir. Useful for redaction of management document.
 }
 \details{
 Available tables:
- - `"CAD"`: Cadastral parcels
- - `"CAD_COM"`: Surfaces by communes
- - `"PF"`: Surfaces by forest parcels
- - `"SSPF"`: Surfaces by forest sub-parcels
- - `"CAD_PLT"`: Link between cadastral parcels and forest parcels
- - `"OCCUPATION"`: Surfaces by land use
- - `"STATION"`: Surfaces by station
- - `"GEOL_BDCHARM50"`: Surfaces by geology (source: BDCHARM50)
- - `"GEOL_CARHAB"`: Surfaces by geology (source: CARHAB)
- - `"PEDO"`: Surfaces by pedology type
- - `"PLT_PF"`: Link between stand type and forest parcels
- - `"PF_PLT"`: Link between forest parcels and stand type
- - `"GESTION"`: Surfaces by management type
- - `"ALTI_PF"`: Altimetry recap by forest parcels (max, min, mean)
- - `"EXPO_PF"`: Exposition recap by forest parcels
- - `"PENTE_PF"`: Slope recap by forest parcels
+\itemize{
+\item \code{"CAD"}: Cadastral parcels
+\item \code{"CAD_COM"}: Surfaces by communes
+\item \code{"PF"}: Surfaces by forest parcels
+\item \code{"SSPF"}: Surfaces by forest sub-parcels
+\item \code{"CAD_PLT"}: Link between cadastral parcels and forest parcels
+\item \code{"OCCUPATION"}: Surfaces by land use
+\item \code{"STATION"}: Surfaces by station
+\item \code{"GEOL_BDCHARM50"}: Surfaces by geology (source: BDCHARM50)
+\item \code{"GEOL_CARHAB"}: Surfaces by geology (source: CARHAB)
+\item \code{"PEDO"}: Surfaces by pedology type
+\item \code{"PLT_PF"}: Link between stand type and forest parcels
+\item \code{"PF_PLT"}: Link between forest parcels and stand type
+\item \code{"GESTION"}: Surfaces by management type
+\item \code{"ALTI_PF"}: Altimetry recap by forest parcels (max, min, mean)
+\item \code{"EXPO_PF"}: Exposition recap by forest parcels
+\item \code{"PENTE_PF"}: Slope recap by forest parcels
+}
 }

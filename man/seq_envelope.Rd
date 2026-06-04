@@ -7,20 +7,20 @@
 seq_envelope(x, buffer = 0, crs = 2154)
 }
 \arguments{
-\item{x}{An `sf` object.}
+\item{x}{An \code{sf} object.}
 
-\item{buffer}{`numeric`; Buffer distance (in CRS units) applied before union.
+\item{buffer}{\code{numeric}; Buffer distance (in CRS units) applied before union.
 This parameter controls the aggregation of nearby geometries. Larger values
-will merge more distant features. Default is `0`.}
+will merge more distant features. Default is \code{0}.}
 
-\item{crs}{`numeric` or `character`; Target coordinate reference system used
+\item{crs}{\code{numeric} or \code{character}; Target coordinate reference system used
 for geometric operations. Defaults to EPSG:2154 (Lambert-93).}
 }
 \value{
-An `sf` object containing convex hull polygons (one per connected component).
+An \code{sf} object containing convex hull polygons (one per connected component).
 }
 \description{
-Generates convex hull polygons from an input `sf` object after applying a
+Generates convex hull polygons from an input \code{sf} object after applying a
 buffer and union operation. The buffer step allows merging nearby or
 disconnected geometries prior to computing the convex hull, making the result
 more spatially coherent.
@@ -31,20 +31,20 @@ geometries while tolerating small gaps or spatial fragmentation.
 \details{
 The algorithm proceeds as follows:
 \enumerate{
-  \item Validate geometries (`st_make_valid`)
-  \item Reproject to the target CRS (`st_transform`)
-  \item Apply a buffer of size `dist`
-  \item Merge geometries (`st_union`)
-  \item Split into individual polygon components (`st_cast`)
-  \item Compute a convex hull for each component (`st_convex_hull`)
-  \item Validate and return as an `sf` object
+\item Validate geometries (\code{st_make_valid})
+\item Reproject to the target CRS (\code{st_transform})
+\item Apply a buffer of size \code{dist}
+\item Merge geometries (\code{st_union})
+\item Split into individual polygon components (\code{st_cast})
+\item Compute a convex hull for each component (\code{st_convex_hull})
+\item Validate and return as an \code{sf} object
 }
 
 Note that the buffer step alters the geometry extent and may introduce
 spatial generalization. The resulting convex hulls are therefore dependent on
-the chosen `dist` value.
+the chosen \code{dist} value.
 }
 \seealso{
-[sf::st_convex_hull()], [sf::st_union()], [sf::st_buffer()],
-[sf::st_make_valid()]
+\code{\link[sf:st_convex_hull]{sf::st_convex_hull()}}, \code{\link[sf:st_union]{sf::st_union()}}, \code{\link[sf:st_buffer]{sf::st_buffer()}},
+\code{\link[sf:st_make_valid]{sf::st_make_valid()}}
 }

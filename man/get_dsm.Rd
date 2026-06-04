@@ -7,28 +7,28 @@
 get_dsm(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE)
 }
 \arguments{
-\item{x}{`sf` or `sfc`; Geometry located in France.}
+\item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
 
-\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
 the download area.}
 
-\item{res}{`numeric`; resolution specified in the units of the coordinate
-system (see [happign::get_wms_raster()])}
+\item{res}{\code{numeric}; resolution specified in the units of the coordinate
+system (see \code{\link[happign:get_wms_raster]{happign::get_wms_raster()}})}
 
-\item{crs}{`numeric` or `character`; CRS of the returned raster (see
-[happign::get_wms_raster()])}
+\item{crs}{\code{numeric} or \code{character}; CRS of the returned raster (see
+\code{\link[happign:get_wms_raster]{happign::get_wms_raster()}})}
 
-\item{verbose}{`logical`; If `TRUE`, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
 }
 \value{
-`SpatRaster` object from `terra` package
+\code{SpatRaster} object from \code{terra} package
 }
 \description{
-Downloads DSM from the IGN WMS service for the area covering `x` expanded
+Downloads DSM from the IGN WMS service for the area covering \code{x} expanded
 with a buffer.
-The result is returned as a masked `SpatRaster`, clipped to the buffer
+The result is returned as a masked \code{SpatRaster}, clipped to the buffer
 geometry to keep file size minimal.
 }
 \seealso{
-[happign::get_wms_raster()]
+\code{\link[happign:get_wms_raster]{happign::get_wms_raster()}}
 }

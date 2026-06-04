@@ -2,20 +2,20 @@
 % Please edit documentation in R/ua-parca.R
 \name{ua_check_coverage}
 \alias{ua_check_coverage}
-\title{Check spatial coverage between _UA_ and _PARCA_}
+\title{Check spatial coverage between \emph{UA} and \emph{PARCA}}
 \usage{
 ua_check_coverage(ua, parca)
 }
 \arguments{
-\item{ua}{`sf` Object containing analysis units.}
+\item{ua}{\code{sf} Object containing analysis units.}
 
-\item{parca}{`sf` Object containing cadastral parcels.}
+\item{parca}{\code{sf} Object containing cadastral parcels.}
 }
 \value{
-The input `ua` object, invisibly, if spatial coverage is valid.
+The input \code{ua} object, invisibly, if spatial coverage is valid.
 Aborts otherwise.
 }
 \description{
-Checks that every _UA_ feature intersects at least one _PARCA_ feature, and
-that every _PARCA_ feature intersects at least one _UA_ feature.
+Checks that every \emph{UA} feature intersects at least one \emph{PARCA} feature, and
+that every \emph{PARCA} feature intersects at least one \emph{UA} feature.
 }

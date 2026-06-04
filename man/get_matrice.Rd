@@ -7,10 +7,10 @@
 get_matrice(pdf)
 }
 \arguments{
-\item{pdf}{`character` vector. Paths to PDF file}
+\item{pdf}{\code{character} vector. Paths to PDF file}
 }
 \value{
-List with three `data.frame`: `refs`, `owners`, `parcels`
+List with three \code{data.frame}: \code{refs}, \code{owners}, \code{parcels}
 }
 \description{
 Applies the extraction pipeline to multiple PDF files and combines

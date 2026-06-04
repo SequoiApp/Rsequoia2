@@ -7,39 +7,39 @@
 seq_layer(key, verbose = FALSE)
 }
 \arguments{
-\item{key}{`character` Name of a layer key to match against the entries
-defined in `inst/config/seq_layers.yaml`. (see *Details* for partial matching).}
+\item{key}{\code{character} Name of a layer key to match against the entries
+defined in \code{inst/config/seq_layers.yaml}. (see \emph{Details} for partial matching).}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
 A named list containing layer metadata, including:
 \itemize{
-  \item \code{key}: the resolved configuration key
-  \item \code{name}: the layer name
-  \item \code{ext}: the file extension
-  \item \code{family}: the resolved namespace family
-  \item \code{path}: the base directory for the layer
-  \item \code{full_path}: the complete filesystem path to the layer
+\item \code{key}: the resolved configuration key
+\item \code{name}: the layer name
+\item \code{ext}: the file extension
+\item \code{family}: the resolved namespace family
+\item \code{path}: the base directory for the layer
+\item \code{full_path}: the complete filesystem path to the layer
 }
 }
 \description{
 Resolves a layer key against the config defined in
-`inst/config/seq_layers.yaml` and `inst/config/seq_path.yaml` and returns
+\code{inst/config/seq_layers.yaml} and \code{inst/config/seq_path.yaml} and returns
 the associated metadata: name, extension, filename, path, fullpath
 }
 \details{
-The function resolves the input `key` using **partial matching** against
-the keys defined in `inst/config/seq_layers.yaml`.
+The function resolves the input \code{key} using \strong{partial matching} against
+the keys defined in \code{inst/config/seq_layers.yaml}.
+\itemize{
+\item If exactly \strong{one} entry matches, it is selected.
+For example, \code{key = "znieff1"} can be used to match
+\code{"v.mnhn.znieff1.poly"} when this is the only key containing \code{"znieff1"}.
+\item If \strong{multiple} entries match, the function aborts and displays the
+ambiguous keys, prompting the user to provide a more specific key.
+}
 
-- If exactly **one** entry matches, it is selected.
-  For example, `key = "znieff1"` can be used to match
-  `"v.mnhn.znieff1.poly"` when this is the only key containing `"znieff1"`.
-
-- If **multiple** entries match, the function aborts and displays the
-  ambiguous keys, prompting the user to provide a more specific key.
-
-Note: **`seq_layers.yaml` is part of the package and must not be modified.**
+Note: \strong{\code{seq_layers.yaml} is part of the package and must not be modified.}
 }
 \examples{
 \dontrun{

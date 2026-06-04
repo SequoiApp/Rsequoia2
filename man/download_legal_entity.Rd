@@ -7,13 +7,13 @@
 download_legal_entity(cache = seq_cache("legal_entity")$path, verbose = TRUE)
 }
 \arguments{
-\item{cache}{`character`; Storage directory. Defaults to the user cache
+\item{cache}{\code{character}; Storage directory. Defaults to the user cache
 directory.}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
-`character`;
+\code{character};
 }
 \description{
 This function downloads the official "Personnes Morales" datasets published

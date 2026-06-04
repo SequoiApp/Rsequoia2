@@ -12,23 +12,23 @@ create_matrice(
 )
 }
 \arguments{
-\item{dirname}{`character` Path to the directory. Defaults to the current
+\item{dirname}{\code{character} Path to the directory. Defaults to the current
 working directory.}
 
-\item{id}{`character` Identifier of the forest. Typically the name of the
+\item{id}{\code{character} Identifier of the forest. Typically the name of the
 forest}
 
-\item{overwrite}{`logical` If `TRUE`, filename is overwritten.}
+\item{overwrite}{\code{logical} If \code{TRUE}, filename is overwritten.}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
 Invisibly returns the path to the created file.
 }
 \description{
 Generates a default forest matrice as excel file used to store general forest
-information (e.g., `IDENTIFIANT`, `PROPRIETAIRE`) and cadastral attributes
-(`CODE_INSEE`, `PREFIXE`, `SECTION`, `NUMERO`, `LIEU_DIT`).
+information (e.g., \code{IDENTIFIANT}, \code{PROPRIETAIRE}) and cadastral attributes
+(\code{CODE_INSEE}, \code{PREFIXE}, \code{SECTION}, \code{NUMERO}, \code{LIEU_DIT}).
 }
 \examples{
 \dontrun{

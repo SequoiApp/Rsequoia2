@@ -7,16 +7,16 @@
 seq_cache_clear(key = NULL, filepath = NULL, ask = TRUE)
 }
 \arguments{
-\item{key}{`character`. Cache key to clear. If `NULL`, all configured caches
+\item{key}{\code{character}. Cache key to clear. If \code{NULL}, all configured caches
 are cleared.}
 
-\item{filepath}{`character`. Optional path to a cache configuration file.
+\item{filepath}{\code{character}. Optional path to a cache configuration file.
 Mostly useful for tests.}
 
-\item{ask}{`logical`. Ask confirmation before deleting cache files.}
+\item{ask}{\code{logical}. Ask confirmation before deleting cache files.}
 }
 \value{
-Invisibly returns `TRUE`.
+Invisibly returns \code{TRUE}.
 }
 \description{
 Deletes one or all configured Rsequoia2 cache folders after user confirmation.

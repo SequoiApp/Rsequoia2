@@ -32,6 +32,21 @@ pad_right <- function(x, width, fill = "0") {
   gsub(" ", fill, sprintf(paste0("%-", width, "s"), as.character(x)))
 }
 
+#' Normalize text
+#'
+#' Internal helper used to normalize string for query
+#'
+#' @param x `character` String to clean
+#'
+#' @return A cleaned string.
+#' @keywords internal
+#'
+normalize_txt <- function(x) {
+  x <- iconv(x, to = "ASCII//TRANSLIT")
+  x <- tolower(x)
+  gsub("[^a-z0-9]+", "", x)
+}
+
 #' Clean names
 #'
 #' Internal helper used to clean df names

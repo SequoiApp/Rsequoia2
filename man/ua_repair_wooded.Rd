@@ -7,12 +7,12 @@
 ua_repair_wooded(ua, verbose = TRUE)
 }
 \arguments{
-\item{ua}{`sf` object containing UA polygons.}
+\item{ua}{\code{sf} object containing UA polygons.}
 
 \item{verbose}{Logical. Should messages be printed?}
 }
 \value{
-The repaired `ua` object.
+The repaired \code{ua} object.
 }
 \description{
 Forces wooded status to FALSE when a surface is not submitted to DGD.

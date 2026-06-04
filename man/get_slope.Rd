@@ -7,52 +7,51 @@
 get_slope(x = NULL, dem = NULL, agg = 5, unit = "percent", verbose = TRUE, ...)
 }
 \arguments{
-\item{x}{`sf` or `sfc`; Geometry located in France.}
+\item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
 
-\item{dem}{`SpatRaster` representing ground elevation (DEM). Must be supplied
-only when `x` is `NULL`.}
+\item{dem}{\code{SpatRaster} representing ground elevation (DEM). Must be supplied
+only when \code{x} is \code{NULL}.}
 
-\item{agg}{`numeric`; Target resolution (in meters) to which the DEM is
-aggregated if its native resolution is finer. Default: `5`.}
+\item{agg}{\code{numeric}; Target resolution (in meters) to which the DEM is
+aggregated if its native resolution is finer. Default: \code{5}.}
 
-\item{unit}{`character`; "percent", "radians" or "degrees". Default to "percent".}
+\item{unit}{\code{character}; "percent", "radians" or "degrees". Default to "percent".}
 
-\item{verbose}{`logical`; If `TRUE`, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
 
-\item{...}{Additional parameters passed to [get_dem()] when `x` is supplied.}
+\item{...}{Additional parameters passed to \code{\link[=get_dem]{get_dem()}} when \code{x} is supplied.}
 }
 \value{
-A `SpatRaster` containing slope values in percent.
+A \code{SpatRaster} containing slope values in percent.
 
-A `SpatRaster` containing slope values in degrees.
+A \code{SpatRaster} containing slope values in degrees.
 }
 \description{
 Computes a slope raster in percent from a DEM, either by:
-  - downloading a DEM automatically using `x`, or
-  - using a DEM raster supplied manually through the `dem` argument.
+\itemize{
+\item downloading a DEM automatically using \code{x}, or
+\item using a DEM raster supplied manually through the \code{dem} argument.
+}
 }
 \details{
-When `x` is provided, the DEM is obtained with [get_dem()], using by
-default a resolution equal to `agg`.
-When `x` is not provided, a DEM must be supplied via `dem`.
+When \code{x} is provided, the DEM is obtained with \code{\link[=get_dem]{get_dem()}}, using by
+default a resolution equal to \code{agg}.
+When \code{x} is not provided, a DEM must be supplied via \code{dem}.
 
-If the DEM resolution is finer than `agg`, the raster is aggregated to
+If the DEM resolution is finer than \code{agg}, the raster is aggregated to
 avoid artefacts and reduce computation time.
 
-
-Slope is computed with `terra::terrain()` using Horn's 8-neighbor algorithm.
+Slope is computed with \code{terra::terrain()} using Horn's 8-neighbor algorithm.
 The slope is first computed in degrees, then converted to percent using:
 
-`tan(slope_degrees * pi / 180) * 100`
+\code{tan(slope_degrees * pi / 180) * 100}
 
 A 45-degree slope is therefore equal to a 100 percent slope.
 
+Slope is computed with \code{terra::terrain()} using Horn's 8-neighbor algorithm,
+and returned in \strong{degrees}.
 
-
-Slope is computed with `terra::terrain()` using Horn's 8-neighbor algorithm,
-and returned in **degrees**.
-
-Aggregation is performed with `terra::aggregate()` using a mean function.
+Aggregation is performed with \code{terra::aggregate()} using a mean function.
 This is recommended when high-resolution DEMs (<5 m) would otherwise
 generate line artefacts.
 }

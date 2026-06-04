@@ -13,11 +13,11 @@ seq_dir_rename(path, old_id, new_id, verbose = TRUE)
 
 \item{new_id}{Character. New identifier to use in file names and GeoPackage attributes.}
 
-\item{verbose}{Logical. If `TRUE`, print a console report with `cli`.}
+\item{verbose}{Logical. If \code{TRUE}, print a console report with \code{cli}.}
 }
 \value{
 Invisibly returns a data frame with one row per GeoPackage and the
-  columns `file`, `status`, and `message`.
+columns \code{file}, \code{status}, and \code{message}.
 }
 \description{
 Rename files in a Sequoia directory by replacing an old forest identifier with

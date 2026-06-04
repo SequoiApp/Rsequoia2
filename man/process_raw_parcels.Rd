@@ -7,11 +7,11 @@
 process_raw_parcels(df)
 }
 \arguments{
-\item{df}{Raw `data.frame` from [get_raw_parcels()]}
+\item{df}{Raw \code{data.frame} from \code{\link[=get_raw_parcels]{get_raw_parcels()}}}
 }
 \value{
-Processed `data.frame` with normalized fields, row types, IDs,
-  and calculated columns
+Processed \code{data.frame} with normalized fields, row types, IDs,
+and calculated columns
 }
 \description{
 Cleans, normalizes, and structures raw parcel data by identifying main parcels,

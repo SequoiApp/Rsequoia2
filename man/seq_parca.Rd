@@ -7,35 +7,34 @@
 seq_parca(dirname = ".", bdp_geom = TRUE, verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{`character` Path to the directory. Defaults to the current
+\item{dirname}{\code{character} Path to the directory. Defaults to the current
 working directory.}
 
-\item{bdp_geom}{`logical` If `TRUE`, replace Etalab geometries with BDP when possible.}
+\item{bdp_geom}{\code{logical} If \code{TRUE}, replace Etalab geometries with BDP when possible.}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
-\item{overwrite}{`logical` If `TRUE`, filename is overwritten.}
+\item{overwrite}{\code{logical} If \code{TRUE}, filename is overwritten.}
 }
 \value{
-An `sf` object
+An \code{sf} object
 }
 \description{
-This function reads the `matrice.xlsx` file from a project directory,
+This function reads the \code{matrice.xlsx} file from a project directory,
 downloads the geometry of each parcel, enriches the dataset with information
 from the matrice, and writes the resulting layer to disk.
 }
 \details{
-The resulting object is returned invisibly as an `sf` polygons layer.
+The resulting object is returned invisibly as an \code{sf} polygons layer.
 The output file is automatically written into the working directory defined
-by `dirname`.
+by \code{dirname}.
 
+\strong{\code{bdp_geom}}
+The use and behaviour of \code{bdp_geom} are described in \code{\link[=get_parca]{get_parca()}}.
 
-**`bdp_geom`**
-The use and behaviour of `bdp_geom` are described in [Rsequoia2::get_parca()].
-
-**Automatic "lieu-dit" completion**
-If the function detects rows in the matrice where the field `"LIEU_DIT"`
+\strong{Automatic "lieu-dit" completion}
+If the function detects rows in the matrice where the field \code{"LIEU_DIT"}
 is missing, the corresponding "lieu-dit" values will be downloaded
 automatically and added to the output.
-Existing `"LIEU_DIT"` values are **never overwritten**.
+Existing \code{"LIEU_DIT"} values are \strong{never overwritten}.
 }

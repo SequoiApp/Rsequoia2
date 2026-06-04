@@ -14,22 +14,22 @@ download_lidar(
 )
 }
 \arguments{
-\item{x}{`sf` or `sfc`; Area used to select intersecting LIDAR tiles.}
+\item{x}{\code{sf} or \code{sfc}; Area used to select intersecting LIDAR tiles.}
 
-\item{key}{`character`; LIDAR product to download. One of `"mnt"`,
-`"mns"` or `"mnh"`.}
+\item{key}{\code{character}; LIDAR product to download. One of \code{"mnt"},
+\code{"mns"} or \code{"mnh"}.}
 
-\item{cache}{`character`; Cache directory. If `NULL`, the appropriate
-Rsequoia2 LIDAR cache is used, see [Rsequoia2::seq_cache()].}
+\item{cache}{\code{character}; Cache directory. If \code{NULL}, the appropriate
+Rsequoia2 LIDAR cache is used, see \code{\link[=seq_cache]{seq_cache()}}.}
 
-\item{overwrite}{`logical`; If `TRUE`, re-download existing tiles.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, re-download existing tiles.}
 
-\item{verbose}{`logical`; If `TRUE`, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
 
-\item{max_tries}{`integer`; Maximum number of download attempts.}
+\item{max_tries}{\code{integer}; Maximum number of download attempts.}
 }
 \value{
-Invisibly returns a `character` vector of local tile paths.
+Invisibly returns a \code{character} vector of local tile paths.
 }
 \description{
 Downloads IGN LIDAR HD tiles intersecting an area of interest.

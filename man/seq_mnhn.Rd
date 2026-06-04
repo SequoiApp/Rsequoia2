@@ -13,41 +13,41 @@ seq_mnhn(
 )
 }
 \arguments{
-\item{dirname}{`character` Directory where the matrice file is located.
+\item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
 the download area.}
 
-\item{key}{`character`; List of MNHN layer identifiers to download. If not
-provided, the function uses `get_keys("mnhn")` to automatically select all
-MNHN layers defined in the Sequoia configuration (`inst/config/seq_layers.yaml`)}
+\item{key}{\code{character}; List of MNHN layer identifiers to download. If not
+provided, the function uses \code{get_keys("mnhn")} to automatically select all
+MNHN layers defined in the Sequoia configuration (\code{inst/config/seq_layers.yaml})}
 
-\item{verbose}{`logical`; If `TRUE`, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
 
-\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
+\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
 }
 \value{
-A named list of file paths written by [seq_write()], one per layer.
+A named list of file paths written by \code{\link[=seq_write]{seq_write()}}, one per layer.
 }
 \description{
 Downloads one or several vector layers from the IGN WFS service
-for `mnhn` layer(s) of a Sequoia project.
+for \code{mnhn} layer(s) of a Sequoia project.
 }
 \details{
-This function is a convenience wrapper looping over [get_mnhn()], allowing
+This function is a convenience wrapper looping over \code{\link[=get_mnhn]{get_mnhn()}}, allowing
 the user to download all products in one call and automatically write them
-to the project directory using [seq_write()].
+to the project directory using \code{\link[=seq_write]{seq_write()}}.
 
-
-For each value in `key`, the function attempts to query the corresponding
-MNHN layer using [get_mnhn()].
-
-- If the layer contains features, it is written to the project directory
-  via [seq_write()] and recorded as a successful download.
-- If the layer contains no features, it is skipped and marked
-  as empty.
+For each value in \code{key}, the function attempts to query the corresponding
+MNHN layer using \code{\link[=get_mnhn]{get_mnhn()}}.
+\itemize{
+\item If the layer contains features, it is written to the project directory
+via \code{\link[=seq_write]{seq_write()}} and recorded as a successful download.
+\item If the layer contains no features, it is skipped and marked
+as empty.
+}
 }
 \seealso{
-[get_mnhn()], [seq_write()]
+\code{\link[=get_mnhn]{get_mnhn()}}, \code{\link[=seq_write]{seq_write()}}
 }

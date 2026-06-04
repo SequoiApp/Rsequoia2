@@ -7,18 +7,18 @@
 drias_read_metadata(txt)
 }
 \arguments{
-\item{txt}{`character` string. Path to a DRIAS `.txt` file.}
+\item{txt}{\code{character} string. Path to a DRIAS \code{.txt} file.}
 }
 \value{
-A `list` with the following elements:
+A \code{list} with the following elements:
 \describe{
-  \item{date_extraction}{`character` string. Extraction date.}
-  \item{producteur}{`character` string. Data producer.}
-  \item{experience}{`character` string. Climate experiment.}
-  \item{modele}{`character` string. Climate model.}
-  \item{scenario}{`list` with `code` and `description`.}
-  \item{horizons}{`data.frame` with columns `code` and `libelle`.}
-  \item{indices}{`data.frame` with columns `code` and `description`.}
+\item{date_extraction}{\code{character} string. Extraction date.}
+\item{producteur}{\code{character} string. Data producer.}
+\item{experience}{\code{character} string. Climate experiment.}
+\item{modele}{\code{character} string. Climate model.}
+\item{scenario}{\code{list} with \code{code} and \code{description}.}
+\item{horizons}{\code{data.frame} with columns \code{code} and \code{libelle}.}
+\item{indices}{\code{data.frame} with columns \code{code} and \code{description}.}
 }
 }
 \description{

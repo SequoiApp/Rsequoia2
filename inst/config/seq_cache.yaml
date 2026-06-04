@@ -40,9 +40,9 @@ ifn:
   description: "sylvo-ecoregions, regions forestieres et zones de production"
   source: "IFN"
 
-legal_entity:
+pm:
   label: "Personne morale"
-  cache_dir: ["legal_entity"]
+  cache_dir: ["pm"]
   description: "Fichiers recensant les parcelles de personnes morales"
   source: "DGFIP"
 

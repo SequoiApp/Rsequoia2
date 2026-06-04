@@ -7,18 +7,18 @@
 seq_toponyme(dirname = ".", buffer = 1000, verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{`character` Directory where the matrice file is located.
+\item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{buffer}{`numeric`; Buffer around `x` (in **meters**) used to enlarge}
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
-\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
+\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
 }
 \value{
-Invisibly returns a named list of file paths written by [seq_write()].
-Returns `NULL` invisibly when no toponymic features are found.
+Invisibly returns a named list of file paths written by \code{\link[=seq_write]{seq_write()}}.
+Returns \code{NULL} invisibly when no toponymic features are found.
 }
 \description{
 Retrieves toponymic point features intersecting and surrounding
@@ -26,14 +26,14 @@ the project area, classifies them by thematic type, and writes the
 resulting layer to disk.
 }
 \details{
-Toponymic point features are retrieved using [get_toponyme()].
+Toponymic point features are retrieved using \code{\link[=get_toponyme]{get_toponyme()}}.
 
-If no toponymic features are found, the function returns `NULL`
+If no toponymic features are found, the function returns \code{NULL}
 invisibly and no file is written.
 
 When features are present, the layer is written to disk using
-[seq_write()] with the key `"v.toponyme.point"`.
+\code{\link[=seq_write]{seq_write()}} with the key \code{"v.toponyme.point"}.
 }
 \seealso{
-[get_toponyme()], [seq_write()]
+\code{\link[=get_toponyme]{get_toponyme()}}, \code{\link[=seq_write]{seq_write()}}
 }

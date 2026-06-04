@@ -7,20 +7,20 @@
 seq_table(table = NULL, filepath = NULL)
 }
 \arguments{
-\item{table}{`character` or `NULL`; If provided, must match a key in
-`inst/config/seq_tables.yaml`.}
+\item{table}{\code{character} or \code{NULL}; If provided, must match a key in
+\code{inst/config/seq_tables.yaml}.}
 
-\item{filepath}{`character` or `NULL`; override for the path to the default
-YAML configuration file (`inst/config/seq_fields.yaml`). Used mainly for
+\item{filepath}{\code{character} or \code{NULL}; override for the path to the default
+YAML configuration file (\code{inst/config/seq_fields.yaml}). Used mainly for
 testing.}
 }
 \value{
 A character vector of field keys for the selected table.
 }
 \description{
-Internal helper used by `seq_normalize()` to determine which fields
+Internal helper used by \code{seq_normalize()} to determine which fields
 belong to a given table. Table definitions are stored in
-`inst/config/seq_tables.yaml`.
+\code{inst/config/seq_tables.yaml}.
 }
 \examples{
 \dontrun{

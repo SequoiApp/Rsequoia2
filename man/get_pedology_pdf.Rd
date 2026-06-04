@@ -7,30 +7,30 @@
 get_pedology_pdf(id_ucs, dirname, verbose = TRUE)
 }
 \arguments{
-\item{id_ucs}{`character` used to identify pedology reports.
-It can be got by using `get_pedology()$id_ucs`.}
+\item{id_ucs}{\code{character} used to identify pedology reports.
+It can be got by using \code{get_pedology()$id_ucs}.}
 
-\item{dirname}{`character`; directory where the PDF will be saved.}
+\item{dirname}{\code{character}; directory where the PDF will be saved.}
 
-\item{verbose}{`logical`. If `TRUE`, display progress messages.}
+\item{verbose}{\code{logical}. If \code{TRUE}, display progress messages.}
 }
 \value{
-Invisibly returns the normalized path to `out_dir`. Returns
-`NULL` invisibly if no valid `id_ucs` is found.
+Invisibly returns the normalized path to \code{out_dir}. Returns
+\code{NULL} invisibly if no valid \code{id_ucs} is found.
 }
 \description{
 Downloads pedological PDF documents associated with UCS identifiers
 from the INRA soil map repository.
 }
 \details{
-The function needs unique UCS identifiers typically got from the `id_ucs`
-field of `pedology`, builds download URLs pointing to the INRA
+The function needs unique UCS identifiers typically got from the \code{id_ucs}
+field of \code{pedology}, builds download URLs pointing to the INRA
 soil map repository, and downloads the corresponding PDF documents.
 
-Existing files are skipped unless `overwrite = TRUE`. All user
-feedback is handled via the `cli` package and can be silenced by
-setting `verbose = FALSE`.
+Existing files are skipped unless \code{overwrite = TRUE}. All user
+feedback is handled via the \code{cli} package and can be silenced by
+setting \code{verbose = FALSE}.
 }
 \seealso{
-[get_pedology()]
+\code{\link[=get_pedology]{get_pedology()}}
 }

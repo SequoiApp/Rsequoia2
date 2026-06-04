@@ -7,28 +7,28 @@
 get_com_point(x, graphic = FALSE, verbose = TRUE)
 }
 \arguments{
-\item{x}{An `sf` object used as the input area.}
+\item{x}{An \code{sf} object used as the input area.}
 
-\item{graphic}{Logical. If `TRUE`, centroids are computed only on the
+\item{graphic}{Logical. If \code{TRUE}, centroids are computed only on the
 intersection between commune polygons and a 500 m convex buffer
-around `x`, for cartographic display.}
+around \code{x}, for cartographic display.}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 }
 \value{
-An `sf` object of type `POINT` representing commune centroids.
-  Returns `NULL` if no commune intersects the input area.
+An \code{sf} object of type \code{POINT} representing commune centroids.
+Returns \code{NULL} if no commune intersects the input area.
 }
 \description{
 Computes centroid points from commune boundary polygons, optionally
 restricted to a graphical extent.
 }
 \details{
-The function retrieves commune polygons using `get_com_poly()`,
-then computes their centroids. When `graphic = TRUE`, centroids
+The function retrieves commune polygons using \code{get_com_poly()},
+then computes their centroids. When \code{graphic = TRUE}, centroids
 are calculated from the clipped geometries to ensure points
 fall within the display extent.
 }
 \seealso{
-[get_com_poly()]
+\code{\link[=get_com_poly]{get_com_poly()}}
 }

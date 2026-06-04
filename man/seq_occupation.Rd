@@ -2,17 +2,17 @@
 % Please edit documentation in R/ua-occupation.R
 \name{seq_occupation}
 \alias{seq_occupation}
-\title{Create occupation layer from _UA_ for a Sequoia project}
+\title{Create occupation layer from \emph{UA} for a Sequoia project}
 \usage{
 seq_occupation(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{`character` Directory where the matrice file is located.
+\item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
-\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
+\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
 }
 \value{
 An invisible file path to the exported occupation layer.
@@ -22,5 +22,5 @@ Reads the UA polygon layer, aggregates surfaces by occupation status, and
 writes the derived occupation layer to the project directory.
 }
 \seealso{
-[ua_to_occupation()], [seq_read()], [seq_write()]
+\code{\link[=ua_to_occupation]{ua_to_occupation()}}, \code{\link[=seq_read]{seq_read()}}, \code{\link[=seq_write]{seq_write()}}
 }

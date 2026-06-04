@@ -7,12 +7,12 @@
 ua_repair_dgd(ua, verbose = TRUE)
 }
 \arguments{
-\item{ua}{`sf` object containing UA polygons.}
+\item{ua}{\code{sf} object containing UA polygons.}
 
 \item{verbose}{Logical. Should messages be printed?}
 }
 \value{
-The repaired `ua` object.
+The repaired \code{ua} object.
 }
 \description{
 Initializes DGD submitted status to TRUE when the field is empty.

@@ -7,10 +7,10 @@
 identify_non_anchors(all_visual_data)
 }
 \arguments{
-\item{all_visual_data}{A `data.frame` from [extract_visual_data()]}
+\item{all_visual_data}{A \code{data.frame} from \code{\link[=extract_visual_data]{extract_visual_data()}}}
 }
 \value{
-A `data.frame` of anchor positions with same columns as input
+A \code{data.frame} of anchor positions with same columns as input
 }
 \description{
 Locates the "non" markers that indicate the start of unbuilt property

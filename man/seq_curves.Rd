@@ -7,30 +7,30 @@
 seq_curves(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{`character` Directory where the matrice file is located.
+\item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{verbose}{`logical` If `TRUE`, display messages.}
+\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
-\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
+\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
 }
 \value{
-Invisibly returns a named list of file paths written by [seq_write()].
-Returns `NULL` invisibly when no hypsometric curves features are found.
+Invisibly returns a named list of file paths written by \code{\link[=seq_write]{seq_write()}}.
+Returns \code{NULL} invisibly when no hypsometric curves features are found.
 }
 \description{
 Retrieves hypsometric curves line features intersecting and surrounding
 the project area and writes the resulting layer to disk.
 }
 \details{
-Hypsometric curves line features are retrieved using [get_curves()].
+Hypsometric curves line features are retrieved using \code{\link[=get_curves]{get_curves()}}.
 
-If no hypsometric curves features are found, the function returns `NULL`
+If no hypsometric curves features are found, the function returns \code{NULL}
 invisibly and no file is written.
 
 When features are present, the layer is written to disk using
-[seq_write()] with the key `"v.curves.line"`.
+\code{\link[=seq_write]{seq_write()}} with the key \code{"v.curves.line"}.
 }
 \seealso{
-[get_curves()], [seq_write()]
+\code{\link[=get_curves]{get_curves()}}, \code{\link[=seq_write]{seq_write()}}
 }

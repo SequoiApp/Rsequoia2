@@ -15,29 +15,29 @@ seq_lidar(
 )
 }
 \arguments{
-\item{dirname}{`character` Directory where the matrice file is located.
+\item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{key}{`character`; LiDAR product(s) to create. One or more of `"mnt"`,
-`"mns"` and `"mnh"`.}
+\item{key}{\code{character}; LiDAR product(s) to create. One or more of \code{"mnt"},
+\code{"mns"} and \code{"mnh"}.}
 
-\item{buffer}{`numeric`; Buffer distance, in meters, applied around `x`
+\item{buffer}{\code{numeric}; Buffer distance, in meters, applied around \code{x}
 before masking.}
 
-\item{crs}{`integer` or `character`; Target CRS of the returned raster.
+\item{crs}{\code{integer} or \code{character}; Target CRS of the returned raster.
 Defaults to EPSG:2154.}
 
-\item{cache}{`character`; Cache directory. If `NULL`, the appropriate
-Rsequoia2 LIDAR cache is used, see [Rsequoia2::seq_cache()].}
+\item{cache}{\code{character}; Cache directory. If \code{NULL}, the appropriate
+Rsequoia2 LIDAR cache is used, see \code{\link[=seq_cache]{seq_cache()}}.}
 
-\item{overwrite}{`logical`; If `TRUE`, re-download existing tiles.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, re-download existing tiles.}
 
-\item{verbose}{`logical`; If `TRUE`, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
 }
 \value{
-Invisibly returns a named `list` of created raster file paths.
+Invisibly returns a named \code{list} of created raster file paths.
 }
 \description{
-Uses the project's _PARCA_ layer to download, extract, and write LiDAR HD
+Uses the project's \emph{PARCA} layer to download, extract, and write LiDAR HD
 altimetry rasters.
 }

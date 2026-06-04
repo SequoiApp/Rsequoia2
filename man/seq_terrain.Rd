@@ -13,25 +13,25 @@ seq_terrain(
 )
 }
 \arguments{
-\item{dirname}{`character` Directory where the matrice file is located.
+\item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{agg}{`numeric`; Target resolution (in meters) to which the DEM is
-aggregated if its native resolution is finer. Default: `5`.}
+\item{agg}{\code{numeric}; Target resolution (in meters) to which the DEM is
+aggregated if its native resolution is finer. Default: \code{5}.}
 
-\item{unit}{`character`; "percent", "radians" or "degrees". Default to "percent".}
+\item{unit}{\code{character}; "percent", "radians" or "degrees". Default to "percent".}
 
-\item{overwrite}{`logical` If `TRUE`, file is overwritten.}
+\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
 
-\item{verbose}{`logical`; If `TRUE`, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
 }
 \value{
-Invisibly returns a named `character` vector of output raster paths.
+Invisibly returns a named \code{character} vector of output raster paths.
 }
 \description{
 Uses the project's MNT raster to compute slope and aspect rasters, then
-writes them to the project directory with [seq_write()].
+writes them to the project directory with \code{\link[=seq_write]{seq_write()}}.
 }
 \seealso{
-[get_slope()], [get_aspect()]
+\code{\link[=get_slope]{get_slope()}}, \code{\link[=get_aspect]{get_aspect()}}
 }

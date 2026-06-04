@@ -14,9 +14,9 @@ seq_files_rename(path, old_id, new_id)
 \item{new_id}{Character. Replacement identifier.}
 }
 \value{
-Logical vector returned by [file.rename()].
+Logical vector returned by \code{\link[=file.rename]{file.rename()}}.
 }
 \description{
-Rename files recursively by replacing `old_id` with `new_id` in file names.
+Rename files recursively by replacing \code{old_id} with \code{new_id} in file names.
 }
 \keyword{internal}

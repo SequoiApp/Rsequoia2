@@ -7,12 +7,12 @@
 extract_rows(table_data, col_positions)
 }
 \arguments{
-\item{table_data}{A `data.frame` from [group_lines_by_y()]}
+\item{table_data}{A \code{data.frame} from \code{\link[=group_lines_by_y]{group_lines_by_y()}}}
 
-\item{col_positions}{List from [define_column_positions()]}
+\item{col_positions}{List from \code{\link[=define_column_positions]{define_column_positions()}}}
 }
 \value{
-List of `data.frame`, one per extracted row
+List of \code{data.frame}, one per extracted row
 }
 \description{
 Processes all lines in table data, extracting valid rows.

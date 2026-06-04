@@ -7,14 +7,14 @@
 extract_row(line_data, col_positions)
 }
 \arguments{
-\item{line_data}{A `data.frame` for a single line}
+\item{line_data}{A \code{data.frame} for a single line}
 
-\item{col_positions}{List from [define_column_positions()]}
+\item{col_positions}{List from \code{\link[=define_column_positions]{define_column_positions()}}}
 }
 \value{
-A `data.frame` with one row containing all column values
+A \code{data.frame} with one row containing all column values
 }
 \description{
-Applies [extract_column()] to all columns to build a complete data row.
+Applies \code{\link[=extract_column]{extract_column()}} to all columns to build a complete data row.
 }
 \keyword{internal}

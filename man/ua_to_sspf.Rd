@@ -2,28 +2,28 @@
 % Please edit documentation in R/ua-parcels.R
 \name{ua_to_sspf}
 \alias{ua_to_sspf}
-\title{Aggregate _UA_ surfaces at the `sspf` field level}
+\title{Aggregate \emph{UA} surfaces at the \code{sspf} field level}
 \usage{
 ua_to_sspf(ua)
 }
 \arguments{
-\item{ua}{`sf` object containing analysis units}
+\item{ua}{\code{sf} object containing analysis units}
 }
 \value{
-An `sf` object where polygons and descriptive fields are aggregated
-at the _SSPF_ level.
+An \code{sf} object where polygons and descriptive fields are aggregated
+at the \emph{SSPF} level.
 }
 \description{
-Aggregates corrected surface areas from a _UA_ layer by
-grouping rows according to the `sspf` field, as
-defined by the configuration returned by [seq_field()].
+Aggregates corrected surface areas from a \emph{UA} layer by
+grouping rows according to the \code{sspf} field, as
+defined by the configuration returned by \code{\link[=seq_field]{seq_field()}}.
 }
 \details{
 In addition to summing surfaces, descriptive fields are preserved.
 
-This function is used internally by [seq_parcels()], but may be called
+This function is used internally by \code{\link[=seq_parcels]{seq_parcels()}}, but may be called
 directly when a SSPF-level summary of UA data is needed.
 }
 \seealso{
-[ua_to_pf()], [seq_parcels()], [seq_field()], [seq_normalize()]
+\code{\link[=ua_to_pf]{ua_to_pf()}}, \code{\link[=seq_parcels]{seq_parcels()}}, \code{\link[=seq_field]{seq_field()}}, \code{\link[=seq_normalize]{seq_normalize()}}
 }

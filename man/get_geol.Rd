@@ -14,29 +14,29 @@ get_geol(
 )
 }
 \arguments{
-\item{x}{`sf` or `sfc`; Area used to determine departments and filter geology.}
+\item{x}{\code{sf} or \code{sfc}; Area used to determine departments and filter geology.}
 
-\item{key}{`character`; Dataset to use. One of `"carhab"` or `"bdcharm50"`.}
+\item{key}{\code{character}; Dataset to use. One of \code{"carhab"} or \code{"bdcharm50"}.}
 
-\item{buffer}{`numeric`; Buffer distance, in meters, applied around `x`
-before spatial filtering. Default is `100`.}
+\item{buffer}{\code{numeric}; Buffer distance, in meters, applied around \code{x}
+before spatial filtering. Default is \code{100}.}
 
-\item{cache}{`character`; Optional cache directory. If `NULL`, the
-dataset-specific cache from [Rsequoia2::seq_cache()] is used.}
+\item{cache}{\code{character}; Optional cache directory. If \code{NULL}, the
+dataset-specific cache from \code{\link[=seq_cache]{seq_cache()}} is used.}
 
-\item{verbose}{`logical`; If `TRUE`, display progress messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress messages.}
 
-\item{overwrite}{`logical`; If `TRUE`, re-download archives even when
-they already exist in `cache`.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, re-download archives even when
+they already exist in \code{cache}.}
 }
 \value{
-An `sf` object containing geology features intersecting the buffered
-  envelope of `x`, returned in EPSG:2154.
+An \code{sf} object containing geology features intersecting the buffered
+envelope of \code{x}, returned in EPSG:2154.
 }
 \description{
 Downloads and reads BRGM geology layers for the departments intersecting
-`x`, then keeps only features intersecting a buffered envelope around `x`.
+\code{x}, then keeps only features intersecting a buffered envelope around \code{x}.
 }
 \details{
-Supported datasets are `"carhab"` and `"bdcharm50"`.
+Supported datasets are \code{"carhab"} and \code{"bdcharm50"}.
 }
