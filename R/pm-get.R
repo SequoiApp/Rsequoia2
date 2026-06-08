@@ -163,9 +163,10 @@ select_pm <- function(pm) {
     report$denomination_par
   )
 
-  selected <- multi_menu(
+  selected <- seq_select(
     choices = choices,
-    title = "Select legal entities"
+    title = "Select legal entities",
+    multi = TRUE
   )
 
   report[selected, "denomination_par"]

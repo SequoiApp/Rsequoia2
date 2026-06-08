@@ -8,7 +8,7 @@ identifier:
 owner:
   name: "PROPRIETAIRE"
   libelle: "PROPRIETAIRE"
-  alias: ["prop", "owner", "proprio", "proprietaire"]
+  alias: ["prop", "owner", "proprio", "proprietaire", "denomination_par"]
   class: "character"
   definition: "Owner name"
 

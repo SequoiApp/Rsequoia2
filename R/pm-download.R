@@ -180,7 +180,7 @@ pm_csv_to_parquet <- function(files, parquet, verbose = TRUE) {
 #' @return Invisibly returns the normalized parquet file path.
 #'
 #' @noRd
-pm_download <- function(cache = seq_cache("pm")$path, verbose = TRUE) {
+pm_download <- function(cache = seq_cache("pm")$path, verbose = FALSE) {
   old_timeout <- getOption("timeout")
   options(timeout = max(300, old_timeout))
   on.exit(options(timeout = old_timeout), add = TRUE)

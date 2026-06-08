@@ -1,5 +1,8 @@
 # Rsequoia2 (development version)
 
+## v0.0.5
+- Rework and reorganize sequoia2 menu (#77)
+
 ## v0.0.4
 - Add new `DGD_SOUMIS` field and rename `BOISE` to `DGD_BOISE`
 - Replace `ua_to_wooded()` and `seq_wooded()` with `ua_to_occupation()` and `seq_occupation()`
