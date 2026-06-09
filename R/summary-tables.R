@@ -178,6 +178,18 @@ build_summary_plt_type_rich_stade_ess <- function(ua) {
   list(table = tbl, total_row = tot)
 }
 
+# PLT_TYPE_RICH_STR_ESS ----
+build_summary_plt_type_rich_str_ess <- function(ua) {
+  tbl <- sum_surf_by(ua, "std_type", "std_wealth", "res_struct", "res_spe1") |>
+    order_by("std_type", "std_wealth", "res_struct", "res_spe1") |>
+    add_prop("cor_area")
+
+  tot <- c(text = "TOTAL", rep("none", ncol(tbl) - 3), "sum", "sum")
+
+  list(table = tbl, total_row = tot)
+}
+
+
 # PF_PLT_TYPE ----
 build_summary_pf_plt_type <- function(ua) {
   tbl <- sum_surf_by(ua, "pcl_code", "std_type") |>
@@ -200,6 +212,23 @@ build_summary_pf_plt_type_rich <- function(ua) {
   tbl <- sum_surf_by(ua, "pcl_code", "std_type", "std_wealth") |>
     order_by("std_type", "std_wealth") |>
     pivot("pcl_code", col = c("std_type", "std_wealth")) |>
+    order_by("pcl_code")
+
+  nb_pplmt <- ncol(tbl) - 1
+  if (nb_pplmt > 1) {
+    tbl$TOTAL <- rowSums(tbl[, -1, drop = FALSE], na.rm = TRUE)
+  }
+
+  tot <- c(text = "TOTAL", rep("sum", ncol(tbl) - 2), "sum")
+
+  list(table = tbl, total_row = tot)
+}
+
+# PF_PLT_TYPE_RICH_STR ----
+build_summary_pf_plt_type_rich_str <- function(ua) {
+  tbl <- sum_surf_by(ua, "pcl_code", "std_type", "std_wealth", "res_struct") |>
+    order_by("std_type", "std_wealth", "res_struct") |>
+    pivot(row = "pcl_code", col = c("std_type", "std_wealth", "res_struct")) |>
     order_by("pcl_code")
 
   nb_pplmt <- ncol(tbl) - 1
