@@ -72,7 +72,7 @@ sequoia2 <- function() {
     "Migrer un ancien dossier" = update_folder,
     "Renommer un dossier" = rename_folder,
     "Signaler un probleme" = ask_help,
-    "Site web" = website
+    "Site web / Documentation" = website
   )
 
   seq_run_menu(
@@ -82,7 +82,7 @@ sequoia2 <- function() {
 
 }
 
-# Other menus ----
+# Other menus ----*
 
 #' Open the data download menu
 #'

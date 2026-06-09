@@ -51,7 +51,7 @@ ua_to_ua <- function(ua, parca, verbose = TRUE, check = interactive()) {
   ua <- ua_repair_dgd(ua, verbose = verbose)
   ua <- ua_repair_wooded(ua, verbose = verbose)
   if (!ua_check_non_wooded_threshold(ua, verbose = verbose)) {
-    cli::cli_abort(
+    cli::cli_alert_danger(
       "You need to correct the non-wooded submitted surfaces in the UA layer."
     )
   }
