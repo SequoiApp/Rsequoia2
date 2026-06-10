@@ -85,7 +85,7 @@ test_that("ua_check_non_wooded_threshold() warns when verbose and threshold is e
 
   expect_message(
     ua_check_non_wooded_threshold(ua, threshold = 0.10, verbose = TRUE),
-    "submitted surface exceeds"
+    "[DANGER]"
   )
 })
 
@@ -128,6 +128,6 @@ test_that("ua_check_non_wooded_threshold() warns with ratio when threshold is ex
     expect_false(
       ua_check_non_wooded_threshold(ua, threshold = 0.10, verbose = TRUE)
     ),
-    "submitted surface exceeds"
+    "[DANGER]"
   )
 })
