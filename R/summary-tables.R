@@ -145,6 +145,17 @@ build_summary_plt_ess <- function(ua) {
   list(table = tbl, total_row = tot)
 }
 
+# PLT_STR ----
+build_summary_plt_str <- function(ua) {
+  tbl <- sum_surf_by(ua, "res_struct") |>
+    order_by("res_struct") |>
+    add_prop("cor_area")
+
+  tot <- c(text = "TOTAL", "sum", "sum")
+
+  list(table = tbl, total_row = tot)
+}
+
 # PLT_TYPE_RICH ----
 build_summary_plt_type_rich <- function(ua) {
   tbl <- sum_surf_by(ua, "std_type", "std_wealth") |>
@@ -160,6 +171,17 @@ build_summary_plt_type_rich <- function(ua) {
 build_summary_plt_type_rich_stade <- function(ua) {
   tbl <- sum_surf_by(ua, "std_type", "std_wealth", "std_stage") |>
     order_by("std_type", "std_wealth", "std_stage") |>
+    add_prop("cor_area")
+
+  tot <- c(text = "TOTAL", rep("none", ncol(tbl) - 3), "sum", "sum")
+
+  list(table = tbl, total_row = tot)
+}
+
+# PLT_TYPE_RICH_STR ----
+build_summary_plt_type_rich_str <- function(ua) {
+  tbl <- sum_surf_by(ua, "std_type", "std_wealth", "res_struct") |>
+    order_by("std_type", "std_wealth", "res_struct") |>
     add_prop("cor_area")
 
   tot <- c(text = "TOTAL", rep("none", ncol(tbl) - 3), "sum", "sum")
