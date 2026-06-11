@@ -103,8 +103,8 @@ ua_check_non_wooded_threshold <- function(ua, threshold = 0.10, verbose = TRUE) 
         red_warn("[DANGER]"),
         " Non-wooded submitted surface is {pct}%, above the {threshold_pct}% threshold."
       ))
-    return(FALSE)
     }
+    return(FALSE)
   }
 
   if (verbose) {
