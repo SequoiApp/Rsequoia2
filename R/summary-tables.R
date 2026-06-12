@@ -8,12 +8,17 @@ build_summary_ua <- function(ua) {
 
 # OCCUPATION ----
 build_summary_occupation <- function(ua) {
+  is_dgd <- seq_field("is_dgd")$name
   is_wooded <- seq_field("is_wooded")$name
 
+  ua <- ua_repair_wooded(ua, verbose = F)
   ua <- sf::st_drop_geometry(ua)
+
+  ua[[is_dgd]] <- ifelse(ua[[is_dgd]] %in% TRUE, "SOUMIS", "NON SOUMIS")
   ua[[is_wooded]] <- ifelse(ua[[is_wooded]] %in% TRUE, "BOISEE", "NON BOISEE")
 
-  tbl <- sum_surf_by(ua, "owner", "is_wooded")
+  tbl <- sum_surf_by(ua, "owner", "is_dgd", "is_wooded") |>
+    order_by("owner", "is_dgd", "is_wooded")
 
   tot <- c(text = "TOTAL", "none", "sum")
 
