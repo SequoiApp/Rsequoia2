@@ -2,6 +2,11 @@
 
 ## v0.0.5
 - Rework and reorganize sequoia2 menu (#77)
+- Add tables in summary :
+  - PLT_STR 
+  - PLT_TYPE_RICH_STR 
+  - PLT_TYPE_RICH_STR_ESS
+  - PF_PLT_TYPE_RICH_STR
 
 ## v0.0.4
 - Add new `DGD_SOUMIS` field and rename `BOISE` to `DGD_BOISE`
