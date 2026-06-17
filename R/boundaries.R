@@ -68,7 +68,8 @@ seq_boundaries <- function(
   forest_line[[identifier]] <- id
 
   # Forest point ----
-  forest_point <- sf::st_centroid(forest_polygon) |> suppressWarnings()
+  biggest_poly <- forest_polygon[which.max(st_area(forest_polygon)), ]
+  forest_point <- sf::st_centroid(biggest_poly) |> suppressWarnings()
 
   f_poly <- seq_write2(forest_polygon, "v.seq.forest.poly", id)
   f_line <- seq_write2(forest_line, "v.seq.forest.line", id)

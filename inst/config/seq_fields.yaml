@@ -24,7 +24,7 @@ is_wooded:
   libelle: "BOISE"
   alias: ["boise", "boisee"]
   class: "boolean"
-  definition: "Indique si la surface est comptabilisee comme surface boisee ou concourant a la production forestière (desserte)."
+  definition: "Indique si la surface est comptabilisee comme surface boisee ou concourant a la production forestiere (desserte)."
 
 # cog ----
 reg_code:
@@ -335,14 +335,14 @@ offset:
   name: "DECALAGE"
   libelle: "DECALAGE GRAPHIQUE"
   alias: ["DECA"]
-  class: "character"
+  class: "integer"
   definition: "Offset used in SEQUOIA process"
 
 rotation:
   name: "ROTATION"
   libelle: "ROTATION"
   alias: ["ROT"]
-  class: "character"
+  class: "integer"
   definition: "Rotation used in SEQUOIA process"
 
 # road ----
