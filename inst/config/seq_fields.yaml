@@ -335,14 +335,14 @@ offset:
   name: "DECALAGE"
   libelle: "DECALAGE GRAPHIQUE"
   alias: ["DECA"]
-  class: "character"
+  class: "integer"
   definition: "Offset used in SEQUOIA process"
 
 rotation:
   name: "ROTATION"
   libelle: "ROTATION"
   alias: ["ROT"]
-  class: "character"
+  class: "integer"
   definition: "Rotation used in SEQUOIA process"
 
 # road ----
