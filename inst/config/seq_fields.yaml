@@ -24,7 +24,7 @@ is_wooded:
   libelle: "BOISE"
   alias: ["boise", "boisee"]
   class: "boolean"
-  definition: "Indique si la surface est comptabilisee comme surface boisee ou concourant a la production forestière (desserte)."
+  definition: "Indique si la surface est comptabilisee comme surface boisee ou concourant a la production forestiere (desserte)."
 
 # cog ----
 reg_code:
