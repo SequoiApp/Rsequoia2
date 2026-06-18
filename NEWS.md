@@ -1,5 +1,8 @@
 # Rsequoia2 (development version)
 
+## v0.0.6
+- SEQ_FORET_point only return centroid of the biggest envelope
+
 ## v0.0.5
 - Rework and reorganize sequoia2 menu (#77)
 - Add tables in summary :

@@ -199,7 +199,6 @@ menu_sequoia <- function() {
 
   download_parca <- function() seq_parca(seq_get_path())
   create_ua <- function() seq_parca_to_ua(seq_get_path())
-  create_boundaries <- function() seq_boundaries(seq_get_path())
   correct_ua <- function() seq_ua(seq_get_path())
   aggregate_ua <- function() {
 

@@ -20,7 +20,7 @@ build_summary_occupation <- function(ua) {
   tbl <- sum_surf_by(ua, "owner", "is_dgd", "is_wooded") |>
     order_by("owner", "is_dgd", "is_wooded")
 
-  tot <- c(text = "TOTAL", "none", "sum")
+  tot <- c(text = "TOTAL", "none", "none", "sum")
 
   list(table = tbl, total_row = tot)
 }
