@@ -560,24 +560,54 @@ process_raw_parcels <- function(df) {
   }
 
   # --- STEP 2 & 3: Process subdivisions ---
-  sub_idx <- which(!is.na(df$suf) & is.na(df$row_type) & !is.na(df$id))
-  if(length(sub_idx) > 0) {
-    for(idx in sub_idx) {
-      parcel <- df$id[idx]
-      # Propagate until next row with different id or filled row_type
-      end_idx <- idx
-      for(j in (idx+1):nrow(df)) {
-        if(df$id[j] != parcel || !is.na(df$row_type[j])) break
-        end_idx <- j
+  sub_starts <- which(!is.na(df$suf) & !is.na(df$id))
+
+  if(length(sub_starts) > 0) {
+
+    for(i in seq_along(sub_starts)) {
+
+      start_idx <- sub_starts[i]
+      parcel_id <- df$id[start_idx]
+
+      # Fin du bloc = subdivision suivante de la même parcelle
+      # ou fin de la parcelle
+      if(
+        i < length(sub_starts) &&
+        df$id[sub_starts[i + 1]] == parcel_id
+      ) {
+        end_idx <- sub_starts[i + 1] - 1
+      } else {
+        end_idx <- max(which(df$id == parcel_id))
       }
-      rows <- (idx:end_idx)
+
+      rows <- start_idx:end_idx
+
       df$row_type[rows] <- "subdivision"
 
-      sub_fields <- c("star","suf","gr","cl","natcult","ha","a","ca","rev_ca")
+      sub_fields <- c(
+        "star",
+        "suf",
+        "gr",
+        "cl",
+        "natcult",
+        "ha",
+        "a",
+        "ca",
+        "rev_ca"
+      )
+
       for(field in sub_fields) {
-        if(!is.null(df[[field]]) && !is.na(df[[field]][idx])) {
-          mask <- is.na(df[[field]][rows])
-          df[[field]][rows][mask] <- df[[field]][idx]
+
+        if(!is.null(df[[field]])) {
+
+          value <- df[[field]][start_idx]
+
+          if(!is.na(value)) {
+
+            mask <- is.na(df[[field]][rows])
+
+            df[[field]][rows[mask]] <- value
+          }
         }
       }
     }
@@ -585,6 +615,7 @@ process_raw_parcels <- function(df) {
 
   # --- STEP 4: Process tax subdivisions (main) ---
   main_rows <- which(df$row_type == "main")
+
   for(idx in main_rows) {
     parcel <- df$id[idx]
     end_idx <- idx
@@ -597,7 +628,7 @@ process_raw_parcels <- function(df) {
     rows <- if(idx < end_idx) (idx+1):end_idx else integer(0)
     target_rows <- rows[is.na(df$row_type[rows])]
     if(length(target_rows) > 0) {
-      df$row_type[target_rows] <- "main"
+      df$row_type[target_rows] <- "subdivision fiscale"
       main_fields <- c("star","gr","cl","natcult","ha","a","ca","rev_ca")
       for(field in main_fields) {
         if(!is.null(df[[field]]) && !is.na(df[[field]][idx])) {
@@ -817,7 +848,8 @@ get_parcels <- function(pdf){
   proc_parcels$com_name <- refs$commune_name
   proc_parcels$insee <- refs$insee
   proc_parcels$owner <- if(nrow(owners) > 0) paste(owners$seq_name, collapse = " & ") else NA
-  proc_parcels$idu <- paste0(proc_parcels$com_code,
+  proc_parcels$idu <- paste0(proc_parcels$dep_code,
+                             proc_parcels$com_code,
                              proc_parcels$id)
 
   # Define the desired order of columns
