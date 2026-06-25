@@ -8,6 +8,7 @@
 #' @noRd
 seq_desc_fields <- function() {
   keys <- c(
+    "is_dgd", "is_wooded",
     "std_type", "std_wealth", "std_stage", "std_year",
     "is_damaged", "is_available", "is_compartmented",
     "res_spe1", "res_spe2", "res_struct",

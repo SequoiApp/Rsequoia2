@@ -65,7 +65,7 @@ test_that("ua_to_sspf() preserves descriptive fields correctly", {
     mgmt_code <- seq_field("mgmt_code")$name
     ua[[mgmt_code]] <- "A"
 
-    desc <- seq_desc_fields()[1:2]
+    desc <- seq_desc_fields()[3:4]
     ua[[desc[1]]] <- "DESC1"
     ua[[desc[2]]] <- "DESC2"
 

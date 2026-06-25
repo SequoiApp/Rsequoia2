@@ -69,6 +69,7 @@ seq_summary <- function(dirname = ".", verbose = TRUE) {
     parca_com = function() build_summary_parca_com(ua_dgd),
     pf = function() build_summary_pf(ua_dgd),
     sspf = function() build_summary_sspf(ua_dgd),
+    sspf_descr = function() build_summary_sspf_descr(ua_dgd),
     pf_parca = function() build_summary_pf_parca(ua_dgd),
     parca_pf = function() build_summary_parca_pf(ua_dgd),
     plt_type = function() build_summary_plt_type(ua_dgd),

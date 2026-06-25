@@ -167,7 +167,7 @@ menu_matrice <- function(){
   actions <- list(
     "Matrice vierge" = blank_matrice,
     "Matrice releve de propriete" = menu_rp,
-    "Matrice personne morale" = menu_pm
+    "Matrice personne morale" = menu_pm,
   )
 
   seq_run_menu(

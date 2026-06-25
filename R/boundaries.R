@@ -71,6 +71,7 @@ seq_boundaries <- function(
   forest_envelope <- seq_envelope(parca, buffer = 200)
   biggest_poly <- forest_envelope[which.max(st_area(forest_envelope)), ]
   forest_point <- sf::st_centroid(biggest_poly) |> suppressWarnings()
+  forest_point[[identifier]] <- "id"
 
   f_poly <- seq_write2(forest_polygon, "v.seq.forest.poly", id)
   f_line <- seq_write2(forest_line, "v.seq.forest.line", id)

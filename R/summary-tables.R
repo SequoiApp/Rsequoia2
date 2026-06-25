@@ -67,6 +67,16 @@ build_summary_sspf <- function(ua) {
   list(table = tbl, total_row = tot)
 }
 
+# SSPF DESCRIPTION ----
+build_summary_sspf_descr <- function(ua) {
+  tbl <- sum_surf_by(ua, "pcl_code", "sub_code", "std_type", "std_wealth", "std_stage", "treatment") |>
+    order_by("pcl_code", "sub_code")
+
+  tot <- c(text = "TOTAL", "none", "none", "none", "none", "none", "sum")
+
+  list(table = tbl, total_row = tot)
+}
+
 # PF_PARCA ----
 build_summary_pf_parca <- function(ua) {
   parca_col <- c("com_name", "insee", "prefix", "section", "number", "locality")
