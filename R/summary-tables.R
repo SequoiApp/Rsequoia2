@@ -227,6 +227,16 @@ build_summary_plt_type_rich_str_ess <- function(ua) {
 }
 
 
+# PLT_TYPE_STADE_ESS ----
+build_summary_plt_type_stade_ess <- function(ua) {
+  tbl <- sum_surf_by(ua, "std_type", "std_stage", "res_spe1") |>
+    order_by("std_type", "std_stage", "res_spe1") |>
+    add_prop("cor_area")
+
+  tot <- c(text = "TOTAL", "none", "none", "sum", "sum")
+
+  list(table = tbl, total_row = tot)
+}
 # PF_PLT_TYPE ----
 build_summary_pf_plt_type <- function(ua) {
   tbl <- sum_surf_by(ua, "pcl_code", "std_type") |>

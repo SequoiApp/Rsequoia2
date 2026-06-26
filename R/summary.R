@@ -82,6 +82,7 @@ seq_summary <- function(dirname = ".", verbose = TRUE) {
     plt_type_rich_str = function() build_summary_plt_type_rich_str(ua_dgd),
     plt_type_rich_stade_ess = function() build_summary_plt_type_rich_stade_ess(ua_dgd),
     plt_type_rich_str_ess = function() build_summary_plt_type_rich_str_ess(ua_dgd),
+    plt_type_stade_ess = function() build_summary_plt_type_stade_ess(ua_dgd),
     pf_plt_type = function() build_summary_pf_plt_type(ua_dgd),
     pf_plt_type_rich = function() build_summary_pf_plt_type_rich(ua_dgd),
     pf_plt_type_rich_stade = function() build_summary_pf_plt_type_rich_stade(ua_dgd),
