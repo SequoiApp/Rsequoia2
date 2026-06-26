@@ -19,7 +19,7 @@ test_that("download_bdcharm50() downloads when file is missing", {
     get_cog = function(...) {
       list(dep = data.frame(DEP = "29", NCC_DEP = "FINISTERE"))
     },
-    get_bdcharm50_url = function() {
+    get_bdcharm50_url = function(...) {
       stats::setNames(
         "http://example.com/GEO050K_HARM_029.zip",
         "GEO050K_HARM_029.zip"
@@ -63,7 +63,7 @@ test_that("download_bdcharm50() skips download when file already exists", {
     get_cog = function(...) {
       list(dep = data.frame(DEP = "29", NCC_DEP = "FINISTERE"))
     },
-    get_bdcharm50_url = function() {
+    get_bdcharm50_url = function(...) {
       stats::setNames(
         "http://example.com/GEO050K_HARM_029.zip",
         "GEO050K_HARM_029.zip"
@@ -108,7 +108,7 @@ test_that("download_bdcharm50() overwrites existing ZIP when overwrite = TRUE", 
     get_cog = function(...) {
       list(dep = data.frame(DEP = "29", NCC_DEP = "FINISTERE"))
     },
-    get_bdcharm50_url = function() {
+    get_bdcharm50_url = function(...) {
       stats::setNames(
         "http://example.com/GEO050K_HARM_029.zip",
         "GEO050K_HARM_029.zip"
@@ -149,7 +149,7 @@ test_that("download_bdcharm50() supports several departments", {
         NCC_DEP = c("ARDENNES", "FINISTERE")
       ))
     },
-    get_bdcharm50_url = function() {
+    get_bdcharm50_url = function(...) {
       stats::setNames(
         c(
           "http://example.com/GEO050K_HARM_008.zip",
@@ -195,7 +195,7 @@ test_that("download_bdcharm50() respects cache argument", {
     get_cog = function(...) {
       list(dep = data.frame(DEP = "29", NCC_DEP = "FINISTERE"))
     },
-    get_bdcharm50_url = function() {
+    get_bdcharm50_url = function(...) {
       stats::setNames(
         "http://example.com/GEO050K_HARM_029.zip",
         "GEO050K_HARM_029.zip"
@@ -234,71 +234,5 @@ test_that("download_bdcharm50() errors on invalid department", {
   expect_error(
     download_bdcharm50(dep = "A1", verbose = FALSE),
     "Invalid department code"
-  )
-})
-
-
-test_that("download_bdcharm50() errors when no archive matches department", {
-
-  brgm_cache <- file.path(tempdir(), "brgm")
-  dir.create(brgm_cache, showWarnings = FALSE)
-  on.exit(unlink(brgm_cache, recursive = TRUE, force = TRUE), add = TRUE)
-
-  testthat::local_mocked_bindings(
-    get_cog = function(...) {
-      list(dep = data.frame(DEP = "29", NCC_DEP = "FINISTERE"))
-    },
-    get_bdcharm50_url = function() {
-      stats::setNames(
-        "http://example.com/GEO050K_HARM_008.zip",
-        "GEO050K_HARM_008.zip"
-      )
-    },
-    .package = "Rsequoia2"
-  )
-
-  expect_error(
-    download_bdcharm50(
-      dep = "29",
-      cache = brgm_cache,
-      verbose = FALSE
-    ),
-    "No BDCharm50 archive found"
-  )
-})
-
-
-test_that("download_bdcharm50() errors when several archives match department", {
-
-  brgm_cache <- file.path(tempdir(), "brgm")
-  dir.create(brgm_cache, showWarnings = FALSE)
-  on.exit(unlink(brgm_cache, recursive = TRUE, force = TRUE), add = TRUE)
-
-  testthat::local_mocked_bindings(
-    get_cog = function(...) {
-      list(dep = data.frame(DEP = "29", NCC_DEP = "FINISTERE"))
-    },
-    get_bdcharm50_url = function() {
-      stats::setNames(
-        c(
-          "http://example.com/GEO050K_HARM_029.zip",
-          "http://example.com/GEO050K_HARM_029_extra.zip"
-        ),
-        c(
-          "GEO050K_HARM_029.zip",
-          "GEO050K_HARM_029_extra.zip"
-        )
-      )
-    },
-    .package = "Rsequoia2"
-  )
-
-  expect_error(
-    download_bdcharm50(
-      dep = "29",
-      cache = brgm_cache,
-      verbose = FALSE
-    ),
-    "Several BDCharm50 archives found"
   )
 })

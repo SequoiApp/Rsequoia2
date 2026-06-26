@@ -3,57 +3,27 @@
 #' Scrapes the BDCharm50 download directory and returns available ZIP archive
 #' URLs, named by archive filename.
 #'
+#' @param dep French num department
+#'
 #' @return A named `character` vector. Names are ZIP filenames and values are
 #'   download URLs.
 #'
 #' @keywords internal
-get_bdcharm50_url <- function() {
-  base_url <- "http://data.cquest.org/brgm/bd_charm_50/2019/"
+get_bdcharm50_url <- function(dep) {
+  base_url <- "http://infoterre.brgm.fr/telechargements/BDCharm50/"
 
-  html <- readLines(base_url, warn = FALSE)
+  dep <- check_dep(dep)
 
-  href <- regmatches(html, gregexpr('href="[^"]+"', html))
-  href <- unlist(href, use.names = FALSE)
-  href <- gsub('^href="|"$', "", href)
-
-  zip_name <- href[grepl("\\.zip$", href, ignore.case = TRUE)]
-  zip_url <- paste0(base_url, zip_name)
-
-  stats::setNames(zip_url, basename(zip_url))
-}
-
-#' Find BDCharm50 archive for a department
-#'
-#' Finds the unique BDCharm50 ZIP archive matching a department code.
-#'
-#' @param dep Department code.
-#' @param urls Named `character` vector of archive URLs, usually returned by
-#'   [get_bdcharm50_url()].
-#'
-#' @return A `character(1)` ZIP filename.
-#'
-#' @keywords internal
-find_bdcharm50_zip <- function(dep, urls) {
   dep3 <- pad_left(dep, 3)
+  zip_name <- sprintf("GEO050K_HARM_%s.zip", dep3)
 
-  zip_name <- grep(dep3, names(urls), value = TRUE)
+  zip_name[dep3 %in% c("059", "062")] <-"GEO050K_HARM_059_062.zip"
 
-  if (length(zip_name) == 0) {
-    cli::cli_abort(c(
-      "No BDCharm50 archive found for department {.val {dep}}.",
-      "i" = "Expected to find a filename containing department code {.val {dep3}}."
-    ))
-  }
+  zip_name[dep3 %in% c("075", "077", "078", "091", "092", "093", "094", "095")] <-
+    "GEO050K_HARM_075_077_078_091_092_093_094_095.zip"
 
-  if (length(zip_name) > 1) {
-    cli::cli_abort(c(
-      "Several BDCharm50 archives found for department {.val {dep}}.",
-      "x" = "Matches: {.vals {zip_name}}",
-      "i" = "Please make the archive matching rule stricter."
-    ))
-  }
-
-  zip_name
+  urls <- paste0(base_url, zip_name)
+  stats::setNames(urls, zip_name)
 }
 
 #' Download BRGM BD Charm 50 geology archives
@@ -83,22 +53,22 @@ download_bdcharm50 <- function(
     cache = seq_cache("bdcharm50")$path,
     verbose = TRUE,
     overwrite = FALSE
-) {
+){
+
   dep <- check_dep(dep)
 
-  urls <- get_bdcharm50_url()
+  urls <- get_bdcharm50_url(dep)
+  urls <- urls[!duplicated(names(urls))]
 
-  files <- lapply(dep, function(one_dep) {
-    zip_name <- find_bdcharm50_zip(one_dep, urls)
-
+  files <- lapply(names(urls), function(zip_name) {
     zip_url <- unname(urls[zip_name])
     zip_local <- file.path(cache, zip_name)
 
     if (!file.exists(zip_local) || overwrite) {
       if (verbose) {
         cli::cli_progress_step(
-          "Downloading BDCharm50 for department {.val {one_dep}}",
-          msg_done = "Downloading BDCharm50 for department {.val {one_dep}}",
+          "Downloading BDCharm50: {.val {zip_name}}",
+          msg_done = "Downloading BDCharm50: {.val {zip_name}}",
           spinner = TRUE
         )
       }

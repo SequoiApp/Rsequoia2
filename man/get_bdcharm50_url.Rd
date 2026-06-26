@@ -4,7 +4,10 @@
 \alias{get_bdcharm50_url}
 \title{List BDCharm50 archive URLs}
 \usage{
-get_bdcharm50_url()
+get_bdcharm50_url(dep)
+}
+\arguments{
+\item{dep}{French num department}
 }
 \value{
 A named \code{character} vector. Names are ZIP filenames and values are
