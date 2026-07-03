@@ -85,9 +85,9 @@ menu_pm <- function() {
   parca_geom <- tryCatch(
     get_parca(m$IDU, verbose = TRUE),
     error = function(e) {
-      cli::cli_abort(c(
-        "x" = "Failed to retrieve PARCA geometry: {conditionMessage(e)}"
-      ))
+      cli::cli_alert_warning(
+        "Failed to retrieve PARCA geometry: {conditionMessage(e)}"
+      )
     }
   )
 
