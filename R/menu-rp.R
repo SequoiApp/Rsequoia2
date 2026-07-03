@@ -39,15 +39,16 @@ menu_rp <- function() {
 
   parca_geom <- tryCatch(
     get_parca(m$IDU, verbose = TRUE),
-    error = function(e) {
-      cli::cli_alert_danger(
-        "Failed to retrieve PARCA geometry: {conditionMessage(e)}"
-      )
+    error = \(e) {
+      cli::cli_alert_danger("Failed to retrieve PARCA geometry: {conditionMessage(e)}")
+      NULL
     }
   )
 
-  tmap::tmap_mode("view") |> suppressWarnings() |> suppressMessages()
-  print(tmap::qtm(parca_geom))
+  if (!is.null(parca_geom)) {
+    suppressMessages(suppressWarnings(tmap::tmap_mode("view")))
+    print(tmap::qtm(parca_geom))
+  }
 
   seq_xlsx(
     MATRICE = m,
