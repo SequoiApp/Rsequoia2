@@ -1,38 +1,3 @@
-#' Retrieve a BDP parcel geometry from BDP
-#'
-#' @param idu `character` Cadastral parcel identifier.
-#'
-#' @return An `sf` object containing the parcel geometry.
-#' @export
-get_parca_bdp <- function(idu){
-
-  if (is.null(idu) || length(idu) == 0) {
-    cli::cli_abort("{.arg idu} must be a non-empty character vector.")
-  }
-
-  if (!inherits(idu, "character")) {
-    cli::cli_abort("{.arg idu} must be {.cls character}, not {.cls {class(idu)}}.")
-  }
-
-  idu_parts <- idu_split(idu)
-
-  bdp <- happign::get_apicarto_cadastre(
-    idu_parts$insee,
-    code_abs = idu_parts$prefix,
-    section = idu_parts$section,
-    numero = idu_parts$numero,
-    type = "parcelle",
-    source = "bdp") |>
-    suppressWarnings()
-
-  bdp$idu <- idu_build(bdp$code_dep, bdp$code_com, bdp$com_abs, bdp$section, bdp$numero)
-
-  source <- seq_field("source")$name
-  bdp[[source]] <- "bdp"
-
-  return(bdp)
-}
-
 #' Retrieve a cadastral parcel geometry from Etalab
 #'
 #' @param idu `character` Cadastral parcel identifier.
@@ -111,56 +76,24 @@ get_lieux_dits <- function(idu){
 
 #' Download and format cadastral parcel(s)
 #'
-#' Downloads parcel geometries from the Etalab cadastre API and optionally
-#' replaces them with higher-quality BDP geometries when available.
+#' Downloads parcel geometries from the Etalab cadastre API.
 #' Lieux-dits and administrative attributes (commune, departement, region)
 #' are joined automatically.
 #'
 #' @param idu `character` Vector of IDU identifiers.
-#' @param bdp_geom `logical` If `TRUE`, replace Etalab geometries with BDP when possible.
 #' @param lieu_dit `logical` If `TRUE`, attach lieux-dits to each parcel.
 #' @param verbose `logical` If `TRUE`, display progress messages.
 #'
 #' @importFrom stats setNames
 #'
-#' @details
-#' The BDP ("Base de Donnees Parcellaire") is an older IGN product that is no
-#' longer updated. It was originally derived from Etalab cadastral parcels,
-#' but the geometries were manually corrected by IGN to better match reality
-#'
-#' Cadastral limits and the real terrain rarely match perfectly. Using BDP may
-#' therefore improve spatial accuracy, but cannot guarantee exact
-#' correspondence with legal cadastral boundaries.
 #'
 #' @return An `sf` object of parcels with harmonized attributes.
 #' @export
-get_parca <- function(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE){
+get_parca <- function(idu, lieu_dit = FALSE, verbose = TRUE){
   idu <- unique(idu)
   etalab <- get_parca_etalab(idu)
 
   idu_field <- seq_field("idu")$name
-
-  if (bdp_geom){
-    if (verbose) cli::cli_alert_info("Downloading BDP from IGN...")
-    tryCatch({
-      bdp <- get_parca_bdp(idu)
-      idx <- match(etalab[[idu_field]], bdp$idu)
-      etalab$geometry[!is.na(idx)] <- bdp$geometry[idx[!is.na(idx)]]
-
-      source <- seq_field("source")$name
-      etalab[[source]][!is.na(idx)] <- bdp[[source]][idx[!is.na(idx)]]
-
-      if (verbose) {
-        valid_bdp_idu <- intersect(etalab[[idu_field]], bdp$idu)
-        if (length(valid_bdp_idu) > 0) {
-          cli::cli_alert_success(
-            "{length(valid_bdp_idu)} of {length(etalab[[idu_field]])} ETALAB geom successfully replaced with BDP geom."
-          )
-        }
-      }
-    }, error = \(e) cli::cli_warn("BDP not available, ETALAB geom only is used.")
-    )
-  }
 
   # Ajout des lieux dits
   if (lieu_dit){
@@ -193,9 +126,6 @@ get_parca <- function(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE){
 #' @inheritParams get_parca
 #'
 #' @details
-#' **`bdp_geom`**
-#' The use and behaviour of `bdp_geom` are described in [Rsequoia2::get_parca()].
-#'
 #' **Automatic "lieu-dit" completion**
 #' If the function detects rows in the matrice where the field `"LIEU_DIT"`
 #' is missing, the corresponding "lieu-dit" values will be downloaded
@@ -207,7 +137,6 @@ get_parca <- function(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE){
 #' @export
 seq_parca <- function(
     dirname = ".",
-    bdp_geom = TRUE,
     verbose = TRUE,
     overwrite = FALSE){
 
@@ -250,7 +179,6 @@ seq_parca <- function(
   # retrieve parca
   raw_parca <- get_parca(
     m[[idu]],
-    bdp_geom = bdp_geom,
     lieu_dit = have_empty_lieu_dit,
     verbose = verbose
   )

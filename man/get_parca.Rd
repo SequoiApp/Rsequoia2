@@ -4,12 +4,10 @@
 \alias{get_parca}
 \title{Download and format cadastral parcel(s)}
 \usage{
-get_parca(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE)
+get_parca(idu, lieu_dit = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{idu}{\code{character} Vector of IDU identifiers.}
-
-\item{bdp_geom}{\code{logical} If \code{TRUE}, replace Etalab geometries with BDP when possible.}
 
 \item{lieu_dit}{\code{logical} If \code{TRUE}, attach lieux-dits to each parcel.}
 
@@ -19,17 +17,7 @@ get_parca(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE)
 An \code{sf} object of parcels with harmonized attributes.
 }
 \description{
-Downloads parcel geometries from the Etalab cadastre API and optionally
-replaces them with higher-quality BDP geometries when available.
+Downloads parcel geometries from the Etalab cadastre API.
 Lieux-dits and administrative attributes (commune, departement, region)
 are joined automatically.
-}
-\details{
-The BDP ("Base de Donnees Parcellaire") is an older IGN product that is no
-longer updated. It was originally derived from Etalab cadastral parcels,
-but the geometries were manually corrected by IGN to better match reality
-
-Cadastral limits and the real terrain rarely match perfectly. Using BDP may
-therefore improve spatial accuracy, but cannot guarantee exact
-correspondence with legal cadastral boundaries.
 }

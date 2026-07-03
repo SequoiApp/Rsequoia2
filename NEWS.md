@@ -1,5 +1,9 @@
 # Rsequoia2 (development version)
 
+## v0.0.7
+- Write matrice for `menu_rp` and `menu_pm` even if IDU are invalid
+- Remove BDP support
+
 ## v0.0.6
 - SEQ_FORET_point only return centroid of the biggest envelope
 

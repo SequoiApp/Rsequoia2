@@ -4,13 +4,11 @@
 \alias{seq_parca}
 \title{Download, enrich and write cadastral geometries}
 \usage{
-seq_parca(dirname = ".", bdp_geom = TRUE, verbose = TRUE, overwrite = FALSE)
+seq_parca(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
 \item{dirname}{\code{character} Path to the directory. Defaults to the current
 working directory.}
-
-\item{bdp_geom}{\code{logical} If \code{TRUE}, replace Etalab geometries with BDP when possible.}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 
@@ -28,9 +26,6 @@ from the matrice, and writes the resulting layer to disk.
 The resulting object is returned invisibly as an \code{sf} polygons layer.
 The output file is automatically written into the working directory defined
 by \code{dirname}.
-
-\strong{\code{bdp_geom}}
-The use and behaviour of \code{bdp_geom} are described in \code{\link[=get_parca]{get_parca()}}.
 
 \strong{Automatic "lieu-dit" completion}
 If the function detects rows in the matrice where the field \code{"LIEU_DIT"}
