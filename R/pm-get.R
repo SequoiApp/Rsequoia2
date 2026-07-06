@@ -265,5 +265,13 @@ normalize_pm <- function(pm, verbose = FALSE){
 
   m <- unique(m_format)
 
+  number <- seq_field("number")$name
+  section <- seq_field("section")$name
+  prefix <- seq_field("prefix")$name
+  insee <- seq_field("insee")$name
+
+  m <- m[order(m[[insee]], m[[prefix]], m[[section]], m[[number]]), ]
+  m_detail <- m_detail[order(m_detail[[insee]], m_detail[[prefix]], m_detail[[section]], m_detail[[number]]), ]
+
   return(list(m = m, m_detail = m_detail))
 }

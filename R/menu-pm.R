@@ -42,7 +42,6 @@ menu_pm <- function() {
     dep <- cog$dep$DEP[cog$dep$REG %in% reg_code]
   }
 
-
   cli::cli_alert_info("Plusieurs mots peuvent etre combines, par exemple : GF, ETANGS")
   cli::cli_alert_info("La casse et les caractere speciaux sont ignores pour la recherche")
   pattern <- read_csv("Nom(s), separes par des virgules : ")

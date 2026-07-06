@@ -50,6 +50,14 @@ menu_rp <- function() {
     print(tmap::qtm(parca_geom))
   }
 
+  number <- seq_field("number")$name
+  section <- seq_field("section")$name
+  prefix <- seq_field("prefix")$name
+  insee <- seq_field("insee")$name
+
+  m <- m[order(m[[insee]], m[[prefix]], m[[section]], m[[number]]), ]
+  m_all <- m_all[order(m_all[[insee]], m_all[[prefix]], m_all[[section]], m_all[[number]]), ]
+
   seq_xlsx(
     MATRICE = m,
     filename = file.path(path, paste0(identifiant, "_matrice.xlsx")),
