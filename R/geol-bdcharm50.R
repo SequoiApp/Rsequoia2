@@ -80,7 +80,7 @@ download_bdcharm50 <- function(
       )
     } else if (verbose) {
       cli::cli_alert_success(
-        "Using cached BDCharm50 archive for department {.val {one_dep}}: {.file {basename(zip_local)}}"
+        "Using cached BDCharm50: {.file {basename(zip_local)}}"
       )
     }
 
