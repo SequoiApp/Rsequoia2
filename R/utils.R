@@ -42,12 +42,13 @@ pad_right <- function(x, width, fill = "0") {
 #' @keywords internal
 #'
 normalize_txt <- function(x) {
-  x <- iconv(x, to = "ASCII//TRANSLIT")
+  x <- enc2utf8(x)
+  x <- stringi::stri_trans_general(x, "Latin-ASCII")
   x <- tolower(x)
   gsub("[^a-z0-9]+", "", x)
 }
 
-#' Clean names
+#' Clean data frame names
 #'
 #' Internal helper used to clean df names
 #'
@@ -57,10 +58,11 @@ normalize_txt <- function(x) {
 #' @keywords internal
 #'
 clean_names <- function(x) {
-  x <- iconv(x, to = "ASCII//TRANSLIT")
+  x <- enc2utf8(x)
+  x <- stringi::stri_trans_general(x, "Latin-ASCII")
   x <- tolower(x)
   x <- gsub("[^a-z0-9]+", "_", x)
-  x <- gsub("^_|_$", "", x)
+  x <- gsub("^_+|_+$", "", x)
   make.unique(x, sep = "_")
 }
 

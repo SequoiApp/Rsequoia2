@@ -25,10 +25,12 @@
 #' @export
 parse_rp <- function(pdf){
 
-  # Normalize txt ----
   txt <- pdftools::pdf_text(pdf) |> paste0(collapse = "\n")
-  txt <- iconv(txt, "UTF-8", "ASCII//TRANSLIT")
-  txt <- gsub(" +", " ", txt)
+
+  txt <- enc2utf8(txt)
+  txt <- stringi::stri_trans_general(txt, "Latin-ASCII")
+  txt <- gsub("[ \t]+", " ", txt)
+  txt <- gsub("\r\n|\r", "\n", txt)
 
   if (nchar(txt) < 500){
     cli::cli_abort("pdf is probably an image (scan): {basename(pdf)}")

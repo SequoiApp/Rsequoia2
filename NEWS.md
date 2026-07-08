@@ -1,5 +1,8 @@
 # Rsequoia2 (development version)
 
+## v0.0.8
+- bug fix for macOS : normalize string for any accent
+
 ## v0.0.7
 - Write matrice for `menu_rp` and `menu_pm` even if IDU are invalid
 - Remove BDP support
