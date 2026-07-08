@@ -1,3 +1,28 @@
+#' Read Etalab cadastral data
+#'
+#' Downloads and combines Etalab cadastral GeoJSON data for one or more
+#' communes.
+#'
+#' @param insee `character`. INSEE commune code(s).
+#' @param layer `character`. Etalab layer to read. Either `"parcelles"` or
+#'   `"lieux_dits"`.
+#'
+#' @return An `sf` object containing the requested Etalab layer.
+#'
+#' @keywords internal
+read_etalab <- function(insee, layer = c("parcelles", "lieux_dits")) {
+  layer <- match.arg(layer)
+  insee <- unique(insee)
+
+  url <- sprintf(
+    "https://cadastre.data.gouv.fr/bundler/cadastre-etalab/communes/%s/geojson/%s",
+    insee,
+    layer
+  )
+
+  do.call(rbind, lapply(url, sf::read_sf))
+}
+
 #' Retrieve a cadastral parcel geometry from Etalab
 #'
 #' @param idu `character` Cadastral parcel identifier.
@@ -14,14 +39,8 @@ get_parca_etalab <- function(idu){
     cli::cli_abort("{.arg idu} must be {.cls character}, not {.cls {class(idu)}}.")
   }
 
-  url <- "https://cadastre.data.gouv.fr/bundler/cadastre-etalab/communes/%s/geojson/parcelles"
-  idu <- unique(idu)
   idu_parts <- idu_split(idu)
-
-  urls <- sprintf(url, unique(idu_parts$insee))
-
-  etalab <- lapply(urls, sf::read_sf)
-  etalab <- do.call(rbind, etalab)
+  etalab <- read_etalab(unique(idu_parts$insee), "parcelles")
 
   invalid_idu <- !idu %in% etalab$id
   has_invalid_idu <- sum(invalid_idu) > 0
@@ -60,18 +79,15 @@ get_parca_etalab <- function(idu){
 #'
 #' @return An `sf` object containing the parcel geometry.
 #' @export
-get_lieux_dits <- function(idu){
-  idu_parts <- idu_split(idu)
-  insee <- unique(idu_parts$insee)
-  urls <- paste0("https://cadastre.data.gouv.fr/bundler/cadastre-etalab/communes/",
-                 insee,"/geojson/lieux_dits")
+get_lieux_dits <- function(idu) {
+  idu <- check_idu(idu)
 
-  lieux_dits <- lapply(urls, sf::read_sf)
-  lieux_dits <- do.call(rbind, lieux_dits)
+  idu_parts <- idu_split(idu)
+  etalab <- read_etalab(unique(idu_parts$insee), "lieux_dits")
 
   names(lieux_dits)[names(lieux_dits) == "nom"] <- seq_field("locality")$name
 
-  return(lieux_dits)
+  lieux_dits
 }
 
 #' Download and format cadastral parcel(s)
@@ -90,7 +106,7 @@ get_lieux_dits <- function(idu){
 #' @return An `sf` object of parcels with harmonized attributes.
 #' @export
 get_parca <- function(idu, lieu_dit = FALSE, verbose = TRUE){
-  idu <- unique(idu)
+  idu <- check_idu(idu)
   etalab <- get_parca_etalab(idu)
 
   idu_field <- seq_field("idu")$name
@@ -100,16 +116,87 @@ get_parca <- function(idu, lieu_dit = FALSE, verbose = TRUE){
     if (verbose) cli::cli_alert_info("Downloading and joining Lieux dits...")
     locality <- seq_field("locality")$name
     lieux_dits <- get_lieux_dits(idu)
-    etalab <- sf::st_join(etalab, lieux_dits[locality], largest = TRUE, suffix = c("_XX", "")) |>
+    etalab <- sf::st_join(etalab, lieux_dits[locality], largest = TRUE, suffix = c("_drop", "")) |>
       suppressWarnings()
-    etalab[[paste0(locality, "_XX")]] <- NULL
+    etalab[[paste0(locality, "_drop")]] <- NULL
     if (verbose) cli::cli_alert_success("Lieux dits joined.")
   }
 
   raw_parca <- seq_normalize(etalab, "parca") |>
     sf::st_transform(2154)
 
+  if (verbose) cli::cli_alert_success("Parca successfuly downloaded.")
+
   return(invisible(raw_parca))
+}
+
+#' Remove fully overlapping cadastral parcels
+#'
+#' Corrects PARCA geometries when one parcel fully contains another parcel.
+#'
+#' When full overlaps are detected, the function downloads the complete Etalab
+#' cadastre for the affected communes and subtracts the official inner parcels
+#' from each containing parcel.
+#'
+#' @param parca An `sf` polygon object containing cadastral parcels.
+#' @param verbose `logical`. If `TRUE`, display correction messages.
+#'
+#' @return An `sf` object with corrected geometries.
+#'
+#' @details
+#' Full overlaps are detected with `sf::st_contains_properly()`. Only parcels
+#' containing other parcels are modified; all other geometries are kept
+#' unchanged.
+#'
+#' @export
+parca_remove_full_overlap <- function(parca, verbose = TRUE){
+
+  covers <- sf::st_contains_properly(parca, sparse = FALSE)
+  nested_pairs <- as.data.frame(which(covers, arr.ind = TRUE))
+  names(nested_pairs) <- c("outer", "inner")
+
+  if (nrow(nested_pairs) == 0) {
+    if (verbose){
+      cli::cli_alert_success("No fully overlapping parcels detected")
+    }
+    return(parca)
+  }
+
+  inner_idu <- parca[nested_pairs$inner, ][[seq_field("idu")$name]]
+  outer_idu <- parca[nested_pairs$outer, ][[seq_field("idu")$name]]
+
+  if (verbose) {
+    cli::cli_alert_info(
+      "Fully overlapping parcels detected; applying automatic correction."
+    )
+
+    for (i in seq_along(inner_idu)) {
+      cli::cli_bullets(c(
+        ">" = "{.val {inner_idu[i]}} is fully contained in {.val {outer_idu[i]}}"
+      ))
+    }
+  }
+
+  insee_to_download <- unique(idu_split(outer_idu)$insee)
+  cadastre <- read_etalab(insee_to_download, "parcelles")
+  cadastre <- sf::st_transform(cadastre, sf::st_crs(parca))
+
+  all_prf_on_outer <- sf::st_contains_properly(parca, cadastre, sparse = FALSE)
+  full_nested_pairs <- as.data.frame(which(all_prf_on_outer, arr.ind = TRUE))
+  names(full_nested_pairs) <- c("outer", "inner")
+
+  geom <- sf::st_geometry(parca)
+  full_geom <- sf::st_geometry(cadastre)
+  inner_by_outer <- split(full_nested_pairs$inner, full_nested_pairs$outer)
+  outer_rows <- as.integer(names(inner_by_outer))
+
+  geom[outer_rows] <- lapply(outer_rows, function(i) {
+    inner_rows <- inner_by_outer[[as.character(i)]]
+    sf::st_difference(geom[i], sf::st_union(full_geom[inner_rows]))[[1]]
+  })
+
+  parca <- sf::st_set_geometry(parca, geom)
+  return(parca)
 }
 
 #' Download, enrich and write cadastral geometries
@@ -176,36 +263,51 @@ seq_parca <- function(
   # check empty lieudit in matrice
   have_empty_lieu_dit <- any(is.na(m[[lieu_dit]]))
 
-  # retrieve parca
-  raw_parca <- get_parca(
+  if (verbose) cli::cli_h2("DOWNLOADING PARCA")
+  parca <- get_parca(
     m[[idu]],
     lieu_dit = have_empty_lieu_dit,
     verbose = verbose
   )
 
-  names(raw_parca)[names(raw_parca) == lieu_dit] <- "RAW_LIEU_DIT"
+  names(parca)[names(parca) == lieu_dit] <- "RAW_LIEU_DIT"
 
   # merge raw_parca with matrice
-  seq_parca <- merge(m, raw_parca, by = idu, all.x = TRUE, suffixes = c("", ".raw_parca")) |>
+  parca <- merge(m, parca, by = idu, all.x = TRUE, suffixes = c("", ".raw_parca")) |>
     sf::st_as_sf() |>
     sf::st_transform(2154)
 
-  seq_parca[[lieu_dit]] <- ifelse(
-    is.na(seq_parca[[lieu_dit]]),
-    seq_parca$RAW_LIEU_DIT,
-    seq_parca[[lieu_dit]]
+  parca[[lieu_dit]] <- ifelse(
+    is.na(parca[[lieu_dit]]),
+    parca$RAW_LIEU_DIT,
+    parca[[lieu_dit]]
   )
 
   # format parca
-  seq_parca <- seq_parca |>
-    parca_check_area(verbose = verbose) |>
+  parca <- parca |>
     seq_normalize("parca")
 
-  seq_parca[[identifier]] <- id
+  parca[[identifier]] <- id
 
-  # write parca
+  if (verbose) cli::cli_h2("CLEANING PARCA")
+  parca_clean <- parca_remove_full_overlap(parca, verbose = verbose)
+
+  if (verbose) cli::cli_h2("CHECKING PARCA")
+  parca_clean <- parca_check_area(parca_clean, verbose = verbose)
+
+  if (verbose) cli::cli_h2("SAVING PARCA & MATRICE")
+
   parca_path <- seq_write(
-    seq_parca,
+    parca,
+    "v.cad.etalab.poly",
+    dirname = dirname,
+    id = id,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+
+  parca_clean_path <- seq_write(
+    parca_clean,
     "v.seq.parca.poly",
     dirname = dirname,
     id = id,
@@ -230,7 +332,7 @@ seq_parca <- function(
   )
   file.rename(m_path, secure_m_path)
   seq_write(
-    sf::st_drop_geometry(seq_parca),
+    sf::st_drop_geometry(parca_clean),
     "matrice",
     dirname,
     id = id,
@@ -244,7 +346,7 @@ seq_parca <- function(
     )
   }
 
-  return(invisible(parca_path))
+  return(invisible(c(parca = parca_path, parca_clean = parca_clean_path)))
 }
 
 #' Check inconsistencies between cadastral and cartographic areas
@@ -275,14 +377,25 @@ parca_check_area <- function(
 
   cad_area <- seq_field("cad_area")$name
   gis_area <- seq_field("gis_area")$name
+  idu <- seq_field("idu")$name
+
+  no_cad_area <- is.na(parca[[cad_area]])
+  if (any(no_cad_area)){
+    no_cad_idu <- parca[no_cad_area, ][[idu]]
+    cli::cli_bullets(c(
+      "x" =  "Missing cadastral area for {length(no_cad_idu)} parcel{?s}: {.val {no_cad_idu}}",
+      ">" = "{.field {cad_area}} need to be manually filled in PARCA layer."
+    ))
+  }
 
   parca[[gis_area]] <- as.numeric(sf::st_area(parca)) / 10000
   parca$ATOL_AREA <- abs(parca[[cad_area]] - parca[[gis_area]])
   parca$RTOL_AREA <- parca$ATOL_AREA / parca[[cad_area]]
   parca$CHECK_AREA <- (parca$ATOL_AREA >= atol/10000 & parca$RTOL_AREA >= rtol)
 
-  bad_idu <- parca$IDU[parca$CHECK_AREA]
+  bad_idu <- parca[[idu]][parca$CHECK_AREA] |> stats::na.exclude()
   n_bad_idu <- length(bad_idu)
+
   if (n_bad_idu > 0) {
     cli::cli_warn(
       "Detected {n_bad_idu} IDU{?s} with area inconsistencies (cadastre vs GIS): {.val {bad_idu}}"

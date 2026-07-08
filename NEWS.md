@@ -3,6 +3,9 @@
 ## v0.0.7
 - Write matrice for `menu_rp` and `menu_pm` even if IDU are invalid
 - Remove BDP support
+- Better parca UI
+- Auto correction of fully overlapped cadastral parcels
+- New product `"v.cad.etalab.poly"` which is raw downloaded parca
 
 ## v0.0.6
 - SEQ_FORET_point only return centroid of the biggest envelope

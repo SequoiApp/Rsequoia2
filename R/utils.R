@@ -113,6 +113,28 @@ idu_build <- function(dep, com, prefix, section, numero) {
   return(paste0(dep, com, prefix, section, numero))
 }
 
+#' Check IDU
+#'
+#' Internal helper used to split idu
+#'
+#' @param idu `character` IDU(s) to pad
+#'
+#' @keywords internal
+#'
+check_idu <- function(idu) {
+  if (is.null(idu) || length(idu) == 0) {
+    cli::cli_abort("{.arg idu} must be a non-empty vector.")
+  }
+
+  if (!is.character(idu)) {
+    cli::cli_abort(
+      "{.arg idu} must be {.cls character}, not {.cls {class(idu)[1]}}."
+    )
+  }
+
+  unique(idu)
+}
+
 #' Force silent function
 #'
 #' Internal helper used to silent function

@@ -8,9 +8,12 @@ test_that("seq_parca() works with mocked get_parca()", {
     )
 
     parca_path <- seq_parca(dirname = seq_cache, verbose = FALSE, overwrite = TRUE)
-    expect_true(file.exists(parca_path))
+    expect_all_true(file.exists(parca_path))
 
-    parca <- sf::read_sf(parca_path)
+    parca <- sf::read_sf(parca_path[[1]])
+    expect_s3_class(parca, "sf")
+
+    parca <- sf::read_sf(parca_path[[2]])
     expect_s3_class(parca, "sf")
   })
 
@@ -32,9 +35,14 @@ test_that("seq_parca() correct lieu_dit when available ", {
     )
 
     parca_path <- seq_parca(dirname = seq_cache, verbose = F, overwrite = TRUE)
-    parca <- sf::read_sf(parca_path)
-
+    parca <- sf::read_sf(parca_path[[1]])
+    expect_s3_class(parca, "sf")
     expect_all_true(c("MATRICE", "PARCA") %in% parca[[lieu_dit]])
+
+    parca <- sf::read_sf(parca_path[[2]])
+    expect_s3_class(parca, "sf")
+    expect_all_true(c("MATRICE", "PARCA") %in% parca[[lieu_dit]])
+
   })
 
 })
@@ -52,8 +60,12 @@ test_that("seq_parca() correclty add id from matrice", {
     )
 
     parca_path <- seq_parca(dirname = seq_cache, verbose = F, overwrite = TRUE)
-    parca <- sf::read_sf(parca_path)
+    parca <- sf::read_sf(parca_path[[1]])
+    expect_s3_class(parca, "sf")
+    expect_all_true(parca[[id]] == "MATRICE_ID")
 
+    parca <- sf::read_sf(parca_path[[2]])
+    expect_s3_class(parca, "sf")
     expect_all_true(parca[[id]] == "MATRICE_ID")
   })
 
