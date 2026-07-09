@@ -83,7 +83,7 @@ get_lieux_dits <- function(idu) {
   idu <- check_idu(idu)
 
   idu_parts <- idu_split(idu)
-  etalab <- read_etalab(unique(idu_parts$insee), "lieux_dits")
+  lieux_dits <- read_etalab(unique(idu_parts$insee), "lieux_dits")
 
   names(lieux_dits)[names(lieux_dits) == "nom"] <- seq_field("locality")$name
 
