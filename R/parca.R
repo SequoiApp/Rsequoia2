@@ -26,10 +26,11 @@ read_etalab <- function(insee, layer = c("parcelles", "lieux_dits")) {
 #' Retrieve a cadastral parcel geometry from Etalab
 #'
 #' @param idu `character` Cadastral parcel identifier.
+#' @param verbose `logical` If `TRUE`, display progress messages.
 #'
 #' @return An `sf` object containing the parcel geometry.
 #' @export
-get_parca_etalab <- function(idu){
+get_parca_etalab <- function(idu, verbose = TRUE){
 
   if (is.null(idu) || length(idu) == 0) {
     cli::cli_abort("{.arg idu} must be a non-empty vector.")
@@ -70,6 +71,18 @@ get_parca_etalab <- function(idu){
 
   etalab <- seq_normalize(etalab, "raw_parca")
 
+  if (verbose){
+    cad_area <- seq_field("cad_area")$name
+    area_ca <- sum(etalab[[cad_area]]) * 10000
+    area_label <- sprintf(
+      "%dha %02da %02dca",
+      area_ca %/% 10000,
+      area_ca %% 10000 %/% 100,
+      area_ca %% 100
+    )
+    cli::cli_alert_success("Parca successfuly downloaded : {area_label}")
+  }
+
   return(etalab)
 }
 
@@ -107,7 +120,7 @@ get_lieux_dits <- function(idu) {
 #' @export
 get_parca <- function(idu, lieu_dit = FALSE, verbose = TRUE){
   idu <- check_idu(idu)
-  etalab <- get_parca_etalab(idu)
+  etalab <- get_parca_etalab(idu, verbose = verbose)
 
   idu_field <- seq_field("idu")$name
 
@@ -124,8 +137,6 @@ get_parca <- function(idu, lieu_dit = FALSE, verbose = TRUE){
 
   raw_parca <- seq_normalize(etalab, "parca") |>
     sf::st_transform(2154)
-
-  if (verbose) cli::cli_alert_success("Parca successfuly downloaded.")
 
   return(invisible(raw_parca))
 }

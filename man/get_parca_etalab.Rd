@@ -4,10 +4,12 @@
 \alias{get_parca_etalab}
 \title{Retrieve a cadastral parcel geometry from Etalab}
 \usage{
-get_parca_etalab(idu)
+get_parca_etalab(idu, verbose = TRUE)
 }
 \arguments{
 \item{idu}{\code{character} Cadastral parcel identifier.}
+
+\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
 }
 \value{
 An \code{sf} object containing the parcel geometry.

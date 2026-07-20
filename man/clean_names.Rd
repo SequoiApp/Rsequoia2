@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{clean_names}
 \alias{clean_names}
-\title{Clean names}
+\title{Clean data frame names}
 \usage{
 clean_names(x)
 }
