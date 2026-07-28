@@ -44,9 +44,9 @@ seq_read <- function(key, dirname = ".", verbose = FALSE) {
     },
     error = function(e) {
       if (any(grepl("\\.gpkg-(shm|wal)$", path))) {
-        ua_filename <- seq_layer("ua")$filename
+        filename <- seq_layer(key)$filename
         cli::cli_abort(c(
-          "x" = "Cannot access {.file {ua_filename}} because it is currently open in QGIS.",
+          "x" = "Cannot access {.file {filename}} because it is currently open in QGIS.",
           "i" = "Close the file in QGIS and try again."
         ))
       }
