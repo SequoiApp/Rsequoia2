@@ -307,9 +307,10 @@ seq_drias <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
   # Drias
   txt <- list.files(meteo_dir, pattern = ".txt", full.names = TRUE)
   if (length(txt) == 0){
-    cli::cli_abort(
-      "No DRIAS {.file .txt} file found in: {.path {meteo_dir}}."
-    )
+    cli::cli_abort(c(
+      "x" = "No DRIAS {.file .txt} file found in: {.path {meteo_dir}}.",
+      "i" = "Data can be download at {.href https://www.drias-climat.fr/}"
+    ))
   }
 
   if (verbose) {cli_alert_info("Writing DRIAS data to: {.path {filepath}}")}
