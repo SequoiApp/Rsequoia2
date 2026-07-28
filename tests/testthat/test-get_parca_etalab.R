@@ -90,7 +90,7 @@ test_that("get_parca_etalab() de-duplicates idu in output", {
     get_cog = function(...) make_fake_cog("01001")
   )
 
-  res <- get_parca_etalab(idu)
+  res <- get_parca_etalab(idu, verbose = F)
 
   expect_equal(calls, 1)
   expect_equal(nrow(res), 1)
@@ -114,7 +114,7 @@ test_that("get_parca_etalab() pads cadastral fields", {
     get_cog = function(...) make_fake_cog("01001")
   )
 
-  res <- get_parca_etalab(idu)
+  res <- get_parca_etalab(idu, verbose = F)
 
   f <- \(x) seq_field(x)$name
 
@@ -133,7 +133,7 @@ test_that("get_parca_etalab() adds source", {
     get_cog = function(...) make_fake_cog("01001")
   )
 
-  res <- get_parca_etalab(idu)
+  res <- get_parca_etalab(idu, verbose = F)
   source <- seq_field("source")$name
 
   expect_s3_class(res, "sf")
@@ -151,7 +151,7 @@ test_that("get_parca_etalab() converts contenance to hectares", {
     get_cog = function(...) make_fake_cog("01001")
   )
 
-  res <- get_parca_etalab(idu)
+  res <- get_parca_etalab(idu, verbose = F)
   cad_area <- seq_field("cad_area")$name
 
   expect_s3_class(res, "sf")
@@ -183,7 +183,7 @@ test_that("get_parca_etalab() requests unique communes from read_etalab()", {
     get_cog = function(...) make_fake_cog(c("01001", "01002", "01003"))
   )
 
-  res <- get_parca_etalab(idu)
+  res <- get_parca_etalab(idu, verbose = F)
 
   expect_equal(requested_layer, "parcelles")
   expect_equal(requested_insee, c("01001", "01002", "01003"))
