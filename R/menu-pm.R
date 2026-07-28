@@ -27,10 +27,12 @@ menu_pm <- function() {
 
   if (search_by == 1) {
     insee <- read_csv("Code(s) INSEE, separes par des virgules : ")
+    insee <- check_insee(insee)
   }
 
   if (search_by == 2) {
     dep <- read_csv("Code(s) departement, separes par des virgules : ")
+    dep <- check_dep(dep)
   }
 
   if (search_by == 3) {
@@ -82,7 +84,7 @@ menu_pm <- function() {
   cli::cli_text("")
 
   parca_geom <- tryCatch(
-    get_parca(m$IDU, verbose = TRUE),
+    get_parca(m$IDU, verbose = FALSE),
     error = \(e) {
       cli::cli_alert_danger("Failed to retrieve PARCA geometry: {conditionMessage(e)}")
       NULL
