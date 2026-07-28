@@ -219,7 +219,6 @@ check_dep <- function(dep) {
 
   if (length(invalid_dep) > 0) {
     cli::cli_abort(c(
-      "Invalid department code.",
       "x" = "Invalid department code(s): {.vals {invalid_dep}}",
       "i" = "See {.run get_cog()$dep} for valid department codes."
     ))
@@ -250,7 +249,6 @@ check_insee <- function(insee) {
 
   if (length(invalid_insee) > 0) {
     cli::cli_abort(c(
-      "Invalid insee code.",
       "x" = "Invalid insee code(s): {.vals {invalid_insee}}",
       "i" = "See {.run get_cog()$com} for valid insee codes."
     ))
