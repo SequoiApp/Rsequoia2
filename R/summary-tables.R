@@ -502,7 +502,7 @@ build_summary_road <- function(ua, dirname) {
   road <- seq_read("v.road.line", dirname = dirname)
 
   road_in <- suppressWarnings(
-    sf::st_intersection(road, ua$geom)
+    sf::st_intersection(road, seq_envelope(ua, 10))
   )
 
   if (nrow(road_in) < 1) {
@@ -510,6 +510,8 @@ build_summary_road <- function(ua, dirname) {
   }
 
   road_map <- c(
+    CR = "Pistes & layons",
+    LY = "Pistes & layons",
     PN = "Pistes & layons",
     RF = "Route empierr\u00E9e",
     RN = "Route rev\u00EAtue",
@@ -551,6 +553,7 @@ build_summary_road <- function(ua, dirname) {
   } else {
     road_by_type$KM_100HA <- road_by_type$TOTAL * 100 / surface_ha
   }
+
 
   tot <- c(text = "TOTAL", rep("sum", 4))
 

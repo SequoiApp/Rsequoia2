@@ -31,8 +31,7 @@
 #' standardized `sf` object.
 #'
 #' @export
-get_road <- function(x,
-                     buffer = 1000){
+get_road <- function(x, buffer = 1000){
 
   ## convex buffer
   crs <- 2154
