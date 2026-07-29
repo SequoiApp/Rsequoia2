@@ -20,7 +20,7 @@ download_lidar <- function(
     cache = NULL,
     overwrite = FALSE,
     verbose = TRUE,
-    max_tries = 3
+    max_tries = 10
 ) {
 
   key <- match.arg(key)

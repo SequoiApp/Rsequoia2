@@ -277,7 +277,7 @@ seq_multi_download <- function(
     destfiles,
     overwrite = FALSE,
     verbose = TRUE,
-    max_tries = 3
+    max_tries = 10
 ) {
 
   to_download <- overwrite | !file.exists(destfiles)
