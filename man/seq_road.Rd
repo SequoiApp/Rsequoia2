@@ -4,13 +4,23 @@
 \alias{seq_road}
 \title{Generate road section layer for a Sequoia project}
 \usage{
-seq_road(dirname = ".", buffer = 1000, verbose = TRUE, overwrite = FALSE)
+seq_road(
+  dirname = ".",
+  buffer = 1000,
+  private_in = TRUE,
+  verbose = TRUE,
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{dirname}{\code{character} Directory where the matrice file is located.
 Defaults to the current working directory.}
 
-\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
+\item{buffer}{\code{numeric}; Buffer around \code{x}, in meters, used to define the
+download area.}
+
+\item{private_in}{\code{logical}; If \code{TRUE}, roads fully contained in \code{x} are
+marked as private.}
 
 \item{verbose}{\code{logical} If \code{TRUE}, display messages.}
 

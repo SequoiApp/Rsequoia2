@@ -10,7 +10,7 @@ download_lidar(
   cache = NULL,
   overwrite = FALSE,
   verbose = TRUE,
-  max_tries = 3
+  max_tries = 10
 )
 }
 \arguments{

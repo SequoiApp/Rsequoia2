@@ -2,6 +2,7 @@
 
 ## v0.0.8
 - bug fix for macOS : normalize string for any accent
+- road fully inside parca set `"PRIVE"` to false by default
 
 ## v0.0.7
 - Write matrice for `menu_rp` and `menu_pm` even if IDU are invalid

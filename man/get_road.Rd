@@ -4,45 +4,48 @@
 \alias{get_road}
 \title{Retrieve road sections around an area}
 \usage{
-get_road(x, buffer = 1000)
+get_road(x, buffer = 1000, private_in = TRUE)
 }
 \arguments{
-\item{x}{An \code{sf} object used as the input area.}
+\item{x}{An \code{sf} object defining the input area.}
 
-\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
+\item{buffer}{\code{numeric}; Buffer around \code{x}, in meters, used to define the
+download area.}
+
+\item{private_in}{\code{logical}; If \code{TRUE}, roads fully contained in \code{x} are
+marked as private.}
 }
 \value{
-An \code{sf} object of type \code{LINESTRING} containing road sections
-with standardized fields, including:
+An \code{sf} object containing road sections with standardized fields,
+or \code{NULL} if no roads are found.
+
+The main fields are:
 \itemize{
-\item \code{TYPE} - Road section type code, deduced from surface, numbering
-and importance attributes:
+\item \code{TYPE}: Simplified road type:
 \itemize{
-\item \code{RN} = National road (autoroutes, European roads, numbered roads
-starting with \code{A}, \code{E}, \code{N}, or departmental roads numbered > 900,
-as well as major slip roads)
-\item \code{RD} = Departmental road (numbered roads starting with \code{D})
-\item \code{RC} = Communal road (other paved roads)
-\item \code{RF} = Forest or gravel road (unpaved / empierree)
-\item \code{PN} = Natural path (tracks, trails, footpaths)
-\item \code{LY} = Tie ridge
+\item \code{RN}: national roads, motorways, European roads, \code{D9xx} roads,
+and major slip roads;
+\item \code{RD}: other departmental roads and intermediate slip roads;
+\item \code{RC}: other paved roads;
+\item \code{RF}: gravel roads;
+\item \code{PN}: natural paths and tracks.
 }
-\item \code{NATURE} - Original BDTOPO road nature (surface / usage description)
-\item \code{IMPORTANCE} - Road importance, taken from \code{importance} when available,
-\item \code{PRIVE} - Road status, taken from \code{prive} when available,
-\item \code{RESTRICTION} - Road restriction, taken from \code{restriction_de_poids_total} when available,
-\item \code{NOM} - Road identifier, taken from \code{cpx_numero} when available,
-otherwise from \code{cpx_toponyme_route_nommee}
-\item \code{SOURCE} - Data source (\verb{BDTOPO V3})
+\item \code{NATURE}: Simplified surface type (\code{revetue}, \code{empierree}, \code{naturel}).
+\item \code{NOM}: Road number, or road name when no number is available.
+\item \code{PRIVE}: Original private status. Roads fully contained in \code{x} are
+forced to \code{TRUE} when \code{private_in = TRUE}.
+\item \code{SOURCE}: Data source (\verb{BDTOPO V3}).
 }
+
+Other fields standardized by \code{seq_normalize()} are retained when
+available, including road importance and weight restrictions.
 }
 \description{
 Retrieve road sections around an area
 }
 \details{
-The function retrieves road section layer from
-the IGN BDTOPO V3 dataset within a convex buffer around \code{x}.
+Road sections are retrieved from the IGN BDTOPO V3 dataset within a
+buffered envelope around \code{x}.
 
-If no road section data are found, the function returns an empty
-standardized \code{sf} object.
+The function uses CRS EPSG:2154 for buffering and spatial operations.
 }
