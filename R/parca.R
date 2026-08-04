@@ -75,7 +75,7 @@ get_parca_etalab <- function(idu, verbose = TRUE){
     cad_area <- seq_field("cad_area")$name
     area_ca <- sum(etalab[[cad_area]]) * 10000
     area_label <- sprintf(
-      "%dha %02da %02dca",
+      "%.0fha %.0fa %.0fca",
       area_ca %/% 10000,
       area_ca %% 10000 %/% 100,
       area_ca %% 100
