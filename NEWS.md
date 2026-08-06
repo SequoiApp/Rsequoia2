@@ -1,5 +1,8 @@
 # Rsequoia2 (development version)
 
+## v0.0.9
+- bug fix for mnhn layer : more robust for loop and update available layers
+
 ## v0.0.8
 - bug fix for macOS : normalize string for any accent
 - road fully inside parca set `"PRIVE"` to false by default
