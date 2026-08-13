@@ -79,6 +79,7 @@ ua_to_ua <- function(ua, parca, verbose = TRUE, check = interactive()) {
 #' @inheritParams seq_write
 #' @param secure `logical`. If `TRUE`, also writes a timestamped secure copy
 #' of the file.
+#' @param check `logical` If `TRUE`, ask user.
 #'
 #' @return An `sf` object
 #'
@@ -87,7 +88,9 @@ seq_ua <- function(
     dirname = ".",
     secure = TRUE,
     verbose = TRUE,
-    overwrite = TRUE){
+    overwrite = TRUE,
+    check = interactive()
+){
 
   # read
   parca <- seq_read("v.seq.parca.poly", dirname = dirname, verbose = FALSE)
@@ -97,7 +100,7 @@ seq_ua <- function(
   ua <- seq_read("v.seq.ua.poly", dirname = dirname, verbose = FALSE)
 
   # ua treatment
-  seq_ua <- ua_to_ua(ua, parca, verbose = verbose)
+  seq_ua <- ua_to_ua(ua, parca, verbose = verbose, check = check)
 
   # write ua
   ua_path <- seq_write(

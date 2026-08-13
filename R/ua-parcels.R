@@ -128,6 +128,7 @@ ua_to_sspf <- function(ua){
 #' A named list of six file paths, corresponding to the exported PF and SSPF
 #' polygon and line layers.
 #'
+#' @export
 seq_parcels <- function(dirname = ".", verbose = FALSE, overwrite = FALSE){
   # tiny helper ----
   seq_write2 <- function(x, key, id) {
