@@ -16,7 +16,7 @@
 #' @keywords internal
 download_lidar <- function(
     x,
-    key = c("mnt", "mnh"),
+    key = c("mnt", "mns", "mnh"),
     cache = NULL,
     overwrite = FALSE,
     verbose = TRUE,
@@ -35,28 +35,79 @@ download_lidar <- function(
 
   dir.create(cache, recursive = TRUE, showWarnings = FALSE)
 
-  layer <- switch(
-    key,
-    mnt = "IGNF_MNT-LIDAR-HD:dalle",
-    mns = "IGNF_MNS-LIDAR-HD:dalle",
-    mnh = "IGNF_MNH-LIDAR-HD:dalle"
-  )
-
-  dalle <- happign::get_wfs(
+  lidar_metadata <- happign::get_wfs(
     x = sf::st_make_valid(x),
-    layer = layer,
+    layer = "IGNF_LIDAR-HD_METADONNEE:metadata",
     predicate = happign::intersects()
   )
 
-  if (nrow(dalle) == 0) {
+  if (!nrow(lidar_metadata)) {
     cli::cli_abort("No LIDAR {toupper(key)} tile found for {.arg x}.")
   }
 
-  urls <- dalle$url
-  destfiles <- file.path(cache, dalle$name_download)
+  field <- paste0("url_", key)
 
-  if (verbose){
-    cli::cli_alert_info("Downloading {toupper(key)} LIDAR tiles.")
+  if (!field %in% names(lidar_metadata)) {
+    cli::cli_abort(
+      "LIDAR metadata does not contain the expected {.field {field}} field."
+    )
+  }
+
+  urls <- trimws(as.character(lidar_metadata[[field]]))
+  available <- !is.na(urls) & nzchar(urls)
+
+  lidar_metadata <- lidar_metadata[available, , drop = FALSE]
+  urls <- urls[available]
+
+  if (!length(urls)) {
+    cli::cli_abort("No LIDAR {toupper(key)} tile found for {.arg x}.")
+  }
+
+  filename_from_url <- function(url) {
+    filename_match <- regexec(
+      "(?:^|[?&])FILENAME=([^&]+)",
+      url,
+      ignore.case = TRUE,
+      perl = TRUE
+    )
+    parts <- regmatches(url, filename_match)[[1]]
+
+    filename <- if (length(parts) >= 2L) {
+      utils::URLdecode(parts[[2]])
+    } else {
+      basename(sub("[?#].*$", "", url))
+    }
+
+    if (!nzchar(filename) || !grepl("\\.tiff?$", filename, ignore.case = TRUE)) {
+      return(NA_character_)
+    }
+
+    basename(filename)
+  }
+
+  filenames <- vapply(urls, filename_from_url, character(1))
+
+  if (anyNA(filenames)) {
+    cli::cli_abort(
+      "Could not determine a GeoTIFF filename from one or more LIDAR download URLs."
+    )
+  }
+
+  destfiles <- file.path(cache, filenames)
+
+  if (verbose) {
+    start <- as.Date(lidar_metadata$date_debut_acquisition)
+    end <- as.Date(lidar_metadata$date_fin_acquisition)
+
+    cli::cli_alert_info(
+      "Downloading {length(urls)} {toupper(key)} LIDAR tile{?s}."
+    )
+
+    if (any(!is.na(start)) && any(!is.na(end))) {
+      cli::cli_alert_info(
+        "Acquisition period: {min(start, na.rm = TRUE)} to {max(end, na.rm = TRUE)}."
+      )
+    }
   }
 
   seq_multi_download(
@@ -85,7 +136,7 @@ download_lidar <- function(
 #' @export
 get_lidar <- function(
     x,
-    key = c("mnt", "mnh"),
+    key = c("mnt", "mns", "mnh"),
     buffer = 200,
     crs = 2154,
     cache = NULL,
@@ -94,6 +145,10 @@ get_lidar <- function(
 ) {
 
   key <- match.arg(key)
+
+  if (!inherits(x, c("sf", "sfc"))) {
+    cli::cli_abort("{.arg x} must be an {.cls sf} or {.cls sfc} object.")
+  }
 
   x_clean <- x |>
     sf::st_transform(crs) |>
@@ -136,9 +191,9 @@ get_lidar <- function(
   r <- terra::crop(vrt, x_vect)
   r <- terra::mask(r, x_vect)
 
-  same_crs <- sf::st_crs(r)$input == sf::st_crs(crs)$input
-  if (!same_crs) {
-    r <- terra::project(r, sf::st_crs(crs)$wkt)
+  target_crs <- sf::st_crs(crs)
+  if (!terra::same.crs(r, target_crs$wkt)) {
+    r <- terra::project(r, target_crs$wkt)
   }
 
   names(r) <- paste0(key, "_lidar")
@@ -169,7 +224,11 @@ seq_lidar <- function(
     verbose = TRUE
 ) {
 
-  key <- match.arg(key, several.ok = TRUE)
+  key <- match.arg(
+    key,
+    choices = c("mnt", "mns", "mnh"),
+    several.ok = TRUE
+  )
 
   if (verbose) {
     cli::cli_h1("LIDAR")
@@ -215,7 +274,7 @@ seq_lidar <- function(
       buffer = buffer,
       crs = crs,
       cache = cache,
-      overwrite = FALSE,
+      overwrite = overwrite,
       verbose = verbose
     )
 

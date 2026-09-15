@@ -1,5 +1,8 @@
 # Rsequoia2 (development version)
 
+## v0.0.10
+- rethink lidar download since IGN add specific tiles metadata WFS layer
+
 ## v0.0.9
 - bug fix for mnhn layer : more robust for loop and update available layers
 
