@@ -59,7 +59,6 @@ read_matrice <- function(dirname = "."){
 
   # Exclude Excel temporary lock files like "~$_matrice.xlsx"
   xlsx_lock_file <- m_path[grepl("^~\\$.*_matrice\\.xlsx$", basename(m_path), ignore.case = TRUE)]
-
   if (length(xlsx_lock_file) > 0) {
     cli::cli_abort(c(
       "!" = "The matrice file appears to be open in Excel.",
@@ -102,7 +101,7 @@ read_matrice <- function(dirname = "."){
   )
 
   required <- sapply(matrice_keys, \(x) seq_field(x)$name)
-  missing  <- setdiff(required, names(m))
+  missing <- setdiff(required, names(m))
 
   if (length(missing) > 0) {
     cli::cli_abort("Missing column in {.file {m_path}} : {.val {missing}}")
@@ -126,6 +125,31 @@ read_matrice <- function(dirname = "."){
       "!" = "Multiple IDs detected in column {.field IDENTIFIANT}.",
       "x" = "Only one unique ID is expected.",
       "v" = "IDs found: {paste(id, collapse = ', ')}"
+    ))
+  }
+
+  # Check empty field
+  fields <- c("insee", "section", "number")
+  errors <- character()
+
+  for (field in fields) {
+    name <- seq_field(field)$name
+    empty_rows <- which(is.na(m[[name]]) | m[[name]] == "" | m[[name]] == "00000")
+
+    if (length(empty_rows)) {
+      errors <- c(
+        errors,
+        cli::format_inline(
+          "Empty {.field {name}} found at lines: {.values {empty_rows}}"
+        )
+      )
+    }
+  }
+
+  if (length(errors)) {
+    cli::cli_abort(c(
+      "!" = "Missing required values:",
+      setNames(errors, rep("x", length(errors)))
     ))
   }
 
