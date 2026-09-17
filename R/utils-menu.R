@@ -113,12 +113,13 @@ seq_run_action <- function(action) {
     tryCatch(
       action(),
       error = function(e) {
-        cli::cli_alert_danger(conditionMessage(e))
+        # cli_verbatim preserve the original CLI formatting
+        cli::cli_verbatim(conditionMessage(e))
         invisible(NULL)
       }
     ),
     warning = function(w) {
-      cli::cli_alert_warning(conditionMessage(w))
+      cli::cli_verbatim(conditionMessage(w))
       invokeRestart("muffleWarning")
     }
   )
