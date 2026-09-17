@@ -20,6 +20,13 @@ make_test_raster_file <- function(x = Rsequoia2:::seq_poly, crs = sf::st_crs(x)$
   f
 }
 
+test_that("get_lidar() aborts when x is not sf or sfc", {
+  expect_error(
+    get_lidar(data.frame(a = 1), "mnt"),
+    "must be an .*sf.* or .*sfc.* object"
+  )
+})
+
 test_that("get_lidar() aborts when cleaned envelope has no valid polygon", {
 
   download_called <- FALSE
@@ -50,7 +57,7 @@ test_that("get_lidar() returns a named SpatRaster for each lidar key", {
     .package = "Rsequoia2"
   )
 
-  keys <- c("mnt", "mnh")
+  keys <- c("mnt", "mns", "mnh")
   res <- lapply(
     keys,
     function(key) get_lidar(x = x, key = key, verbose = FALSE)
