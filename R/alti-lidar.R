@@ -63,30 +63,7 @@ download_lidar <- function(
     cli::cli_abort("No LIDAR {toupper(key)} tile found for {.arg x}.")
   }
 
-  filename_from_url <- function(url) {
-    filename_match <- regexec(
-      "(?:^|[?&])FILENAME=([^&]+)",
-      url,
-      ignore.case = TRUE,
-      perl = TRUE
-    )
-    parts <- regmatches(url, filename_match)[[1]]
-
-    filename <- if (length(parts) >= 2L) {
-      utils::URLdecode(parts[[2]])
-    } else {
-      basename(sub("[?#].*$", "", url))
-    }
-
-    if (!nzchar(filename) || !grepl("\\.tiff?$", filename, ignore.case = TRUE)) {
-      return(NA_character_)
-    }
-
-    basename(filename)
-  }
-
-  filenames <- vapply(urls, filename_from_url, character(1))
-
+  filenames <- sub(".*filename=([^&]+).*", "\\1", urls, ignore.case = TRUE)
   if (anyNA(filenames)) {
     cli::cli_abort(
       "Could not determine a GeoTIFF filename from one or more LIDAR download URLs."
