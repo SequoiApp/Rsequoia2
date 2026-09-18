@@ -34,11 +34,6 @@ get_pedology <- function(x) {
     return(NULL)
   }
 
-  # Intersection
-  intersect <- sf::st_intersection(pedology, x) |>
-    sf::st_cast("POLYGON") |>
-    suppressWarnings()
-
   return(invisible(pedology))
 }
 
@@ -96,7 +91,7 @@ get_pedology_pdf <- function(
 
     tryCatch(
       {
-        curl::curl_download(url, filepath, quiet = !verbose)
+        curl::curl_download(url, filepath, quiet = TRUE)
         paths <- c(paths, setNames(filepath, tools::file_path_sans_ext(filename)))
         if (verbose){
           cli::cli_alert_success("UCS {id} saved to: {.path {dirname}}")
@@ -156,7 +151,8 @@ seq_pedology <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
 
   # Retrieve pedology ----
   pedo <- get_pedology(parca) |>
-    sf::st_intersection(sf::st_geometry(parca))
+    sf::st_intersection() |>
+    suppressWarnings()
 
   pedo_path <- NULL
   if (!is.null(pedo)){
