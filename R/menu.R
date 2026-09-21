@@ -116,7 +116,6 @@ menu_data <- function(){
     "Pedologie"      = function() seq_pedology(path),
     "Infra"          = function() seq_infra(path),
     "Route"          = function() seq_road(path),
-    "Route cad."     = function() seq_roadway(path),
     "PRSF"           = function() seq_prsf(path),
     "OLD"            = function() seq_old(path),
     "Toponyme"       = function() seq_toponyme(path),
