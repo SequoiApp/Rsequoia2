@@ -86,3 +86,30 @@ test_that("read_matrice() errors when multiple IDENTIFIANT values", {
 
 })
 
+test_that("read_matrice() reports all empty required fields", {
+
+  seq_cache <- file.path(tempdir(), "seq")
+  dir.create(seq_cache)
+  on.exit(unlink(seq_cache, recursive = TRUE, force = TRUE))
+
+  f <- file.path(seq_cache, "ECKMUHL_matrice.xlsx")
+
+
+  m <- fake_matrice(id = c("A", "A", "A"))
+  m[seq_field("insee")$name] <- c(NA, "00000", "29158")
+  m[seq_field("section")$name] <- c("ZR", NA, "ZR")
+  m[seq_field("number")$name] <- c("0003", "0003", NA)
+
+  openxlsx2::write_xlsx(m, f)
+
+  expect_error(
+    read_matrice(seq_cache),
+    regexp = paste(
+      "INSEE.*1.*2",
+      "SECTION.*2",
+      "NUMERO.*3",
+      sep = ".*"
+    )
+  )
+})
+

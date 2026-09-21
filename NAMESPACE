@@ -131,55 +131,69 @@ export(ua_to_ua)
 export(ua_update_parca_fields)
 export(update_parca)
 export(update_ua)
-importFrom(DBI,dbConnect)
-importFrom(DBI,dbDisconnect)
-importFrom(DBI,dbExecute)
-importFrom(DBI,dbGetQuery)
-importFrom(DBI,dbQuoteString)
+importFrom(DBI,
+  dbConnect,
+  dbDisconnect,
+  dbExecute,
+  dbGetQuery,
+  dbQuoteString
+)
 importFrom(archive,archive_extract)
-importFrom(cli,cli_abort)
-importFrom(cli,cli_alert_info)
-importFrom(cli,cli_alert_success)
-importFrom(cli,cli_alert_warning)
-importFrom(cli,cli_ul)
+importFrom(cli,
+  cli_abort,
+  cli_alert_info,
+  cli_alert_success,
+  cli_alert_warning,
+  cli_ul
+)
 importFrom(duckdb,duckdb)
-importFrom(openxlsx2,read_xlsx)
-importFrom(openxlsx2,wb_add_border)
-importFrom(openxlsx2,wb_add_cell_style)
-importFrom(openxlsx2,wb_add_data)
-importFrom(openxlsx2,wb_add_font)
-importFrom(openxlsx2,wb_add_numfmt)
-importFrom(openxlsx2,wb_add_worksheet)
-importFrom(openxlsx2,wb_color)
-importFrom(openxlsx2,wb_dims)
-importFrom(openxlsx2,wb_save)
-importFrom(openxlsx2,wb_set_col_widths)
-importFrom(openxlsx2,wb_workbook)
-importFrom(pdftools,pdf_data)
-importFrom(pdftools,pdf_text)
-importFrom(sf,read_sf)
-importFrom(sf,st_area)
-importFrom(sf,st_as_sf)
-importFrom(sf,st_buffer)
-importFrom(sf,st_cast)
-importFrom(sf,st_collection_extract)
-importFrom(sf,st_convex_hull)
-importFrom(sf,st_geometry)
-importFrom(sf,st_geometry_type)
-importFrom(sf,st_intersection)
-importFrom(sf,st_is_longlat)
-importFrom(sf,st_make_valid)
-importFrom(sf,st_sf)
-importFrom(sf,st_sfc)
-importFrom(sf,st_snap)
-importFrom(sf,st_transform)
-importFrom(sf,st_union)
-importFrom(sf,write_sf)
-importFrom(stats,aggregate)
-importFrom(stats,setNames)
-importFrom(terra,aggregate)
-importFrom(terra,rast)
-importFrom(terra,res)
-importFrom(terra,writeRaster)
+importFrom(openxlsx2,
+  read_xlsx,
+  wb_add_border,
+  wb_add_cell_style,
+  wb_add_data,
+  wb_add_font,
+  wb_add_numfmt,
+  wb_add_worksheet,
+  wb_color,
+  wb_dims,
+  wb_save,
+  wb_set_col_widths,
+  wb_workbook
+)
+importFrom(pdftools,
+  pdf_data,
+  pdf_text
+)
+importFrom(sf,
+  read_sf,
+  st_area,
+  st_as_sf,
+  st_buffer,
+  st_cast,
+  st_collection_extract,
+  st_convex_hull,
+  st_geometry,
+  st_geometry_type,
+  st_intersection,
+  st_is_longlat,
+  st_make_valid,
+  st_sf,
+  st_sfc,
+  st_snap,
+  st_transform,
+  st_union,
+  write_sf
+)
+importFrom(stats,
+  aggregate,
+  setNames
+)
+importFrom(terra,
+  aggregate,
+  rast,
+  res,
+  writeRaster
+)
 importFrom(tools,R_user_dir)
 importFrom(utils,read.csv2)
