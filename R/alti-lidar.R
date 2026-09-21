@@ -46,7 +46,6 @@ download_lidar <- function(
   }
 
   field <- paste0("url_", key)
-
   if (!field %in% names(lidar_metadata)) {
     cli::cli_abort(
       "LIDAR metadata does not contain the expected {.field {field}} field."
@@ -63,13 +62,15 @@ download_lidar <- function(
     cli::cli_abort("No LIDAR {toupper(key)} tile found for {.arg x}.")
   }
 
-  filenames <- sub(".*filename=([^&]+).*", "\\1", urls, ignore.case = TRUE)
-  if (anyNA(filenames)) {
+  pattern <- ".*filename=([^&]+).*"
+  url_doesnt_have_filename <- any(!grepl(pattern, urls, ignore.case = TRUE))
+  if (url_doesnt_have_filename) {
     cli::cli_abort(
       "Could not determine a GeoTIFF filename from one or more LIDAR download URLs."
     )
   }
 
+  filenames <- sub(pattern, "\\1", urls, ignore.case = TRUE)
   destfiles <- file.path(cache, filenames)
 
   if (verbose) {
