@@ -82,7 +82,7 @@ sequoia2 <- function() {
 
 }
 
-# Other menus ----*
+# Other menus ----
 
 #' Open the data download menu
 #'

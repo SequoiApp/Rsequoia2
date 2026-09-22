@@ -39,6 +39,7 @@ mock_lidar_meta <- function(key) {
   switch(
     key,
     "r.alt.mnt.lidar" = list(path = "RASTER/ALT", name = "MNT_LIDAR", ext = "tif"),
+    "r.alt.mns.lidar" = list(path = "RASTER/ALT", name = "MNS_LIDAR", ext = "tif"),
     "r.alt.mnh.lidar" = list(path = "RASTER/ALT", name = "MNH_LIDAR", ext = "tif"),
     stop("Unexpected key: ", key)
   )
@@ -102,26 +103,27 @@ test_that("seq_lidar() generates one output per requested key", {
     )
 
     expect_type(res, "list")
-    expect_identical(names(res), c("mnt", "mnh"))
+    expect_identical(names(res), c("mnt", "mns", "mnh"))
 
-    expect_length(written, 2)
+    expect_length(written, 3)
 
     expect_identical(
       vapply(written, `[[`, character(1), "key"),
       c(
         "r.alt.mnt.lidar",
+        "r.alt.mns.lidar",
         "r.alt.mnh.lidar"
       )
     )
 
     expect_identical(
       vapply(written, `[[`, character(1), "id"),
-      rep("SEQ001", 2)
+      rep("SEQ001", 3)
     )
 
     expect_identical(
       vapply(written, `[[`, character(1), "name"),
-      c("mnt_lidar", "mnh_lidar")
+      c("mnt_lidar", "mns_lidar", "mnh_lidar")
     )
   })
 })
@@ -200,6 +202,7 @@ test_that("seq_lidar() recomputes existing output when overwrite is TRUE", {
       seq_field = function(...) list(name = "ID_SEQ"),
       seq_layer = function(key, verbose = FALSE) mock_lidar_meta(key),
       get_lidar = function(...) {
+        expect_true(list(...)$overwrite)
         get_lidar_called <<- TRUE
         r <- make_lidar_test_raster()
         names(r) <- "mnt_lidar"

@@ -6,7 +6,7 @@
 \usage{
 download_lidar(
   x,
-  key = c("mnt", "mnh"),
+  key = c("mnt", "mns", "mnh"),
   cache = NULL,
   overwrite = FALSE,
   verbose = TRUE,

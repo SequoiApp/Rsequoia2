@@ -4,6 +4,11 @@
 - Harmonized `cli` message across `Rsequoia2`
 - Harmonized documentation across `Rsequoia2`
 
+## v0.0.10
+- rethink lidar download since IGN add specific tiles metadata WFS layer
+- further check when reading matrice to avoid empty rows in insee, section or 
+number field
+
 ## v0.0.9
 - bug fix for mnhn layer : more robust for loop and update available layers
 
