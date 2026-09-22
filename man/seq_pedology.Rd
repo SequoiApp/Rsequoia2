@@ -7,14 +7,13 @@
 seq_pedology(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Path to the project directory.
+\item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 
-\item{verbose}{\code{logical}; whether to display informational messages.
-Defaults to \code{TRUE}.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 
-\item{overwrite}{\code{logical}; whether to overwrite existing files.
-Defaults to \code{FALSE}.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
 Invisibly returns a named list of file paths written by \code{\link[=seq_write]{seq_write()}}.

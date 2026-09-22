@@ -12,15 +12,16 @@ create_matrice(
 )
 }
 \arguments{
-\item{dirname}{\code{character} Path to the directory. Defaults to the current
-working directory.}
+\item{dirname}{\code{character}; Path to the Sequoia project directory.
+Defaults to the current working directory.}
 
 \item{id}{\code{character} Identifier of the forest. Typically the name of the
 forest}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, filename is overwritten.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 }
 \value{
 Invisibly returns the path to the created file.

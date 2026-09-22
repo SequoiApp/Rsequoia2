@@ -12,7 +12,7 @@
 #' @param cache `character`; Directory where ZIP archives are stored.
 #' Defaults to the Rsequoia2 BD Charm 50 cache directory, see
 #' [Rsequoia2::seq_cache()].
-#' @param verbose `logical`; If `TRUE`, display progress messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #' @param overwrite `logical`; If `TRUE`, re-download archives even when
 #' they already exist in `cache`.
 #'

@@ -1,5 +1,9 @@
 # Rsequoia2 (development version)
 
+## v0.0.11
+- Harmonized `cli` message across `Rsequoia2`
+- Harmonized documentation across `Rsequoia2`
+
 ## v0.0.9
 - bug fix for mnhn layer : more robust for loop and update available layers
 

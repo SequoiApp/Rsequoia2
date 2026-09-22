@@ -62,8 +62,9 @@ style_table <- function(wb, sheet, df, numfmt = "0.00"){
 #' @param filename `character` File path where the workbook will be saved.
 #' @param data_table `logical` If `TRUE`, data table is set up with total row.
 #' Default to `FALSE`.
-#' @param overwrite `logical` If `TRUE`, filename is overwritten.
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing files.
+#' @param verbose `logical`; If `TRUE`, display progress and informational
+#'   messages.
 #'
 #' @return Invisibly returns the path `filename` after saving.
 #' @export

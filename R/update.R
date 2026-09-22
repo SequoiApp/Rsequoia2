@@ -1,7 +1,7 @@
 #' Open old `R_SEQUOIA` vector file
 #'
-#' @param dirname `character` Directory where the file is located.
-#' Defaults to the current working directory.
+#' @param dirname `character`; Directory containing the legacy file.
+#'   Defaults to the current working directory.
 #' @param layer `character` Layer name.
 #'
 #' @return An `sf` object or an empty `sf` object if no file are matched.
@@ -62,8 +62,8 @@ seq1_read <- function(dirname = ".", layer) {
 
 #' Retrieve old `R_SEQUOIA` _PARCA_ identifier
 #'
-#' @param dirname `character` Directory where the file _PARCA_ is located.
-#' Defaults to the current working directory.
+#' @param dirname `character`; Directory containing the legacy _PARCA_ file.
+#'   Defaults to the current working directory.
 #'
 #' @return The `character` identifier
 #'
@@ -252,11 +252,11 @@ update_infra <- function(x) {
 
 #' Update `R_SEQUOIA` projet to `Rsequoia2`
 #'
-#' @param dirname `character` Directory where the `R_SEQUOIA` files are located.
+#' @param dirname `character`; Directory containing the legacy `R_SEQUOIA` files.
 #'   Defaults to the current working directory.
-#' @param verbose `logical` If `TRUE`, display progress messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'   Defaults to `TRUE`.
-#' @param overwrite `logical`; whether to overwrite existing files.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing files.
 #'   Defaults to `FALSE`.
 #'
 #' @return

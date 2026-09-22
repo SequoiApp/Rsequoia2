@@ -7,13 +7,13 @@
 seq1_update(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the \code{R_SEQUOIA} files are located.
+\item{dirname}{\code{character}; Directory containing the legacy \code{R_SEQUOIA} files.
 Defaults to the current working directory.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.
 Defaults to \code{TRUE}.}
 
-\item{overwrite}{\code{logical}; whether to overwrite existing files.
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.
 Defaults to \code{FALSE}.}
 }
 \value{

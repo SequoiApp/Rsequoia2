@@ -5,7 +5,7 @@ test_that("get_road() returns NULL when WFS returns no features", {
     .package = "happign"
   )
 
-  road <- get_road(Rsequoia2:::seq_poly)
+  road <- get_road(Rsequoia2:::seq_poly, verbose = FALSE)
 
   # tests
   expect_null(road, "sf")
@@ -40,18 +40,12 @@ test_that("get_road() classifies revetue roads correctly", {
     .package = "happign"
   )
 
-  road <- get_road(Rsequoia2:::seq_poly)
+  road <- get_road(Rsequoia2:::seq_poly, verbose = FALSE)
 
   expect_s3_class(road, "sf")
   expect_equal(road[[seq_field("type")$name]], c("RN", "RD"))
-  expect_equal(
-    road[[seq_field("name")$name]],
-    c("N12", "D45")
-  )
-  expect_equal(
-    unique(road[[seq_field("source")$name]]),
-    "BDTOPO V3"
-  )
+  expect_equal(road[[seq_field("name")$name]], c("N12", "D45"))
+  expect_equal(unique(road[[seq_field("source")$name]]), "BDTOPO V3")
 })
 
 test_that("get_road() classifies natural paths as PN", {
@@ -83,7 +77,7 @@ test_that("get_road() classifies natural paths as PN", {
     .package = "happign"
   )
 
-  road <- get_road(Rsequoia2:::seq_poly)
+  road <- get_road(Rsequoia2:::seq_poly, verbose = FALSE)
 
   expect_equal(
     unique(road[[seq_field("type")$name]]),
@@ -120,7 +114,7 @@ test_that("get_road() classifies bretelles as RN when importance >= 2", {
     .package = "happign"
   )
 
-  road <- get_road(Rsequoia2:::seq_poly)
+  road <- get_road(Rsequoia2:::seq_poly, verbose = FALSE)
 
   expect_equal(road[[seq_field("type")$name]], c("RN", "RN"))
 })

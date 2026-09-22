@@ -7,12 +7,13 @@
 seq_parca(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Path to the directory. Defaults to the current
-working directory.}
+\item{dirname}{\code{character}; Path to the Sequoia project directory.
+Defaults to the current working directory.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, filename is overwritten.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
 An \code{sf} object

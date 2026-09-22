@@ -4,7 +4,7 @@
 \alias{get_com_line}
 \title{Retrieve and assemble commune boundary lines around an area}
 \usage{
-get_com_line(x, graphic = FALSE, verbose = TRUE)
+get_com_line(x, graphic = FALSE, verbose = TRUE, poly = NULL)
 }
 \arguments{
 \item{x}{An \code{sf} object used as the input area.}
@@ -12,7 +12,10 @@ get_com_line(x, graphic = FALSE, verbose = TRUE)
 \item{graphic}{Logical. If \code{TRUE}, line geometries are clipped to a
 500 m convex buffer around \code{x} for graphical purposes.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
+
+\item{poly}{Optional preloaded commune polygon layer. Supplying it avoids
+downloading the same source data again.}
 }
 \value{
 An \code{sf} object of type \code{LINESTRING} representing commune boundaries.

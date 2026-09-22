@@ -11,7 +11,7 @@ ua_check_idu(ua, parca, verbose = FALSE)
 
 \item{parca}{\code{sf} Object containing cadastral parcels.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 \code{TRUE} if IDU values are consistent; \code{FALSE} otherwise,

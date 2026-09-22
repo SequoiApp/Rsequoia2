@@ -14,8 +14,7 @@ safe_add_seq_table(wb, sheet, fun, verbose = TRUE)
 \item{fun}{Function. A zero-argument builder function returning a table
 specification list.}
 
-\item{verbose}{Logical. If \code{TRUE}, prints an \code{OK} or \code{BAD} message with
-\code{cli} for this table.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 A list with:

@@ -7,8 +7,8 @@
 #' `"mns"` or `"mnh"`.
 #' @param cache `character`; Cache directory. If `NULL`, the appropriate
 #' Rsequoia2 LIDAR cache is used, see [Rsequoia2::seq_cache()].
-#' @param overwrite `logical`; If `TRUE`, re-download existing tiles.
-#' @param verbose `logical`; If `TRUE`, display messages.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing files.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #' @param max_tries `integer`; Maximum number of download attempts.
 #'
 #' @return Invisibly returns a `character` vector of local tile paths.
@@ -45,7 +45,8 @@ download_lidar <- function(
   dalle <- happign::get_wfs(
     x = sf::st_make_valid(x),
     layer = layer,
-    predicate = happign::intersects()
+    predicate = happign::intersects(),
+    verbose = FALSE
   )
 
   if (nrow(dalle) == 0) {
@@ -55,8 +56,17 @@ download_lidar <- function(
   urls <- dalle$url
   destfiles <- file.path(cache, dalle$name_download)
 
+  to_download <- overwrite | !file.exists(destfiles)
   if (verbose){
-    cli::cli_alert_info("Downloading {toupper(key)} LIDAR tiles.")
+    if (any(to_download)) {
+      cli::cli_alert_info(
+        "Downloading {sum(to_download)} {toupper(key)} LiDAR tile{?s}..."
+      )
+    } else {
+      cli::cli_alert_info(
+        "Using {length(destfiles)} cached {toupper(key)} LiDAR tile{?s}."
+      )
+    }
   }
 
   seq_multi_download(
@@ -126,9 +136,7 @@ get_lidar <- function(
     options = c("-hidenodata")
   )
 
-  if (verbose) {
-    cli::cli_alert_info("Raster size optimization...")
-  }
+  if (verbose) {cli::cli_progress_message("Optimizing raster...")}
 
   x_clean <- sf::st_transform(x_clean, terra::crs(vrt))
   x_vect <- terra::vect(x_clean)
@@ -201,12 +209,15 @@ seq_lidar <- function(
     path <- normalizePath(path, winslash = "/", mustWork = FALSE)
 
     if (file.exists(path) && !overwrite) {
-      cli::cli_warn(c(
-        "{.file {basename(path)}} already exists.",
-        "i" = "Use {.arg overwrite = TRUE} to replace it."
-      ))
+      if (verbose) {
+        cli::cli_alert_info("Using existing {.file {basename(path)}}.")
+      }
 
       return(path)
+    }
+
+    if (verbose) {
+      {cli::cli_progress_message("Downloading {toupper(one_key)} LiDAR product...")}
     }
 
     r <- get_lidar(

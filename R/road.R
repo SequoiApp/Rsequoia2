@@ -5,6 +5,7 @@
 #'   download area.
 #' @param private_in `logical`; If `TRUE`, roads fully contained in `x` are
 #'   marked as private.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return An `sf` object containing road sections with standardized fields,
 #'   or `NULL` if no roads are found.
@@ -34,10 +35,14 @@
 #' The function uses CRS EPSG:2154 for buffering and spatial operations.
 #'
 #' @export
-get_road <- function(x, buffer = 1000, private_in = TRUE) {
+get_road <- function(x, buffer = 1000, private_in = TRUE, verbose = TRUE) {
 
   crs <- 2154
   x <- sf::st_transform(x, crs)
+
+  if (verbose){
+    cli::cli_alert_info("Downloading road dataset...")
+  }
 
   # Retrieve roads around the input area.
   roads <- happign::get_wfs(
@@ -160,10 +165,16 @@ seq_road <- function(
 
   if (verbose){
     cli::cli_h1("ROAD LINES")
+    pb <- cli::cli_progress_message("Downloading road layer...")
   }
 
   # Retrieve road section
-  roads <- get_road(parca, buffer = buffer, private_in = private_in)
+  roads <- get_road(
+    parca,
+    buffer = buffer,
+    private_in = private_in,
+    verbose = FALSE
+  )
 
   # Exit early if nothing to write
   if (!is.null(roads) ) {
@@ -177,6 +188,8 @@ seq_road <- function(
       verbose = verbose,
       overwrite = overwrite
     )
+  } else if (verbose) {
+    cli::cli_alert_warning("No road features found: layer not written.")
   }
 
   return(invisible(c(roads) |> as.list()))

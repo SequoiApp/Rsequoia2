@@ -15,6 +15,8 @@
 #'   }
 #' @param cache A character string defining the cache directory.
 #' Defaults to a package-specific cache directory.
+#' @param verbose `logical`; If `TRUE`, display progress and informational
+#'   messages.
 #'
 #' @return
 #' An `sf` object containing the region features intersecting `x`.
@@ -36,7 +38,8 @@
 get_ifn <- function(
     x,
     key,
-    cache = seq_cache("ifn")$path) {
+    cache = seq_cache("ifn")$path,
+    verbose = TRUE) {
 
   # key check
   if (length(key) != 1 || !key %in% get_keys("ifn")) {
@@ -65,8 +68,10 @@ get_ifn <- function(
 
   # download / unzip
   if (!file.exists(zipfile)) {
-    cli::cli_inform("Downloading {.val {key}} data")
-    curl::curl_download(url, zipfile)
+    if (verbose) {
+      cli::cli_alert_info("Downloading IFN {.val {key}} data...")
+    }
+    curl::curl_download(url, zipfile, quiet = TRUE)
   }
 
   if (!dir.exists(unzip_dir)) {
@@ -110,10 +115,10 @@ get_ifn <- function(
 #'
 #' @param id_ser `character` used to identify pedology reports.
 #'   It can be got by using `get_ifn("ser")$codeser`.
-#' @param dirname Output directory where PDF files are saved.
-#' @param overwrite `logical`; whether to overwrite existing files.
-#'   Defaults to `FALSE`.
-#' @param verbose `logical`. If `TRUE`, display progress messages.
+#' @param dirname `character`; Output directory for downloaded PDF files.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing files.
+#' @param verbose `logical`; If `TRUE`, display progress and informational
+#'   messages.
 #'
 #' @return
 #' Invisibly returns the normalized path to `out_dir`. Returns
@@ -150,7 +155,7 @@ get_ser_pdf <- function(
   base_url <- "https://inventaire-forestier.ign.fr/IMG/pdf/"
 
   if (verbose) {
-    cli::cli_h1("Downloading ser PDFs")
+    pb <- cli::cli_progress_message("Downloading IFN SER reports...")
   }
 
   # Download loop ----
@@ -168,7 +173,7 @@ get_ser_pdf <- function(
     }
 
     if (verbose) {
-      cli::cli_alert("Downloading {.file {file_name}}")
+      cli::cli_alert("{.file {file_name}} saved")
     }
 
     tryCatch(
@@ -194,15 +199,10 @@ get_ser_pdf <- function(
 #' Retrieves official IGN regional datasets intersecting the project
 #' area and writes the resulting layers to disk.
 #'
-#' @param dirname `character` Path to the project directory.
-#'   Defaults to the current working directory.
+#' @inheritParams seq_write
 #' @param key `character`; List of ifn layer identifiers to download. If not
 #'   provided, the function uses `get_keys("ifn")` to automatically select all
-#'   MNHN layers defined in the Sequoia configuration (`inst/config/seq_layers.yaml`)
-#' @param verbose `logical`; whether to display informational messages.
-#'   Defaults to `TRUE`.
-#' @param overwrite `logical`; whether to overwrite existing files.
-#'   Defaults to `FALSE`.
+#'   IFN layers defined in the Sequoia configuration (`inst/config/seq_layers.yaml`)
 #'
 #' @details
 #' Regional datasets are retrieved using [get_ifn()] based on the
@@ -229,13 +229,12 @@ seq_ifn <- function(
     overwrite = FALSE
 ) {
 
-  # valid key + output keys
   type_key <- c(
-    ser    = "v.ifn.ser.poly",
+    ser = "v.ifn.ser.poly",
     ser_ar = "v.ifn.ser_ar.poly",
-    rfn    = "v.ifn.rfn.poly",
-    rfd    = "v.ifn.rfd.poly",
-    zp     = "v.ifn.zp.poly"
+    rfn = "v.ifn.rfn.poly",
+    rfd = "v.ifn.rfd.poly",
+    zp = "v.ifn.zp.poly"
   )
 
   if (!all(key %in% names(type_key))) {
@@ -244,62 +243,76 @@ seq_ifn <- function(
     )
   }
 
-  if (verbose){
+  if (verbose) {
     cli::cli_h1("IFN")
   }
 
-  # read project area once
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  identifier <- seq_field("identifier")$name
-  id <- unique(parca[[identifier]])
+  id <- unique(parca[[seq_field("identifier")$name]])
 
-  out <- vector("list", length(key))
-  names(out) <- key
-
-  # main loop
-  for (k in key) {
-
-    region <- get_ifn(parca, key = k)
-
-    if (is.null(region) || nrow(region) == 0) {
-      if (verbose) {
-        cli::cli_alert_info(
-          "No {.val {k}} features found: layer not written."
-        )
-      }
-      next
-    }
-
-    out[[k]] <- seq_write(
-      region,
-      type_key[[k]],
-      dirname   = dirname,
-      id        = id,
-      verbose   = verbose,
-      overwrite = overwrite
+  pb <- NULL
+  if (verbose) {
+    pb <- cli::cli_progress_bar(
+      format = paste0(
+        "{cli::pb_spin} Searching IFN layer: {.val {k}} | ",
+        "[{cli::pb_current}/{cli::pb_total}]"
+      ),
+      total = length(key),
+      auto_terminate = FALSE
     )
-
-    if (k == "ser"){
-      get_ser_pdf(
-        region,
-        dirname   = file.path(dirname, seq_layer("v.ifn.ser.poly")$path),
-        overwrite = overwrite,
-        verbose   = verbose
-      )
-    }
-
-    if (verbose) {
-      cli::cli_alert_success(
-        "{.val {k}} layer written with {nrow(region)} feature{?s}."
-      )
-    }
   }
 
-  out <- Filter(Negate(is.null), out)
+  path <- list()
+  ser_region <- NULL
 
-  if (length(out) == 0) {
+  for (k in key) {
+
+    if (verbose) {
+      cli::cli_progress_update(id = pb, force = TRUE)
+    }
+
+    f_path <- tryCatch({
+      region <- get_ifn(parca, key = k, verbose = FALSE)
+
+      if (is.null(region) || nrow(region) == 0) {
+        NULL
+      } else {
+        if (identical(k, "ser")) {
+          ser_region <- region
+        }
+
+        seq_write(
+          region,
+          type_key[[k]],
+          dirname,
+          id,
+          verbose = TRUE,
+          overwrite = overwrite
+        )
+      }
+    }, error = function(e) NULL)
+
+    if (!is.null(f_path)) {
+      path <- c(path, f_path)
+    }
+
+  }
+
+  if (!is.null(ser_region)) {
+    get_ser_pdf(
+      ser_region$codeser,
+      dirname = file.path(dirname, seq_layer("v.ifn.ser.poly")$path),
+      overwrite = overwrite,
+      verbose = verbose
+    )
+  }
+
+  if (!length(path)) {
+    if (verbose){
+      cli::cli_alert_info("No IFN layer found.")
+    }
     return(invisible(NULL))
   }
 
-  invisible(out)
+  invisible(path)
 }

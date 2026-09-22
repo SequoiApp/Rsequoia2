@@ -29,7 +29,7 @@ seq_desc_fields <- function() {
 #' @param ua `sf` object containing analysis units;
 #' must contain fields used by `ug_keys`.
 #' @param separator `character`, default `"."`. Separator between keys.
-#' @param verbose `logical` If `TRUE`, display progress messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return `sf` object UA with UG field filled.
 #'
@@ -82,7 +82,7 @@ ua_generate_ug <- function(ua, separator = ".", verbose = TRUE) {
 #'
 #' @param ua `sf` object containing analysis units;
 #' with at least the UG identifier field and relevant attribute fields.
-#' @param verbose `logical` If `TRUE`, display progress messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return An `sf` object identical to `ua`, with an additional logical column
 #' `ug_valid` indicating if each row is consistent with the dominant UG description.

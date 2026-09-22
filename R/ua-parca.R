@@ -55,7 +55,7 @@ ua_check_coverage <- function(ua, parca) {
 #'
 #' @param ua `sf` Object containing analysis units.
 #' @param parca `sf` Object containing cadastral parcels.
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return The input `ua` object with corrected IDU values.
 #'
@@ -122,7 +122,7 @@ ua_repair_idu <- function(ua, parca, verbose = TRUE) {
 #'
 #' @param ua `sf` Object containing analysis units.
 #' @param parca `sf` Object containing cadastral parcels.
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return `TRUE` if IDU values are consistent; `FALSE` otherwise,
 #' with CLI warnings.
@@ -211,7 +211,7 @@ ua_update_parca_fields <- function(ua, parca) {
 #' cartographic area.
 #'
 #' @param ua `sf` object containing analysis units.
-#' @param verbose `logical` If `TRUE`, display progress messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return `sf` object with updated areas
 #'

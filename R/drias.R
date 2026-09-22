@@ -216,7 +216,7 @@ drias_ombro <- function(txt){
 #' Invalid climate points (where precipitation or evapotranspiration are entirely
 #' equal to zero across all months) are automatically excluded to avoid biased averages.
 #'
-#' @param txt `character(1)`. Path to a DRIAS `.txt` file downloaded from the
+#' @param txt `character`. Path to a DRIAS `.txt` file downloaded from the
 #' [DRIAS portal](https://www.drias-climat.fr/)
 #'
 #' @return A `data.frame` with one row per month and period
@@ -313,7 +313,9 @@ seq_drias <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
     ))
   }
 
-  if (verbose) {cli_alert_info("Writing DRIAS data to: {.path {filepath}}")}
+  if (verbose) {
+    cli_alert_info("Generating DRIAS workbook at {.path {filepath}}...")
+  }
 
   txt <- txt[1]  # ensure single file
   drias_metadata <- drias_read_metadata(txt)

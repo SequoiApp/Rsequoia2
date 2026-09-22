@@ -12,7 +12,7 @@ mf_get_climatology(x, cache = seq_cache("meteo")$path, verbose = TRUE)
 \item{cache}{\code{character}; Storage directory. Defaults to the user cache
 directory (see \code{\link[tools:R_user_dir]{tools::R_user_dir()}})}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 A \code{data.frame} containing monthly climatology records for the nearest stations.

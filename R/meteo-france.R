@@ -6,7 +6,7 @@
 #'
 #' @param x `sf` or `sfc`.
 #' @param n `integer`; number of nearest stations to return. Default is 1.
-#' @param verbose `logical` If `TRUE`, display progress messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return An `sf` object containing the nearest meteorological stations.
 #'
@@ -41,8 +41,8 @@ mf_get_nearest_station <- function(x, n = 1, verbose = TRUE){
 #' The fiche contains station metadata and long-term climatological summaries.
 #'
 #' @param x `sf` or `sfc`
-#' @param dirname `character`; directory where the PDF will be saved
-#' @param verbose `logical` If `TRUE`, display progress messages.
+#' @param dirname `character`; Output directory for the generated workbook.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return Path to the downloaded PDF
 #'
@@ -112,7 +112,7 @@ mf_get_metadata <- function(){
 #' @param x `sf` or `sfc`.
 #' @param cache `character`; Storage directory. Defaults to the user cache
 #' directory (see [tools::R_user_dir()])
-#' @param verbose `logical` If `TRUE`, display progress messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return
 #' A `data.frame` containing monthly climatology records for the nearest stations.
@@ -336,7 +336,9 @@ seq_meteo_france <- function(
 
   wb <- openxlsx2::wb_load(system.file("xlsx/CLIMAT_MF.xlsx", package = "Rsequoia2"))
 
-  if (verbose) {cli_alert_info("Writing Meteo-France data to: {.path {filepath}}")}
+  if (verbose) {
+    cli_alert_info("Generating Meteo-France workbook at {.path {filepath}}...")
+  }
 
   wb <- openxlsx2::wb_clean_sheet(wb, sheet = 1, styles = FALSE) |>
     openxlsx2::wb_add_data(sheet = 1, mf_metadata)

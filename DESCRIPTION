@@ -1,6 +1,6 @@
 Package: Rsequoia2
 Title: R package to help french forest manager
-Version: 0.0.10
+Version: 0.0.11
 Authors@R: c(
     person("Matthieu", "Chevereau", , "matthieu.chevereau@hotmail.com", role = c("aut", "cre")),
     person("Paul", "Carteron", , "carteronpaul@gmail.com", role = "aut")
@@ -35,7 +35,7 @@ Suggests:
     testthat (>= 3.3.0)
 Encoding: UTF-8
 Config/roxygen2/markdown: TRUE
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0
 Config/Needs/website: rmarkdown
 Config/testthat/edition: 3
 LazyData: true

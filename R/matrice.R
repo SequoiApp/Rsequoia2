@@ -4,12 +4,9 @@
 #' information (e.g., `IDENTIFIANT`, `PROPRIETAIRE`) and cadastral attributes
 #' (`CODE_INSEE`, `PREFIXE`, `SECTION`, `NUMERO`, `LIEU_DIT`).
 #'
-#' @param dirname `character` Path to the directory. Defaults to the current
-#' working directory.
+#' @inheritParams seq_write
 #' @param id `character` Identifier of the forest. Typically the name of the
 #' forest
-#' @param overwrite `logical` If `TRUE`, filename is overwritten.
-#' @param verbose `logical` If `TRUE`, display messages.
 #'
 #' @return Invisibly returns the path to the created file.
 #' @export
@@ -40,8 +37,7 @@ create_matrice <- function(dirname = ".", id = "MY_FOREST", overwrite = FALSE, v
 
 #' Read matrice and format for Rsequoia2
 #'
-#' @param dirname `character` Directory where the matrice file is located.
-#' Defaults to the current working directory.
+#' @inheritParams seq_read
 #'
 #' @importFrom openxlsx2 read_xlsx
 #'

@@ -8,7 +8,7 @@
 #' @param ua `sf` object containing analysis units.
 #' @param parca `sf` object, typically produced by [Rsequoia2::seq_parca()],
 #'   containing cadastral parcels.
-#' @param verbose `logical` If `TRUE`, display progress messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #' @param check `logical` If `TRUE`, ask user.
 #'
 #' @return An updated `sf` object identical to `ua`, but with:

@@ -9,7 +9,7 @@ ua_repair_wooded(ua, verbose = TRUE)
 \arguments{
 \item{ua}{\code{sf} object containing UA polygons.}
 
-\item{verbose}{Logical. Should messages be printed?}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 The repaired \code{ua} object.

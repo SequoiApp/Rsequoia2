@@ -9,7 +9,7 @@ ua_to_occupation(ua, verbose = TRUE)
 \arguments{
 \item{ua}{\code{sf} object containing analysis units.}
 
-\item{verbose}{\code{boolean} if \code{TRUE} print messages}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 An \code{sf} object aggregated by occupation status.

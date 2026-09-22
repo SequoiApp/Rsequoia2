@@ -4,7 +4,7 @@
 \alias{get_com_point}
 \title{Retrieve commune representative points around an area}
 \usage{
-get_com_point(x, graphic = FALSE, verbose = TRUE)
+get_com_point(x, graphic = FALSE, verbose = TRUE, poly = NULL)
 }
 \arguments{
 \item{x}{An \code{sf} object used as the input area.}
@@ -13,7 +13,10 @@ get_com_point(x, graphic = FALSE, verbose = TRUE)
 intersection between commune polygons and a 500 m convex buffer
 around \code{x}, for cartographic display.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
+
+\item{poly}{Optional preloaded commune polygon layer. Supplying it avoids
+downloading the same source data again.}
 }
 \value{
 An \code{sf} object of type \code{POINT} representing commune centroids.

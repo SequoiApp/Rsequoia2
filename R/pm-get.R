@@ -225,7 +225,7 @@ get_pm <- function(
 #' detailed parcel table.
 #'
 #' @param pm A legal entity parcel data frame returned by [get_pm()].
-#' @param verbose If `TRUE`, display progress messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return A list with:
 #' \describe{

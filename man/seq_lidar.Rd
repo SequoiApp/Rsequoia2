@@ -15,7 +15,7 @@ seq_lidar(
 )
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 
 \item{key}{\code{character}; LiDAR product(s) to create. One or more of \code{"mnt"},
@@ -30,9 +30,9 @@ Defaults to EPSG:2154.}
 \item{cache}{\code{character}; Cache directory. If \code{NULL}, the appropriate
 Rsequoia2 LIDAR cache is used, see \code{\link[=seq_cache]{seq_cache()}}.}
 
-\item{overwrite}{\code{logical}; If \code{TRUE}, re-download existing tiles.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 Invisibly returns a named \code{list} of created raster file paths.
