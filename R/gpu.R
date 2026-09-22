@@ -6,7 +6,8 @@
 #' @param x `sf` or `sfc`; Geometry located in France.
 #' @param key `character`; Layer to download.
 #'   Must be one of from `get_keys("gpu", reduce = FALSE)`
-#' @param verbose `logical`; If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational
+#'   messages.
 #'
 #' @return `sf` object from `sf` package
 #'
@@ -90,17 +91,11 @@ get_gpu <- function(x,
 #' Retrieves applicable GPU (Geoportail de l'Urbanisme) layers intersecting
 #' and surrounding the project area, and writes the resulting layer to disk.
 #'
-#' @param dirname Character. Root directory of the project.
-#'   Defaults to the current directory.
-#'
+#' @inheritParams seq_write
 #' @param key `character`; List of layer identifiers to download. If not
 #'   provided, the function uses `get_keys("gpu", reduce = FALSE)` to
 #'   automatically select all GPU layers defined in the Sequoia configuration
 #'   (`inst/config/seq_layers.yaml`)
-#' @param verbose Logical. Whether to display progress messages.
-#'   Defaults to `TRUE`.
-#' @param overwrite Logical. Whether to overwrite existing output files.
-#'   Defaults to `FALSE`.
 #'
 #' @return
 #' Invisibly returns a named list of file paths corresponding to the
@@ -147,39 +142,60 @@ seq_gpu <- function(
 
   paths <- vector("list", length(key))
   names(paths) <- key
+  valid <- character()
+  empty <- character()
+  failed <- character()
 
-  for (k in key) {
-
-    f <- get_gpu(
-      x = geom,
-      key = k,
-      verbose = FALSE
-    )
-
-    if (is.null(f)) {
-      if (verbose) {
-        cli::cli_alert_info("GPU {.field {k}}: no features found")
-      }
-      next
-    }
-
-    f[[identifier]] <- id
-
-    paths[[k]] <- seq_write(
-      x         = sf::st_transform(f, 2154),
-      key       = k,
-      dirname   = dirname,
-      id        = id,
-      verbose   = verbose,
-      overwrite = overwrite
+  pb <- NULL
+  if (verbose) {
+    pb <- cli::cli_progress_bar(
+      format = paste0(
+        "{cli::pb_spin} Searching GPU layer: {.val {k}} | ",
+        "[{cli::pb_current}/{cli::pb_total}]"
+      ),
+      total = length(key),
+      auto_terminate = FALSE
     )
   }
 
-  paths <- paths[!vapply(paths, is.null, logical(1))]
+  path <- list()
+  for (k in key) {
 
-  if (!length(paths)) {
+    if (verbose) {
+      cli::cli_progress_update(id = pb, force = TRUE)
+    }
+
+    f_path <- tryCatch({
+      f <- get_gpu(x = geom, key = k, verbose = FALSE)
+
+      if (is.null(f) || nrow(f) == 0) {
+        NULL
+      } else {
+        f[[identifier]] <- id
+
+        seq_write(
+          sf::st_transform(f, 2154),
+          k,
+          dirname,
+          id,
+          verbose = verbose,
+          overwrite = overwrite
+        )
+      }
+    }, error = function(e) NULL)
+
+    if (!is.null(f_path)) {
+      path <- c(path, f_path)
+    }
+
+  }
+
+  if (!length(path)) {
+    if (verbose){
+      cli::cli_alert_info("No GPU layer found.")
+    }
     return(invisible(NULL))
   }
 
-  invisible(paths)
+  invisible(path)
 }

@@ -32,9 +32,9 @@ precise the resolution(see \code{\link[happign:get_wmts]{happign::get_wmts()}})}
 \item{crs}{\code{numeric} or \code{character}; CRS of the returned raster (see
 \code{\link[happign:get_wmts]{happign::get_wmts()}})}
 
-\item{overwrite}{\code{logical}; If \code{TRUE}, file is overwritten.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 \code{SpatRaster} object from \code{terra} package

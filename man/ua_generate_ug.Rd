@@ -12,7 +12,7 @@ must contain fields used by \code{ug_keys}.}
 
 \item{separator}{\code{character}, default \code{"."}. Separator between keys.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 \code{sf} object UA with UG field filled.

@@ -4,7 +4,7 @@
 \alias{get_road}
 \title{Retrieve road sections around an area}
 \usage{
-get_road(x, buffer = 1000, private_in = TRUE)
+get_road(x, buffer = 1000, private_in = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{x}{An \code{sf} object defining the input area.}
@@ -14,6 +14,8 @@ download area.}
 
 \item{private_in}{\code{logical}; If \code{TRUE}, roads fully contained in \code{x} are
 marked as private.}
+
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 An \code{sf} object containing road sections with standardized fields,

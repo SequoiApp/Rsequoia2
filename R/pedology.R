@@ -34,11 +34,6 @@ get_pedology <- function(x) {
     return(NULL)
   }
 
-  # Intersection
-  intersect <- sf::st_intersection(pedology, x) |>
-    sf::st_cast("POLYGON") |>
-    suppressWarnings()
-
   return(invisible(pedology))
 }
 
@@ -49,8 +44,9 @@ get_pedology <- function(x) {
 #'
 #' @param id_ucs `character` used to identify pedology reports.
 #'   It can be got by using `get_pedology()$id_ucs`.
-#' @param dirname `character`; directory where the PDF will be saved.
-#' @param verbose `logical`. If `TRUE`, display progress messages.
+#' @param dirname `character`; Output directory for downloaded PDF files.
+#' @param verbose `logical`; If `TRUE`, display progress and informational
+#'   messages.
 #'
 #' @return
 #' Invisibly returns the normalized path to `out_dir`. Returns
@@ -96,14 +92,16 @@ get_pedology_pdf <- function(
 
     tryCatch(
       {
-        curl::curl_download(url, filepath, quiet = !verbose)
+        curl::curl_download(url, filepath, quiet = TRUE)
         paths <- c(paths, setNames(filepath, tools::file_path_sans_ext(filename)))
         if (verbose){
-          cli::cli_alert_success("UCS {id} saved to: {.path {dirname}}")
+          cli::cli_alert("{.file {filename}} saved")
         }
       },
       error = function(e) {
-        cli::cli_alert_warning("Failed to download {.file {filename}}")
+        if (verbose) {
+          cli::cli_alert_warning("Failed to download {.file {filename}}")
+        }
       }
     )
   }
@@ -117,12 +115,7 @@ get_pedology_pdf <- function(
 #' writes the resulting layer to disk and downloads associated pedology
 #' PDF reports into the project directory.
 #'
-#' @param dirname `character` Path to the project directory.
-#'   Defaults to the current working directory.
-#' @param verbose `logical`; whether to display informational messages.
-#'   Defaults to `TRUE`.
-#' @param overwrite `logical`; whether to overwrite existing files.
-#'   Defaults to `FALSE`.
+#' @inheritParams seq_write
 #'
 #' @details
 #' Pedology polygon features are retrieved using [get_pedology()].
@@ -152,11 +145,20 @@ seq_pedology <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
 
   if (verbose){
     cli::cli_h1("PEDOLOGY")
+    pb <- cli::cli_progress_message("Downloading pedology layer...")
   }
 
   # Retrieve pedology ----
-  pedo <- get_pedology(parca) |>
-    sf::st_intersection(sf::st_geometry(parca))
+  pedo <- get_pedology(parca)
+  if (is.null(pedo)){
+    return(NULL)
+  }
+
+  pedo <- pedo |>
+    sf::st_transform(sf::st_crs(parca)) |>
+    sf::st_intersection(parca |> sf::st_geometry() |> sf::st_union()) |>
+    sf::st_cast("POLYGON") |>
+    suppressWarnings()
 
   pedo_path <- NULL
   if (!is.null(pedo)){

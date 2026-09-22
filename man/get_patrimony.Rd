@@ -15,7 +15,7 @@ Must be one of from \code{get_keys("pat")}}
 \item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
 the download area.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 \code{sf} object from \code{sf} package

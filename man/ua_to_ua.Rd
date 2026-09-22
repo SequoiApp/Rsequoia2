@@ -12,7 +12,7 @@ ua_to_ua(ua, parca, verbose = TRUE, check = interactive())
 \item{parca}{\code{sf} object, typically produced by \code{\link[=seq_parca]{seq_parca()}},
 containing cadastral parcels.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 
 \item{check}{\code{logical} If \code{TRUE}, ask user.}
 }

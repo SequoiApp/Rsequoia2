@@ -3,7 +3,7 @@
 #' Search SIREN identifiers by matching normalized patterns against company names.
 #'
 #' @param pattern Character vector of search patterns.
-#' @param verbose Logical; print messages and results.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return A data.frame of matching records (invisible).
 #'

@@ -7,7 +7,7 @@
 seq1_id(dirname = ".")
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the file \emph{PARCA} is located.
+\item{dirname}{\code{character}; Directory containing the legacy \emph{PARCA} file.
 Defaults to the current working directory.}
 }
 \value{

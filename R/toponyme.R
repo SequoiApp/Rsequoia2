@@ -7,7 +7,7 @@
 #'
 #' @param x An `sf` object defining the input area of interest.
 #' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return An `sf` object containing toponymic point features with standardized
 #' attribute fields:
@@ -161,10 +161,11 @@ seq_toponyme <- function(
 
   if (verbose){
     cli::cli_h1("TOPONYME")
+    pb <- cli::cli_progress_message("Downloading toponyme layer...")
   }
 
   # Retrieve toponyms
-  topo <- get_toponyme(parca, buffer = buffer, verbose = verbose)
+  topo <- get_toponyme(parca, buffer = buffer, verbose = FALSE)
 
   # Exit early if nothing to write
   if (!is.null(topo)){
@@ -178,6 +179,8 @@ seq_toponyme <- function(
       verbose = verbose,
       overwrite = overwrite
     )
+  } else if (verbose) {
+    cli::cli_alert_warning("No toponym features found: layer not written.")
   }
 
   return(invisible(c(topo) |> as.list()))

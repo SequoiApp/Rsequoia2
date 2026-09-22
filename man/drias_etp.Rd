@@ -7,7 +7,7 @@
 drias_etp(txt)
 }
 \arguments{
-\item{txt}{\code{character(1)}. Path to a DRIAS \code{.txt} file downloaded from the
+\item{txt}{\code{character}. Path to a DRIAS \code{.txt} file downloaded from the
 \href{https://www.drias-climat.fr/}{DRIAS portal}}
 }
 \value{

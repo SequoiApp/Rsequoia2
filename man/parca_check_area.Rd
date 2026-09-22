@@ -14,7 +14,7 @@ parcels.}
 
 \item{rtol}{\code{numeric} Relative difference. Default to \code{0.05}}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 The input \code{parca} with four additional fields:

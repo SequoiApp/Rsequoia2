@@ -157,7 +157,7 @@ quiet <- function(expr) {
 #' @param expr Code to capture
 #' @param times Number of retry
 #' @param wait Time to wait between retry
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @export
 seq_retry <- function(expr, times = 3, wait = 0.5, verbose = TRUE) {
@@ -265,9 +265,9 @@ check_insee <- function(insee) {
 #'
 #' @param urls `character`; Remote file URLs.
 #' @param destfiles `character`; Local destination paths.
-#' @param overwrite `logical(1)`; If `TRUE`, re-download existing files.
-#' @param verbose `logical(1)`; If `TRUE`, show download progress and messages.
-#' @param max_tries `integer(1)`; Maximum number of download attempts.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing files.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
+#' @param max_tries `integer`; Maximum number of download attempts.
 #'
 #' @return Invisibly returns `TRUE` if all required files are available.
 #'

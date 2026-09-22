@@ -13,7 +13,7 @@ seq_terrain(
 )
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 
 \item{agg}{\code{numeric}; Target resolution (in meters) to which the DEM is
@@ -21,9 +21,9 @@ aggregated if its native resolution is finer. Default: \code{5}.}
 
 \item{unit}{\code{character}; "percent", "radians" or "degrees". Default to "percent".}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 Invisibly returns a named \code{character} vector of output raster paths.

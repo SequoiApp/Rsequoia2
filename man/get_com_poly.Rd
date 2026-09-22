@@ -11,7 +11,7 @@ get_com_poly(x, buffer = 2000, verbose = TRUE)
 
 \item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 An \code{sf} object of type \code{POLYGON} containing commune boundaries,

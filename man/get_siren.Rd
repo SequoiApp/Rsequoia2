@@ -9,7 +9,7 @@ get_siren(pattern, verbose = TRUE)
 \arguments{
 \item{pattern}{Character vector of search patterns.}
 
-\item{verbose}{Logical; print messages and results.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 A data.frame of matching records (invisible).

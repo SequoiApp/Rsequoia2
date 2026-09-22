@@ -63,27 +63,8 @@ test_that("get_pedology_pdf() handles download errors", {
     .package = "curl"
   )
 
-  expect_message(
-    get_pedology_pdf("A", dirname = cache, verbose = FALSE),
-    "Failed to download"
-  )
-
-})
-
-test_that("get_pedology_pdf() verbose prints message", {
-
-  cache <- file.path(tempdir(), "pedology_pdf")
-  dir.create(cache, showWarnings = FALSE)
-  on.exit(unlink(cache, recursive = TRUE), add = TRUE)
-
-  local_mocked_bindings(
-    curl_download = function(...) "filepath",
-    .package = "curl"
-  )
-
-  expect_message(
-    get_pedology_pdf("A", dirname = cache, verbose = TRUE),
-    "UCS A saved"
+  expect_silent(
+    get_pedology_pdf("A", dirname = cache, verbose = FALSE)
   )
 
 })

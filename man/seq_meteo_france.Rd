@@ -12,15 +12,16 @@ seq_meteo_france(
 )
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 
 \item{cache}{\code{character}; Storage directory. Defaults to the user cache
 directory (see \code{\link[tools:R_user_dir]{tools::R_user_dir()}})}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
 A named \code{list} of file paths :

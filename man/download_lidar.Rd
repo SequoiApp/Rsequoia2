@@ -22,9 +22,9 @@ download_lidar(
 \item{cache}{\code{character}; Cache directory. If \code{NULL}, the appropriate
 Rsequoia2 LIDAR cache is used, see \code{\link[=seq_cache]{seq_cache()}}.}
 
-\item{overwrite}{\code{logical}; If \code{TRUE}, re-download existing tiles.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 
 \item{max_tries}{\code{integer}; Maximum number of download attempts.}
 }

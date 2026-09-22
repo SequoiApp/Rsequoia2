@@ -5,7 +5,7 @@
 #'
 #' @param cache Cache directory. If `NULL`, uses package cache directory.
 #' @param update Force re-download even if cached.
-#' @param verbose Display progress messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return Named list of data frames:
 #' - `com`: communes

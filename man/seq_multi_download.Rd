@@ -17,11 +17,11 @@ seq_multi_download(
 
 \item{destfiles}{\code{character}; Local destination paths.}
 
-\item{overwrite}{\code{logical(1)}; If \code{TRUE}, re-download existing files.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 
-\item{verbose}{\code{logical(1)}; If \code{TRUE}, show download progress and messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 
-\item{max_tries}{\code{integer(1)}; Maximum number of download attempts.}
+\item{max_tries}{\code{integer}; Maximum number of download attempts.}
 }
 \value{
 Invisibly returns \code{TRUE} if all required files are available.

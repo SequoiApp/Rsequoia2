@@ -7,7 +7,7 @@
 read_matrice(dirname = ".")
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 }
 \value{

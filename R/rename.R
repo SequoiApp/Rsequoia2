@@ -10,7 +10,7 @@
 #' @param path Character. Path to the Sequoia directory.
 #' @param old_id Character. Identifier to replace in file names.
 #' @param new_id Character. New identifier to use in file names and GeoPackage attributes.
-#' @param verbose Logical. If `TRUE`, print a console report with `cli`.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return Invisibly returns a data frame with one row per GeoPackage and the
 #'   columns `file`, `status`, and `message`.

@@ -12,7 +12,7 @@
 #' system (see [happign::get_wms_raster()])
 #' @param crs `numeric` or `character`; CRS of the returned raster (see
 #' [happign::get_wms_raster()])
-#' @param verbose `logical`; If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return `SpatRaster` object from `terra` package
 #'
@@ -28,34 +28,34 @@ get_dem <- function(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE) {
   x <- sf::st_transform(x, 2154)
   x_env <- seq_envelope(x, buffer)
 
-  if (verbose) {cli::cli_alert_info("Downloading DEM dataset...")}
+  if (verbose) {
+    pb <- cli::cli_progress_message("Downloading DEM dataset...", .auto_close = FALSE)
+  }
 
-  pb <- cli::cli_progress_bar("DEM", total = nrow(x_env), clear = TRUE)
   tmp <- tempdir()
   files <- c()
   for (i in seq_len(nrow(x_env))){
 
-    if (verbose) {cli::cli_progress_update(id = pb)}
-
     file <- sprintf(file.path(tmp, sprintf("r_%03d.tif", i)))
 
     r <- happign::get_wms_raster(
-      x_env[i, ],
+      x = x_env[i, ],
       layer = "ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES",
       rgb = FALSE,
       res = res,
       crs = crs,
       filename = file,
       overwrite = TRUE,
-      verbose = TRUE) |> suppressWarnings()
+      verbose = verbose) |> suppressWarnings()
 
     files <- c(files, file)
+
   }
-  cli::cli_progress_done(id = pb)
 
+  if (verbose) {cli::cli_process_done(pb)}
+
+  if (verbose) {cli::cli_progress_message("Optimizing raster...")}
   v <- terra::vrt(files, options = c("-hidenodata"))
-
-  if (verbose) {cli::cli_alert_info("Raster size optimization...")}
   r_mask <- terra::mask(v, x_env)
   names(r_mask) <- "dem_rgealti"
 
@@ -85,14 +85,13 @@ get_dsm <- function(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE) {
   x <- sf::st_transform(x, 2154)
   x_env <- seq_envelope(x, buffer)
 
-  if (verbose) {cli::cli_alert_info("Downloading DSM dataset...")}
+  if (verbose) {
+    pb <- cli::cli_progress_message("Downloading DSM dataset...", .auto_close = FALSE)
+  }
 
-  pb <- cli::cli_progress_bar("DSM", total = nrow(x_env), clear = TRUE)
   tmp <- tempdir()
   files <- c()
   for (i in seq_len(nrow(x_env))){
-
-    if (verbose) {cli::cli_progress_update(id = pb)}
 
     file <- sprintf(file.path(tmp, sprintf("r_%03d.tif", i)))
 
@@ -104,15 +103,15 @@ get_dsm <- function(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE) {
       crs = crs,
       filename = file,
       overwrite = TRUE,
-      verbose = TRUE) |> suppressWarnings()
+      verbose = verbose) |> suppressWarnings()
 
     files <- c(files, file)
+
   }
-  cli::cli_progress_done(id = pb)
+  if (verbose) {cli::cli_process_done(pb)}
 
+  if (verbose) {cli::cli_progress_message("Optimizing raster...")}
   v <- terra::vrt(files, options = c("-hidenodata"))
-
-  if (verbose) {cli::cli_alert_info("Raster size optimization...")}
   r_mask <- terra::mask(v, x_env)
   names(r_mask) <- "dsm_rgealti"
 

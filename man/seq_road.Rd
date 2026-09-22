@@ -13,7 +13,7 @@ seq_road(
 )
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 
 \item{buffer}{\code{numeric}; Buffer around \code{x}, in meters, used to define the
@@ -22,9 +22,9 @@ download area.}
 \item{private_in}{\code{logical}; If \code{TRUE}, roads fully contained in \code{x} are
 marked as private.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
 Invisibly returns a named list of file paths written by \code{\link[=seq_write]{seq_write()}}.

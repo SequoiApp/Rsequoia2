@@ -8,7 +8,7 @@
 #'   Must be one of from `get_keys("pat")`
 #' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
 #'   the download area.
-#' @param verbose `logical`; If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return `sf` object from `sf` package
 #'
@@ -54,10 +54,12 @@ get_patrimony <- function(
     error = function(e) {
 
       if (grepl("Atlas service is not available", e$message, fixed = TRUE)) {
-        cli::cli_alert_warning(c(
-          "x" = "Atlas service is not available.",
-          "i" = "Please try again later."
-        ))
+        if (verbose) {
+          cli::cli_alert_warning(c(
+            "x" = "Atlas service is not available.",
+            "i" = "Please try again later."
+          ))
+        }
         return(invisible(NULL))
       }
 
@@ -120,41 +122,56 @@ seq_patrimony <- function(
     cli::cli_h1("PATRIMONY")
   }
 
-  pb <- cli::cli_progress_bar(
-    format = "{cli::pb_spin} Querying PATRIMONY layer: {.val {k}} | [{cli::pb_current}/{cli::pb_total}]",
-    total = length(key)
-  )
+  pb <- NULL
+  if (verbose) {
+    pb <- cli::cli_progress_bar(
+      format = paste0(
+        "{cli::pb_spin} Searching Patrimony layer: {.val {k}} | ",
+        "[{cli::pb_current}/{cli::pb_total}]"
+      ),
+      total = length(key),
+      auto_terminate = FALSE
+    )
+  }
 
-  valid <- character()
-  empty <- character()
   path <- list()
   for (k in key) {
 
-    if (verbose) {cli::cli_progress_update(id = pb)}
+    if (verbose) {
+      cli::cli_progress_update(id = pb, force = TRUE)
+    }
 
-    # f mean feature in this context
-    f <- get_patrimony(parca, k, buffer = buffer, verbose = FALSE)
-    if (!is.null(f)) {
-      valid <- c(valid, k)
-      seq_key <- sprintf("v.pat.%s.poly", k)
-      f[[identifier]] <- id
-      f_path <- seq_write(f, seq_key, dirname, id, verbose = FALSE, overwrite = overwrite)
+    f_path <- tryCatch({
+      f <- get_patrimony(parca, k, buffer = buffer, verbose = FALSE)
+
+      if (is.null(f) || nrow(f) == 0) {
+        NULL
+      } else {
+        f[[identifier]] <- id
+
+        seq_write(
+          f,
+          sprintf("v.pat.%s.poly", k),
+          dirname,
+          id,
+          verbose = verbose,
+          overwrite = overwrite
+        )
+      }
+    }, error = function(e) NULL)
+
+    if (!is.null(f_path)) {
       path <- c(path, f_path)
-    } else {
-      empty <- c(empty, k)
     }
-  }
-  cli::cli_progress_done(id = pb)
 
-  if (verbose){
-    if (length(valid) > 0) {
-      cli::cli_alert_success(
-        "{length(valid)} non-empty layer{?s} found: {.val {valid}}"
-      )
-    } else {
-      cli::cli_alert_warning("All layers are empty.")
-    }
   }
 
-  return(invisible(path))
+  if (!length(path)) {
+    if (verbose){
+      cli::cli_alert_info("No Patrimony layer found.")
+    }
+    return(invisible(NULL))
+  }
+
+  invisible(path)
 }

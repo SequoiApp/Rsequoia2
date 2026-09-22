@@ -12,7 +12,7 @@ seq_write(x, key, dirname = ".", id = NULL, verbose = FALSE, overwrite = FALSE)
 \item{key}{\code{character} Name of a layer key to match against the entries
 defined in \code{inst/config/seq_layers.yaml}. (see \emph{Details} for partial matching).}
 
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 
 \item{id}{\code{character}. Project identifier used to prefix the output filename.
@@ -22,9 +22,10 @@ field of layer \code{x}; if this fails, it then looks for a valid identifier in
 a \verb{*_matrice.xlsx} file found in \code{dirname}. If no unique identifier can be
 determined, the filename is left unchanged.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
 Invisibly returns the filepath used for writing.

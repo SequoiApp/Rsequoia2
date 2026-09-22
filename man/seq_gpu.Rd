@@ -12,19 +12,18 @@ seq_gpu(
 )
 }
 \arguments{
-\item{dirname}{Character. Root directory of the project.
-Defaults to the current directory.}
+\item{dirname}{\code{character}; Path to the Sequoia project directory.
+Defaults to the current working directory.}
 
 \item{key}{\code{character}; List of layer identifiers to download. If not
 provided, the function uses \code{get_keys("gpu", reduce = FALSE)} to
 automatically select all GPU layers defined in the Sequoia configuration
 (\code{inst/config/seq_layers.yaml})}
 
-\item{verbose}{Logical. Whether to display progress messages.
-Defaults to \code{TRUE}.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 
-\item{overwrite}{Logical. Whether to overwrite existing output files.
-Defaults to \code{FALSE}.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
 Invisibly returns a named list of file paths corresponding to the

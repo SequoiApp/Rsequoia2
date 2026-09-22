@@ -160,14 +160,13 @@ test_that("seq_lidar() skips existing output when overwrite is FALSE", {
       .package = "Rsequoia2"
     )
 
-    expect_warning(
+    expect_silent(
       res <- seq_lidar(
         dirname = dirname,
         key = "mnt",
         overwrite = FALSE,
         verbose = FALSE
-      ),
-      "already exists"
+      )
     )
 
     expect_false(get_lidar_called)

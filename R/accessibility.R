@@ -7,7 +7,8 @@
 #' @param type `character` Accessibility type. One of `"porter"` or `"skidder"`.
 #' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
 #' the download area.
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational
+#'   messages.
 #'
 #' @return An `sf` object containing accessibility features, or `NULL` if none found.
 #'
@@ -57,7 +58,7 @@ get_accessibility <- function(
     x = fetch_envelope,
     layer = layer,
     predicate = happign::intersects(),
-    verbose = TRUE
+    verbose = FALSE
   )
 
   if (!nrow(access)) {
@@ -72,12 +73,7 @@ get_accessibility <- function(
 #' Create an empty `sf` for access point features, and writes the resulting
 #' layer to disk.
 #'
-#' @param dirname `character` Path to the project directory.
-#'   Defaults to the current working directory.
-#' @param verbose `logical`; whether to display informational messages.
-#'   Defaults to `TRUE`.
-#' @param overwrite `logical`; whether to overwrite existing files.
-#'   Defaults to `FALSE`.
+#' @inheritParams seq_write
 #'
 #' @details
 #' The access point layer is an empty layer : user must point access themselves.
@@ -96,68 +92,89 @@ seq_access <- function(
     overwrite = FALSE
 ) {
 
-  if (verbose){
-    cli::cli_h1("Access")
+  if (verbose) {
+    cli::cli_h1("ACCESSIBILITY")
   }
 
-  # read PARCA
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id_field <- seq_field("identifier")$name
-  id <- unique(parca[[id_field]])
+  identifier <- seq_field("identifier")$name
+  id <- unique(parca[[identifier]])
 
-  paths <- list()
-  # vehicle acces
-  porteur <- get_accessibility(x = parca, buffer = 0, type = "porteur", verbose = verbose)
-  if (!is.null(porteur)){
-    porteur <- porteur |>
-      sf::st_transform(sf::st_crs(parca)) |>
-      sf::st_intersection(parca |> sf::st_geometry() |> sf::st_union()) |>
-      suppressWarnings()
-    porteur[[id_field]] <- id
-    porteur <- seq_write(
-      porteur,
-      "v.access.porteur.poly",
-      dirname = dirname,
-      id = id,
-      verbose = verbose,
-      overwrite = overwrite
+  layers <- c(
+    porteur = "v.access.porteur.poly",
+    skidder = "v.access.skidder.poly"
+  )
+
+  pb <- NULL
+  if (verbose) {
+    pb <- cli::cli_progress_bar(
+      format = paste0(
+        "{cli::pb_spin} ACCESSIBILITY layer: {.val {k}} | ",
+        "[{cli::pb_current}/{cli::pb_total}]"
+      ),
+      total = length(layers),
+      auto_terminate = FALSE
     )
-    paths <- c(paths, porteur)
   }
 
-  # vehicle acces
-  skidder <- get_accessibility(x = parca, buffer = 0, type = "skidder", verbose = verbose)
-  if (!is.null(skidder)){
-    skidder <- skidder |>
-      sf::st_transform(sf::st_crs(parca)) |>
-      sf::st_intersection(parca |> sf::st_geometry() |> sf::st_union()) |>
-      suppressWarnings()
-    skidder[[id_field]] <- id
-    skidder <- seq_write(
-      skidder,
-      "v.access.skidder.poly",
-      dirname = dirname,
-      id = id,
-      verbose = verbose,
-      overwrite = overwrite
-    )
-    paths <- c(paths, skidder)
+  path <- list()
+
+  for (k in names(layers)) {
+
+    if (verbose) {
+      cli::cli_progress_update(id = pb, force = TRUE)
+    }
+
+    f_path <- tryCatch({
+      f <- get_accessibility(
+        x = parca,
+        buffer = 0,
+        type = k,
+        verbose = FALSE
+      )
+
+      if (is.null(f) || nrow(f) == 0) {
+        NULL
+      } else {
+        f <- f |>
+          sf::st_transform(sf::st_crs(parca)) |>
+          sf::st_intersection(sf::st_union(sf::st_geometry(parca))) |>
+          sf::st_cast("POLYGON") |>
+          suppressWarnings()
+
+        f[[identifier]] <- id
+
+        seq_write(
+          f,
+          layers[[k]],
+          dirname,
+          id,
+          verbose = verbose,
+          overwrite = overwrite
+        )
+      }
+    }, error = function(e) NULL)
+
+    if (!is.null(f_path)) {
+      path <- c(path, f_path)
+    }
+
   }
 
-  # Create access
+  # Empty access-entry layer
   access <- create_empty_sf("POINT") |>
     seq_normalize("vct_point")
 
-  # Write access
-  access <- seq_write(
+  access_path <- seq_write(
     access,
     "v.access.entry.point",
-    dirname = dirname,
-    id = id,
+    dirname,
+    id,
     verbose = verbose,
     overwrite = overwrite
   )
-  paths <- c(paths, access)
 
-  return(invisible(paths))
+  path <- c(path, access_path)
+
+  invisible(path)
 }

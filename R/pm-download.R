@@ -41,7 +41,7 @@ pm_latest_data <- function() {
 #' directory.
 #'
 #' @param zip ZIP resource metadata returned by `pm_latest_data()`.
-#' @param verbose If `TRUE`, display progress messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return A list with:
 #' \describe{
@@ -77,7 +77,7 @@ pm_extract_csv <- function(zip, verbose = TRUE) {
 #'
 #' @param files Character vector of CSV file paths.
 #' @param parquet Output parquet file path.
-#' @param verbose If `TRUE`, display progress messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return Invisibly returns the parquet file path.
 #'
@@ -175,7 +175,7 @@ pm_csv_to_parquet <- function(files, parquet, verbose = TRUE) {
 #' file. If the parquet file already exists, it is reused.
 #'
 #' @param cache Cache directory where the parquet file is stored.
-#' @param verbose If `TRUE`, display progress messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return Invisibly returns the normalized parquet file path.
 #'

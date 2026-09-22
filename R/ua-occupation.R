@@ -3,7 +3,7 @@
 #' Initializes DGD submitted status to TRUE when the field is empty.
 #'
 #' @param ua `sf` object containing UA polygons.
-#' @param verbose Logical. Should messages be printed?
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return The repaired `ua` object.
 ua_repair_dgd <- function(ua, verbose = TRUE) {
@@ -28,7 +28,7 @@ ua_repair_dgd <- function(ua, verbose = TRUE) {
 #' Forces wooded status to FALSE when a surface is not submitted to DGD.
 #'
 #' @param ua `sf` object containing UA polygons.
-#' @param verbose Logical. Should messages be printed?
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return The repaired `ua` object.
 ua_repair_wooded <- function(ua, verbose = TRUE) {
@@ -67,7 +67,7 @@ ua_repair_wooded <- function(ua, verbose = TRUE) {
 #'
 #' @param ua `sf` object containing UA polygons.
 #' @param threshold Maximum allowed non-wooded ratio. Defaults to `0.10`.
-#' @param verbose Logical. Should messages be printed?
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return `TRUE` if the threshold is respected, otherwise `FALSE`.
 ua_check_non_wooded_threshold <- function(ua, threshold = 0.10, verbose = TRUE) {
@@ -122,7 +122,7 @@ ua_check_non_wooded_threshold <- function(ua, threshold = 0.10, verbose = TRUE) 
 #' according to DGD-submitted and wooded status.
 #'
 #' @param ua `sf` object containing analysis units.
-#' @param verbose `boolean` if `TRUE` print messages
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return An `sf` object aggregated by occupation status.
 #'

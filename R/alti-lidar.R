@@ -7,8 +7,8 @@
 #' `"mns"` or `"mnh"`.
 #' @param cache `character`; Cache directory. If `NULL`, the appropriate
 #' Rsequoia2 LIDAR cache is used, see [Rsequoia2::seq_cache()].
-#' @param overwrite `logical`; If `TRUE`, re-download existing tiles.
-#' @param verbose `logical`; If `TRUE`, display messages.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing files.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #' @param max_tries `integer`; Maximum number of download attempts.
 #'
 #' @return Invisibly returns a `character` vector of local tile paths.
@@ -159,9 +159,7 @@ get_lidar <- function(
     options = c("-hidenodata")
   )
 
-  if (verbose) {
-    cli::cli_alert_info("Raster size optimization...")
-  }
+  if (verbose) {cli::cli_progress_message("Optimizing raster...")}
 
   x_clean <- sf::st_transform(x_clean, terra::crs(vrt))
   x_vect <- terra::vect(x_clean)
@@ -238,12 +236,15 @@ seq_lidar <- function(
     path <- normalizePath(path, winslash = "/", mustWork = FALSE)
 
     if (file.exists(path) && !overwrite) {
-      cli::cli_warn(c(
-        "{.file {basename(path)}} already exists.",
-        "i" = "Use {.arg overwrite = TRUE} to replace it."
-      ))
+      if (verbose) {
+        cli::cli_alert_info("Using existing {.file {basename(path)}}.")
+      }
 
       return(path)
+    }
+
+    if (verbose) {
+      {cli::cli_progress_message("Downloading {toupper(one_key)} LiDAR product...")}
     }
 
     r <- get_lidar(

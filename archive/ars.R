@@ -115,7 +115,6 @@ seq_ars <- function(
     if (verbose) cli::cli_progress_update(id = pb)
     quiet(get_ars(parca, key, buffer = buffer))
   }) |> stats::setNames(key)
-  cli::cli_progress_done(id = pb)
 
   has_no_layers <- all(sapply(ars, is.null))
   if (has_no_layers){

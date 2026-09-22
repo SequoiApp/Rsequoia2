@@ -11,7 +11,7 @@ ua_repair_idu(ua, parca, verbose = TRUE)
 
 \item{parca}{\code{sf} Object containing cadastral parcels.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 The input \code{ua} object with corrected IDU values.

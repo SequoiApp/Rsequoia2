@@ -21,8 +21,7 @@
 #' @param sheet Character string. Internal table name used for console messages.
 #' @param fun Function. A zero-argument builder function returning a table
 #'   specification list.
-#' @param verbose Logical. If `TRUE`, prints an `OK` or `BAD` message with
-#'   `cli` for this table.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return A list with:
 #' \describe{
@@ -343,8 +342,8 @@ add_prop <- function(df, by, name = "PROPORTION"){
 #' if the layer does not exist. Optionally prints a warning message.
 #'
 #' @param key `character`. Sequoia layer key.
-#' @param dirname `character`. Sequoia directory.
-#' @param verbose `logical`. Whether to print warning messages.
+#' @param dirname `character`; Path to the Sequoia project directory.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return An `sf`, `SpatRaster`, or `NULL`.
 #'

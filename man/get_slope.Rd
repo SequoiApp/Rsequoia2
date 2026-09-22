@@ -17,7 +17,7 @@ aggregated if its native resolution is finer. Default: \code{5}.}
 
 \item{unit}{\code{character}; "percent", "radians" or "degrees". Default to "percent".}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 
 \item{...}{Additional parameters passed to \code{\link[=get_dem]{get_dem()}} when \code{x} is supplied.}
 }

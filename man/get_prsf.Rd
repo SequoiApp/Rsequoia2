@@ -11,7 +11,7 @@ get_prsf(x, buffer = 5000, verbose = TRUE)
 
 \item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 An \code{sf} object containing PRSF point features.

@@ -5,7 +5,7 @@
 #'
 #' @param x An `sf` object defining the input area of interest.
 #' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return An `sf` object containing PRSF point features.
 #'
@@ -81,10 +81,11 @@ seq_prsf <- function(
 
   if (verbose){
     cli::cli_h1("PRSF")
+    pb <- cli::cli_progress_message("Downloading PRSF layer...")
   }
 
   # Retrieve toponyms
-  prsf <- get_prsf(parca, buffer = buffer, verbose = verbose)
+  prsf <- get_prsf(parca, buffer = buffer, verbose = FALSE)
 
   if (!is.null(prsf)){
     prsf[[id_field]] <- id
@@ -97,6 +98,8 @@ seq_prsf <- function(
       verbose = verbose,
       overwrite = overwrite
     )
+  } else if (verbose) {
+    cli::cli_alert_warning("No PRSF features found: layer not written.")
   }
 
   return(invisible(c(prsf) |> as.list()))

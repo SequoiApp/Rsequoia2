@@ -79,10 +79,10 @@ test_that("seq_parcels() respects overwrite argument", {
     # First run
     seq_parcels(dirname = seq_cache, overwrite = TRUE)
 
-    # Second run without overwrite should error
-    expect_warning(
-      seq_parcels(dirname = seq_cache, overwrite = FALSE)
-    ) |> suppressWarnings()
+    # Second run reuses existing outputs without warning in quiet mode
+    expect_silent(
+      seq_parcels(dirname = seq_cache, overwrite = FALSE, verbose = FALSE)
+    )
 
   })
 })

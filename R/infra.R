@@ -420,7 +420,7 @@ get_infra_point <- function(x,
   return(invisible(infra_point))
 }
 
-#' Generates infrastructure polygon, line and point layers for a Sequoia project.
+#' Generate infrastructure polygon, line and point layers for a Sequoia project
 #'
 #' This function is a convenience wrapper around [get_infra_poly()],
 #' [get_infra_line()] and [get_infra_point()], allowing the user to download
@@ -449,54 +449,70 @@ seq_infra <- function(
     buffer = 1000,
     verbose = TRUE,
     overwrite = FALSE
-) {
+    ) {
 
-  # read PARCA
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id_field <- seq_field("identifier")$name
-  id <- unique(parca[[id_field]])
-
-  if (verbose){
-    cli::cli_h1("INFRA")
-  }
-
-  # create empty path list
-  path <- list()
-
-  # hydro layer specifications
-  layers <- list(
-    poly  = list(fun = get_infra_poly,  key = "v.infra.poly"),
-    line  = list(fun = get_infra_line,  key = "v.infra.line"),
-    point = list(fun = get_infra_point, key = "v.infra.point")
-  )
-
-  for (k in names(layers)) {
-
-    f <- layers[[k]]$fun(parca, buffer)
-
-    if (nrow(f) > 0){
-      f[[id_field]] <- id
-    }
-
-    f_path <- seq_write(
-      f,
-      layers[[k]]$key,
-      dirname = dirname,
-      id      = id,
-      verbose = verbose,
-      overwrite = overwrite
-    )
-
-    path <- c(path, f_path)
+    parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+    identifier <- seq_field("identifier")$name
+    id <- unique(parca[[identifier]])
 
     if (verbose) {
-      if (nrow(f) == 0) {
-        cli::cli_alert_info(
-          c("i" = "Infra {.field {k}} layer written (empty layer)")
+      cli::cli_h1("INFRA")
+    }
+
+    layers <- list(
+      point = list(fun = get_infra_point, key = "v.infra.point"),
+      line  = list(fun = get_infra_line,  key = "v.infra.line"),
+      poly  = list(fun = get_infra_poly,  key = "v.infra.poly")
+    )
+
+    pb <- NULL
+    if (verbose) {
+      pb <- cli::cli_progress_bar(
+        format = paste0(
+          "{cli::pb_spin} Searching INFRA layer: {.val {k}} | ",
+          "[{cli::pb_current}/{cli::pb_total}]"
+        ),
+        total = length(layers),
+        auto_terminate = FALSE
+      )
+    }
+
+    path <- list()
+    for (k in names(layers)) {
+
+      if (verbose) {
+        cli::cli_progress_update(id = pb, force = TRUE)
+      }
+
+      f_path <- tryCatch({
+        f <- suppressWarnings(layers[[k]]$fun(parca, buffer))
+
+        if (nrow(f) > 0){
+          f[[identifier]] <- id
+        }
+
+        seq_write(
+          f,
+          layers[[k]]$key,
+          dirname,
+          id,
+          verbose = verbose,
+          overwrite = overwrite
         )
+
+      }, error = function(e) NULL)
+
+      if (!is.null(f_path)) {
+        path <- c(path, f_path)
       }
     }
-  }
 
-  return(invisible(path))
+    if (!length(path)) {
+      if (verbose){
+        cli::cli_alert_info("No INFRA layer found.")
+      }
+      return(invisible(NULL))
+    }
+
+    invisible(path)
 }

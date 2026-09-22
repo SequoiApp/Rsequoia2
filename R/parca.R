@@ -26,7 +26,7 @@ read_etalab <- function(insee, layer = c("parcelles", "lieux_dits")) {
 #' Retrieve a cadastral parcel geometry from Etalab
 #'
 #' @param idu `character` Cadastral parcel identifier.
-#' @param verbose `logical` If `TRUE`, display progress messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return An `sf` object containing the parcel geometry.
 #' @export
@@ -146,7 +146,7 @@ get_lieux_dits <- function(idu) {
 #' @param idu `character` Vector of IDU identifiers.
 #' @param bdp_geom `logical` If `TRUE`, replace Etalab geometries with BDP when possible.
 #' @param lieu_dit `logical` If `TRUE`, attach lieux-dits to each parcel.
-#' @param verbose `logical` If `TRUE`, display progress messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @importFrom stats setNames
 #'
@@ -215,7 +215,7 @@ get_parca <- function(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE){
 #' from each containing parcel.
 #'
 #' @param parca An `sf` polygon object containing cadastral parcels.
-#' @param verbose `logical`. If `TRUE`, display correction messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return An `sf` object with corrected geometries.
 #'
@@ -435,7 +435,7 @@ seq_parca <- function(
 #' parcels.
 #' @param atol `numeric` Absolute difference tolerance in m2. Default to `500m`.
 #' @param rtol `numeric` Relative difference. Default to `0.05`
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return The input `parca` with four additional fields:
 #'   `AREA_SIG` (cartographic area in ha),

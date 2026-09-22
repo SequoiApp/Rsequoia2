@@ -7,7 +7,7 @@
 seq1_read(dirname = ".", layer)
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the file is located.
+\item{dirname}{\code{character}; Directory containing the legacy file.
 Defaults to the current working directory.}
 
 \item{layer}{\code{character} Layer name.}
