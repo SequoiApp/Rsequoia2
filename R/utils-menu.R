@@ -6,6 +6,7 @@
 #' @param title Menu title.
 #' @param info Optional information message printed below the title.
 #' @param multi If `TRUE`, multiple selections are allowed.
+#' @param offset Integer used for the first displayed choice.
 #'
 #' @return Integer vector of selected positions, or `0L` to quit.
 #'
@@ -15,7 +16,8 @@ seq_select <- function(
     title = "Menu",
     info = NULL,
     is_sub = FALSE,
-    multi = FALSE
+    multi = FALSE,
+    offset = 1L
 ) {
   if (!length(choices)) {
     cli::cli_abort("{.arg choices} must not be empty.")
@@ -32,8 +34,10 @@ seq_select <- function(
       cli::cli_text("")
     }
 
+    displayed_idx <- seq_along(choices) - 1L + offset
+
     for (i in seq_along(choices)) {
-      cli::cli_text("{.val {i}}. {choices[[i]]}")
+      cli::cli_text("{.val {displayed_idx[[i]]}}. {choices[[i]]}")
     }
 
     cli::cli_text("")
@@ -69,8 +73,14 @@ seq_select <- function(
     idx <- trimws(idx)
     idx <- suppressWarnings(as.integer(idx))
 
-    if (anyNA(idx) || any(!idx %in% seq_along(choices))) {
-      msg <- "Selection invalide. Utilisez un nombre entre 1 et {length(choices)}."
+    if (anyNA(idx) || any(!idx %in% displayed_idx)) {
+      msg <- paste0(
+        "Selection invalide. Utilisez un nombre entre ",
+        min(displayed_idx),
+        " et ",
+        max(displayed_idx),
+        "."
+      )
       next
     }
 
@@ -79,7 +89,7 @@ seq_select <- function(
       next
     }
 
-    return(unique(idx))
+    return(unique(idx - offset + 1L))
   }
 }
 
@@ -155,12 +165,14 @@ seq_run_menu <- function(
     multi = FALSE
 ) {
   repeat {
+
     idx <- seq_select(
       choices = names(actions),
       title = title,
       info = if (is.function(info)) info() else info,
       is_sub = is_sub,
-      multi = multi
+      multi = multi,
+      offset = 1L
     )
 
     if (identical(idx, -1L)) {
@@ -180,5 +192,3 @@ seq_run_menu <- function(
     }
   }
 }
-
-
