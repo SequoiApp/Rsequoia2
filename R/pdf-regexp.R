@@ -120,13 +120,13 @@ parse_rp <- function(pdf){
 #'
 #' @noRd
 .re_detail <- list(
-  s_par    = "^([0-9]{3}[A-Z])",
+  s_par   = "^([0-9]{3}[A-Z])",
   suf     = "\\s+([A-Z]{1,2})",
   gr      = "\\s+([A-Z]{1,2})",
   classe  = "(?:\\s+([0-9]{2}))?",
   nature  = "\\s+([A-Za-z][A-Za-z ']*)",
-  ha      = "(?:\\s+([0-9]{1,3}))?",
-  a       = "\\s+([0-9]{2})",
+  ha      = "(?:\\s+([0-9]{1,3})(?=\\s+[0-9]{2}\\s+[0-9]{2}\\s+))?",
+  a       = "(?:\\s+([0-9]{2}))?",
   ca      = "\\s+([0-9]{2})\\s+"
 )
 
@@ -216,12 +216,12 @@ parse_main <- function(x) {
 parse_detail <- function(x) {
 
   regex_prf <- paste0("^", paste(.re_detail, collapse = ""))
-  rm <- regmatches(x, regexec(regex_prf, x))[[1]] |> as.list()
+  rm <- regmatches(x, regexec(regex_prf, x, perl = TRUE))[[1]] |> as.list()
   df <- data.frame(rm[-1], stringsAsFactors = FALSE)
   df <- setNames(df, names(.re_detail))
 
   df$ha <- ifelse(df$ha == "", 0, as.numeric(df$ha))
-  df$a <- as.numeric(df$a)
+  df$a <- ifelse(df$a == "", 0, as.numeric(df$a))
   df$ca <- as.numeric(df$ca)
   df$contenance <- df$ha + df$a * 0.01 + df$ca * 0.0001
   df$type <- "detail"

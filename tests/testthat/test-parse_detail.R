@@ -39,6 +39,16 @@ test_that("parse_detail() works on real life examples", {
       numero = NA, lieu_dit = NA, rivoli = NA, fp = NA
     )
   )
+
+  l5 <- "148A B S Sols 50 0,00"
+  expect_equal(
+    parse_detail(l5),
+    data.frame(
+      s_par = "148A", gr = "S", classe = "", nature = "Sols", contenance = 0.005,
+      type = "detail", an = NA, prefix = NA, section = NA, numero = NA,
+      lieu_dit = NA, rivoli = NA, fp = NA
+    )
+  )
 })
 
 test_that("parse_detail() always returns a 1-row data.frame with expected columns", {
