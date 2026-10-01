@@ -8,7 +8,7 @@ test_that("seq_com() returned expected path", {
     )
 
     paths <- seq_com(seq_cache, verbose = FALSE, overwrite = TRUE)
-    expect_length(paths, 5)
+    expect_length(paths, 3)
     expect_all_true(file.exists(unlist(paths)))
   })
 })

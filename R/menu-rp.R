@@ -9,14 +9,14 @@
 #' @noRd
 menu_rp <- function() {
 
-  identifiant <- readline("Choose the forest identifiant: ")
-  owner <- readline("Choose the forest owner: ")
+  identifiant <- readline("Choisir un IDENTIFIANT: ")
+  owner <- readline("Choisir un PROPRIETAIRE: ")
 
   path <- seq_get_path()
   files <- select_pdf_files(path)
 
   if (length(files) == 0) {
-    cli::cli_alert_info("Aucun fichier selectionne.")
+    cli::cli_alert_info("Aucun fichier sélectionné.")
     return(invisible(NULL))
   }
 
@@ -30,8 +30,8 @@ menu_rp <- function() {
 
   cli::cli_h2("Summary")
   cli::cli_bullets(c(
-    "Number of parcels: {nrow(m)}",
-    "Total area: {format(round(sum(m$SURF_CA), 2), nsmall = 2)} ha"
+    "Nombre de parcelles: {nrow(m)}",
+    "Surface totale: {format(round(sum(m$SURF_CA), 2), nsmall = 2)} ha"
   ))
 
   cli::cli_text("")
@@ -81,7 +81,7 @@ select_pdf_files <- function(path) {
 
   repeat {
     f <- rstudioapi::selectFile(
-      caption = "Selectionner un releve de propriete",
+      caption = "Sélectionner un relevé de propriété",
       path = getOption("last_pdf_path", path),
       filter = "PDF files (*.pdf)"
     )
@@ -92,9 +92,9 @@ select_pdf_files <- function(path) {
 
     if (f %in% files) {
       rstudioapi::showDialog(
-        title = "Fichier deja selectionne",
+        title = "Fichier deja sélectionné",
         message = paste0(
-          "Ce fichier est deja selectionne : ",
+          "Ce fichier est deja sélectionné : ",
           basename(f)
         )
       )
@@ -106,13 +106,13 @@ select_pdf_files <- function(path) {
 
     n <- length(files)
     msg <- paste0(
-      n, " fichier", if (n > 1) "s" else "", " selectionne", if (n > 1) "s" else "", " : \n",
+      n, " fichier", if (n > 1) "s" else "", " sélectionné", if (n > 1) "s" else "", " : \n",
       paste("-", basename(files), collapse = "\n")
     )
 
     another <- rstudioapi::showQuestion(
-      title = "Selection des fichiers",
-      message = paste0(msg, "\n\nVoulez-vous selectionner un autre fichier ?"),
+      title = "Sélection des fichiers",
+      message = paste0(msg, "\n\nVoulez-vous sélectionner un autre fichier ?"),
       ok = "Oui",
       cancel = "Lancer la conversion"
     )

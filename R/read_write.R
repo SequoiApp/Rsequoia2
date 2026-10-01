@@ -87,6 +87,73 @@ seq_read <- function(key, dirname = ".", verbose = FALSE) {
   }
 }
 
+#' Write a vector object to an explicit path
+#' @keywords internal
+#' @noRd
+write_vect <- function(x, path, overwrite = FALSE, verbose = FALSE) {
+  if (!inherits(x, c("sf", "sfc"))) {
+    cli::cli_abort("{.arg x} must be an {.cls sf} or {.cls sfc} object.")
+  }
+
+  sf::write_sf(
+    x,
+    path,
+    delete_dsn = overwrite,
+    quiet = TRUE,
+    layer_options = c(
+      "GEOMETRY_NAME=geom",
+      "SPATIAL_INDEX=YES"
+    )
+  )
+
+  if (verbose) {
+    feature_count <- if (inherits(x, "sf")) nrow(x) else length(x)
+    cli::cli_alert_success(
+      "Vector layer with {feature_count} feature{?s} saved to {.file {path}}."
+    )
+  }
+
+  invisible(path)
+}
+
+#' Write a raster object to an explicit path
+#' @keywords internal
+#' @noRd
+write_rast <- function(x, path, overwrite = FALSE, verbose = FALSE) {
+  if (!inherits(x, "SpatRaster")) {
+    cli::cli_abort("{.arg x} must be a {.cls SpatRaster} object.")
+  }
+
+  is_rgb <- terra::has.RGB(x)
+  gdal_base <- c("BLOCKSIZE=512", "NUM_THREADS=ALL_CPUS", "BIGTIFF=IF_NEEDED")
+  cfg <- list(
+    datatype = "FLT4S",
+    gdal = c(gdal_base, "COMPRESS=DEFLATE", "PREDICTOR=3")
+  )
+
+  if (is_rgb) {
+    cfg <- list(
+      datatype = "INT1U",
+      gdal = c(gdal_base, "COMPRESS=JPEG", "JPEG_QUALITY=100", "PHOTOMETRIC=RGB")
+    )
+  }
+
+  terra::writeRaster(
+    x,
+    path,
+    overwrite = overwrite,
+    filetype = "COG",
+    datatype = cfg$datatype,
+    gdal = cfg$gdal
+  )
+
+  if (verbose) {
+    cli::cli_alert_success("Raster layer saved to {.file {path}}.")
+  }
+
+  invisible(path)
+}
+
 #' Write a spatial object based on a layer key
 #'
 #' @inheritParams seq_read
@@ -141,18 +208,15 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
   names(path) <- key
 
   if (file.exists(path) && !overwrite) {
-    cli::cli_warn(
-      c(
-        "!" = "{.file {basename(path)}} already exists.",
-        "i" = "Use {.arg overwrite = TRUE} to replace it."
-      )
-    )
+    cli::cli_warn(c(
+      "!" = "{.file {basename(path)}} already exists.",
+      "i" = "Use {.arg overwrite = TRUE} to replace it."
+    ))
     return(invisible(path))
   }
 
   dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
 
-  # Test if file is locked ----
   if (file.exists(path) && overwrite) {
     tmp <- paste0(path, ".locktest")
     can_rename <- suppressWarnings(file.rename(path, tmp))
@@ -164,83 +228,19 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
       ))
     }
 
-    # Rename back to normal
     suppressWarnings(file.rename(tmp, path))
   }
 
   # Vector ----
   is_vector <- type == "vect"
   if (is_vector) {
-    if (!inherits(x, c("sf", "sfc"))) {
-      cli::cli_abort(c(
-        "!" = "Object supplied for {.arg x} is not an {.cls sf} object.",
-        "i" = "Vector layers must be written using {.val v.*} keys."
-      ))
-    }
-
-    sf::write_sf(
-      x,
-      path,
-      delete_dsn = overwrite,
-      # This is better for long test and check. Toi meme tu sais.
-      quiet = TRUE,
-      # This is already by default but explicit is better than default
-      layer_options = c(
-        "GEOMETRY_NAME=geom",
-        "SPATIAL_INDEX=YES"
-      )
-
-    )
-
-    if (verbose) {
-      cli::cli_alert_success(
-        "Layer {.val {key}} with {nrow(x)} feature{?s} saved to {.file {full_path}}."
-      )
-    }
-
-    return(invisible(path))
+    return(write_vect(x, path, overwrite = overwrite, verbose = verbose))
   }
 
   # Raster ----
   is_raster <- type == "rast"
   if (is_raster) {
-    if (!inherits(x, "SpatRaster")) {
-      cli::cli_abort(c(
-        "!" = "Object supplied for {.arg x} is not a {.cls SpatRaster} object.",
-        "i" = "Raster layers must be written using {.val r.*} keys."
-      ))
-    }
-
-    is_rgb <- terra::has.RGB(x)
-    gdal_base <- c("BLOCKSIZE=512", "NUM_THREADS=ALL_CPUS", "BIGTIFF=IF_NEEDED")
-
-    cfg <- list(
-      datatype = "FLT4S",
-      gdal = c(gdal_base, "COMPRESS=DEFLATE", "PREDICTOR=3")
-    )
-    if (is_rgb) {
-      cfg <- list(
-        datatype = "INT1U",
-        gdal = c(gdal_base, "COMPRESS=JPEG", "JPEG_QUALITY=100", "PHOTOMETRIC=RGB")
-      )
-    }
-
-    terra::writeRaster(
-      x,
-      path,
-      overwrite = overwrite,
-      filetype = "COG",
-      datatype = cfg$datatype,
-      gdal = cfg$gdal
-    )
-
-    if (verbose) {
-      cli::cli_alert_success(
-        "Layer {.val {key}} saved to {.file {full_path}}."
-      )
-    }
-
-    return(invisible(path))
+    return(write_rast(x, path, overwrite = overwrite, verbose = verbose))
   }
 
   # Xlsx ----
