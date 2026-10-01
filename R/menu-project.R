@@ -28,7 +28,7 @@ menu_sequoia <- function() {
   aggregate_ua <- function() {
 
     cli::cli_alert_warning(
-      "Cette operation peut ecraser des fichiers existants."
+      "Cette opération peut écraser des fichiers existants."
     )
 
     answer <- readline(
@@ -40,7 +40,7 @@ menu_sequoia <- function() {
     overwrite <- tolower(trimws(answer)) %in% c("o", "oui", "y", "yes")
 
     if (!overwrite) {
-      cli::cli_alert_info("Operation annulee. Aucun fichier n'a ete ecrase.")
+      cli::cli_alert_info("Opération annulée. Aucun fichier n'a été écrasé.")
       return(invisible(FALSE))
     }
 
@@ -56,13 +56,13 @@ menu_sequoia <- function() {
   sumarize_ua <- function() seq_summary(seq_get_path())
 
   actions <- list(
-    "Generer une MATRICE CADASTRALE" = menu_matrice,
-    "Telecharger PARCA" = download_parca,
-    "Telecharger DONNEES" = menu_data,
-    "Generer les UA" = create_ua,
+    "Générer une MATRICE CADASTRALE" = menu_matrice,
+    "Télécharger PARCA" = download_parca,
+    "Télécharger DONNEES" = menu_data,
+    "Générer les UA" = create_ua,
     "Corriger les UA" = correct_ua,
-    "Aggreger les UA" = aggregate_ua,
-    "Synthetiser les UA" = sumarize_ua
+    "Aggréger les UA" = aggregate_ua,
+    "Synthétiser les UA" = sumarize_ua
   )
 
   seq_run_menu(

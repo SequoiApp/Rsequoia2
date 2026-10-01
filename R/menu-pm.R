@@ -19,19 +19,19 @@ menu_pm <- function() {
 
   search_by <- seq_select(
     c("Communale", "Departementale", "Regionale"),
-    info = "Rechercher une personne morale a l'echelle :"
+    info = "Rechercher une personne morale à l'échelle :"
   )
 
   dep <- NULL
   insee <- NULL
 
   if (search_by == 1) {
-    insee <- read_csv("Code(s) INSEE, separes par des virgules : ")
+    insee <- read_csv("Code(s) INSEE, séparé(s) par des virgules : ")
     insee <- check_insee(insee)
   }
 
   if (search_by == 2) {
-    dep <- read_csv("Code(s) departement, separes par des virgules : ")
+    dep <- read_csv("Code(s) département, séparé(s) par des virgules : ")
     dep <- check_dep(dep)
   }
 
@@ -44,9 +44,9 @@ menu_pm <- function() {
     dep <- cog$dep$DEP[cog$dep$REG %in% reg_code]
   }
 
-  cli::cli_alert_info("Plusieurs mots peuvent etre combines, par exemple : GF, ETANGS")
-  cli::cli_alert_info("La casse et les caractere speciaux sont ignores pour la recherche")
-  pattern <- read_csv("Nom(s), separes par des virgules : ")
+  cli::cli_alert_info("Plusieurs mots peuvent être combinés, par exemple : GF, ETANGS")
+  cli::cli_alert_info("La casse et les caractères spéciaux sont ignorés pour la recherche")
+  pattern <- read_csv("Nom(s), séparé(s) par des virgules : ")
 
   if (length(pattern) == 0) {
     cli::cli_alert_warning("Aucun nom saisi.")
@@ -55,13 +55,13 @@ menu_pm <- function() {
 
   found <- search_pm(pattern = pattern, dep = dep, insee = insee)
   if (nrow(found) == 0) {
-    cli::cli_alert_warning("Aucune personne morale trouvee.")
+    cli::cli_alert_warning("Aucune personne morale trouvée.")
     return(invisible(NULL))
   }
 
   selected_pm <- select_pm(found)
   if (length(selected_pm) == 0) {
-    cli::cli_alert_warning("Aucune personne morale selectionnee.")
+    cli::cli_alert_warning("Aucune personne morale sélectionnée.")
     return(invisible(NULL))
   }
 
@@ -71,7 +71,7 @@ menu_pm <- function() {
   m <- pm$m
   m_detail <- pm$m_detail
 
-  cli::cli_alert_success("Personne morale recuperee.")
+  cli::cli_alert_success("Personne morale récupérée.")
   cli::cli_alert_info("Veuillez indiquer l'identifiant du dossier.")
   identifiant <- readline("Identifiant du dossier : ")
 

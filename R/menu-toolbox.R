@@ -5,8 +5,11 @@
 #' @keywords internal
 #' @noRd
 menu_toolbox <- function() {
+  old_path <- getOption("seq_dir_path", NULL)
+  on.exit(options(seq_dir_path = old_path), add = TRUE)
+
   path <- rstudioapi::selectDirectory(
-    caption = "Selectionner un dossier de destination",
+    caption = "Sélectionner un dossier de destination",
     path = getOption("seq_dir_path", getwd())
   )
 
@@ -15,11 +18,12 @@ menu_toolbox <- function() {
   }
 
   options(seq_dir_path = path)
-  info <- cli::format_inline("Dossier selectionne : {.path {path}}")
+
+  info <- cli::format_inline("Dossier sélectionné : {.path {path}}")
 
   download_data <- function() {
     file <- rstudioapi::selectFile(
-      caption = "Selectionner une couche SIG",
+      caption = "Sélectionner une couche SIG",
       path = path,
       filter = "Couches SIG (*.gpkg *.shp *.geojson *.json *.kml)"
     )

@@ -8,7 +8,7 @@
 menu_data <- function() {
 
   path <- seq_get_path()
-  info <- cli::format_inline("Dossier selectionne : {.path {path}}")
+  info <- cli::format_inline("Dossier sélectionné : {.path {path}}")
 
   seq_altimetry <- function(dirname = ".", overwrite = FALSE, verbose = TRUE, ...) {
 
@@ -26,8 +26,8 @@ menu_data <- function() {
   base_actions <- list(
     "Communes"       = function() seq_com(path),
     "MNHN"           = function() seq_mnhn(path),
-    "Geologie"       = function() seq_geol(path),
-    "Pedologie"      = function() seq_pedology(path),
+    "Géologie"       = function() seq_geol(path),
+    "Pédologie"      = function() seq_pedology(path),
     "Infra"          = function() seq_infra(path),
     "Route"          = function() seq_road(path),
     "Route cad."     = function() seq_roadway(path),
@@ -35,20 +35,20 @@ menu_data <- function() {
     "OLD"            = function() seq_old(path),
     "Toponyme"       = function() seq_toponyme(path),
     "Hydrologie"     = function() seq_hydro(path),
-    "Vegetation"     = function() seq_vege(path),
-    "Accessibilite"  = function() seq_access(path),
+    "Végétation"     = function() seq_vege(path),
+    "Accessibilité"  = function() seq_access(path),
     "Meteo-France"   = function() seq_meteo_france(path),
     "Drias"          = function() seq_drias(path),
     "Courbes niveau" = function() seq_curves(path),
     "IFN"            = function() seq_ifn(path),
     "GPU"            = function() seq_gpu(path),
     "Patrimoine"     = function() seq_patrimony(path),
-    "Altimetrie"     = function() seq_altimetry(path),
+    "Altimétrie"     = function() seq_altimetry(path),
     "Orthophoto"     = function() seq_ortho(path)
   )
 
   actions <- c(
-    "All" = function() invisible(lapply(base_actions, seq_run_action)),
+    "Toutes les données" = function() invisible(lapply(base_actions, seq_run_action)),
     base_actions
   )
 
@@ -71,7 +71,7 @@ menu_data <- function() {
 menu_toolbox_data <- function(x) {
 
   path <- seq_get_path()
-  info <- cli::format_inline("Dossier selectionne : {.path {path}}")
+  info <- cli::format_inline("Dossier sélectionné : {.path {path}}")
 
   base_actions <- list(
     "Communes"       = function() get_commune(x, path)
@@ -98,7 +98,7 @@ menu_toolbox_data <- function(x) {
   )
 
   actions <- c(
-    "All" = function() invisible(lapply(base_actions, seq_run_action)),
+    "Toutes les données" = function() invisible(lapply(base_actions, seq_run_action)),
     base_actions
   )
 
