@@ -12,7 +12,8 @@ get_gpu(x, key, verbose = TRUE)
 \item{key}{\code{character}; Layer to download.
 Must be one of from \code{get_keys("gpu", reduce = FALSE)}}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 }
 \value{
 \code{sf} object from \code{sf} package

@@ -9,10 +9,10 @@ seq_aggregate_dem(dem, agg = 5, verbose = TRUE)
 \arguments{
 \item{dem}{SpatRaster; DEM/MNT raster.}
 
-\item{agg}{numeric(1); Target working resolution in meters. If NULL,
+\item{agg}{numeric; Target working resolution in meters. If NULL,
 no aggregation is applied.}
 
-\item{verbose}{logical(1); If TRUE, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 A SpatRaster, unchanged or aggregated.

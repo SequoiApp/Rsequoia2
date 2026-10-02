@@ -2,17 +2,18 @@
 % Please edit documentation in R/com.R
 \name{seq_com}
 \alias{seq_com}
-\title{Generates commune polygon, line and point layers for a Sequoia project.}
+\title{Generate commune polygon, line and point layers for a Sequoia project}
 \usage{
 seq_com(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Path to the project directory.
+\item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
 A named list of file paths written by \code{\link[=seq_write]{seq_write()}},

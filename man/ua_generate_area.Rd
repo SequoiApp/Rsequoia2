@@ -9,7 +9,7 @@ ua_generate_area(ua, verbose = TRUE)
 \arguments{
 \item{ua}{\code{sf} object containing analysis units.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 \code{sf} object with updated areas

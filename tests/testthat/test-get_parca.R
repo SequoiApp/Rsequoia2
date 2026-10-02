@@ -93,10 +93,10 @@ test_that("get_parca() is verbose when joining lieux-dits", {
   expect_message(
     get_parca(idu = idu, lieu_dit = TRUE, verbose = TRUE),
     "Downloading and joining Lieux dits..."
-  )
+  ) |> suppressMessages()
 
   expect_message(
     get_parca(idu = idu, lieu_dit = TRUE, verbose = TRUE),
     "Lieux dits joined."
-  )
+  ) |> suppressMessages()
 })

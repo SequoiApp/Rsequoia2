@@ -174,8 +174,7 @@ get_hydro_line <- function(x,
 #'
 #'
 #' @export
-get_hydro_point <- function(x,
-                            buffer = 1000){
+get_hydro_point <- function(x, buffer = 1000){
 
   if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
@@ -220,7 +219,7 @@ get_hydro_point <- function(x,
   return(invisible(hydro_point))
 }
 
-#' Generates hydrographic polygon, line and point layers for a Sequoia project.
+#' Generate hydrographic polygon, line and point layers for a Sequoia project
 #'
 #' This function is a convenience wrapper around [get_hydro_poly()],
 #' [get_hydro_line()] and [get_hydro_point()], allowing the user to download
@@ -260,43 +259,61 @@ seq_hydro <- function(
     cli::cli_h1("HYDROLOGY")
   }
 
-  # create empty path list
-  path <- list()
-
-  # hydro layer specifications
   layers <- list(
-    poly  = list(fun = get_hydro_poly,  key = "v.hydro.poly"),
+    point = list(fun = get_hydro_point, key = "v.hydro.point"),
     line  = list(fun = get_hydro_line,  key = "v.hydro.line"),
-    point = list(fun = get_hydro_point, key = "v.hydro.point")
+    poly  = list(fun = get_hydro_poly,  key = "v.hydro.poly")
   )
 
-  for (k in names(layers)) {
-
-    f <- layers[[k]]$fun(parca, buffer)
-
-    if (nrow(f)>0){
-      f[[id_field]] <- id
-    }
-
-    f_path <- seq_write(
-      f,
-      layers[[k]]$key,
-      dirname = dirname,
-      id = id,
-      verbose = verbose,
-      overwrite = overwrite
+  pb <- NULL
+  if (verbose) {
+    pb <- cli::cli_progress_bar(
+      format = paste0(
+        "{cli::pb_spin} Searching HYDRO layer: {.val {k}} | ",
+        "[{cli::pb_current}/{cli::pb_total}]"
+      ),
+      total = length(layers),
+      auto_terminate = FALSE
     )
-
-    path <- c(path, f_path)
-
-    if (verbose) {
-      if (nrow(f) == 0) {
-        cli::cli_alert_info(
-          c("i" = "Hydro {.field {k}} layer written (empty layer)")
-        )
-      }
-    }
   }
 
-  return(invisible(path))
+  path <- list()
+  for (k in names(layers)) {
+
+    if (verbose) {
+      cli::cli_progress_update(id = pb, force = TRUE)
+    }
+
+    f_path <- tryCatch({
+      f <- suppressWarnings(layers[[k]]$fun(parca, buffer))
+
+      if (nrow(f) > 0) {
+        f[[id_field]] <- id
+      }
+
+      seq_write(
+        f,
+        layers[[k]]$key,
+        dirname,
+        id,
+        verbose = verbose,
+        overwrite = overwrite
+      )
+
+    }, error = function(e) NULL)
+
+    if (!is.null(f_path)) {
+      path <- c(path, f_path)
+    }
+
+  }
+
+  if (!length(path)) {
+    if (verbose){
+      cli::cli_alert_info("No HYDRO layer found.")
+      }
+    return(invisible(NULL))
+  }
+
+  invisible(path)
 }

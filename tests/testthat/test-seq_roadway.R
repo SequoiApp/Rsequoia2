@@ -62,8 +62,8 @@ mock_roads <- st_sf(
   SOURCE = "mock",
   OFFSET = NA_character_,
   geometry = st_sfc(
-    st_linestring(rbind(c(500680, 6749020), c(500980, 6749020))),
-    st_linestring(rbind(c(500830, 6749000), c(500830, 6749060)))
+    sf::st_linestring(rbind(c(500680, 6749020), c(500980, 6749020))),
+    sf::st_linestring(rbind(c(500830, 6749000), c(500830, 6749060)))
   ),
   crs = 2154
 )

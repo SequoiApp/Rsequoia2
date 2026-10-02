@@ -24,7 +24,7 @@ before spatial filtering. Default is \code{100}.}
 \item{cache}{\code{character}; Optional cache directory. If \code{NULL}, the
 dataset-specific cache from \code{\link[=seq_cache]{seq_cache()}} is used.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display progress messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 
 \item{overwrite}{\code{logical}; If \code{TRUE}, re-download archives even when
 they already exist in \code{cache}.}

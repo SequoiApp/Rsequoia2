@@ -15,7 +15,7 @@ only when \code{x} is \code{NULL}.}
 \item{agg}{\code{numeric}; Target resolution (in meters) to which the DEM is
 aggregated if its native resolution is finer. Default: \code{5}.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 
 \item{...}{Additional parameters passed to \code{\link[=get_dem]{get_dem()}} when \code{x} is supplied.}
 }

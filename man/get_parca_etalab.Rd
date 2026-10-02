@@ -9,7 +9,7 @@ get_parca_etalab(idu, verbose = TRUE)
 \arguments{
 \item{idu}{\code{character} Cadastral parcel identifier.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 An \code{sf} object containing the parcel geometry.

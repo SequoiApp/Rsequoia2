@@ -18,7 +18,7 @@ system (see \code{\link[happign:get_wms_raster]{happign::get_wms_raster()}})}
 \item{crs}{\code{numeric} or \code{character}; CRS of the returned raster (see
 \code{\link[happign:get_wms_raster]{happign::get_wms_raster()}})}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 \code{SpatRaster} object from \code{terra} package

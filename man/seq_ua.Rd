@@ -13,15 +13,16 @@ seq_ua(
 )
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 
 \item{secure}{\code{logical}. If \code{TRUE}, also writes a timestamped secure copy
 of the file.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 
 \item{check}{\code{logical} If \code{TRUE}, ask user.}
 }

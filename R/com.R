@@ -5,7 +5,7 @@
 #'
 #' @param x An `sf` object used as the input area.
 #' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return An `sf` object of type `POLYGON` containing commune boundaries,
 #'   with standardized fields as defined by `seq_normalize("com_poly")`.
@@ -53,7 +53,9 @@ get_com_poly <- function(
 #' clipped for cartographic display.
 #'
 #' @param x An `sf` object used as the input area.
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
+#' @param poly Optional preloaded commune polygon layer. Supplying it avoids
+#'   downloading the same source data again.
 #' @param graphic Logical. If `TRUE`, line geometries are clipped to a
 #'   500 m convex buffer around `x` for graphical purposes.
 #'
@@ -69,9 +71,11 @@ get_com_poly <- function(
 #' @seealso [get_com_poly()]
 #'
 #' @export
-get_com_line <- function(x, graphic = FALSE, verbose = TRUE) {
+get_com_line <- function(x, graphic = FALSE, verbose = TRUE, poly = NULL) {
 
-  poly <- get_com_poly(x, buffer = 2000, verbose = verbose)
+  if (is.null(poly)) {
+    poly <- get_com_poly(x, buffer = 2000, verbose = verbose)
+  }
 
   if (is.null(poly)) {
     return(NULL)
@@ -100,7 +104,9 @@ get_com_line <- function(x, graphic = FALSE, verbose = TRUE) {
 #' restricted to a graphical extent.
 #'
 #' @param x An `sf` object used as the input area.
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
+#' @param poly Optional preloaded commune polygon layer. Supplying it avoids
+#'   downloading the same source data again.
 #' @param graphic Logical. If `TRUE`, centroids are computed only on the
 #'   intersection between commune polygons and a 500 m convex buffer
 #'   around `x`, for cartographic display.
@@ -117,9 +123,11 @@ get_com_line <- function(x, graphic = FALSE, verbose = TRUE) {
 #' @seealso [get_com_poly()]
 #'
 #' @export
-get_com_point <- function(x, graphic = FALSE, verbose = TRUE) {
+get_com_point <- function(x, graphic = FALSE, verbose = TRUE, poly = NULL) {
 
-  poly <- get_com_poly(x, buffer = 2000, verbose = verbose)
+  if (is.null(poly)) {
+    poly <- get_com_poly(x, buffer = 2000, verbose = verbose)
+  }
 
   if (is.null(poly)) {
     return(NULL)
@@ -142,7 +150,7 @@ get_com_point <- function(x, graphic = FALSE, verbose = TRUE) {
   return(invisible(point))
 }
 
-#' Generates commune polygon, line and point layers for a Sequoia project.
+#' Generate commune polygon, line and point layers for a Sequoia project
 #'
 #' This function is a convenience wrapper around [get_com_poly()],
 #' [get_com_line()] and [get_com_point()], allowing the user to retrieve
@@ -152,8 +160,6 @@ get_com_point <- function(x, graphic = FALSE, verbose = TRUE) {
 #' Both topological (full extent) and graphical (restricted extent)
 #' representations are generated when relevant.
 #'
-#' @param dirname `character` Path to the project directory.
-#'   Defaults to the current working directory.
 #' @inheritParams seq_write
 #'
 #' @details
@@ -192,38 +198,66 @@ seq_com <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
   id_field <- seq_field("identifier")$name
   id <- unique(parca[[id_field]])
 
-  if (verbose){
+  if (verbose) {
     cli::cli_h1("COMMUNES")
+    pb <- cli::cli_progress_message("Downloading commune layer...")
   }
 
-  topo_poly <- get_com_poly(parca, verbose = verbose)
-  if (!is.null(topo_poly)){
-    topo_poly[[id_field]] <- id
-    topo_poly <- seq_write2(topo_poly, "v.com.topo.poly", id)
-  }
+  com_poly <- get_com_poly(parca, verbose = FALSE)
 
-  topo_line <- get_com_line(parca, verbose = verbose)
-  if (!is.null(topo_line)){
-    topo_line[[id_field]] <- id
-    topo_line <- seq_write2(topo_line, "v.com.topo.line", id)
-  }
+  topo_poly <- NULL
+  topo_line <- NULL
+  topo_point <- NULL
+  graphic_line <- NULL
+  graphic_point <- NULL
 
-  topo_point <- get_com_point(parca, verbose = verbose)
-  if (!is.null(topo_point)){
-    topo_point[[id_field]] <- id
-    topo_point <- seq_write2(topo_point, "v.com.topo.point", id)
-  }
+  if (!is.null(com_poly)){
+    com_poly[[id_field]] <- id
+    topo_poly <- seq_write2(com_poly, "v.com.topo.poly", id)
 
-  graphic_line <- get_com_line(parca, graphic = TRUE, verbose = verbose)
-  if (!is.null(graphic_line)){
-    graphic_line[[id_field]] <- id
-    graphic_line <- seq_write2(graphic_line, "v.com.graphic.line", id)
-  }
+    topo_line_sf <- get_com_line(
+      parca,
+      verbose = FALSE,
+      poly = com_poly
+    )
+    if (!is.null(topo_line_sf)){
+      topo_line_sf[[id_field]] <- id
+      topo_line <- seq_write2(topo_line_sf, "v.com.topo.line", id)
+    }
 
-  graphic_point <- get_com_point(parca, graphic = TRUE, verbose = verbose)
-  if (!is.null(graphic_point)){
-    graphic_point[[id_field]] <- id
-    graphic_point <- seq_write2(graphic_point, "v.com.graphic.point", id)
+    topo_point_sf <- get_com_point(
+      parca,
+      verbose = FALSE,
+      poly = com_poly
+    )
+    if (!is.null(topo_point_sf)){
+      topo_point_sf[[id_field]] <- id
+      topo_point <- seq_write2(topo_point_sf, "v.com.topo.point", id)
+    }
+
+    graphic_line_sf <- get_com_line(
+      parca,
+      graphic = TRUE,
+      verbose = FALSE,
+      poly = com_poly
+    )
+    if (!is.null(graphic_line_sf)){
+      graphic_line_sf[[id_field]] <- id
+      graphic_line <- seq_write2(graphic_line_sf, "v.com.graphic.line", id)
+    }
+
+    graphic_point_sf <- get_com_point(
+      parca,
+      graphic = TRUE,
+      verbose = FALSE,
+      poly = com_poly
+    )
+    if (!is.null(graphic_point_sf)){
+      graphic_point_sf[[id_field]] <- id
+      graphic_point <- seq_write2(graphic_point_sf, "v.com.graphic.point", id)
+    }
+  } else if (verbose) {
+    cli::cli_alert_warning("No commune features found: layers not written.")
   }
 
   return(

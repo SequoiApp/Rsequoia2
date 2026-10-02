@@ -11,7 +11,7 @@
 #' before spatial filtering. Default is `100`.
 #' @param cache `character`; Optional cache directory. If `NULL`, the
 #' dataset-specific cache from [Rsequoia2::seq_cache()] is used.
-#' @param verbose `logical`; If `TRUE`, display progress messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #' @param overwrite `logical`; If `TRUE`, re-download archives even when
 #' they already exist in `cache`.
 #'
@@ -167,14 +167,15 @@ seq_geol <- function(
 
   # BASE INFO ----
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-
   identifier <- seq_field("identifier")$name
   id <- unique(parca[[identifier]])
 
   outputs <- list()
 
   # CREATE LAYERS ----
-  for (layer_key in key) {
+  for (i in seq_along(key)) {
+
+    layer_key <- key[[i]]
 
     geol_key <- switch(
       layer_key,
@@ -183,7 +184,7 @@ seq_geol <- function(
     )
 
     if (verbose) {
-      cli::cli_h2("{geol_key}")
+      pb <- cli::cli_progress_message("Downloading {geol_key} layer...")
     }
 
     geol <- get_geol(
@@ -191,13 +192,14 @@ seq_geol <- function(
       key = geol_key,
       buffer = buffer,
       cache = cache,
-      verbose = verbose,
+      verbose = FALSE,
       overwrite = FALSE
     )
 
     geol <- geol |>
       sf::st_transform(sf::st_crs(parca)) |>
-      sf::st_intersection(parca) |>
+      sf::st_intersection(parca |> sf::st_geometry() |> sf::st_union()) |>
+      sf::st_cast("POLYGON")|>
       suppressWarnings()
 
     geol[[identifier]] <- id

@@ -4,7 +4,7 @@
 \alias{get_ifn}
 \title{Retrieve IFN regional layers by intersecting an area}
 \usage{
-get_ifn(x, key, cache = seq_cache("ifn")$path)
+get_ifn(x, key, cache = seq_cache("ifn")$path, verbose = TRUE)
 }
 \arguments{
 \item{x}{An \code{sf} object defining the input area of interest.}
@@ -21,6 +21,9 @@ Must be one of \code{get_keys("ifn")}:
 
 \item{cache}{A character string defining the cache directory.
 Defaults to a package-specific cache directory.}
+
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 }
 \value{
 An \code{sf} object containing the region features intersecting \code{x}.

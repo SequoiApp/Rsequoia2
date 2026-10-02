@@ -58,7 +58,6 @@ test_that("seq_pedology() writes nothing when no features exist", {
 
 })
 
-
 test_that("seq_pedology() layer contains identifier", {
 
   with_seq_cache({

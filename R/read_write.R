@@ -2,9 +2,10 @@
 #'
 #' @param key `character` Name of a layer key to match against the entries
 #' defined in `inst/config/seq_layers.yaml`. (see *Details* for partial matching).
-#' @param dirname `character` Directory where the matrice file is located.
-#' Defaults to the current working directory.
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param dirname `character`; Path to the Sequoia project directory.
+#'   Defaults to the current working directory.
+#' @param verbose `logical`; If `TRUE`, display progress and informational
+#'   messages.
 #'
 #' @importFrom sf read_sf
 #' @importFrom terra rast
@@ -97,7 +98,7 @@ seq_read <- function(key, dirname = ".", verbose = FALSE) {
 #' a `*_matrice.xlsx` file found in `dirname`. If no unique identifier can be
 #' determined, the filename is left unchanged.
 #' @param x An `sf` object (for vector outputs) or a `SpatRaster` (for raster outputs).
-#' @param overwrite `logical` If `TRUE`, file is overwritten.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing files.
 #'
 #' @return Invisibly returns the filepath used for writing.
 #'
@@ -141,12 +142,11 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
   names(path) <- key
 
   if (file.exists(path) && !overwrite) {
-    cli::cli_warn(
-      c(
-        "!" = "{.file {basename(path)}} already exists.",
-        "i" = "Use {.arg overwrite = TRUE} to replace it."
+    if (verbose) {
+      cli::cli_alert_info(
+        "Using existing {.file {basename(path)}}."
       )
-    )
+    }
     return(invisible(path))
   }
 
@@ -194,7 +194,7 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
 
     if (verbose) {
       cli::cli_alert_success(
-        "Layer {.val {key}} with {nrow(x)} feature{?s} saved to {.file {full_path}}."
+        "{.file {basename(full_path)}} saved with {nrow(x)} feature{?s}"
       )
     }
 
@@ -236,7 +236,7 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
 
     if (verbose) {
       cli::cli_alert_success(
-        "Layer {.val {key}} saved to {.file {full_path}}."
+        "{.file {basename(full_path)}} saved with {terra::ncol(x)}x{terra::nrow(x)} cells"
       )
     }
 

@@ -19,7 +19,7 @@ download_bdcharm50(
 Defaults to the Rsequoia2 BD Charm 50 cache directory, see
 \code{\link[=seq_cache]{seq_cache()}}.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display progress messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 
 \item{overwrite}{\code{logical}; If \code{TRUE}, re-download archives even when
 they already exist in \code{cache}.}

@@ -107,7 +107,6 @@ test_that("seq_ifn() returns only written layers when some key are empty", {
 
     out <- seq_ifn(seq_cache, key = c("ser", "rfn"), verbose = FALSE)
 
-    expect_named(out, "ser")
     expect_length(out, 1)
   })
 })

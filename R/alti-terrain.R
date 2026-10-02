@@ -4,9 +4,9 @@
 #' derivatives such as slope or aspect.
 #'
 #' @param dem SpatRaster; DEM/MNT raster.
-#' @param agg numeric(1); Target working resolution in meters. If NULL,
+#' @param agg numeric; Target working resolution in meters. If NULL,
 #' no aggregation is applied.
-#' @param verbose logical(1); If TRUE, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return A SpatRaster, unchanged or aggregated.
 #'
@@ -82,7 +82,7 @@ seq_aggregate_dem <- function(dem, agg = 5, verbose = TRUE) {
 
   # --- Aggregate ---
   if (verbose) {
-    cli::cli_alert_info(
+    cli::cli_progress_message(
       "Aggregating DEM: {round(resolution, 1)} m -> {round(fact * resolution, 1)} m to avoid terrain artefacts."
     )
   }
@@ -93,6 +93,7 @@ seq_aggregate_dem <- function(dem, agg = 5, verbose = TRUE) {
     fun = mean,
     na.rm = TRUE
   )
+
 }
 
 #' Compute a Slope Raster from a DEM
@@ -111,7 +112,7 @@ seq_aggregate_dem <- function(dem, agg = 5, verbose = TRUE) {
 #' @inheritParams get_chm
 #' @param agg `numeric`; Target resolution, in meters, to which the DEM is
 #' aggregated if its native resolution is finer. Default: `5`.
-#' @param verbose `logical`; If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #' @param ... Additional parameters passed to [get_dem()] when `x` is supplied.
 #'
 #' @details
@@ -139,7 +140,7 @@ seq_aggregate_dem <- function(dem, agg = 5, verbose = TRUE) {
 #' @param agg `numeric`; Target resolution (in meters) to which the DEM is
 #' aggregated if its native resolution is finer. Default: `5`.
 #' @param unit `character`; "percent", "radians" or "degrees". Default to "percent".
-#' @param verbose `logical`; If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #' @param ... Additional parameters passed to [get_dem()] when `x` is supplied.
 #'
 #' @details
@@ -309,7 +310,7 @@ get_shade <- function(
 #'
 #' @inheritParams seq_write
 #' @inheritParams get_slope
-#' @param verbose `logical`; If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return Invisibly returns a named `character` vector of output raster paths.
 #'

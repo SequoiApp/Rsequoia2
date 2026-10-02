@@ -9,7 +9,7 @@ parca_remove_full_overlap(parca, verbose = TRUE)
 \arguments{
 \item{parca}{An \code{sf} polygon object containing cadastral parcels.}
 
-\item{verbose}{\code{logical}. If \code{TRUE}, display correction messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 An \code{sf} object with corrected geometries.

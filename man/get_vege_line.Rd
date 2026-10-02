@@ -4,10 +4,13 @@
 \alias{get_vege_line}
 \title{Retrieve forest vegetation lines around an area}
 \usage{
-get_vege_line(x)
+get_vege_line(x, poly = NULL)
 }
 \arguments{
 \item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
+
+\item{poly}{Optional preloaded vegetation polygon layer. Supplying it avoids
+downloading the same source data again.}
 }
 \value{
 An \code{sf} object containing forest vegetation line features.

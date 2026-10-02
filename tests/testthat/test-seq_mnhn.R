@@ -43,20 +43,15 @@ test_that("seq_mnhn() layers contain id", {
   })
 })
 
-test_that("seq_mnhn() doesn't write when no data found", {
+test_that("seq_mnhn() is silent when verbose is FALSE", {
 
   with_seq_cache({
     local_mocked_bindings(
       get_mnhn = function(...) Rsequoia2:::seq_empty
     )
 
-    mnhn_path <- seq_mnhn(dirname = seq_cache, key = "pn", verbose = FALSE)
-    expect_length(mnhn_path, 0)
-
-    expect_warning(
-      seq_mnhn(dirname = seq_cache, key = "pn", verbose = TRUE),
-      "All layers are empty"
-    ) |> suppressMessages()
-
+    expect_silent(
+      seq_mnhn(dirname = seq_cache, key = "pn", verbose = FALSE)
+    )
   })
 })

@@ -10,7 +10,7 @@ seq_layer(key, verbose = FALSE)
 \item{key}{\code{character} Name of a layer key to match against the entries
 defined in \code{inst/config/seq_layers.yaml}. (see \emph{Details} for partial matching).}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 A named list containing layer metadata, including:

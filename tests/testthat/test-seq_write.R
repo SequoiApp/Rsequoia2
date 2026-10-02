@@ -39,7 +39,13 @@ test_that("seq_write() overwrite vector properly correctly", {
     v <- Rsequoia2:::seq_poly
     seq_write(v, "prsf", seq_cache)
     seq_write(v, "prsf", seq_cache, overwrite = TRUE, verbose = FALSE)
-    expect_warning(seq_write(v, "prsf", seq_cache, overwrite = FALSE))
+    expect_silent(
+      seq_write(v, "prsf", seq_cache, overwrite = FALSE, verbose = FALSE)
+    )
+    expect_message(
+      seq_write(v, "prsf", seq_cache, overwrite = FALSE, verbose = TRUE),
+      "Using existing"
+    )
   })
 
 })
@@ -53,7 +59,13 @@ test_that("seq_write() overwrite raster properly correctly", {
 
     seq_write(r, "irc", seq_cache)
     expect_silent(seq_write(r, "irc", seq_cache, overwrite = TRUE))
-    expect_warning(seq_write(r, "irc", seq_cache, overwrite = FALSE))
+    expect_silent(
+      seq_write(r, "irc", seq_cache, overwrite = FALSE, verbose = FALSE)
+    )
+    expect_message(
+      seq_write(r, "irc", seq_cache, overwrite = FALSE, verbose = TRUE),
+      "Using existing"
+    )
   })
 
 })

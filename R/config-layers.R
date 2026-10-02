@@ -100,7 +100,7 @@ get_keys <- function(pattern = NULL, reduce = TRUE, filepath = NULL){
 #'
 #' @param key `character` Name of a layer key to match against the entries
 #' defined in `inst/config/seq_layers.yaml`. (see *Details* for partial matching).
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @details
 #' The function resolves the input `key` using **partial matching** against

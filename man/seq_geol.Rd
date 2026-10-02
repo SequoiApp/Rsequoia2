@@ -14,7 +14,7 @@ seq_geol(
 )
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 
 \item{key}{\code{character}. Optional geology layer identifier(s). If \code{NULL},
@@ -28,9 +28,10 @@ dataset-specific cache from \code{\link[=seq_cache]{seq_cache()}} is used.}
 \item{buffer}{\code{numeric}; Buffer distance, in meters, applied around \code{x}
 before spatial filtering. Default is \code{100}.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
 Invisibly returns a named \code{list} of file paths to the created layers.

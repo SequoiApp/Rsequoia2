@@ -10,9 +10,10 @@ get_pedology_pdf(id_ucs, dirname, verbose = TRUE)
 \item{id_ucs}{\code{character} used to identify pedology reports.
 It can be got by using \code{get_pedology()$id_ucs}.}
 
-\item{dirname}{\code{character}; directory where the PDF will be saved.}
+\item{dirname}{\code{character}; Output directory for downloaded PDF files.}
 
-\item{verbose}{\code{logical}. If \code{TRUE}, display progress messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 }
 \value{
 Invisibly returns the normalized path to \code{out_dir}. Returns
