@@ -95,7 +95,9 @@ com_point_from_poly <- function(poly, clip = NULL, verbose = TRUE) {
 #' clipped for cartographic display.
 #'
 #' @param x An `sf` object used as the input area.
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
+#' @param poly Optional preloaded commune polygon layer. Supplying it avoids
+#'   downloading the same source data again.
 #' @param graphic Logical. If `TRUE`, line geometries are clipped to a
 #'   500 m convex buffer around `x` for graphical purposes.
 #'
@@ -129,7 +131,9 @@ get_com_line <- function(x, graphic = FALSE, verbose = TRUE) {
 #' restricted to a graphical extent.
 #'
 #' @param x An `sf` object used as the input area.
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
+#' @param poly Optional preloaded commune polygon layer. Supplying it avoids
+#'   downloading the same source data again.
 #' @param graphic Logical. If `TRUE`, centroids are computed only on the
 #'   intersection between commune polygons and a 500 m convex buffer
 #'   around `x`, for cartographic display.
@@ -166,8 +170,6 @@ get_com_point <- function(x, graphic = FALSE, verbose = TRUE) {
 #' Both topological (full extent) and graphical (restricted extent)
 #' representations are generated when relevant.
 #'
-#' @param dirname `character` Path to the project directory.
-#'   Defaults to the current working directory.
 #' @inheritParams seq_write
 #'
 #' @details
@@ -197,6 +199,7 @@ get_commune <- function(
 
   if (verbose) {
     cli::cli_h1("COMMUNES")
+    pb <- cli::cli_progress_message("Downloading commune layer...")
   }
 
   poly <- get_com_poly(x, verbose = verbose)

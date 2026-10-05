@@ -11,7 +11,7 @@ mf_get_nearest_station(x, n = 1, verbose = TRUE)
 
 \item{n}{\code{integer}; number of nearest stations to return. Default is 1.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 An \code{sf} object containing the nearest meteorological stations.

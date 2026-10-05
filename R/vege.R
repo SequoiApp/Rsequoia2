@@ -125,6 +125,8 @@ remove_small_geometries <- function(x, tol, crs = 2154) {
 #' Retrieve forest vegetation lines around an area
 #'
 #' @inheritParams get_vege_poly
+#' @param poly Optional preloaded vegetation polygon layer. Supplying it avoids
+#'   downloading the same source data again.
 #'
 #' @return An `sf` object containing forest vegetation line features.
 #'
@@ -144,7 +146,7 @@ remove_small_geometries <- function(x, tol, crs = 2154) {
 #' @seealso get_vege_poly
 #'
 #' @export
-get_vege_line <- function(x) {
+get_vege_line <- function(x, poly = NULL) {
 
   if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
@@ -162,9 +164,12 @@ get_vege_line <- function(x) {
   source <- seq_field("source")$name
 
   # retrieve vegetation polygons
-  vege_poly <- get_vege_poly(x)
+  vege_poly <- poly
+  if (is.null(vege_poly)) {
+    vege_poly <- get_vege_poly(x)
+  }
 
-  if (nrow(vege_poly) == 0) {
+  if (is.null(vege_poly) || nrow(vege_poly) == 0) {
     cli::cli_warn("No vegetation data found. Empty {.cls sf} is returned.")
     empty_sf <- create_empty_sf("LINE") |> seq_normalize("vct_line")
     return(invisible(empty_sf))
@@ -298,7 +303,7 @@ get_vege_point <- function(x){
 
 }
 
-#' Generates vegetation polygon, line and point layers for a Sequoia project.
+#' Generate vegetation polygon, line and point layers for a Sequoia project
 #'
 #' This function is a convenience wrapper around [get_vege_poly()],
 #' [get_vege_line()] and [get_vege_point()], allowing the user to download
@@ -338,23 +343,38 @@ seq_vege <- function(
     cli::cli_h1("VEGETATION")
   }
 
-  vege_poly <- get_vege_poly(parca)
-  if (nrow(vege_poly) > 1){
-    vege_poly[[id_field]] <- id
+  if (verbose) {
+    pb <- cli::cli_progress_message("Downloading vegetation poly layer...")
   }
-  vege_poly <- seq_write2(vege_poly, "v.vege.poly", id)
 
-  vege_line <- get_vege_line(parca)
-  if (nrow(vege_line) > 1){
-    vege_line[[id_field]] <- id
-  }
-  vege_line <- seq_write2(vege_line, "v.vege.line", id)
+  vege_poly_sf <- suppressWarnings(get_vege_poly(parca))
 
-  vege_point <- get_vege_point(parca)
-  if (nrow(vege_point) > 1){
-    vege_point[[id_field]] <- id
+  if (is.null(vege_poly_sf)) {
+    vege_poly_sf <- create_empty_sf("POLYGON") |>
+      seq_normalize("vct_poly")
   }
-  vege_point <- seq_write2(vege_point, "v.vege.point", id)
+  vege_poly_write <- vege_poly_sf
+  if (nrow(vege_poly_write) > 0){
+    vege_poly_write[[id_field]] <- id
+  }
+  vege_poly <- seq_write2(vege_poly_write, "v.vege.poly", id)
+
+  vege_line_sf <- suppressWarnings(get_vege_line(parca, poly = vege_poly_sf))
+  if (nrow(vege_line_sf) > 0){
+    vege_line_sf[[id_field]] <- id
+  }
+  vege_line <- seq_write2(vege_line_sf, "v.vege.line", id)
+
+  if (verbose) {
+    pb <- cli::cli_progress_message("Downloading vegetation point layer...")
+  }
+
+  vege_point_sf <- suppressWarnings(get_vege_point(parca))
+
+  if (nrow(vege_point_sf) > 0){
+    vege_point_sf[[id_field]] <- id
+  }
+  vege_point <- seq_write2(vege_point_sf, "v.vege.point", id)
 
   return(invisible(c(vege_poly, vege_line, vege_point) |> as.list()))
 }

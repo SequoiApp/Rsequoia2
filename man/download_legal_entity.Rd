@@ -10,7 +10,7 @@ download_legal_entity(cache = seq_cache("legal_entity")$path, verbose = TRUE)
 \item{cache}{\code{character}; Storage directory. Defaults to the user cache
 directory.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 \code{character};

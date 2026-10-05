@@ -13,7 +13,7 @@ get_legal_entity(x, cache = seq_cache("legal_entity")$path, verbose = TRUE)
 \item{cache}{\code{character}; Storage directory. Defaults to the user cache
 directory.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \description{
 Generates a forest matrice used to store general forest

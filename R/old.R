@@ -5,7 +5,7 @@
 #'
 #' @param x An `sf` object defining the input area of interest.
 #' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return An `sf` object containing OLD features.
 #'
@@ -81,10 +81,11 @@ seq_old <- function(
 
   if (verbose){
     cli::cli_h1("OLD")
+    pb <- cli::cli_progress_message("Downloading OLD layer...")
   }
 
   # Retrieve toponyms
-  old <- get_old(parca, buffer = buffer, verbose = verbose)
+  old <- get_old(parca, buffer = buffer, verbose = FALSE)
 
   if (!is.null(old)){
     old[[id_field]] <- id
@@ -97,6 +98,8 @@ seq_old <- function(
       verbose = verbose,
       overwrite = overwrite
     )
+  } else if (verbose) {
+    cli::cli_alert_warning("No OLD features found: layer not written.")
   }
 
   return(invisible(c(old) |> as.list()))

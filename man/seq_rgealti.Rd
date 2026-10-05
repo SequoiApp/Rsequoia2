@@ -15,7 +15,7 @@ seq_rgealti(
 )
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 
 \item{key}{\code{character}; RGE ALTI product(s) to create. One or more of
@@ -30,9 +30,9 @@ system (see \code{\link[happign:get_wms_raster]{happign::get_wms_raster()}})}
 \item{crs}{\code{numeric} or \code{character}; CRS of the returned raster (see
 \code{\link[happign:get_wms_raster]{happign::get_wms_raster()}})}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 Invisibly returns a named \code{character} vector of output raster paths.

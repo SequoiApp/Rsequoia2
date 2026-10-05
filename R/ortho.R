@@ -15,8 +15,8 @@
 #' precise the resolution(see [happign::get_wmts()])
 #' @param crs `numeric` or `character`; CRS of the returned raster (see
 #' [happign::get_wmts()])
-#' @param overwrite `logical`; If `TRUE`, file is overwritten.
-#' @param verbose `logical`; If `TRUE`, display messages.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing files.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @details
 #' The orthophoto retrieved contains data for the whole bounding
@@ -74,14 +74,16 @@ get_ortho <- function(
     "rgb" = "ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO"
   )
 
-  if (verbose) {cli::cli_alert_info("Downloading {toupper(type)} dataset...")}
+  if (verbose) {
+    pb <- cli::cli_progress_message(
+      "Downloading {toupper(type)} dataset...",
+      .auto_close = FALSE
+    )
+  }
 
-  pb <- cli::cli_progress_bar(toupper(type), total = nrow(x_env), clear = TRUE)
   tmp <- tempdir()
   files <- c()
   for (i in seq_len(nrow(x_env))){
-
-    if (verbose) {cli::cli_progress_update(id = pb)}
 
     file <- sprintf(file.path(tmp, sprintf("r_%03d.tif", i)))
 
@@ -92,15 +94,16 @@ get_ortho <- function(
       crs = crs,
       filename = file,
       overwrite = TRUE,
-      verbose = TRUE) |> suppressWarnings()
+      verbose = verbose) |> suppressWarnings()
 
     files <- c(files, file)
+
   }
-  cli::cli_progress_done(id = pb)
 
+  if (verbose) {cli::cli_progress_done(pb)}
+
+  if (verbose) {cli::cli_progress_message("Optimizing raster...")}
   v <- terra::vrt(files, options = c("-hidenodata"))
-
-  if (verbose) {cli::cli_alert_info("Raster size optimization...")}
   r_mask <- terra::mask(v, x_env)
   terra::RGB(r_mask) <- c(1, 2, 3, 4)
   names(r_mask) <- c("red", "green", "blue", "alpha")
@@ -169,6 +172,7 @@ seq_ortho <- function(
       overwrite = overwrite,
       verbose = verbose
     )
+
   })
 
   return(invisible(paths))

@@ -13,7 +13,7 @@ seq_patrimony(
 )
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 
 \item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
@@ -23,9 +23,9 @@ the download area.}
 provided, the function uses \code{get_keys("pat")} to automatically select all
 patrimony layers defined in the Sequoia configuration (\code{inst/config/seq_layers.yaml})}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
 A named list of file paths written by \code{\link[=seq_write]{seq_write()}}, one per layer.

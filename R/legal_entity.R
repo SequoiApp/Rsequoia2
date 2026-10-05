@@ -8,7 +8,7 @@
 #'
 #' @param cache `character`; Storage directory. Defaults to the user cache
 #' directory.
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @importFrom archive archive_extract
 #' @importFrom tools R_user_dir

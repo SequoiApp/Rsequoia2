@@ -4,7 +4,7 @@
 #' curves and returns an `sf` line layer.
 #'
 #' @param x An `sf` object defining the input area of interest.
-#' @param verbose `logical` If `TRUE`, display messages.
+#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return An `sf` object containing hypsometric curves.
 #'
@@ -77,10 +77,11 @@ seq_curves <- function(
 
   if (verbose){
     cli::cli_h1("CONTOUR LINES")
+    pb <- cli::cli_progress_message("Downloading contour-line layer...")
   }
 
   # Retrieve toponyms
-  curves <- get_curves(parca, verbose = verbose)
+  curves <- get_curves(parca, verbose = FALSE)
 
   # Exit early if nothing to write
   if (!is.null(curves) ) {
@@ -94,6 +95,8 @@ seq_curves <- function(
       verbose = verbose,
       overwrite = overwrite
     )
+  } else if (verbose) {
+    cli::cli_alert_warning("No contour-line features found: layer not written.")
   }
 
   return(invisible(c(curves) |> as.list()))

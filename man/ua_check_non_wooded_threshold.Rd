@@ -11,7 +11,7 @@ ua_check_non_wooded_threshold(ua, threshold = 0.1, verbose = TRUE)
 
 \item{threshold}{Maximum allowed non-wooded ratio. Defaults to \code{0.10}.}
 
-\item{verbose}{Logical. Should messages be printed?}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 \code{TRUE} if the threshold is respected, otherwise \code{FALSE}.

@@ -47,20 +47,15 @@ test_that("seq_com() layers contain id", {
   })
 })
 
-test_that("seq_patrimony() doesn't write when no data found", {
+test_that("seq_patrimony() is silent when verbose is FALSE", {
 
   with_seq_cache({
     local_mocked_bindings(
       get_patrimony = function(...) NULL
     )
 
-    patrimony_path <- seq_patrimony(dirname = seq_cache, key = "imdn", verbose = FALSE)
-    expect_length(patrimony_path, 0)
-
-    expect_message(
-      seq_patrimony(dirname = seq_cache, key = "imdn", verbose = TRUE),
-      "All layers are empty"
-    ) |> suppressMessages()
-
+    expect_silent(
+      seq_patrimony(dirname = seq_cache, key = "imdn", verbose = FALSE)
+    )
   })
 })

@@ -16,9 +16,10 @@ used.}
 \item{data_table}{\code{logical} If \code{TRUE}, data table is set up with total row.
 Default to \code{FALSE}.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, filename is overwritten.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 }
 \value{
 Invisibly returns the path \code{filename} after saving.

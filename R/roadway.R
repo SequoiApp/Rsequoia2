@@ -307,14 +307,9 @@ get_roadway_line <- function(x){
 #'
 #' Create graphic road layers from a completed cadastral gaps layer.
 #'
-#' @param dirname `character` Path to the project directory.
-#'   Defaults to the current working directory.
+#' @inheritParams seq_write
 #' @param source `character` Source layer key to use to generate polygon
 #'   features. Must be `v.cad.vides.poly` or `v.road.line`.
-#' @param verbose `logical`; whether to display informational messages.
-#'   Defaults to `TRUE`.
-#' @param overwrite `logical`; whether to overwrite existing files.
-#'   Defaults to `FALSE`.
 #'
 #' @details
 #' Features are created from a completed cadastral gaps layer obtained by using

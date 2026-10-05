@@ -29,7 +29,8 @@ dg_dataset <- function(q = "", org_id = "", page_size = 10){
   pb <- cli::cli_progress_bar(
     "Fetching dataset",
     type = "iterator",
-    total = total_pages - 1
+    total = total_pages - 1,
+    auto_terminate = FALSE
   )
 
   # --- Fetch remaining pages ---
@@ -41,10 +42,6 @@ dg_dataset <- function(q = "", org_id = "", page_size = 10){
       all <- c(all, content$data)
       cli::cli_progress_update()
     }
-  }
-
-  if (total_pages > 1){
-    cli::cli_progress_done()
   }
 
   dataset_list <- lapply(all, function(ds){

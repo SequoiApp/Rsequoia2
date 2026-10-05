@@ -2,19 +2,20 @@
 % Please edit documentation in R/infra.R
 \name{seq_infra}
 \alias{seq_infra}
-\title{Generates infrastructure polygon, line and point layers for a Sequoia project.}
+\title{Generate infrastructure polygon, line and point layers for a Sequoia project}
 \usage{
 seq_infra(dirname = ".", buffer = 1000, verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Directory where the matrice file is located.
+\item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 
 \item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, file is overwritten.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
 A named list of file paths written by \code{\link[=seq_write]{seq_write()}},

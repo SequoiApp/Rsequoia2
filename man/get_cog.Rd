@@ -11,7 +11,7 @@ get_cog(cache = seq_cache("cog")$path, update = FALSE, verbose = TRUE)
 
 \item{update}{Force re-download even if cached.}
 
-\item{verbose}{Display progress messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 Named list of data frames:

@@ -13,7 +13,7 @@ get_parca(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE)
 
 \item{lieu_dit}{\code{logical} If \code{TRUE}, attach lieux-dits to each parcel.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \description{
 Lieux-dits and administrative attributes (commune, departement, region)

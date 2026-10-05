@@ -9,7 +9,7 @@ normalize_pm(pm, verbose = FALSE)
 \arguments{
 \item{pm}{A legal entity parcel data frame returned by \code{\link[=get_pm]{get_pm()}}.}
 
-\item{verbose}{If \code{TRUE}, display progress messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 A list with:

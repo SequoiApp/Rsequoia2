@@ -9,7 +9,8 @@ seq_com(dirname = ".", verbose = TRUE, overwrite = FALSE)
 \arguments{
 \item{dirname}{\code{character} Path to the project directory.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 
 \item{overwrite}{\code{logical} If \code{TRUE}, overwrite existing files.}
 }

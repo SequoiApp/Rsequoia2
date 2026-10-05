@@ -10,7 +10,7 @@ ua_check_ug(ua, verbose = TRUE)
 \item{ua}{\code{sf} object containing analysis units;
 with at least the UG identifier field and relevant attribute fields.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display progress messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 An \code{sf} object identical to \code{ua}, with an additional logical column

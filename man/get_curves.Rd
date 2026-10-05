@@ -9,7 +9,7 @@ get_curves(x, verbose = TRUE)
 \arguments{
 \item{x}{An \code{sf} object defining the input area of interest.}
 
-\item{verbose}{\code{logical} If \code{TRUE}, display messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 An \code{sf} object containing hypsometric curves.

@@ -15,12 +15,12 @@ get_ser_pdf(
 \item{id_ser}{\code{character} used to identify pedology reports.
 It can be got by using \code{get_ifn("ser")$codeser}.}
 
-\item{dirname}{Output directory where PDF files are saved.}
+\item{dirname}{\code{character}; Output directory for downloaded PDF files.}
 
-\item{overwrite}{\code{logical}; whether to overwrite existing files.
-Defaults to \code{FALSE}.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 
-\item{verbose}{\code{logical}. If \code{TRUE}, display progress messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 }
 \value{
 Invisibly returns the normalized path to \code{out_dir}. Returns
