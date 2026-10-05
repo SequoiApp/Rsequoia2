@@ -108,6 +108,195 @@ get_geol <- function(
   return(geol)
 }
 
+#' Clip raw geology data to an area
+#'
+#' @param x `sf` or `sfc`; Area used to clip the geology data.
+#' @param geol `sf`; Raw geology data.
+#'
+#' @return An `sf` object clipped to `x`.
+#'
+#' @keywords internal
+#' @noRd
+.transform_geol <- function(x, geol) {
+  suppressWarnings(
+    geol |>
+      sf::st_transform(sf::st_crs(x)) |>
+      sf::st_intersection(x |> sf::st_geometry() |> sf::st_union()) |>
+      sf::st_cast("POLYGON")
+  )
+}
+
+#' Extract the BD Charm 50 QML style
+#'
+#' @param x `sf` or `sfc`; Area used to identify the relevant department.
+#' @param layer_path `character`; Path of the BD Charm 50 layer. The QML file
+#'   is written next to it with the same basename.
+#' @param cache `character`; Optional BD Charm 50 cache directory.
+#' @param verbose `logical`; If `TRUE`, display informational messages.
+#' @param overwrite `logical`; If `TRUE`, overwrite an existing QML file.
+#'
+#' @return Invisibly returns the QML path, or `NULL` when no unique style is
+#'   found.
+#'
+#' @keywords internal
+#' @noRd
+.extract_geol_qml <- function(
+    x,
+    layer_path,
+    cache = NULL,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  qml_path <- paste0(tools::file_path_sans_ext(layer_path), ".qml")
+
+  if (file.exists(qml_path) && !overwrite) {
+    return(invisible(qml_path))
+  }
+
+  dep <- happign::get_wfs(
+    sf::st_transform(x, 2154),
+    layer = "BDCARTO_V5:departement",
+    predicate = happign::intersects()
+  )
+
+  dep <- check_dep(unique(dep[["code_insee"]]))
+
+  if (is.null(cache)) {
+    cache <- seq_cache("bdcharm50")$path
+  }
+
+  zip_path <- download_bdcharm50(
+    dep = dep,
+    cache = cache,
+    verbose = FALSE,
+    overwrite = FALSE
+  )
+
+  qml_zip <- grep(
+    "S_FGEOL.*\\.qml$",
+    archive::archive(zip_path[[1]])$path,
+    value = TRUE,
+    ignore.case = TRUE
+  )
+
+  if (length(qml_zip) != 1) {
+    if (verbose) {
+      cli::cli_warn("Could not find a unique BD Charm 50 QML style in archive.")
+    }
+
+    return(invisible(NULL))
+  }
+
+  archive::archive_extract(
+    zip_path[[1]],
+    dir = dirname(layer_path),
+    files = qml_zip
+  )
+
+  extracted_path <- file.path(dirname(layer_path), qml_zip)
+
+  if (file.exists(qml_path) && overwrite) {
+    file.remove(qml_path)
+  }
+
+  file.rename(extracted_path, qml_path) |> invisible()
+
+  return(invisible(qml_path))
+}
+
+#' Search geology layers
+#'
+#' Downloads geology layers intersecting `x` and writes them to `out`.
+#'
+#' @inheritParams get_geol
+#' @param out `character`; Output directory.
+#' @param key `character`. Optional geology layer identifier(s). If `NULL`,
+#'   all available geology layers are fetched. Available layers are
+#'   `"v.sol.carhab.poly"` and `"v.sol.bdcharm50.poly"`. Partial matching is
+#'   supported through [seq_key()].
+#' @param overwrite `logical`; If `TRUE`, overwrite existing files.
+#'
+#' @return Invisibly returns a named list of written file paths.
+#'
+#' @keywords internal
+#' @noRd
+fetch_geol <- function(
+    x,
+    out,
+    key = NULL,
+    buffer = 100,
+    cache = NULL,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  allowed <- c("v.sol.carhab.poly", "v.sol.bdcharm50.poly")
+
+  if (is.null(key)) {
+    key <- allowed
+  } else {
+    key <- lapply(key, seq_key, allow_multiple = TRUE) |>
+      unlist(use.names = FALSE)
+
+    key <- intersect(key, allowed)
+
+    if (length(key) == 0) {
+      cli::cli_abort(c(
+        "Invalid {.arg key}.",
+        "x" = "No valid geology layer selected.",
+        "i" = "Allowed geology keys are: {.vals {allowed}}."
+      ))
+    }
+  }
+
+  if (verbose) {
+    cli::cli_h1("GEOLOGY")
+  }
+
+  outputs <- list()
+
+  for (i in seq_along(key)) {
+    layer_key <- key[[i]]
+
+    geol_key <- switch(
+      layer_key,
+      "v.sol.carhab.poly" = "carhab",
+      "v.sol.bdcharm50.poly" = "bdcharm50"
+    )
+
+    geol <- get_geol(
+      x = x,
+      key = geol_key,
+      buffer = buffer,
+      cache = cache,
+      verbose = verbose,
+      overwrite = FALSE
+    )
+
+    geol <- .transform_geol(x, geol)
+
+    path <- write_vect(
+      geol,
+      file.path(out, seq_layer(layer_key)$filename),
+      overwrite = overwrite,
+      verbose = verbose
+    )
+
+    outputs[[layer_key]] <- path
+
+    if (identical(layer_key, "v.sol.bdcharm50.poly")) {
+      .extract_geol_qml(
+        x = x,
+        layer_path = path,
+        cache = cache,
+        verbose = verbose,
+        overwrite = overwrite
+      )
+    }
+  }
+
+  return(invisible(outputs))
+}
+
 #' Create geology layers for a Sequoia project from BRGM data
 #'
 #' Uses the project's _PARCA_ layer as the area of interest, downloads the
@@ -183,24 +372,16 @@ seq_geol <- function(
       "v.sol.bdcharm50.poly" = "bdcharm50"
     )
 
-    if (verbose) {
-      pb <- cli::cli_progress_message("Downloading {geol_key} layer...")
-    }
-
     geol <- get_geol(
       x = parca,
       key = geol_key,
       buffer = buffer,
       cache = cache,
-      verbose = FALSE,
+      verbose = verbose,
       overwrite = FALSE
     )
 
-    geol <- geol |>
-      sf::st_transform(sf::st_crs(parca)) |>
-      sf::st_intersection(parca |> sf::st_geometry() |> sf::st_union()) |>
-      sf::st_cast("POLYGON")|>
-      suppressWarnings()
+    geol <- .transform_geol(parca, geol)
 
     geol[[identifier]] <- id
 
@@ -215,49 +396,14 @@ seq_geol <- function(
 
     outputs[[layer_key]] <- path
 
-    # QML handling for BD Charm 50 ----
     if (identical(layer_key, "v.sol.bdcharm50.poly")) {
-
-      dep <- unique(parca[[seq_field("dep_code")$name]])
-
-      qml_cache <- cache
-      if (is.null(qml_cache)) {
-        qml_cache <- seq_cache("bdcharm50")$path
-      }
-
-      zip_path <- download_bdcharm50(
-        dep = dep,
-        cache = qml_cache,
-        verbose = FALSE,
-        overwrite = FALSE
+      .extract_geol_qml(
+        x = parca,
+        layer_path = path,
+        cache = cache,
+        verbose = verbose,
+        overwrite = overwrite
       )
-
-      qml_zip <- grep(
-        "S_FGEOL.*\\.qml$",
-        archive::archive(zip_path[[1]])$path,
-        value = TRUE,
-        ignore.case = TRUE
-      )
-
-      if (length(qml_zip) == 1) {
-        archive::archive_extract(
-          zip_path[[1]],
-          dir = dirname,
-          files = qml_zip
-        )
-
-        qml_path <- paste0(
-          tools::file_path_sans_ext(path),
-          ".qml"
-        )
-
-        file.rename(file.path(dirname, qml_zip), qml_path) |>
-          invisible()
-      } else if (verbose) {
-        cli::cli_warn(
-          "Could not find a unique BD Charm 50 QML style in archive."
-        )
-      }
     }
   }
 

@@ -75,8 +75,8 @@ menu_toolbox_data <- function(x) {
 
   base_actions <- list(
     "Communes"       = function() fetch_com(x, path),
-    "MNHN"           = function() fetch_mnhn(x, path)
-    # "Geologie"       = function() seq_geol(path),
+    "MNHN"           = function() fetch_mnhn(x, path),
+    "G\u00e9ologie"       = function() fetch_geol(x, path)
     # "Pedologie"      = function() seq_pedology(path),
     # "Infra"          = function() seq_infra(path),
     # "Route"          = function() seq_road(path),
