@@ -8,7 +8,7 @@
 menu_data <- function() {
 
   path <- seq_get_path()
-  info <- cli::format_inline("Dossier sélectionné : {.path {path}}")
+  info <- cli::format_inline("Dossier s\u00E9lectionn\u00E9 : {.path {path}}")
 
   seq_altimetry <- function(dirname = ".", overwrite = FALSE, verbose = TRUE, ...) {
 
@@ -26,8 +26,8 @@ menu_data <- function() {
   base_actions <- list(
     "Communes"       = function() seq_com(path),
     "MNHN"           = function() seq_mnhn(path),
-    "Géologie"       = function() seq_geol(path),
-    "Pédologie"      = function() seq_pedology(path),
+    "G\u00E9ologie"       = function() seq_geol(path),
+    "P\u00E9dologie"      = function() seq_pedology(path),
     "Infra"          = function() seq_infra(path),
     "Route"          = function() seq_road(path),
     "Route cad."     = function() seq_roadway(path),
@@ -35,20 +35,20 @@ menu_data <- function() {
     "OLD"            = function() seq_old(path),
     "Toponyme"       = function() seq_toponyme(path),
     "Hydrologie"     = function() seq_hydro(path),
-    "Végétation"     = function() seq_vege(path),
-    "Accessibilité"  = function() seq_access(path),
+    "V\u00E9g\u00E9tation"     = function() seq_vege(path),
+    "Accessibilit\u00E9"  = function() seq_access(path),
     "Meteo-France"   = function() seq_meteo_france(path),
     "Drias"          = function() seq_drias(path),
     "Courbes niveau" = function() seq_curves(path),
     "IFN"            = function() seq_ifn(path),
     "GPU"            = function() seq_gpu(path),
     "Patrimoine"     = function() seq_patrimony(path),
-    "Altimétrie"     = function() seq_altimetry(path),
+    "Altim\u00E9trie"     = function() seq_altimetry(path),
     "Orthophoto"     = function() seq_ortho(path)
   )
 
   actions <- c(
-    "Toutes les données" = function() invisible(lapply(base_actions, seq_run_action)),
+    "Toutes les donn\u00E9es" = function() invisible(lapply(base_actions, seq_run_action)),
     base_actions
   )
 
@@ -71,11 +71,11 @@ menu_data <- function() {
 menu_toolbox_data <- function(x) {
 
   path <- seq_get_path()
-  info <- cli::format_inline("Dossier sélectionné : {.path {path}}")
+  info <- cli::format_inline("Dossier s\u00E9lectionn\u00E9 : {.path {path}}")
 
   base_actions <- list(
-    "Communes"       = function() get_commune(x, path)
-    # "MNHN"           = function() seq_mnhn(path),
+    "Communes"       = function() fetch_com(x, path),
+    "MNHN"           = function() fetch_mnhn(x, path)
     # "Geologie"       = function() seq_geol(path),
     # "Pedologie"      = function() seq_pedology(path),
     # "Infra"          = function() seq_infra(path),
@@ -98,13 +98,13 @@ menu_toolbox_data <- function(x) {
   )
 
   actions <- c(
-    "Toutes les données" = function() invisible(lapply(base_actions, seq_run_action)),
+    "Toutes les donn\u00E9es" = function() invisible(lapply(base_actions, seq_run_action)),
     base_actions
   )
 
   seq_run_menu(
     actions = actions,
-    title = "Télécharger des données",
+    title = "T\u00E9l\u00E9charger des donn\u00E9es",
     info = info,
     is_sub = TRUE,
     multi = TRUE

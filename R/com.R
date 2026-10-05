@@ -1,267 +1,265 @@
-#' Retrieve administrative boundary around an area
+#' Retrieve commune boundaries around an area
 #'
-#' Builds a convex buffer around the input geometry, retrieves commune
-#' boundaries from BDTOPO, normalizes them, and returns a polygon layer.
+#' Downloads commune polygons from BDTOPO around the input geometry and
+#' normalizes their attributes.
 #'
 #' @param x `sf` object used as the input area.
 #' @param buffer `numeric`; Buffer distance, in meters, passed to
-#'   [seq_envelope()] to enlarge the data retrieval area around `x`.
+#'   [seq_envelope()].
 #' @param verbose `logical`; If `TRUE`, display messages.
 #'
-#' @return An `sf` object of type `POLYGON` containing commune boundaries,
-#' with standardized fields as defined by `seq_normalize("com_poly")`.
-#' Returns `NULL` if no commune intersects the search area.
-#'
+#' @return An `sf` polygon layer containing commune boundaries, or `NULL`
+#'   if no commune is found.
 #'
 #' @export
-get_com_poly <- function(x, buffer = 2000, verbose = TRUE) {
+get_com <- function(x, buffer = 2000, verbose = TRUE) {
 
-  # fetch_envelope buffer
   crs <- 2154
-  x <- sf::st_transform(x, crs)
-  fetch_envelope <- seq_envelope(x, buffer)
 
-  if (verbose){
+  x <- sf::st_transform(x, crs)
+  envelope <- seq_envelope(x, buffer)
+
+  if (verbose) {
     cli::cli_alert_info("Downloading communes dataset...")
   }
 
   com <- happign::get_wfs(
-    fetch_envelope,
+    envelope,
     layer = "BDTOPO_V3:commune",
     verbose = FALSE
   )
 
-  if (nrow(com) == 0) {
+  if (!nrow(com)) {
     return(NULL)
   }
 
   com <- seq_normalize(com, "com_poly") |>
     sf::st_transform(crs)
 
-  return(invisible(com))
+  invisible(com)
 }
 
-#' Build commune boundary lines from downloaded polygons
+
+#' Derive commune geometry
+#'
+#' Converts commune polygons to line or point geometries.
+#'
+#' @param x Commune polygon layer.
+#' @param type Geometry type to derive: `"line"` or `"point"`.
+#'
+#' @return An `sf` object containing derived geometries.
+#'
 #' @keywords internal
 #' @noRd
-com_line_from_poly <- function(poly, clip = NULL, verbose = TRUE) {
-  line <- poly_to_line(poly)
+derive_com <- function(x, type = c("line", "point")) {
 
-  if (is.null(clip)) {
-    return(invisible(line))
-  }
+  type <- match.arg(type)
 
-  line <- suppressWarnings(sf::st_intersection(line, clip))
+  switch(
+    type,
+    line = poly_to_line(x),
+    point = suppressWarnings(
+      sf::st_centroid(
+        x,
+        of_largest_polygon = FALSE
+      )
+    )
+  )
+}
 
-  if (nrow(line) == 0) {
+
+#' Clip commune geometries
+#'
+#' Clips an existing commune layer to an area of interest.
+#'
+#' @param x Commune `sf` layer.
+#' @param clip `sf` object used as clipping geometry.
+#' @param verbose `logical`; If `TRUE`, display messages.
+#'
+#' @return The clipped `sf` layer, or `NULL` if there is no intersection.
+#'
+#' @keywords internal
+#' @noRd
+clip_com <- function(x, clip, verbose = TRUE) {
+
+  out <- suppressWarnings(
+    sf::st_intersection(x, clip)
+  )
+
+  if (!nrow(out)) {
     if (verbose) {
       cli::cli_alert_warning(
-        "No intersection between COMS_TOPO_line and area of interest."
+        "No intersection with area of interest."
       )
     }
+
     return(NULL)
   }
 
-  invisible(line)
+  invisible(out)
 }
 
-#' Build commune representative points from downloaded polygons
+
+#' Build commune layers
+#'
+#' Downloads commune polygons once and derives the topological and graphical
+#' representations used by Sequoia.
+#'
+#' @inheritParams get_com
+#'
+#' @return A named list of commune layers, or `NULL` if no commune is found.
+#'
 #' @keywords internal
 #' @noRd
-com_point_from_poly <- function(poly, clip = NULL, verbose = TRUE) {
-  if (!is.null(clip)) {
-    poly <- sf::st_intersection(poly, clip) |>
-      suppressWarnings()
+.build_com_layers <- function(x, verbose = TRUE) {
 
-    if (nrow(poly) == 0) {
-      if (verbose) {
-        cli::cli_alert_warning(
-          "No intersection between COMS_TOPO_point and area of interest."
-        )
-      }
-      return(NULL)
-    }
-  }
-
-  centroid <- sf::st_centroid(poly, of_largest_polygon = FALSE) |>
-    suppressWarnings()
-
-  return(centroid)
-}
-
-#' Retrieve and assemble commune boundary lines around an area
-#'
-#' Converts commune boundary polygons into line features, optionally
-#' clipped for cartographic display.
-#'
-#' @param x An `sf` object used as the input area.
-#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
-#' @param poly Optional preloaded commune polygon layer. Supplying it avoids
-#'   downloading the same source data again.
-#' @param graphic Logical. If `TRUE`, line geometries are clipped to a
-#'   500 m convex buffer around `x` for graphical purposes.
-#'
-#' @return An `sf` object of type `LINESTRING` representing commune boundaries.
-#'   Returns `NULL` if no commune intersects the input area.
-#'
-#' @details
-#' The function retrieves commune polygons using `get_com_poly()`,
-#' converts them to line geometries using `poly_to_line()`,
-#' and optionally intersects them with a reduced convex buffer
-#' to limit graphical extent.
-#'
-#' @seealso [get_com_poly()]
-#'
-#' @export
-get_com_line <- function(x, graphic = FALSE, verbose = TRUE) {
-  poly <- get_com_poly(x, buffer = 2000, verbose = verbose)
-
+  poly <- get_com(x, buffer = 2000, verbose = verbose)
   if (is.null(poly)) {
     return(NULL)
   }
 
-  clip <- if (graphic) seq_envelope(x, 500) else NULL
+  graphic_poly <- clip_com(
+    poly,
+    seq_envelope(x, 500),
+    verbose = verbose
+  )
 
-  com_line_from_poly(poly, clip, verbose)
-}
+  layers <- list(
+    "v.com.topo.poly" = poly,
+    "v.com.topo.line" = derive_com(poly, "line"),
+    "v.com.topo.point" = derive_com(poly, "point")
+  )
 
-#' Retrieve commune representative points around an area
-#'
-#' Computes centroid points from commune boundary polygons, optionally
-#' restricted to a graphical extent.
-#'
-#' @param x An `sf` object used as the input area.
-#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
-#' @param poly Optional preloaded commune polygon layer. Supplying it avoids
-#'   downloading the same source data again.
-#' @param graphic Logical. If `TRUE`, centroids are computed only on the
-#'   intersection between commune polygons and a 500 m convex buffer
-#'   around `x`, for cartographic display.
-#'
-#' @return An `sf` object of type `POINT` representing commune centroids.
-#'   Returns `NULL` if no commune intersects the input area.
-#'
-#' @details
-#' The function retrieves commune polygons using `get_com_poly()`,
-#' then computes their centroids. When `graphic = TRUE`, centroids
-#' are calculated from the clipped geometries to ensure points
-#' fall within the display extent.
-#'
-#' @seealso [get_com_poly()]
-#'
-#' @export
-get_com_point <- function(x, graphic = FALSE, verbose = TRUE) {
-  poly <- get_com_poly(x, buffer = 2000, verbose = verbose)
+  if (!is.null(graphic_poly)) {
+    layers[["v.com.graphic.line"]] <- derive_com(
+      graphic_poly,
+      "line"
+    )
 
-  if (is.null(poly)) {
-    return(NULL)
+    layers[["v.com.graphic.point"]] <- derive_com(
+      graphic_poly,
+      "point"
+    )
   }
 
-  clip <- if (graphic) seq_envelope(x, 500) else NULL
-
-  com_point_from_poly(poly, clip, verbose)
+  return(layers)
 }
 
-#' Download and write commune layers for an area
+
+#' Search commune layers
 #'
-#' Internal wrapper around [get_com_poly()], [get_com_line()],
-#' [get_com_point()] and [seq_write()].
+#' Retrieves commune layers around `x` and writes them to `out`.
 #'
-#' Both topological (full extent) and graphical (restricted extent)
-#' representations are generated when relevant.
+#' @param x `sf` object used as the input area.
+#' @param out `character`; Output directory.
+#' @param verbose `logical`; If `TRUE`, display messages.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing files.
 #'
-#' @inheritParams seq_write
+#' @return Invisibly returns a named list of written file paths, or `NULL`
+#'   if no commune is found.
 #'
-#' @details
-#' Commune layers are built from BDTOPO commune boundaries intersecting
-#' the project area defined by the PARCA polygon.
-#'
-#' The following layers are produced:
-#'
-#' - Topological layers: Full commune geometry (polygon, boundary lines, centroids)
-#' - Graphical layers: Line and point representations clipped to a reduced
-#'   convex buffer around the project area, intended for cartographic display
-#'
-#' @return A named list of file paths written by [seq_write()],
-#' one per commune layer.
-#'
-#' @seealso
-#' [get_com_poly()], [get_com_line()], [get_com_point()],
-#' [seq_write()]
-#'
-#' @export
-get_commune <- function(
+#' @keywords internal
+#' @noRd
+fetch_com <- function(
     x,
-    dirname = ".",
-    id = NULL,
+    out,
     verbose = TRUE,
     overwrite = FALSE) {
 
   if (verbose) {
     cli::cli_h1("COMMUNES")
-    pb <- cli::cli_progress_message("Downloading commune layer...")
   }
 
-  poly <- get_com_poly(x, verbose = verbose)
-
-  if (is.null(poly)) {
-    return(invisible(list()))
-  }
-
-  clip <- seq_envelope(x, 500)
-  layers <- list(
-    "v.com.topo.poly" = poly,
-    "v.com.topo.line" = com_line_from_poly(poly),
-    "v.com.topo.point" = com_point_from_poly(poly),
-    "v.com.graphic.line" = com_line_from_poly(poly, clip, verbose),
-    "v.com.graphic.point" = com_point_from_poly(poly, clip, verbose)
+  layers <- .build_com_layers(
+    x,
+    verbose = verbose
   )
-  layers <- Filter(Negate(is.null), layers)
 
-  id_field <- seq_field("identifier")$name
-  paths <- lapply(names(layers), function(key) {
-    layer <- layers[[key]]
-
-    if (!is.null(id)) {
-      layer[[id_field]] <- id
+  if (is.null(layers)) {
+    if (verbose) {
+      cli::cli_alert_info("No commune layer found.")
     }
 
+    return(invisible(NULL))
+  }
+
+  paths <- lapply(names(layers), function(k) {
+    write_vect(
+      layers[[k]],
+      file.path(out, seq_layer(k)$filename),
+      overwrite = overwrite,
+      verbose = verbose
+    )
+  })
+
+  names(paths) <- names(layers)
+
+  return(invisible(paths))
+}
+
+
+#' Generate commune layers for a Sequoia project
+#'
+#' Retrieves commune layers around the project area and writes them to the
+#' Sequoia project directory.
+#'
+#' The project PARCA layer is used as the search geometry and its identifier
+#' is added to each generated layer before writing.
+#'
+#' @inheritParams seq_write
+#'
+#' @return Invisibly returns a named list of written file paths, or `NULL`
+#'   if no commune is found.
+#'
+#' @seealso [get_com()]
+#'
+#' @export
+seq_com <- function(
+    dirname = ".",
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  parca <- seq_read(
+    "v.seq.parca.poly",
+    dirname = dirname
+  )
+
+  identifier <- seq_field("identifier")$name
+  id <- unique(parca[[identifier]])
+
+  if (verbose) {
+    cli::cli_h1("COMMUNES")
+  }
+
+  layers <- .build_com_layers(
+    parca,
+    verbose = verbose
+  )
+
+  if (is.null(layers)) {
+    if (verbose) {
+      cli::cli_alert_info("No commune layer found.")
+    }
+
+    return(invisible(NULL))
+  }
+
+  paths <- lapply(names(layers), function(k) {
+
+    f <- layers[[k]]
+    f[[identifier]] <- id
+
     seq_write(
-      layer,
-      key,
+      f,
+      k,
       dirname = dirname,
       id = id,
       verbose = verbose,
       overwrite = overwrite
     )
   })
+
   names(paths) <- names(layers)
 
-  invisible(paths)
+  return(invisible(paths))
 }
-
-#' Generates commune polygon, line and point layers for a Sequoia project
-#'
-#' Reads the project PARCA layer, retrieves its identifier, then delegates the
-#' commune download and writing to [get_commune()].
-#'
-#' @param dirname `character` Path to the project directory.
-#' @param verbose `logical` If `TRUE`, display messages.
-#' @param overwrite `logical` If `TRUE`, overwrite existing files.
-#'
-#' @return A named list of written file paths.
-#' @export
-seq_com <- function(dirname = ".", verbose = TRUE, overwrite = FALSE) {
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id_field <- seq_field("identifier")$name
-  id <- unique(parca[[id_field]])
-
-  get_commune(
-    x = parca,
-    dirname = dirname,
-    id = id,
-    verbose = verbose,
-    overwrite = overwrite
-  )
-}
-

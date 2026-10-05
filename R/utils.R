@@ -340,3 +340,79 @@ seq_multi_download <- function(
     "i" = "Missing file(s): {.file {basename(state$destfiles)}}"
   ))
 }
+
+#' Fetch and write multiple layers
+#'
+#' @param x Input object passed to fetcher.
+#' @param key Layer keys to process.
+#' @param fetcher Function used to retrieve each layer.
+#' @param writer Function used to write each retrieved layer.
+#' @param writer Function used to transform each retrieved layer.
+#' @param label Optional label used in progress messages.
+#' @param verbose Logical; display progress messages.
+#' @param ... Additional arguments passed to fetcher.
+#'
+#' @return Invisibly returns a list of written paths, or NULL if no layer is found.
+#'
+#' @keywords internal
+#'
+.fetch_layers <- function(
+    x,
+    key,
+    fetcher,
+    writer,
+    transformer = identity,
+    label = NULL,
+    verbose = TRUE,
+    ...) {
+
+  if (verbose && !is.null(label)) {
+    cli::cli_h1(label)
+  }
+
+  pb <- NULL
+  if (verbose) {
+    pb <- cli::cli_progress_bar(
+      format = paste0(
+        "{cli::pb_spin} Searching ", label, " layer: {.val {k}} | ",
+        "[{cli::pb_current}/{cli::pb_total}]"
+      ),
+      total = length(key)
+    )
+  }
+
+  paths <- lapply(key, function(k) {
+
+    if (verbose) {
+      cli::cli_progress_update(id = pb, force = TRUE)
+    }
+
+    tryCatch({
+
+      f <- fetcher(x, k, ..., verbose = FALSE)
+
+      if (is.null(f) || nrow(f) == 0) {
+        return(NULL)
+      }
+
+      f <- transformer(f)
+
+      writer(f, k)
+
+    }, error = function(e) {
+      NULL
+    })
+  })
+
+  paths <- Filter(Negate(is.null), paths)
+
+  if (!length(paths)) {
+    if (verbose && !is.null(label)) {
+      cli::cli_alert_info("No {label} layer found.")
+    }
+
+    return(invisible(NULL))
+  }
+
+  invisible(paths)
+}

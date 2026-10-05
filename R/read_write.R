@@ -108,9 +108,8 @@ write_vect <- function(x, path, overwrite = FALSE, verbose = FALSE) {
   )
 
   if (verbose) {
-    feature_count <- if (inherits(x, "sf")) nrow(x) else length(x)
     cli::cli_alert_success(
-      "Vector layer with {feature_count} feature{?s} saved to {.file {path}}."
+      "{.file {basename(path)}} saved with {nrow(x)} feature{?s}"
     )
   }
 
@@ -149,7 +148,9 @@ write_rast <- function(x, path, overwrite = FALSE, verbose = FALSE) {
   )
 
   if (verbose) {
-    cli::cli_alert_success("Raster layer saved to {.file {path}}.")
+    cli::cli_alert_success(
+      "{.file {basename(path)}} saved with {terra::ncol(x)}x{terra::nrow(x)} cells"
+    )
   }
 
   invisible(path)

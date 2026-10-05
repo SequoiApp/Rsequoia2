@@ -92,7 +92,7 @@ test_that("seq_write() aborts if vector key is used with non-sf object", {
   with_seq_cache({
     expect_error(
       seq_write(data.frame(a = 1), "prsf", dirname = seq_cache),
-      "not an .*sf"
+      "must be an .*sf"
     )
   })
 })
@@ -101,7 +101,7 @@ test_that("seq_write() aborts if raster key is used with non-raster object", {
   with_seq_cache({
     expect_error(
       seq_write(Rsequoia2:::seq_poly, "irc", dirname = seq_cache),
-      "not a .*SpatRaster"
+      "must be a .*SpatRaster"
     )
   })
 })

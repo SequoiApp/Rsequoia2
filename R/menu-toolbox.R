@@ -9,7 +9,7 @@ menu_toolbox <- function() {
   on.exit(options(seq_dir_path = old_path), add = TRUE)
 
   path <- rstudioapi::selectDirectory(
-    caption = "Sélectionner un dossier de destination",
+    caption = "S\u00E9lectionner un dossier de destination",
     path = getOption("seq_dir_path", getwd())
   )
 
@@ -19,11 +19,11 @@ menu_toolbox <- function() {
 
   options(seq_dir_path = path)
 
-  info <- cli::format_inline("Dossier sélectionné : {.path {path}}")
+  info <- cli::format_inline("Dossier s\u00E9lectionn\u00E9 : {.path {path}}")
 
   download_data <- function() {
     file <- rstudioapi::selectFile(
-      caption = "Sélectionner une couche SIG",
+      caption = "S\u00E9lectionner une couche SIG",
       path = path,
       filter = "Couches SIG (*.gpkg *.shp *.geojson *.json *.kml)"
     )
@@ -39,15 +39,15 @@ menu_toolbox <- function() {
   actions <- list(
     "RP PDF -> Excel" = menu_rp,
     "Rechercher une personne morale" = menu_pm,
-    "Télécharger PARCA depuis des IDU" = function() {
-      cli::cli_alert_info("Fonctionnalité à implémenter.")
+    "T\u00E9l\u00E9charger PARCA depuis des IDU" = function() {
+      cli::cli_alert_info("Fonctionnalit\u00E9 \u00E0 impl\u00E9menter.")
     },
-    "Télécharger des données sur une zone" = download_data
+    "T\u00E9l\u00E9charger des donn\u00E9es sur une zone" = download_data
   )
 
   seq_run_menu(
     actions = actions,
-    title = "Boîte à outils",
+    title = "Bo\u00EEte \u00E0 outils",
     info = info,
     is_sub = TRUE
   )

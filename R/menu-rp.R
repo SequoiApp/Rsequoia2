@@ -16,7 +16,7 @@ menu_rp <- function() {
   files <- select_pdf_files(path)
 
   if (length(files) == 0) {
-    cli::cli_alert_info("Aucun fichier sélectionné.")
+    cli::cli_alert_info("Aucun fichier s\u00E9lectionn\u00E9.")
     return(invisible(NULL))
   }
 
@@ -81,7 +81,7 @@ select_pdf_files <- function(path) {
 
   repeat {
     f <- rstudioapi::selectFile(
-      caption = "Sélectionner un relevé de propriété",
+      caption = "S\u00E9lectionner un relev\u00E9 de propri\u00E9t\u00E9",
       path = getOption("last_pdf_path", path),
       filter = "PDF files (*.pdf)"
     )
@@ -92,9 +92,9 @@ select_pdf_files <- function(path) {
 
     if (f %in% files) {
       rstudioapi::showDialog(
-        title = "Fichier deja sélectionné",
+        title = "Fichier deja s\u00E9lectionn\u00E9",
         message = paste0(
-          "Ce fichier est deja sélectionné : ",
+          "Ce fichier est deja s\u00E9lectionn\u00E9 : ",
           basename(f)
         )
       )
@@ -106,13 +106,13 @@ select_pdf_files <- function(path) {
 
     n <- length(files)
     msg <- paste0(
-      n, " fichier", if (n > 1) "s" else "", " sélectionné", if (n > 1) "s" else "", " : \n",
+      n, " fichier", if (n > 1) "s" else "", " s\u00E9lectionn\u00E9", if (n > 1) "s" else "", " : \n",
       paste("-", basename(files), collapse = "\n")
     )
 
     another <- rstudioapi::showQuestion(
-      title = "Sélection des fichiers",
-      message = paste0(msg, "\n\nVoulez-vous sélectionner un autre fichier ?"),
+      title = "S\u00E9lection des fichiers",
+      message = paste0(msg, "\n\nVoulez-vous s\u00E9lectionner un autre fichier ?"),
       ok = "Oui",
       cancel = "Lancer la conversion"
     )

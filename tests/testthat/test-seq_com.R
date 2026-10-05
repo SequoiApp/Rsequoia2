@@ -2,24 +2,22 @@ test_that("seq_com() returned expected path", {
   with_seq_cache({
 
     local_mocked_bindings(
-      get_com_poly = function(...) Rsequoia2:::seq_poly,
-      get_com_line = function(...) Rsequoia2:::seq_line,
-      get_com_point = function(...) Rsequoia2:::seq_point,
+      get_com = function(...) seq_read("parca", seq_cache)
     )
 
     paths <- seq_com(seq_cache, verbose = FALSE, overwrite = TRUE)
-    expect_length(paths, 3)
+
+    expect_length(paths, 5)
     expect_all_true(file.exists(unlist(paths)))
   })
 })
+
 
 test_that("seq_com() returned correct geometry", {
   with_seq_cache({
 
     local_mocked_bindings(
-      get_com_poly = function(...) Rsequoia2:::seq_poly,
-      get_com_line = function(...) Rsequoia2:::seq_line,
-      get_com_point = function(...) Rsequoia2:::seq_point,
+      get_com = function(...) Rsequoia2:::seq_poly
     )
 
     paths <- seq_com(seq_cache, verbose = FALSE, overwrite = TRUE)
@@ -51,34 +49,38 @@ test_that("seq_com() returned correct geometry", {
         logical(1)
       )
     )
-
   })
 })
+
 
 test_that("seq_com() layers contain id", {
   with_seq_cache({
 
     local_mocked_bindings(
-      get_com_poly = function(...) Rsequoia2:::seq_poly,
-      get_com_line = function(...) Rsequoia2:::seq_line,
-      get_com_point = function(...) Rsequoia2:::seq_point,
+      get_com = function(...) Rsequoia2:::seq_poly
     )
 
     paths <- seq_com(seq_cache, verbose = FALSE, overwrite = TRUE)
     com <- lapply(paths, read_sf)
 
     identifier <- seq_field("identifier")$name
-    expect_all_true(vapply(com, \(x) identifier %in% names(x), TRUE))
+
+    expect_all_true(
+      vapply(
+        com,
+        \(x) identifier %in% names(x),
+        logical(1)
+      )
+    )
   })
 })
+
 
 test_that("seq_com() does not write layers when no commune intersects", {
   with_seq_cache({
 
     local_mocked_bindings(
-      get_com_poly = function(...) NULL,
-      get_com_line = function(...) NULL,
-      get_com_point = function(...) NULL
+      get_com = function(...) NULL
     )
 
     paths <- seq_com(seq_cache, verbose = FALSE)
@@ -86,3 +88,4 @@ test_that("seq_com() does not write layers when no commune intersects", {
     expect_length(paths, 0)
   })
 })
+

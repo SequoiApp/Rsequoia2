@@ -8,7 +8,7 @@
 menu_sequoia <- function() {
 
   path <- rstudioapi::selectDirectory(
-    caption = "Sélectionner un dossier Sequoia2",
+    caption = "S\u00E9lectionner un dossier Sequoia2",
     path = getOption("seq_dir_path", getwd())
   )
 
@@ -17,7 +17,7 @@ menu_sequoia <- function() {
   }
 
   options(seq_dir_path = path)
-  info <- cli::format_inline("Dossier sélectionné : {.path {path}}")
+  info <- cli::format_inline("Dossier s\u00E9lectionn\u00E9 : {.path {path}}")
 
   download_parca <- function() seq_parca(seq_get_path())
 
@@ -28,7 +28,7 @@ menu_sequoia <- function() {
   aggregate_ua <- function() {
 
     cli::cli_alert_warning(
-      "Cette opération peut écraser des fichiers existants."
+      "Cette op\u00E9ration peut \u00E9craser des fichiers existants."
     )
 
     answer <- readline(
@@ -40,7 +40,7 @@ menu_sequoia <- function() {
     overwrite <- tolower(trimws(answer)) %in% c("o", "oui", "y", "yes")
 
     if (!overwrite) {
-      cli::cli_alert_info("Opération annulée. Aucun fichier n'a été écrasé.")
+      cli::cli_alert_info("Op\u00E9ration annul\u00E9e. Aucun fichier n'a \u00E9t\u00E9 \u00E9cras\u00E9.")
       return(invisible(FALSE))
     }
 
@@ -56,13 +56,13 @@ menu_sequoia <- function() {
   sumarize_ua <- function() seq_summary(seq_get_path())
 
   actions <- list(
-    "Générer une MATRICE CADASTRALE" = menu_matrice,
-    "Télécharger PARCA" = download_parca,
-    "Télécharger DONNEES" = menu_data,
-    "Générer les UA" = create_ua,
+    "G\u00E9n\u00E9rer une MATRICE CADASTRALE" = menu_matrice,
+    "T\u00E9l\u00E9charger PARCA" = download_parca,
+    "T\u00E9l\u00E9charger DONNEES" = menu_data,
+    "G\u00E9n\u00E9rer les UA" = create_ua,
     "Corriger les UA" = correct_ua,
-    "Aggréger les UA" = aggregate_ua,
-    "Synthétiser les UA" = sumarize_ua
+    "Aggr\u00E9ger les UA" = aggregate_ua,
+    "Synth\u00E9tiser les UA" = sumarize_ua
   )
 
   seq_run_menu(

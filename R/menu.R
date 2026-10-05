@@ -20,10 +20,10 @@ sequoia2 <- function() {
 
   actions <- list(
     "Projet Sequoia" = menu_sequoia,
-    "Boite à outils" = menu_toolbox,
+    "Boite \u00E0 outils" = menu_toolbox,
     "Gestion des dossiers" = menu_folders,
     "Documentation" = website,
-    "Signaler un problème" = ask_help
+    "Signaler un probl\u00E8me" = ask_help
   )
 
   seq_run_menu(actions = actions)

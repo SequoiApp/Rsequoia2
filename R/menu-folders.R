@@ -8,7 +8,7 @@ menu_folders <- function() {
 
   update_folder <- function() {
     path <- rstudioapi::selectDirectory(
-      caption = "Sélectionner ancien dossier sequoia"
+      caption = "S\u00E9lectionner ancien dossier sequoia"
     )
 
     if (nzchar(path)) {
@@ -18,7 +18,7 @@ menu_folders <- function() {
 
   rename_folder <- function() {
     path <- rstudioapi::selectDirectory(
-      caption = "Sélectionner ancien dossier sequoia"
+      caption = "S\u00E9lectionner ancien dossier sequoia"
     )
 
     old_id <- readline("Ancien identifiant : ")

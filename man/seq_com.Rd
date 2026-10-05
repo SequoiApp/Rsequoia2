@@ -2,22 +2,31 @@
 % Please edit documentation in R/com.R
 \name{seq_com}
 \alias{seq_com}
-\title{Generates commune polygon, line and point layers for a Sequoia project}
+\title{Generate commune layers for a Sequoia project}
 \usage{
 seq_com(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{dirname}{\code{character} Path to the project directory.}
+\item{dirname}{\code{character}; Path to the Sequoia project directory.
+Defaults to the current working directory.}
 
 \item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
 messages.}
 
-\item{overwrite}{\code{logical} If \code{TRUE}, overwrite existing files.}
+\item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
-A named list of written file paths.
+Invisibly returns a named list of written file paths, or \code{NULL}
+if no commune is found.
 }
 \description{
-Reads the project PARCA layer, retrieves its identifier, then delegates the
-commune download and writing to \code{\link[=get_commune]{get_commune()}}.
+Retrieves commune layers around the project area and writes them to the
+Sequoia project directory.
+}
+\details{
+The project PARCA layer is used as the search geometry and its identifier
+is added to each generated layer before writing.
+}
+\seealso{
+\code{\link[=get_com]{get_com()}}
 }

@@ -110,6 +110,53 @@ get_mnhn <- function(
   return(invisible(f))
 }
 
+#' Search MNHN vector layers
+#'
+#' Downloads one or several MNHN vector layers intersecting x and writes
+#' them to out.
+#'
+#' This function loops over [get_mnhn()] for each requested layer.
+#'
+#' @inheritParams get_mnhn
+#'
+#' @param out character; Output directory.
+#' @param key character; MNHN layer identifiers to download. Defaults to all
+#'   MNHN layers defined in the Sequoia configuration.
+#' @param overwrite logical; Whether existing files should be overwritten.
+#'
+#' @return Invisibly returns a list of written file paths, or NULL if no
+#'   layer is found.
+#'
+#' @keywords internal
+#' @noRd
+#'
+fetch_mnhn <- function(
+    x,
+    out,
+    buffer = 500,
+    key = get_keys("mnhn"),
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  .fetch_layers(
+    x = x,
+    key = key,
+    fetcher = get_mnhn,
+    label = "MNHN",
+    verbose = verbose,
+    buffer = buffer,
+
+    writer = function(f, k) {
+      write_vect(
+        f,
+        file.path(out, seq_layer(k)$filename),
+        overwrite = overwrite,
+        verbose = verbose
+      )
+    }
+  )
+}
+
 #' Download MNHN vector layers for a Sequoia project
 #'
 #' Downloads one or several vector layers from the IGN WFS service
@@ -144,68 +191,35 @@ seq_mnhn <- function(
     buffer = 500,
     key = get_keys("mnhn"),
     verbose = TRUE,
-    overwrite = FALSE){
+    overwrite = FALSE) {
 
-  # read matrice
   parca <- seq_read("v.seq.parca.poly", dirname = dirname)
   identifier <- seq_field("identifier")$name
   id <- unique(parca[[identifier]])
 
-  if (verbose){
-    cli::cli_h1("MNHN")
-  }
+  .fetch_layers(
+    x = parca,
+    key = key,
+    fetcher = get_mnhn,
+    label = "MNHN",
+    verbose = verbose,
+    buffer = buffer,
 
-  pb <- NULL
-  if (verbose) {
-    pb <- cli::cli_progress_bar(
-      format = paste0(
-        "{cli::pb_spin} Searching MNHN layer: {.val {k}} | ",
-        "[{cli::pb_current}/{cli::pb_total}]"
-      ),
-      total = length(key),
-      auto_terminate = FALSE
-    )
-  }
+    transformer = function(f) {
+      f[[identifier]] <- id
+      f
+    },
 
-  path <- list()
-
-  for (k in key) {
-
-    if (verbose) {
-      cli::cli_progress_update(id = pb, force = TRUE)
+    writer = function(f, k) {
+      seq_write(
+        f,
+        sprintf("v.mnhn.%s.poly", k),
+        dirname,
+        id,
+        verbose = verbose,
+        overwrite = overwrite
+      )
     }
-
-    f_path <- tryCatch({
-      f <- get_mnhn(parca, k, buffer = buffer, verbose = FALSE)
-
-      if (is.null(f) || nrow(f) == 0) {
-        NULL
-      } else {
-        f[[identifier]] <- id
-
-        seq_write(
-          f,
-          sprintf("v.mnhn.%s.poly", k),
-          dirname,
-          id,
-          verbose = verbose,
-          overwrite = overwrite
-        )
-      }
-    }, error = function(e) NULL)
-
-    if (!is.null(f_path)) {
-      path <- c(path, f_path)
-    }
-
-  }
-
-  if (!length(path)) {
-    if (verbose){
-      cli::cli_alert_info("No MNHN layer found.")
-    }
-    return(invisible(NULL))
-  }
-
-  invisible(path)
+  )
 }
+
