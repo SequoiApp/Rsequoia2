@@ -125,29 +125,100 @@ get_road <- function(x, buffer = 1000, private_in = TRUE, verbose = TRUE) {
   unique(out)
 }
 
-#' Generate road section layer for a Sequoia project
+#' Fetch road data
 #'
-#' Retrieves road section line features intersecting and surrounding
-#' the project area and writes the resulting layer to disk.
+#' @inheritParams get_road
+#' @param dirname `character`; Output directory.
+#' @param id Optional Sequoia project identifier.
+#' @param overwrite `logical`; If `TRUE`, overwrite an existing layer.
+#'
+#' @return Invisibly returns the written road layer path, or `NULL` if no
+#'   road is found.
+#'
+#' @keywords internal
+#' @noRd
+.road_fetcher <- function(
+    x,
+    dirname,
+    id = NULL,
+    buffer = 1000,
+    private_in = TRUE,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  if (verbose) {
+    cli::cli_h1("ROAD")
+    cli::cli_progress_message("Downloading road layer...")
+  }
+
+  road <- get_road(x, buffer = buffer, private_in = private_in, verbose = verbose)
+
+  if (is.null(road)) {
+    if (verbose) cli::cli_alert_info("No road found.")
+    return(invisible(NULL))
+  }
+
+  if (!is.null(id)) {
+    identifier <- seq_field("identifier")$name
+    road[[identifier]] <- id
+  }
+
+  path <- seq_write(
+    road,
+    key = "v.road.line",
+    dirname = dirname,
+    id = id,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+
+  invisible(path)
+}
+
+#' Fetch road layer for an area
+#'
+#' Retrieves road sections around `x` and writes the resulting layer to
+#' `dirname`.
+#'
+#' @inheritParams get_road
+#' @param dirname `character`; Output directory.
+#' @param overwrite `logical`; If `TRUE`, overwrite an existing layer.
+#'
+#' @return Invisibly returns the written road layer path, or `NULL` if no
+#'   road is found.
+#'
+#' @keywords internal
+#' @noRd
+fetch_road <- function(
+    x,
+    dirname,
+    buffer = 1000,
+    private_in = TRUE,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  .road_fetcher(
+    x = x,
+    dirname = dirname,
+    buffer = buffer,
+    private_in = private_in,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+}
+
+#' Generate road layer for a Sequoia project
+#'
+#' Retrieves road sections around the project area and writes the resulting
+#' layer to the Sequoia project directory.
 #'
 #' @inheritParams get_road
 #' @inheritParams seq_write
 #'
-#' @details
-#' Road section line features are retrieved using [get_road()].
+#' @return Invisibly returns the written road layer path, or `NULL` if no
+#'   road is found.
 #'
-#' If no features are found, the function returns `NULL` invisibly and no file
-#' is written.
-#'
-#' When features are present, the layer is written to disk using
-#' [seq_write()] with the key `"v.road.line"`.
-#'
-#' @return
-#' Invisibly returns a named list of file paths written by [seq_write()].
-#' Returns `NULL` invisibly when no features are found.
-#'
-#' @seealso
-#' [get_road()], [seq_write()]
+#' @seealso [get_road()], [seq_write()]
 #'
 #' @export
 seq_road <- function(
@@ -155,42 +226,17 @@ seq_road <- function(
     buffer = 1000,
     private_in = TRUE,
     verbose = TRUE,
-    overwrite = FALSE
-) {
+    overwrite = FALSE) {
 
-  # Read project area (PARCA)
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id_field <- seq_field("identifier")$name
-  id <- unique(parca[[id_field]])
+  ctx <- .seq_context(dirname)
 
-  if (verbose){
-    cli::cli_h1("ROAD LINES")
-    pb <- cli::cli_progress_message("Downloading road layer...")
-  }
-
-  # Retrieve road section
-  roads <- get_road(
-    parca,
+  .road_fetcher(
+    x = ctx$parca,
+    dirname = dirname,
+    id = ctx$id,
     buffer = buffer,
     private_in = private_in,
-    verbose = FALSE
+    verbose = verbose,
+    overwrite = overwrite
   )
-
-  # Exit early if nothing to write
-  if (!is.null(roads) ) {
-    roads[[id_field]] <- id
-
-    roads <- seq_write(
-      roads,
-      "v.road.line",
-      dirname = dirname,
-      id = id,
-      verbose = verbose,
-      overwrite = overwrite
-    )
-  } else if (verbose) {
-    cli::cli_alert_warning("No road features found: layer not written.")
-  }
-
-  return(invisible(c(roads) |> as.list()))
 }

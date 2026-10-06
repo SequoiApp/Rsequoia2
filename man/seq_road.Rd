@@ -2,7 +2,7 @@
 % Please edit documentation in R/road.R
 \name{seq_road}
 \alias{seq_road}
-\title{Generate road section layer for a Sequoia project}
+\title{Generate road layer for a Sequoia project}
 \usage{
 seq_road(
   dirname = ".",
@@ -27,21 +27,12 @@ marked as private.}
 \item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
-Invisibly returns a named list of file paths written by \code{\link[=seq_write]{seq_write()}}.
-Returns \code{NULL} invisibly when no features are found.
+Invisibly returns the written road layer path, or \code{NULL} if no
+road is found.
 }
 \description{
-Retrieves road section line features intersecting and surrounding
-the project area and writes the resulting layer to disk.
-}
-\details{
-Road section line features are retrieved using \code{\link[=get_road]{get_road()}}.
-
-If no features are found, the function returns \code{NULL} invisibly and no file
-is written.
-
-When features are present, the layer is written to disk using
-\code{\link[=seq_write]{seq_write()}} with the key \code{"v.road.line"}.
+Retrieves road sections around the project area and writes the resulting
+layer to the Sequoia project directory.
 }
 \seealso{
 \code{\link[=get_road]{get_road()}}, \code{\link[=seq_write]{seq_write()}}
