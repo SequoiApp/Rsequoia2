@@ -7,20 +7,15 @@
 get_prsf(x, buffer = 5000, verbose = TRUE)
 }
 \arguments{
-\item{x}{An \code{sf} object defining the input area of interest.}
+\item{x}{An \code{sf} or \code{sfc} object defining the input area.}
 
-\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
+\item{buffer}{\code{numeric}; Buffer around \code{x}, in meters.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
 }
 \value{
-An \code{sf} object containing PRSF point features.
+An \code{sf} point layer, or \code{NULL} if no PRSF feature is found.
 }
 \description{
-Builds a convex buffer around the input geometry, retrieves PRSF
-point features and returns an \code{sf} point layer.
-}
-\details{
-The function creates convex buffer around the input geometry \code{x}
-and retrieves PRSF point features before returns as a single \code{sf} point layer.
+Retrieves PRSF point features around an area of interest.
 }

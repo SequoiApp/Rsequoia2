@@ -1,106 +1,139 @@
 #' Retrieve PRSF point features around an area
 #'
-#' Builds a convex buffer around the input geometry, retrieves PRSF
-#' point features and returns an `sf` point layer.
+#' Retrieves PRSF point features around an area of interest.
 #'
-#' @param x An `sf` object defining the input area of interest.
-#' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
-#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
+#' @param x An `sf` or `sfc` object defining the input area.
+#' @param buffer `numeric`; Buffer around `x`, in meters.
+#' @param verbose `logical`; If `TRUE`, display messages.
 #'
-#' @return An `sf` object containing PRSF point features.
-#'
-#' @details
-#' The function creates convex buffer around the input geometry `x`
-#' and retrieves PRSF point features before returns as a single `sf` point layer.
+#' @return An `sf` point layer, or `NULL` if no PRSF feature is found.
 #'
 #' @export
-get_prsf <- function(x,
-                     buffer = 5000,
-                     verbose = TRUE) {
+get_prsf <- function(x, buffer = 5000, verbose = TRUE) {
 
-  # convex buffer
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- seq_envelope(x, buffer)
 
-  if (verbose){
-    cli::cli_alert_info("Downloading PRSF dataset...")
-  }
+  if (verbose) cli::cli_alert_info("Downloading PRSF dataset...")
 
-  # retrieve toponymic point
   prsf <- happign::get_wfs(
-    x = fetch_envelope,
+    seq_envelope(x, buffer),
     layer = "PROTECTEDAREAS.PRSF:prsf",
     predicate = happign::intersects(),
     verbose = FALSE
   )
 
-  if (!nrow(prsf)) {
-    return(NULL)
-  }
+  if (!nrow(prsf)) return(NULL)
 
-  return(invisible(sf::st_transform(prsf, crs)))
+  invisible(sf::st_transform(prsf, crs))
 }
 
-#' Generate PRSF point layer for a Sequoia project
+#' Fetch PRSF data
 #'
-#' Retrieves PRSF point features intersecting and surrounding
-#' the project area, and writes the resulting layer to disk.
+#' @inheritParams get_prsf
+#' @param dirname `character`; Output directory.
+#' @param id Optional Sequoia project identifier.
+#' @param overwrite `logical`; If `TRUE`, overwrite an existing layer.
+#'
+#' @return Invisibly returns the written layer path, or `NULL`.
+#'
+#' @keywords internal
+#' @noRd
+.prsf_fetcher <- function(
+    x,
+    dirname,
+    id = NULL,
+    buffer = 5000,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  if (verbose) {
+    cli::cli_h1("PRSF")
+    cli::cli_progress_message("Downloading PRSF layer...")
+  }
+
+  prsf <- get_prsf(x, buffer = buffer, verbose = FALSE)
+
+  if (is.null(prsf)) {
+    if (verbose) cli::cli_alert_warning("No PRSF found.")
+    return(invisible(NULL))
+  }
+
+  if (!is.null(id)) {
+    identifier <- seq_field("identifier")$name
+    prsf[[identifier]] <- id
+  }
+
+  path <- seq_write(
+    prsf,
+    key = "v.secu.prsf.point",
+    dirname = dirname,
+    id = id,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+
+  invisible(path)
+}
+
+
+#' Fetch PRSF layer for an area
+#'
+#' Retrieves PRSF points around `x` and writes the resulting layer to
+#' `dirname`.
+#'
+#' @inheritParams get_prsf
+#' @param dirname `character`; Output directory.
+#' @param overwrite `logical`; If `TRUE`, overwrite an existing layer.
+#'
+#' @return Invisibly returns the written layer path, or `NULL`.
+#'
+#' @keywords internal
+#' @noRd
+fetch_prsf <- function(
+    x,
+    dirname,
+    buffer = 5000,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  .prsf_fetcher(
+    x = x,
+    dirname = dirname,
+    buffer = buffer,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+}
+
+
+#' Generate PRSF layer for a Sequoia project
+#'
+#' Retrieves PRSF point features around the project area and writes the
+#' resulting layer to the Sequoia project directory.
 #'
 #' @inheritParams get_prsf
 #' @inheritParams seq_write
 #'
-#' @details
-#' PRSF point features are retrieved using [get_prsf()].
+#' @return Invisibly returns the written layer path, or `NULL`.
 #'
-#' If no PRSF point features are found, the function returns `NULL`
-#' invisibly and no file is written.
-#'
-#' When features are present, the layer is written to disk using
-#' [seq_write()] with the key `"v.prsf.point"`.
-#'
-#' @return
-#' Invisibly returns a named list of file paths written by [seq_write()].
-#' Returns `NULL` invisibly when no PRSF point features are found.
-#'
-#' @seealso
-#' [get_prsf()], [seq_write()]
+#' @seealso [get_prsf()], [seq_write()]
 #'
 #' @export
 seq_prsf <- function(
     dirname = ".",
     buffer = 5000,
     verbose = TRUE,
-    overwrite = FALSE
-) {
+    overwrite = FALSE) {
 
-  # read PARCA
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id_field <- seq_field("identifier")$name
-  id <- unique(parca[[id_field]])
+  ctx <- .seq_context(dirname)
 
-  if (verbose){
-    cli::cli_h1("PRSF")
-    pb <- cli::cli_progress_message("Downloading PRSF layer...")
-  }
-
-  # Retrieve toponyms
-  prsf <- get_prsf(parca, buffer = buffer, verbose = FALSE)
-
-  if (!is.null(prsf)){
-    prsf[[id_field]] <- id
-
-    prsf <- seq_write(
-      prsf,
-      "v.secu.prsf.point",
-      dirname = dirname,
-      id = id,
-      verbose = verbose,
-      overwrite = overwrite
-    )
-  } else if (verbose) {
-    cli::cli_alert_warning("No PRSF features found: layer not written.")
-  }
-
-  return(invisible(c(prsf) |> as.list()))
+  .prsf_fetcher(
+    x = ctx$parca,
+    dirname = dirname,
+    id = ctx$id,
+    buffer = buffer,
+    verbose = verbose,
+    overwrite = overwrite
+  )
 }

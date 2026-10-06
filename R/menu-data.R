@@ -79,8 +79,8 @@ menu_toolbox_data <- function(x) {
     "G\u00e9ologie"        = function() fetch_geol(x, path),
     "P\u00E9dologie"       = function() fetch_pedology(x, path),
     "Infra"                = function() fetch_infra(x, path),
-    "Route"                = function() fetch_road(x, path)
-    # "PRSF"                 = function() seq_prsf(path),
+    "Route"                = function() fetch_road(x, path),
+    "PRSF"                 = function() fetch_prsf(x, path)
     # "OLD"                  = function() seq_old(path),
     # "Toponyme"             = function() seq_toponyme(path),
     # "Hydrologie"           = function() seq_hydro(path),
