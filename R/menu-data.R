@@ -24,27 +24,27 @@ menu_data <- function() {
   }
 
   base_actions <- list(
-    "Communes"       = function() seq_com(path),
-    "MNHN"           = function() seq_mnhn(path),
-    "G\u00E9ologie"       = function() seq_geol(path),
-    "P\u00E9dologie"      = function() seq_pedology(path),
-    "Infra"          = function() seq_infra(path),
-    "Route"          = function() seq_road(path),
-    "Route cad."     = function() seq_roadway(path),
-    "PRSF"           = function() seq_prsf(path),
-    "OLD"            = function() seq_old(path),
-    "Toponyme"       = function() seq_toponyme(path),
-    "Hydrologie"     = function() seq_hydro(path),
-    "V\u00E9g\u00E9tation"     = function() seq_vege(path),
-    "Accessibilit\u00E9"  = function() seq_access(path),
-    "Meteo-France"   = function() seq_meteo_france(path),
-    "Drias"          = function() seq_drias(path),
-    "Courbes niveau" = function() seq_curves(path),
-    "IFN"            = function() seq_ifn(path),
-    "GPU"            = function() seq_gpu(path),
-    "Patrimoine"     = function() seq_patrimony(path),
-    "Altim\u00E9trie"     = function() seq_altimetry(path),
-    "Orthophoto"     = function() seq_ortho(path)
+    "Communes"             = function() seq_com(path),
+    "MNHN"                 = function() seq_mnhn(path),
+    "G\u00E9ologie"        = function() seq_geol(path),
+    "P\u00E9dologie"       = function() seq_pedology(path),
+    "Infra"                = function() seq_infra(path),
+    "Route"                = function() seq_road(path),
+    "Route cad."           = function() seq_roadway(path),
+    "PRSF"                 = function() seq_prsf(path),
+    "OLD"                  = function() seq_old(path),
+    "Toponyme"             = function() seq_toponyme(path),
+    "Hydrologie"           = function() seq_hydro(path),
+    "V\u00E9g\u00E9tation" = function() seq_vege(path),
+    "Accessibilit\u00E9"   = function() seq_access(path),
+    "Meteo-France"         = function() seq_meteo_france(path),
+    "Drias"                = function() seq_drias(path),
+    "Courbes niveau"       = function() seq_curves(path),
+    "IFN"                  = function() seq_ifn(path),
+    "GPU"                  = function() seq_gpu(path),
+    "Patrimoine"           = function() seq_patrimony(path),
+    "Altim\u00E9trie"      = function() seq_altimetry(path),
+    "Orthophoto"           = function() seq_ortho(path)
   )
 
   actions <- c(
@@ -74,27 +74,27 @@ menu_toolbox_data <- function(x) {
   info <- cli::format_inline("Dossier s\u00E9lectionn\u00E9 : {.path {path}}")
 
   base_actions <- list(
-    "Communes"       = function() fetch_com(x, path),
-    "MNHN"           = function() fetch_mnhn(x, path),
-    "G\u00e9ologie"       = function() fetch_geol(x, path)
-    # "Pedologie"      = function() seq_pedology(path),
-    # "Infra"          = function() seq_infra(path),
-    # "Route"          = function() seq_road(path),
-    # "Route cad."     = function() seq_roadway(path),
-    # "PRSF"           = function() seq_prsf(path),
-    # "OLD"            = function() seq_old(path),
-    # "Toponyme"       = function() seq_toponyme(path),
-    # "Hydrologie"     = function() seq_hydro(path),
-    # "Vegetation"     = function() seq_vege(path),
-    # "Accessibilite"  = function() seq_access(path),
-    # "Meteo-France"   = function() seq_meteo_france(path),
-    # "Drias"          = function() seq_drias(path),
-    # "Courbes niveau" = function() seq_curves(path),
-    # "IFN"            = function() seq_ifn(path),
-    # "GPU"            = function() seq_gpu(path),
-    # "Patrimoine"     = function() seq_patrimony(path),
-    # "Altimetrie"     = function() seq_altimetry(path),
-    # "Orthophoto"     = function() seq_ortho(path)
+    "Communes"             = function() fetch_com(x, path),
+    "MNHN"                 = function() fetch_mnhn(x, path),
+    "G\u00e9ologie"        = function() fetch_geol(x, path),
+    "P\u00E9dologie"       = function() fetch_pedology(path)
+    # "Infra"                = function() seq_infra(path),
+    # "Route"                = function() seq_road(path),
+    # "Route cad."           = function() seq_roadway(path),
+    # "PRSF"                 = function() seq_prsf(path),
+    # "OLD"                  = function() seq_old(path),
+    # "Toponyme"             = function() seq_toponyme(path),
+    # "Hydrologie"           = function() seq_hydro(path),
+    # "V\u00E9g\u00E9tation" = function() seq_vege(path),
+    # "Accessibilit\u00E9"   = function() seq_access(path),
+    # "Meteo-France"         = function() seq_meteo_france(path),
+    # "Drias"                = function() seq_drias(path),
+    # "Courbes niveau"       = function() seq_curves(path),
+    # "IFN"                  = function() seq_ifn(path),
+    # "GPU"                  = function() seq_gpu(path),
+    # "Patrimoine"           = function() seq_patrimony(path),
+    # "Altim\u00E9trie"      = function() seq_altimetry(path),
+    # "Orthophoto"           = function() seq_ortho(path)
   )
 
   actions <- c(
