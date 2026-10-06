@@ -89,19 +89,33 @@ test_that("seq_write() creates target directory when needed", {
 })
 
 test_that("seq_write() aborts if vector key is used with non-sf object", {
-  with_seq_cache({
-    expect_error(
-      seq_write(data.frame(a = 1), "prsf", dirname = seq_cache),
-      "must be an .*sf"
-    )
-  })
+  expect_error(
+    seq_write(data.frame(a = 1), "prsf", dirname = tempdir()),
+    "must be an .*sf"
+  )
 })
 
 test_that("seq_write() aborts if raster key is used with non-raster object", {
+  expect_error(
+    seq_write(Rsequoia2:::seq_poly, "irc", dirname = tempdir()),
+    "must be a .*SpatRaster"
+  )
+})
+
+test_that("seq_write() aborts if xlsx key is used with non-data.frame object", {
+  expect_error(
+    seq_write(Rsequoia2:::seq_poly, "matrice", dirname = tempdir()),
+    "must be a .*data.frame"
+  )
+})
+
+test_that("seq_write() writes xlsx with verbose output", {
   with_seq_cache({
-    expect_error(
-      seq_write(Rsequoia2:::seq_poly, "irc", dirname = seq_cache),
-      "must be a .*SpatRaster"
+    x <- data.frame(a = 1)
+
+    expect_message(
+      seq_write(x,"matrice",dirname = seq_cache,overwrite = TRUE,verbose = TRUE),
+      "saved"
     )
   })
 })
@@ -117,7 +131,7 @@ test_that("seq_write() prefixes filename with id when provided", {
   })
 })
 
-test_that("seq_write() prefixes filename with id from x when id = NULL", {
+test_that("seq_write() prefixes filename with id = NULL and where in sequoia folder", {
   with_seq_cache({
     x <- Rsequoia2:::seq_poly
     x[[seq_field("identifier")$name]] <- "TEST"
@@ -137,4 +151,39 @@ test_that("seq_write() prefixes filename with id from matrice when id = NULL", {
     expect_true(file.exists(path))
   })
 })
+
+test_that("seq_write() uses relative path when id is provided", {
+  with_seq_cache({
+    layer <- seq_layer("prsf")
+
+    path <- seq_write(Rsequoia2:::seq_poly, "prsf", dirname = seq_cache, id = "TEST")
+
+    expect_identical(
+      normalizePath(dirname(path)),
+      normalizePath(file.path(seq_cache, layer$path))
+    )
+
+    expect_true(file.exists(path))
+  })
+})
+
+test_that("seq_write() keeps base filename outside sequoia2 project", {
+  tmp_dir <- tempdir()
+  x <- Rsequoia2:::seq_poly
+  path <- seq_write(x, "prsf", dirname = tmp_dir, id = NULL)
+
+  filename <- seq_layer("prsf")$filename
+  expect_identical(basename(path), filename)
+  expect_true(file.exists(path))
+})
+
+test_that("seq_write() writes to root outside sequoia2 project", {
+  tmp_dir <- tempdir()
+  x <- Rsequoia2:::seq_poly
+  path <- seq_write(x, "prsf", dirname = tmp_dir, id = NULL)
+
+  expect_identical(normalizePath(dirname(path)), normalizePath(tmp_dir))
+  expect_true(file.exists(path))
+})
+
 

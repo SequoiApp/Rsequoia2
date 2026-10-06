@@ -416,3 +416,29 @@ seq_multi_download <- function(
 
   invisible(paths)
 }
+
+#' Get Sequoia project context
+#'
+#' Reads the project PARCA layer and retrieves its identifier.
+#'
+#' @param dirname `character`; Sequoia project directory.
+#'
+#' @return A list containing `parca`, `identifier`, and `id`.
+#'
+#' @keywords internal
+#' @noRd
+.seq_context <- function(dirname = ".") {
+
+  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
+  identifier <- seq_field("identifier")$name
+  id <- unique(stats::na.omit(parca[[identifier]]))
+
+  if (length(id) != 1) {
+    cli::cli_abort(
+      "Could not determine a unique Sequoia project identifier."
+    )
+  }
+
+  return(list(parca = parca, id = id))
+
+}

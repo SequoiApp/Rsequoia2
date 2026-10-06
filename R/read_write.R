@@ -203,10 +203,10 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
 
   if (!is.null(id)) {
     filename <- sprintf("%s_%s", id, filename)
+    filename <- if (is.null(relative_path)) filename else file.path(relative_path, filename)
   }
 
-  full_path <- if (is.null(relative_path)) filename else file.path(relative_path, filename)
-  path <- file.path(dirname, full_path)
+  path <- file.path(dirname, filename)
   names(path) <- key
 
   if (file.exists(path) && !overwrite) {
@@ -249,9 +249,9 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
   # Xlsx ----
   is_xlsx <- type == "xlsx"
   if (is_xlsx) {
-    if (!inherits(x, "data.frame")) {
+    if (!identical(class(x), "data.frame")) {
       cli::cli_abort(c(
-        "!" = "Object supplied for {.arg x} is not a {.cls data.frame}.",
+        "!" = "Object supplied for {.arg x} must be a {.cls data.frame} object..",
         "i" = "Table layers must be written using {.val x.*} keys."
       ))
     }
@@ -260,7 +260,7 @@ seq_write <- function(x, key, dirname = ".", id = NULL, verbose = FALSE, overwri
 
     if (verbose) {
       cli::cli_alert_success(
-        "Table {.val {key}} saved to {.file {full_path}}."
+        "Table {.val {key}} saved to {.file {path}}."
       )
     }
 
