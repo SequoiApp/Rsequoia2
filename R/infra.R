@@ -192,8 +192,7 @@ get_infra_poly <- function(x, buffer = 1000) {
 #' an empty standardized `sf` object.
 #'
 #' @export
-get_infra_line <- function(x,
-                           buffer = 1000) {
+get_infra_line <- function(x, buffer = 1000) {
 
   if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
@@ -328,8 +327,7 @@ get_infra_line <- function(x,
 #' an empty standardized `sf` object.
 #'
 #' @export
-get_infra_point <- function(x,
-                            buffer = 1000) {
+get_infra_point <- function(x, buffer = 1000) {
 
   if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
@@ -420,99 +418,148 @@ get_infra_point <- function(x,
   return(invisible(infra_point))
 }
 
-#' Generate infrastructure polygon, line and point layers for a Sequoia project
+#' Fetch infrastructure layers
 #'
-#' This function is a convenience wrapper around [get_infra_poly()],
-#' [get_infra_line()] and [get_infra_point()], allowing the user to download
-#' all products in one call and automatically write them to the project
-#' directory using [seq_write()].
+#' Internal worker
+#'
+#' @inheritParams get_infra_poly
+#' @param dirname `character`; Output directory.
+#' @param id Optional Sequoia project identifier.
+#'
+#' @return Invisibly returns a named list of written file paths, or `NULL`
+#'   if no infrastructure layer can be retrieved.
+#'
+#' @keywords internal
+#' @noRd
+.infra_fetcher <- function(
+    x,
+    dirname,
+    id = NULL,
+    buffer = 1000,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  if (verbose) {
+    cli::cli_h1("INFRA")
+  }
+
+  layers <- list(
+    "v.infra.point" = get_infra_point,
+    "v.infra.line"  = get_infra_line,
+    "v.infra.poly"  = get_infra_poly
+  )
+
+  pb <- NULL
+  if (verbose) {
+    pb <- cli::cli_progress_bar(
+      format = paste0(
+        "{cli::pb_spin} Searching INFRA layer: {.val {k}} | ",
+        "[{cli::pb_current}/{cli::pb_total}]"
+      ),
+      total = length(layers)
+    )
+  }
+
+  paths <- lapply(names(layers), function(k) {
+
+    if (verbose) {
+      cli::cli_progress_update(id = pb, set = list(k = k), force = TRUE)
+    }
+
+    tryCatch({
+
+      f <- layers[[k]](x, buffer = buffer, verbose = verbose)
+
+      if (!is.null(id)) {
+        identifier <- seq_field("identifier")$name
+        # because there is empty sf, rep is used instead of `<- id `
+        f[[identifier]] <- rep(id, nrow(f))
+      }
+
+      seq_write(
+        f,
+        key = k,
+        dirname = dirname,
+        id = id,
+        verbose = verbose,
+        overwrite = overwrite
+      )
+
+    }, error = function(e) {
+
+      if (verbose) {
+        cli::cli_alert_danger(
+          "Failed INFRA layer {.val {k}}: {conditionMessage(e)}"
+        )
+      }
+
+      NULL
+    })
+  })
+
+  names(paths) <- names(layers)
+  paths <- Filter(Negate(is.null), paths)
+
+  invisible(paths)
+}
+
+#' Fetch infrastructure layers for an area
+#'
+#' Retrieves infrastructure polygon, line and point layers around `x` and
+#' writes them to `dirname`.
+#'
+#' @inheritParams get_infra_poly
+#' @param dirname `character`; Output directory.
+#'
+#' @return Invisibly returns a named list of written file paths.
+#'
+#' @keywords internal
+#' @noRd
+fetch_infra <- function(
+    x,
+    dirname,
+    buffer = 1000,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  .infra_fetcher(
+    x = x,
+    dirname = dirname,
+    buffer = buffer,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+}
+
+
+#' Generate infrastructure layers for a Sequoia project
+#'
+#' Retrieves infrastructure polygon, line and point layers around the project
+#' area and writes them to the Sequoia project directory.
 #'
 #' @inheritParams get_infra_poly
 #' @inheritParams seq_write
 #'
-#' @details
-#' Each infrastructure layer is always written to disk using [seq_write()],
-#' even when it contains no features (`nrow == 0`).
-#'
-#' Informational messages are displayed to indicate whether a layer
-#' contains features or is empty.
-#'
-#' @return A named list of file paths written by [seq_write()],
-#' one per hydrographic layer.
+#' @return Invisibly returns a named list of written file paths.
 #'
 #' @seealso
-#' [get_infra_poly()], [get_infra_line()], [get_infra_point()],
-#' [seq_write()]
+#' [get_infra_poly()], [get_infra_line()], [get_infra_point()]
 #'
+#' @export
 seq_infra <- function(
     dirname = ".",
     buffer = 1000,
     verbose = TRUE,
-    overwrite = FALSE
-    ) {
+    overwrite = FALSE) {
 
-    parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-    identifier <- seq_field("identifier")$name
-    id <- unique(parca[[identifier]])
+  ctx <- .seq_context(dirname)
 
-    if (verbose) {
-      cli::cli_h1("INFRA")
-    }
-
-    layers <- list(
-      point = list(fun = get_infra_point, key = "v.infra.point"),
-      line  = list(fun = get_infra_line,  key = "v.infra.line"),
-      poly  = list(fun = get_infra_poly,  key = "v.infra.poly")
-    )
-
-    pb <- NULL
-    if (verbose) {
-      pb <- cli::cli_progress_bar(
-        format = paste0(
-          "{cli::pb_spin} Searching INFRA layer: {.val {k}} | ",
-          "[{cli::pb_current}/{cli::pb_total}]"
-        ),
-        total = length(layers),
-        auto_terminate = FALSE
-      )
-    }
-
-    path <- list()
-    for (k in names(layers)) {
-
-      if (verbose) {
-        cli::cli_progress_update(id = pb, force = TRUE)
-      }
-
-      f_path <- tryCatch({
-        f <- suppressWarnings(layers[[k]]$fun(parca, buffer))
-
-        if (nrow(f) > 0){
-          f[[identifier]] <- id
-        }
-
-        seq_write(
-          f,
-          layers[[k]]$key,
-          dirname,
-          id,
-          verbose = verbose,
-          overwrite = overwrite
-        )
-
-      }, error = function(e) NULL)
-
-      if (!is.null(f_path)) {
-        path <- c(path, f_path)
-      }
-    }
-
-    if (!length(path)) {
-      if (verbose){
-        cli::cli_alert_info("No INFRA layer found.")
-      }
-      return(invisible(NULL))
-    }
-
-    invisible(path)
+  .infra_fetcher(
+    x = ctx$parca,
+    dirname = dirname,
+    id = ctx$id,
+    buffer = buffer,
+    verbose = verbose,
+    overwrite = overwrite
+  )
 }
