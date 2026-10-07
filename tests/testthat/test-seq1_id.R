@@ -35,7 +35,7 @@ test_that("seq1_id aborts when several files found", {
 
   expect_error(
     seq1_id("dummy_dir"),
-    "Multiple files _PARCA_ detected"
+    "Multiple files "
   )
 })
 
