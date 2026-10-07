@@ -91,9 +91,10 @@ remove_small_geometries <- function(x, tol, crs = 2154) {
     sf::st_make_valid() |>
     quiet()
 
-  x <- x[as.numeric(sf::st_area(x)) >= tol]
-
+  keep <- as.numeric(sf::st_area(x)) >= tol
+  x <- x[keep, , drop = FALSE]
   sf::st_transform(x, original_crs)
+
 }
 
 
@@ -257,8 +258,6 @@ get_vege_point <- function(x, buffer = 1000, clip = TRUE) {
 
 
 #' Fetch vegetation layers
-#'
-#' Internal worker used by [fetch_vege()] and [seq_vege()].
 #'
 #' @inheritParams get_vege_poly
 #' @param dirname `character`; Output directory.

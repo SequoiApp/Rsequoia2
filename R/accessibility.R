@@ -99,8 +99,6 @@ get_accessibility <- function(
 
 #' Fetch accessibility layers
 #'
-#' Internal worker used by [fetch_access()] and [seq_access()].
-#'
 #' @inheritParams get_accessibility
 #' @param dirname `character`; Output directory.
 #' @param id Optional Sequoia project identifier.

@@ -287,8 +287,6 @@ mf_precipitation <- function(clim){
 
 #' Fetch Meteo-France data
 #'
-#' Internal worker used by [fetch_meteo_france()] and [seq_meteo_france()].
-#'
 #' @inheritParams mf_get_climatology
 #' @param x `sf` or `sfc`; Area of interest.
 #' @param dirname `character`; Output directory.

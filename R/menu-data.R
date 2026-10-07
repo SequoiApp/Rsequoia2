@@ -86,9 +86,9 @@ menu_toolbox_data <- function(x) {
     "Hydrologie"           = function() fetch_hydro(x, path),
     "V\u00E9g\u00E9tation" = function() fetch_vege(x, path),
     "Accessibilit\u00E9"   = function() fetch_access(x, path),
-    "Meteo-France"         = function() fetch_meteo_france(x, path)
+    "Meteo-France"         = function() fetch_meteo_france(x, path),
     # "Drias"                = function() seq_drias(path),
-    # "Courbes niveau"       = function() seq_curves(path),
+    "Courbes niveau"       = function() fetch_curves(x, path)
     # "IFN"                  = function() seq_ifn(path),
     # "GPU"                  = function() seq_gpu(path),
     # "Patrimoine"           = function() seq_patrimony(path),

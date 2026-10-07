@@ -1,104 +1,177 @@
-#' Retrieve hypsometric curves around an area
+#' Retrieve contour lines around an area
 #'
-#' Builds a convex buffer around the input geometry, retrieves hypsometric
-#' curves and returns an `sf` line layer.
+#' Retrieves contour lines within a buffered envelope around an area.
 #'
-#' @param x An `sf` object defining the input area of interest.
-#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
+#' @param x `sf` or `sfc`; Input area.
+#' @param buffer `numeric`; Buffer around `x`, in meters.
+#' @param verbose `logical`; If `TRUE`, display messages.
 #'
-#' @return An `sf` object containing hypsometric curves.
-#'
-#' @details
-#' The function creates a 1000 m convex buffer around the input geometry `x`
-#' and retrieves hypsometric curves before returns as a single `sf` point layer.
+#' @return An `sf` line layer, or `NULL` if no contour line is found.
 #'
 #' @export
-get_curves <- function(x, verbose = TRUE) {
+get_curves <- function(x, buffer = 5000, verbose = TRUE) {
 
-  # convex buffer
-  crs <- 2154
-  x <- sf::st_transform(x, crs)
-  fetch_envelope <- seq_envelope(x, 1000)
-
-  if (verbose){
-    cli::cli_alert_info("Downloading contour lines dataset...")
+  if (!inherits(x, c("sf", "sfc"))) {
+    cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}.")
   }
 
-  curves <- happign::get_wfs(
-    fetch_envelope, "ELEVATION.CONTOUR.LINE:courbe", verbose = FALSE
-  ) |> sf::st_transform(crs)
+  crs <- 2154
+  x <- sf::st_transform(x, crs)
 
-  if (!nrow((curves))) {
+  if (verbose) cli::cli_alert_info("Downloading contour lines dataset...")
+
+  curves <- happign::get_wfs(
+    seq_envelope(x, buffer),
+    layer = "ELEVATION.CONTOUR.LINE:courbe",
+    verbose = FALSE
+  )
+
+  if (is.null(curves) || !nrow(curves)) {
     return(NULL)
   }
 
-  curves <- st_intersection(curves, fetch_envelope)|>
-    st_collection_extract("LINESTRING") |>
-    st_cast("LINESTRING") |>
-    suppressWarnings()
-
-  return(invisible(curves))
+  invisible(sf::st_transform(curves, crs))
 }
 
-#' Generate hypsometric curves line layer for a Sequoia project
+
+#' Transform contour lines
 #'
-#' Retrieves hypsometric curves line features intersecting and surrounding
-#' the project area and writes the resulting layer to disk.
+#' Clips contour lines to a buffered envelope around an area.
 #'
+#' @inheritParams get_curves
+#' @param curves `sf`; Raw contour-line layer.
+#'
+#' @return An `sf` line layer, or `NULL` if no line remains.
+#'
+#' @keywords internal
+#' @noRd
+.curves_transformer <- function(curves, x, buffer = 5000) {
+
+    if (is.null(curves) || !nrow(curves)) {
+      return(NULL)
+    }
+
+    curves <- suppressWarnings(
+      curves |>
+        sf::st_transform(sf::st_crs(x)) |>
+        sf::st_intersection(seq_envelope(x, buffer)) |>
+        sf::st_collection_extract("LINESTRING") |>
+        sf::st_cast("LINESTRING")
+    )
+
+    if (!nrow(curves)){
+      return(NULL)
+    }
+
+  curves
+}
+
+
+#' Fetch contour lines
+#'
+#' @inheritParams get_curves
+#' @param dirname `character`; Output directory.
+#' @param id Optional Sequoia project identifier.
+#' @param overwrite `logical`; If `TRUE`, overwrite an existing layer.
+#'
+#' @return Invisibly returns the written layer path, or `NULL`.
+#'
+#' @keywords internal
+#' @noRd
+.curves_fetcher <- function(
+    x,
+    dirname,
+    id = NULL,
+    buffer = 5000,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  if (verbose) {
+    cli::cli_h1("CONTOUR LINES")
+    cli::cli_progress_message("Downloading CONTOUR LINES layer...")
+  }
+
+  curves <- get_curves(x, buffer = buffer, verbose = FALSE)
+  curves <- .curves_transformer(curves, x, buffer)
+  if (is.null(curves)) {
+    if (verbose) cli::cli_alert_info("No contour-line features found.")
+    return(invisible(NULL))
+  }
+
+  if (!is.null(id)) {
+    identifier <- seq_field("identifier")$name
+    curves[[identifier]] <- id
+  }
+
+  path <- seq_write(
+    curves,
+    key = "v.curves.line",
+    dirname = dirname,
+    id = id,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+
+  invisible(path)
+}
+
+
+#' Fetch contour lines for an area
+#'
+#' Retrieves contour lines around `x` and writes them to `dirname`.
+#'
+#' @inheritParams get_curves
+#' @param dirname `character`; Output directory.
+#' @param overwrite `logical`; If `TRUE`, overwrite an existing layer.
+#'
+#' @return Invisibly returns the written layer path, or `NULL`.
+#'
+#' @keywords internal
+#' @noRd
+fetch_curves <- function(
+    x,
+    dirname,
+    buffer = 5000,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  .curves_fetcher(
+    x = x,
+    dirname = dirname,
+    buffer = buffer,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+}
+
+
+#' Generate contour-line layer for a Sequoia project
+#'
+#' Retrieves contour lines around the project area and writes the resulting
+#' layer to the Sequoia project directory.
+#'
+#' @inheritParams get_curves
 #' @inheritParams seq_write
 #'
-#' @details
-#' Hypsometric curves line features are retrieved using [get_curves()].
+#' @return Invisibly returns the written layer path, or `NULL`.
 #'
-#' If no hypsometric curves features are found, the function returns `NULL`
-#' invisibly and no file is written.
-#'
-#' When features are present, the layer is written to disk using
-#' [seq_write()] with the key `"v.curves.line"`.
-#'
-#' @return
-#' Invisibly returns a named list of file paths written by [seq_write()].
-#' Returns `NULL` invisibly when no hypsometric curves features are found.
-#'
-#' @seealso
-#' [get_curves()], [seq_write()]
+#' @seealso [get_curves()], [seq_write()]
 #'
 #' @export
 seq_curves <- function(
     dirname = ".",
+    buffer = 5000,
     verbose = TRUE,
-    overwrite = FALSE
-) {
+    overwrite = FALSE) {
 
-  # Read project area (PARCA)
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id_field <- seq_field("identifier")$name
-  id <- unique(parca[[id_field]])
+  ctx <- .seq_context(dirname)
 
-  if (verbose){
-    cli::cli_h1("CONTOUR LINES")
-    pb <- cli::cli_progress_message("Downloading contour-line layer...")
-  }
-
-  # Retrieve toponyms
-  curves <- get_curves(parca, verbose = FALSE)
-
-  # Exit early if nothing to write
-  if (!is.null(curves) ) {
-    curves[[id_field]] <- id
-
-    curves <- seq_write(
-      curves,
-      "v.curves.line",
-      dirname = dirname,
-      id = id,
-      verbose = verbose,
-      overwrite = overwrite
-    )
-  } else if (verbose) {
-    cli::cli_alert_warning("No contour-line features found: layer not written.")
-  }
-
-  return(invisible(c(curves) |> as.list()))
+  .curves_fetcher(
+    x = ctx$parca,
+    dirname = dirname,
+    id = ctx$id,
+    buffer = buffer,
+    verbose = verbose,
+    overwrite = overwrite
+  )
 }
-
