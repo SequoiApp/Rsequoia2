@@ -88,9 +88,9 @@ menu_toolbox_data <- function(x) {
     "Accessibilit\u00E9"   = function() fetch_access(x, path),
     "Meteo-France"         = function() fetch_meteo_france(x, path),
     # "Drias"                = function() seq_drias(path),
-    "Courbes niveau"       = function() fetch_curves(x, path)
-    # "IFN"                  = function() seq_ifn(path),
-    # "GPU"                  = function() seq_gpu(path),
+    "Courbes niveau"       = function() fetch_curves(x, path),
+    "IFN"                  = function() fetch_ifn(x, path),
+    "GPU"                  = function() fetch_gpu(x, path)
     # "Patrimoine"           = function() seq_patrimony(path),
     # "Altim\u00E9trie"      = function() seq_altimetry(path),
     # "Orthophoto"           = function() seq_ortho(path)

@@ -194,61 +194,43 @@ get_ser_pdf <- function(
   invisible(normalizePath(dirname))
 }
 
-#' Generate regional layers for a Sequoia project
+#' Fetch IFN layers
 #'
-#' Retrieves official IGN regional datasets intersecting the project
-#' area and writes the resulting layers to disk.
+#' @param x `sf` or `sfc`; Area of interest.
+#' @param dirname `character`; Output directory.
+#' @param id Optional Sequoia project identifier.
+#' @param key `character`; IFN layer identifiers.
+#' @param verbose `logical`; If `TRUE`, display messages.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing files.
 #'
-#' @inheritParams seq_write
-#' @param key `character`; List of ifn layer identifiers to download. If not
-#'   provided, the function uses `get_keys("ifn")` to automatically select all
-#'   IFN layers defined in the Sequoia configuration (`inst/config/seq_layers.yaml`)
+#' @return Invisibly returns a named list of written paths.
 #'
-#' @details
-#' Regional datasets are retrieved using [get_ifn()] based on the
-#' project area defined by the PARCA polygon.
-#'
-#' Each regional layer is written to disk using [seq_write()] with a
-#' dedicated output key corresponding to the requested region k.
-#'
-#' If no feature is found for a given k, the corresponding layer
-#' is not written.
-#'
-#' @return
-#' Invisibly returns a named list of file paths written by [seq_write()].
-#' Returns `NULL` invisibly if no regional layer is written.
-#'
-#' @seealso
-#' [get_ifn()], [seq_write()]
-#'
-#' @export
-seq_ifn <- function(
-    dirname = ".",
+#' @keywords internal
+#' @noRd
+#' @noRd
+.ifn_fetcher <- function(
+    x,
+    dirname,
+    id = NULL,
     key = get_keys("ifn"),
     verbose = TRUE,
-    overwrite = FALSE
-) {
+    overwrite = FALSE) {
 
   type_key <- c(
-    ser = "v.ifn.ser.poly",
+    ser    = "v.ifn.ser.poly",
     ser_ar = "v.ifn.ser_ar.poly",
-    rfn = "v.ifn.rfn.poly",
-    rfd = "v.ifn.rfd.poly",
-    zp = "v.ifn.zp.poly"
+    rfn    = "v.ifn.rfn.poly",
+    rfd    = "v.ifn.rfd.poly",
+    zp     = "v.ifn.zp.poly"
   )
 
   if (!all(key %in% names(type_key))) {
-    cli::cli_abort(
-      "{.arg key} must be one or more of {.val {names(type_key)}}."
-    )
+    cli::cli_abort("{.arg key} must be one or more of {.val {names(type_key)}}.")
   }
 
   if (verbose) {
     cli::cli_h1("IFN")
   }
-
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id <- unique(parca[[seq_field("identifier")$name]])
 
   pb <- NULL
   if (verbose) {
@@ -257,62 +239,117 @@ seq_ifn <- function(
         "{cli::pb_spin} Searching IFN layer: {.val {k}} | ",
         "[{cli::pb_current}/{cli::pb_total}]"
       ),
-      total = length(key),
-      auto_terminate = FALSE
+      total = length(key)
     )
   }
 
-  path <- list()
-  ser_region <- NULL
-
-  for (k in key) {
-
+  paths <- lapply(key, function(k) {
     if (verbose) {
-      cli::cli_progress_update(id = pb, force = TRUE)
+      cli::cli_progress_update(id = pb, set = list(k = k), force = TRUE)
     }
 
-    f_path <- tryCatch({
-      region <- get_ifn(parca, key = k, verbose = FALSE)
+    tryCatch({
+      region <- get_ifn(x, key = k, verbose = FALSE)
+      if (is.null(region) || !nrow(region)) return(NULL)
 
-      if (is.null(region) || nrow(region) == 0) {
-        NULL
-      } else {
-        if (identical(k, "ser")) {
-          ser_region <- region
-        }
+      if (!is.null(id)) {
+        identifier <- seq_field("identifier")$name
+        region[[identifier]] <- id
+      }
 
-        seq_write(
-          region,
-          type_key[[k]],
-          dirname,
-          id,
-          verbose = TRUE,
-          overwrite = overwrite
+      path <- seq_write(
+        region,
+        key = type_key[[k]],
+        dirname = dirname,
+        id = id,
+        verbose = verbose,
+        overwrite = overwrite
+      )
+
+      if (k == "ser") {
+        get_ser_pdf(
+          region$codeser,
+          dirname = base::dirname(path),
+          overwrite = overwrite,
+          verbose = verbose
         )
       }
-    }, error = function(e) NULL)
 
-    if (!is.null(f_path)) {
-      path <- c(path, f_path)
-    }
+      path
 
-  }
+    }, error = function(e) {
+      if (verbose) {
+        cli::cli_alert_danger(
+          "Failed IFN layer {.val {k}}: {conditionMessage(e)}"
+        )
+      }
+      NULL
+    })
+  })
 
-  if (!is.null(ser_region)) {
-    get_ser_pdf(
-      ser_region$codeser,
-      dirname = file.path(dirname, seq_layer("v.ifn.ser.poly")$path),
-      overwrite = overwrite,
-      verbose = verbose
-    )
-  }
+  names(paths) <- unname(type_key[key])
+  paths <- Filter(Negate(is.null), paths)
 
-  if (!length(path)) {
-    if (verbose){
-      cli::cli_alert_info("No IFN layer found.")
-    }
-    return(invisible(NULL))
-  }
+  invisible(paths)
+}
 
-  invisible(path)
+
+#' Fetch IFN layers for an area
+#'
+#' @param x `sf` or `sfc`; Area of interest.
+#' @param dirname `character`; Output directory.
+#' @param key `character`; IFN layer identifiers.
+#' @param verbose `logical`; If `TRUE`, display messages.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing files.
+#'
+#' @return Invisibly returns a named list of written paths.
+#'
+#' @keywords internal
+#' @noRd
+fetch_ifn <- function(
+    x,
+    dirname,
+    key = get_keys("ifn"),
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  .ifn_fetcher(
+    x = x,
+    dirname = dirname,
+    key = key,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+}
+
+
+#' Generate IFN layers for a Sequoia project
+#'
+#' Retrieves IFN regional layers around the project area and writes them to
+#' the Sequoia project directory.
+#'
+#' @inheritParams seq_write
+#' @param key `character`; IFN layer identifiers. Defaults to `get_keys("ifn")`.
+#'
+#' @return Invisibly returns a named list of written paths.
+#'
+#' @seealso [get_ifn()], [get_ser_pdf()], [seq_write()]
+#'
+#' @export
+seq_ifn <- function(
+    dirname = ".",
+    key = get_keys("ifn"),
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  ctx <- .seq_context(dirname)
+
+  .ifn_fetcher(
+    x = ctx$parca,
+    dirname = dirname,
+    id = ctx$id,
+    key = key,
+    verbose = verbose,
+    overwrite = overwrite
+  )
 }

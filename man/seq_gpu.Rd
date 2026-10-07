@@ -15,10 +15,8 @@ seq_gpu(
 \item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 
-\item{key}{\code{character}; List of layer identifiers to download. If not
-provided, the function uses \code{get_keys("gpu", reduce = FALSE)} to
-automatically select all GPU layers defined in the Sequoia configuration
-(\code{inst/config/seq_layers.yaml})}
+\item{key}{\code{character}; GPU layer identifiers. Defaults to
+\code{get_keys("gpu", reduce = FALSE)}.}
 
 \item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
 messages.}
@@ -26,32 +24,12 @@ messages.}
 \item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
-Invisibly returns a named list of file paths corresponding to the
-GPU layers written to disk. Layers with no intersecting features
-are not included.
+Invisibly returns a named list of written paths.
 }
 \description{
-Retrieves applicable GPU (Geoportail de l'Urbanisme) layers intersecting
-and surrounding the project area, and writes the resulting layer to disk.
-}
-\details{
-The function queries the GPU API via the \code{happign} package for the
-following thematic layers:
-\itemize{
-\item Municipality boundaries
-\item Urban planning documents
-\item Urban zones
-\item Surface, linear and point prescriptions
-\item SUP assiettes (SUPA)
-\item SUP generateurs (SUPG)
-}
-
-Only layers intersecting the project area are written. Empty or unavailable
-layers are silently skipped.
-
-Output file names, formats and locations are fully driven by the
-project configuration (see \code{files_structure.yaml}).
+Retrieves GPU layers intersecting the project area and writes them to the
+Sequoia project directory.
 }
 \seealso{
-\code{\link[=seq_write]{seq_write()}}, \code{\link[happign:get_apicarto_gpu]{happign::get_apicarto_gpu()}}
+\code{\link[=get_gpu]{get_gpu()}}, \code{\link[=seq_write]{seq_write()}}
 }
