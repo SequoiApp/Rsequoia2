@@ -57,6 +57,15 @@ seq1_read <- function(dirname = ".", layer) {
     ))
   }
 
+  if (length(file) > 1) {
+    bullets <- setNames(file, rep("*", length(file)))
+
+    cli::cli_abort(c(
+      "Multiple files {.val {layer}} detected. Folder must contain exactly one {.val {layer}}."
+      bullets
+    ))
+  }
+
   sf::read_sf(file)
 }
 
@@ -85,8 +94,11 @@ seq1_id <- function(dirname = "."){
   }
 
   if (length(file) > 1) {
+    bullets <- setNames(file, rep("*", length(file)))
+
     cli::cli_abort(c(
-      "x" = "Multiple files _PARCA_ detected. The folder must contain exactly one matching file."
+      "Multiple files _PARCA_ detected. Folder must contain exactly one _PARCA_.",
+      bullets
     ))
   }
 
