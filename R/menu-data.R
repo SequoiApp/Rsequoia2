@@ -91,9 +91,9 @@ menu_toolbox_data <- function(x) {
     "Courbes niveau"       = function() fetch_curves(x, path),
     "IFN"                  = function() fetch_ifn(x, path),
     "GPU"                  = function() fetch_gpu(x, path),
-    "Patrimoine"           = function() fetch_patrimony(x, path)
+    "Patrimoine"           = function() fetch_patrimony(x, path),
     # "Altim\u00E9trie"      = function() seq_altimetry(path),
-    # "Orthophoto"           = function() seq_ortho(path)
+    "Orthophoto"           = function() fetch_ortho(x, path)
   )
 
   actions <- c(
