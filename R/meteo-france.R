@@ -285,72 +285,133 @@ mf_precipitation <- function(clim){
   return(precipitation)
 }
 
-#' Download Meteo-France meteorological data for a sequoia process
+#' Fetch Meteo-France data
 #'
-#' Downloads and formats meteorological data from Meteo-France.
-#' This includes download of the nearest climatological station fiche (PDF),
-#' ombrothermic summaries, precipitation statistics. Results are written
-#' to an Excel workbook based on the internal template `CLIMAT_MF.xlsx`.
+#' Internal worker used by [fetch_meteo_france()] and [seq_meteo_france()].
+#'
+#' @inheritParams mf_get_climatology
+#' @param x `sf` or `sfc`; Area of interest.
+#' @param dirname `character`; Output directory.
+#' @param id Optional Sequoia project identifier.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing files.
+#'
+#' @return Invisibly returns a named list containing the climatological
+#'   station PDF and Meteo-France workbook paths.
+#'
+#' @keywords internal
+#' @noRd
+.meteo_france_fetcher <- function(
+    x,
+    dirname,
+    id = NULL,
+    cache = NULL,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  if (verbose){
+    cli::cli_h1("METEO FRANCE")
+  }
+
+  out <- if (is.null(id)) dirname else file.path(dirname, "4_METEO")
+  dir.create(out, recursive = TRUE, showWarnings = FALSE)
+
+  filename <- if (is.null(id)) "CLIMAT_MF.xlsx" else sprintf("%s_CLIMAT_MF.xlsx", id)
+  filepath <- file.path(out, filename)
+
+  # Climatological station fiche
+  pdf_path <- mf_get_climate_fiche(x, dirname = out, verbose = verbose)
+
+  # Meteo-France data
+  raw_clim <- mf_get_climatology(x, cache = cache, verbose = verbose)
+  ombro <- mf_ombro(raw_clim, periods = c(30, 5))
+  precipitation <- mf_precipitation(raw_clim)
+  metadata <- mf_get_metadata()
+
+  wb <- openxlsx2::wb_load(
+    system.file("xlsx/CLIMAT_MF.xlsx", package = "Rsequoia2")
+  )
+
+  if (verbose) {
+    cli::cli_alert_info("Generating Meteo-France workbook at {.path {filepath}}...")
+  }
+
+  wb <- wb |>
+    openxlsx2::wb_clean_sheet(sheet = 1, styles = FALSE) |>
+    openxlsx2::wb_add_data(sheet = 1, metadata) |>
+    openxlsx2::wb_clean_sheet(sheet = 2, styles = FALSE) |>
+    openxlsx2::wb_add_data(sheet = 2, raw_clim) |>
+    openxlsx2::wb_clean_sheet(sheet = 3, dims = "A1:F30", styles = FALSE) |>
+    openxlsx2::wb_add_data(sheet = 3, ombro) |>
+    openxlsx2::wb_clean_sheet(sheet = 4, dims = "A1:B2000", styles = FALSE) |>
+    openxlsx2::wb_add_data(sheet = 4, precipitation)
+
+  openxlsx2::wb_save(wb, file = filepath, overwrite = overwrite)
+
+  invisible(list(
+    fiche.meteo = pdf_path,
+    meteofrance = filepath
+  ))
+}
+
+
+#' Fetch Meteo-France data for an area
+#'
+#' Downloads the nearest climatological station fiche and generates the
+#' Meteo-France workbook for `x`.
+#'
+#' @inheritParams mf_get_climatology
+#' @param x `sf` or `sfc`; Area of interest.
+#' @param dirname `character`; Output directory.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing files.
+#'
+#' @return Invisibly returns a named list of written file paths.
+#'
+#' @keywords internal
+#' @noRd
+fetch_meteo_france <- function(
+    x,
+    dirname,
+    cache = NULL,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  .meteo_france_fetcher(
+    x = x,
+    dirname = dirname,
+    cache = cache,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+}
+
+
+#' Download Meteo-France data for a Sequoia project
+#'
+#' Downloads the nearest climatological station fiche and generates the
+#' Meteo-France workbook for the project area.
 #'
 #' @inheritParams seq_write
 #' @inheritParams mf_get_climatology
 #'
-#' @return
-#' A named `list` of file paths :
-#' - `"fiche.meteo"``: Path to the downloaded climatological station PDF
-#' - `"meteofrance"``: Path to the generated Excel workbook
+#' @return Invisibly returns a named list containing:
+#'   - `fiche.meteo`: climatological station PDF;
+#'   - `meteofrance`: generated Meteo-France workbook.
 #'
 #' @export
 seq_meteo_france <- function(
     dirname = ".",
     cache = NULL,
     verbose = TRUE,
-    overwrite = FALSE
-    ){
+    overwrite = FALSE) {
 
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  identifier <- seq_field("identifier")$name
-  id <- unique(parca[[identifier]])
+  ctx <- .seq_context(dirname)
 
-  if (verbose){
-    cli::cli_h1("METEO FRANCE")
-  }
-
-  path <- list()
-
-  meteo_dir <- file.path(dirname, "4_METEO")
-  dir.create(meteo_dir, showWarnings = FALSE, recursive = TRUE)
-  filepath <- file.path(meteo_dir, sprintf("%s_CLIMAT_MF.xlsx", id))
-
-  # Fiche climatologique
-  pdf_path <- mf_get_climate_fiche(parca, dirname = meteo_dir, verbose = verbose)
-  path <- c(path, pdf_path)
-
-  # Meteo france
-  raw_clim <- mf_get_climatology(parca, cache = cache, verbose = verbose)
-  ombro <- mf_ombro(raw_clim, periods = c(30, 5))
-  precipitation <- mf_precipitation(raw_clim)
-
-  # Metadat
-  mf_metadata <- mf_get_metadata()
-
-  wb <- openxlsx2::wb_load(system.file("xlsx/CLIMAT_MF.xlsx", package = "Rsequoia2"))
-
-  if (verbose) {
-    cli_alert_info("Generating Meteo-France workbook at {.path {filepath}}...")
-  }
-
-  wb <- openxlsx2::wb_clean_sheet(wb, sheet = 1, styles = FALSE) |>
-    openxlsx2::wb_add_data(sheet = 1, mf_metadata)
-  wb <- openxlsx2::wb_clean_sheet(wb, sheet = 2, styles = FALSE) |>
-    openxlsx2::wb_add_data(sheet = 2, raw_clim)
-  wb <- openxlsx2::wb_clean_sheet(wb, sheet = 3, dims = "A1:F30", styles = FALSE) |>
-    openxlsx2::wb_add_data(sheet = 3, ombro)
-  wb <- openxlsx2::wb_clean_sheet(wb, sheet = 4, dims = "A1:B2000", styles = FALSE) |>
-    openxlsx2::wb_add_data(sheet = 4, precipitation)
-
-  openxlsx2::wb_save(wb, file = filepath,  overwrite = overwrite)
-  path <- c(path, filepath |> setNames("meteofrance"))
-
-  return(invisible(path))
+  .meteo_france_fetcher(
+    x = ctx$parca,
+    dirname = dirname,
+    id = ctx$id,
+    cache = cache,
+    verbose = verbose,
+    overwrite = overwrite
+  )
 }
