@@ -84,8 +84,8 @@ menu_toolbox_data <- function(x) {
     "OLD"                  = function() fetch_old(x, path),
     "Toponyme"             = function() fetch_toponyme(x, path),
     "Hydrologie"           = function() fetch_hydro(x, path),
-    "V\u00E9g\u00E9tation" = function() fetch_vege(x, path)
-    # "Accessibilit\u00E9"   = function() seq_access(path),
+    "V\u00E9g\u00E9tation" = function() fetch_vege(x, path),
+    "Accessibilit\u00E9"   = function() fetch_access(x, path)
     # "Meteo-France"         = function() seq_meteo_france(path),
     # "Drias"                = function() seq_drias(path),
     # "Courbes niveau"       = function() seq_curves(path),
