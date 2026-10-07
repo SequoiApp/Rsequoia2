@@ -23,9 +23,10 @@ get_prsf <- function(x, buffer = 5000, verbose = TRUE) {
     verbose = FALSE
   )
 
-  if (!nrow(prsf)) return(NULL)
+  if (!nrow(prsf))
+    return(NULL)
 
-  invisible(sf::st_transform(prsf, crs))
+  return(invisible(sf::st_transform(prsf, crs)))
 }
 
 #' Fetch PRSF data
@@ -56,7 +57,7 @@ get_prsf <- function(x, buffer = 5000, verbose = TRUE) {
 
   if (is.null(prsf)) {
     if (verbose) cli::cli_alert_warning("No PRSF found.")
-    return(invisible(NULL))
+    return(NULL)
   }
 
   if (!is.null(id)) {

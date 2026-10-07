@@ -14,9 +14,7 @@
 #' and retrieves OLD features before returns as a single `sf` point layer.
 #'
 #' @export
-get_old <- function(x,
-                    buffer = 1000,
-                    verbose = TRUE) {
+get_old <- function(x, buffer = 1000, verbose = TRUE) {
 
   # convex buffer
   crs <- 2154
@@ -41,6 +39,85 @@ get_old <- function(x,
 
   return(invisible(sf::st_transform(old, crs)))
 }
+
+#' Fetch OLD data
+#'
+#' @inheritParams get_old
+#' @param dirname `character`; Output directory.
+#' @param id Optional Sequoia project identifier.
+#' @param overwrite `logical`; If `TRUE`, overwrite an existing layer.
+#'
+#' @return Invisibly returns the written layer path, or `NULL`.
+#'
+#' @keywords internal
+#' @noRd
+.old_fetcher <- function(
+    x,
+    dirname,
+    id = NULL,
+    buffer = 1000,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  if (verbose) {
+    cli::cli_h1("OLD")
+    cli::cli_progress_message("Downloading OLD layer...")
+  }
+
+  old <- get_old(x, buffer = buffer, verbose = FALSE)
+
+  if (is.null(old)) {
+    if (verbose) cli::cli_alert_warning("No OLD found.")
+    return(invisible(NULL))
+  }
+
+  if (!is.null(id)) {
+    identifier <- seq_field("identifier")$name
+    old[[identifier]] <- id
+  }
+
+  path <- seq_write(
+    old,
+    key = "v.secu.old.poly",
+    dirname = dirname,
+    id = id,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+
+  invisible(path)
+}
+
+
+#' Fetch OLD layer for an area
+#'
+#' Retrieves OLD points around `x` and writes the resulting layer to
+#' `dirname`.
+#'
+#' @inheritParams get_old
+#' @param dirname `character`; Output directory.
+#' @param overwrite `logical`; If `TRUE`, overwrite an existing layer.
+#'
+#' @return Invisibly returns the written layer path, or `NULL`.
+#'
+#' @keywords internal
+#' @noRd
+fetch_old <- function(
+    x,
+    dirname,
+    buffer = 1000,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  .old_fetcher(
+    x = x,
+    dirname = dirname,
+    buffer = buffer,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+}
+
 
 #' Generate OLD layer for a Sequoia project
 #'
@@ -74,33 +151,15 @@ seq_old <- function(
     overwrite = FALSE
 ) {
 
-  # read PARCA
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id_field <- seq_field("identifier")$name
-  id <- unique(parca[[id_field]])
+  ctx <- .seq_context(dirname)
 
-  if (verbose){
-    cli::cli_h1("OLD")
-    pb <- cli::cli_progress_message("Downloading OLD layer...")
-  }
+  .old_fetcher(
+    x = ctx$parca,
+    dirname = dirname,
+    id = ctx$id,
+    buffer = buffer,
+    verbose = verbose,
+    overwrite = overwrite
+  )
 
-  # Retrieve toponyms
-  old <- get_old(parca, buffer = buffer, verbose = FALSE)
-
-  if (!is.null(old)){
-    old[[id_field]] <- id
-
-    old <- seq_write(
-      old,
-      "v.secu.old.poly",
-      dirname = dirname,
-      id = id,
-      verbose = verbose,
-      overwrite = overwrite
-    )
-  } else if (verbose) {
-    cli::cli_alert_warning("No OLD features found: layer not written.")
-  }
-
-  return(invisible(c(old) |> as.list()))
 }

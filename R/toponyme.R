@@ -33,9 +33,7 @@
 #' normalized before being returned as a single `sf` point layer.
 #'
 #' @export
-get_toponyme <- function(x,
-                         buffer = 1000,
-                         verbose = TRUE) {
+get_toponyme <- function(x, buffer = 1000, verbose = TRUE) {
 
   # fetch_envelope buffer
   crs <- 2154
@@ -48,12 +46,16 @@ get_toponyme <- function(x,
 
   # retrieve toponymic point
   toponyme <- happign::get_wfs(
-    fetch_envelope, "BDTOPO_V3:toponymie", verbose = FALSE
-  ) |> sf::st_transform(crs)
+    fetch_envelope,
+    "BDTOPO_V3:toponymie",
+    verbose = FALSE
+  )
 
   if (!nrow(toponyme)) {
     return(NULL)
   }
+
+  toponyme <- toponyme |> sf::st_transform(crs)
 
   # normalise field
   raw_names <- names(toponyme)
@@ -119,7 +121,84 @@ get_toponyme <- function(x,
   cols <- c(id, type, nature, name, source, rotation, raw_names)
   toponyme <- subset(toponyme, select = cols)
 
-  invisible(toponyme)
+  return(invisible(toponyme))
+}
+
+#' Fetch TOPONYME data
+#'
+#' @inheritParams get_toponyme
+#' @param dirname `character`; Output directory.
+#' @param id Optional Sequoia project identifier.
+#' @param overwrite `logical`; If `TRUE`, overwrite an existing layer.
+#'
+#' @return Invisibly returns the written layer path, or `NULL`.
+#'
+#' @keywords internal
+#' @noRd
+.toponyme_fetcher <- function(
+    x,
+    dirname,
+    id = NULL,
+    buffer = 1000,
+    verbose = TRUE,
+    overwrite = FALSE){
+
+  if (verbose) {
+    cli::cli_h1("TOPONYME")
+    cli::cli_progress_message("Downloading TOPONYME layer...")
+  }
+
+  toponyme <- get_toponyme(x, buffer = buffer, verbose = FALSE)
+
+  if (is.null(toponyme)) {
+    if (verbose) cli::cli_alert_warning("No TOPONYME found.")
+    return(NULL)
+  }
+
+  if (!is.null(id)) {
+    identifier <- seq_field("identifier")$name
+    toponyme[[identifier]] <- id
+  }
+
+  path <- seq_write(
+    toponyme,
+    key = "v.toponyme.point",
+    dirname = dirname,
+    id = id,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+
+  return(invisible(path))
+}
+
+#' Fetch TOPONYME layer for an area
+#'
+#' Retrieves TOPONYME points around `x` and writes the resulting layer to
+#' `dirname`.
+#'
+#' @inheritParams toponyme
+#' @param dirname `character`; Output directory.
+#' @param overwrite `logical`; If `TRUE`, overwrite an existing layer.
+#'
+#' @return Invisibly returns the written layer path, or `NULL`.
+#'
+#' @keywords internal
+#' @noRd
+fetch_toponyme <- function(
+    x,
+    dirname,
+    buffer = 1000,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  .toponyme_fetcher(
+    x = x,
+    dirname = dirname,
+    buffer = buffer,
+    verbose = verbose,
+    overwrite = overwrite
+  )
 }
 
 #' Generate toponymic point layer for a Sequoia project
@@ -155,33 +234,14 @@ seq_toponyme <- function(
     overwrite = FALSE
 ) {
 
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id_field <- seq_field("identifier")$name
-  id <- unique(parca[[id_field]])
+  ctx <- .seq_context(dirname)
 
-  if (verbose){
-    cli::cli_h1("TOPONYME")
-    pb <- cli::cli_progress_message("Downloading toponyme layer...")
-  }
-
-  # Retrieve toponyms
-  topo <- get_toponyme(parca, buffer = buffer, verbose = FALSE)
-
-  # Exit early if nothing to write
-  if (!is.null(topo)){
-    topo[[id_field]] <- id
-
-    topo <- seq_write(
-      topo,
-      "v.toponyme.point",
-      dirname = dirname,
-      id = id,
-      verbose = verbose,
-      overwrite = overwrite
-    )
-  } else if (verbose) {
-    cli::cli_alert_warning("No toponym features found: layer not written.")
-  }
-
-  return(invisible(c(topo) |> as.list()))
+  .toponyme_fetcher(
+    x = ctx$parca,
+    dirname = dirname,
+    id = ctx$id,
+    buffer = buffer,
+    verbose = verbose,
+    overwrite = overwrite
+  )
 }
