@@ -90,8 +90,8 @@ menu_toolbox_data <- function(x) {
     # "Drias"                = function() seq_drias(path),
     "Courbes niveau"       = function() fetch_curves(x, path),
     "IFN"                  = function() fetch_ifn(x, path),
-    "GPU"                  = function() fetch_gpu(x, path)
-    # "Patrimoine"           = function() seq_patrimony(path),
+    "GPU"                  = function() fetch_gpu(x, path),
+    "Patrimoine"           = function() fetch_patrimony(x, path)
     # "Altim\u00E9trie"      = function() seq_altimetry(path),
     # "Orthophoto"           = function() seq_ortho(path)
   )

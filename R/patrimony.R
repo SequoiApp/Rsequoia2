@@ -17,7 +17,7 @@
 get_patrimony <- function(
     x,
     key,
-    buffer = 500,
+    buffer = 1000,
     verbose = TRUE){
 
   if (!inherits(x, c("sf", "sfc"))){
@@ -77,101 +77,147 @@ get_patrimony <- function(
   return(invisible(f))
 }
 
-#' Download patrimony vector layers for a Sequoia project
-#'
-#' Downloads one or several vector layers with `frheritage`
-#' for `pat` layer(s) of a Sequoia project.
-#'
-#' This function is a convenience wrapper looping over [get_patrimony()], allowing
-#' the user to download all products in one call and automatically write them
-#' to the project directory using [seq_write()].
+#' Fetch patrimony layers
 #'
 #' @inheritParams get_patrimony
-#' @inheritParams seq_write
+#' @param dirname `character`; Output directory.
+#' @param id Optional Sequoia project identifier.
+#' @param key `character`; Patrimony layer identifiers.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing layers.
 #'
-#' @param key `character`; List of layer identifiers to download. If not
-#' provided, the function uses `get_keys("pat")` to automatically select all
-#' patrimony layers defined in the Sequoia configuration (`inst/config/seq_layers.yaml`)
+#' @return Invisibly returns a named list of written paths.
 #'
-#' @details
-#' For each value in `key`, the function attempts to query the corresponding
-#' MNHN layer using [get_patrimony()].
-#'
-#' - If the layer contains features, it is written to the project directory
-#'   via [seq_write()] and recorded as a successful download.
-#' - If the layer contains no features, it is skipped and marked
-#'   as empty.
-#'
-#' @return A named list of file paths written by [seq_write()], one per layer.
-#'
-#' @seealso [get_patrimony()], [seq_write()]
-#'
-seq_patrimony <- function(
-    dirname = ".",
-    buffer = 500,
+#' @keywords internal
+#' @noRd
+.patrimony_fetcher <- function(
+    x,
+    dirname,
+    id = NULL,
+    buffer = 1000,
     key = get_keys("pat"),
     verbose = TRUE,
-    overwrite = FALSE){
+    overwrite = FALSE) {
 
-  # read matrice
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  identifier <- seq_field("identifier")$name
-  id <- unique(parca[[identifier]])
-
-  if (verbose){
-    cli::cli_h1("PATRIMONY")
+  if (!all(key %in% get_keys("pat"))) {
+    cli::cli_abort("{.arg key} must be one or more of {.val {get_keys(\"pat\")}}.")
   }
+
+  if (verbose) cli::cli_h1("PATRIMONY")
 
   pb <- NULL
   if (verbose) {
     pb <- cli::cli_progress_bar(
       format = paste0(
-        "{cli::pb_spin} Searching Patrimony layer: {.val {k}} | ",
+        "{cli::pb_spin} Searching PATRIMONY layer: {.val {k}} | ",
         "[{cli::pb_current}/{cli::pb_total}]"
       ),
-      total = length(key),
-      auto_terminate = FALSE
+      total = length(key)
     )
   }
 
-  path <- list()
-  for (k in key) {
-
+  paths <- lapply(key, function(k) {
     if (verbose) {
-      cli::cli_progress_update(id = pb, force = TRUE)
+      cli::cli_progress_update(id = pb, set = list(k = k), force = TRUE)
     }
 
-    f_path <- tryCatch({
-      f <- get_patrimony(parca, k, buffer = buffer, verbose = FALSE)
+    tryCatch({
+      f <- get_patrimony(x, k, buffer = buffer, verbose = FALSE)
+      if (is.null(f) || !nrow(f)){
+        return(NULL)
+      }
 
-      if (is.null(f) || nrow(f) == 0) {
-        NULL
-      } else {
+      if (!is.null(id)){
+        identifier <- seq_field("identifier")$name
         f[[identifier]] <- id
+      }
 
-        seq_write(
-          f,
-          sprintf("v.pat.%s.poly", k),
-          dirname,
-          id,
-          verbose = verbose,
-          overwrite = overwrite
+      seq_write(
+        f,
+        key = sprintf("v.pat.%s.poly", k),
+        dirname = dirname,
+        id = id,
+        verbose = verbose,
+        overwrite = overwrite
+      )
+
+    }, error = function(e) {
+      if (verbose) {
+        cli::cli_alert_danger(
+          "Failed PATRIMONY layer {.val {k}}: {conditionMessage(e)}"
         )
       }
-    }, error = function(e) NULL)
+      NULL
+    })
+  })
 
-    if (!is.null(f_path)) {
-      path <- c(path, f_path)
-    }
+  names(paths) <- sprintf("v.pat.%s.poly", key)
+  invisible(Filter(Negate(is.null), paths))
+}
 
-  }
 
-  if (!length(path)) {
-    if (verbose){
-      cli::cli_alert_info("No Patrimony layer found.")
-    }
-    return(invisible(NULL))
-  }
+#' Fetch patrimony layers for an area
+#'
+#' Retrieves patrimony layers around `x` and writes them to `dirname`.
+#'
+#' @inheritParams get_patrimony
+#' @param dirname `character`; Output directory.
+#' @param key `character`; Patrimony layer identifiers.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing layers.
+#'
+#' @return Invisibly returns a named list of written paths.
+#'
+#' @keywords internal
+#' @noRd
+fetch_patrimony <- function(
+    x,
+    dirname,
+    buffer = 1000,
+    key = get_keys("pat"),
+    verbose = TRUE,
+    overwrite = FALSE) {
 
-  invisible(path)
+  .patrimony_fetcher(
+    x = x,
+    dirname = dirname,
+    buffer = buffer,
+    key = key,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+}
+
+
+#' Generate patrimony layers for a Sequoia project
+#'
+#' Retrieves patrimony layers around the project area and writes them to the
+#' Sequoia project directory.
+#'
+#' @inheritParams get_patrimony
+#' @inheritParams seq_write
+#' @param key `character`; Patrimony layer identifiers. Defaults to
+#'   `get_keys("pat")`.
+#'
+#' @return Invisibly returns a named list of written paths.
+#'
+#' @seealso [get_patrimony()], [seq_write()]
+#'
+#' @export
+seq_patrimony <- function(
+    dirname = ".",
+    buffer = 1000,
+    key = get_keys("pat"),
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  ctx <- .seq_context(dirname)
+
+  .patrimony_fetcher(
+    x = ctx$parca,
+    dirname = dirname,
+    id = ctx$id,
+    buffer = buffer,
+    key = key,
+    verbose = verbose,
+    overwrite = overwrite
+  )
 }

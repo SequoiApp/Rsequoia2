@@ -4,7 +4,7 @@
 \alias{get_patrimony}
 \title{Download patrimony vector layer}
 \usage{
-get_patrimony(x, key, buffer = 500, verbose = TRUE)
+get_patrimony(x, key, buffer = 1000, verbose = TRUE)
 }
 \arguments{
 \item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
