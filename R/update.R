@@ -61,7 +61,7 @@ seq1_read <- function(dirname = ".", layer) {
     bullets <- setNames(file, rep("*", length(file)))
 
     cli::cli_abort(c(
-      "Multiple files {.val {layer}} detected. Folder must contain exactly one {.val {layer}}."
+      "Multiple files {.val {layer}} detected. Folder must contain exactly one {.val {layer}}.",
       bullets
     ))
   }
