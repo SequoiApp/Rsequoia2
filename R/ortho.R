@@ -100,7 +100,6 @@ get_ortho <- function(
 
 #' Fetch orthophoto layers
 #'
-#' Internal worker used by [fetch_ortho()] and [seq_ortho()].
 #'
 #' @inheritParams get_ortho
 #' @param dirname `character`; Output directory.
