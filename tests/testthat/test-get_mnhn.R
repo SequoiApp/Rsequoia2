@@ -14,11 +14,14 @@ test_that("get_mnhn() works with real API (local only)", {
 
   skip_on_cran()
   skip_on_ci()
-  skip_if_offline()
+  skip_if_offline("data.geopf.fr")
 
   x <- sf::st_sfc(sf::st_point(c(-4.372746579180652, 47.79820761331345)), crs = 4326)
 
-  ospar <- quiet(get_mnhn(x, key = "ospar", buffer = 500))
+  ospar <- tryCatch(
+    quiet(get_mnhn(x, key = "ospar", buffer = 500)),
+    error = function(e) skip("IGN API is unavailable")
+  )
 
   expect_s3_class(ospar, "sf")
   expect_true(nrow(ospar) >= 1)

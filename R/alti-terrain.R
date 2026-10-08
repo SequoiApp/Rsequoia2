@@ -26,20 +26,14 @@ seq_aggregate_dem <- function(dem, agg = 5, verbose = TRUE) {
   }
 
   if (!is.null(agg)) {
-    if (!is.numeric(agg) ||
-        length(agg) != 1L ||
-        is.na(agg) ||
-        !is.finite(agg) ||
-        agg <= 0) {
+    if (!is.numeric(agg) || length(agg) != 1L || is.na(agg) || agg <= 0) {
       cli::cli_abort(
         "{.arg agg} must be a positive numeric scalar or {.val NULL}."
       )
     }
   }
 
-  if (!is.logical(verbose) ||
-      length(verbose) != 1L ||
-      is.na(verbose)) {
+  if (!is.logical(verbose) || length(verbose) != 1L || is.na(verbose)) {
     cli::cli_abort("{.arg verbose} must be TRUE or FALSE.")
   }
 
@@ -51,7 +45,7 @@ seq_aggregate_dem <- function(dem, agg = 5, verbose = TRUE) {
   # --- Current resolution ---
   res <- terra::res(dem)
 
-  if (any(!is.finite(res)) || any(res <= 0)) {
+  if (any(res <= 0)) {
     cli::cli_abort("Unable to determine a valid raster resolution.")
   }
 
@@ -338,7 +332,7 @@ seq_terrain <- function(
           cli::cli_abort(c(
             "No MNT raster found for terrain calculation.",
             "x" = "Neither {.val r.alt.mnt.lidar} nor {.val r.alt.mnt.rge} could be read.",
-            "i" = "Run {.fun seq_lidar} or {.fun seq_rgealti} first to create MNT data."
+            "i" = "Run {.fun seq_altimetry} first to create MNT data."
           ))
         }
       )
@@ -354,7 +348,7 @@ seq_terrain <- function(
           cli::cli_abort(c(
             "No MNH raster found for terrain calculation.",
             "x" = "Neither {.val r.alt.mnh.lidar} nor {.val r.alt.mnh.rge} could be read.",
-            "i" = "Run {.fun seq_lidar} or {.fun seq_rgealti} first to create MNH data."
+            "i" = "Run {.fun seq_altimetry} first to create MNH data."
           ))
         }
       )

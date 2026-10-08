@@ -10,19 +10,6 @@ menu_data <- function() {
   path <- seq_get_path()
   info <- cli::format_inline("Dossier s\u00E9lectionn\u00E9 : {.path {path}}")
 
-  seq_altimetry <- function(dirname = ".", overwrite = FALSE, verbose = TRUE, ...) {
-
-    tryCatch(
-      seq_lidar(dirname = dirname, overwrite = overwrite, verbose = verbose, ...),
-      error = function(e) {
-        cli::cli_alert_warning("LiDAR unavailable. Falling back to RGE ALTI.")
-        cli::cli_alert_info(conditionMessage(e))
-        seq_rgealti(dirname = dirname, overwrite = overwrite, verbose = verbose, ...)
-      }
-    )
-    seq_terrain(dirname = dirname, unit = "percent", overwrite = overwrite, verbose = verbose)
-  }
-
   base_actions <- list(
     "Communes"             = function() seq_com(path),
     "MNHN"                 = function() seq_mnhn(path),
@@ -92,7 +79,7 @@ menu_toolbox_data <- function(x) {
     "IFN"                  = function() fetch_ifn(x, path),
     "GPU"                  = function() fetch_gpu(x, path),
     "Patrimoine"           = function() fetch_patrimony(x, path),
-    # "Altim\u00E9trie"      = function() seq_altimetry(path),
+    "Altim\u00E9trie"      = function() fetch_altimetry(x, path),
     "Orthophoto"           = function() fetch_ortho(x, path)
   )
 
