@@ -71,10 +71,6 @@ v.gpu.supg.point:         { name: "GPU_SUPG_point",         ext: "gpkg" }
 v.gpu.supg.line:          { name: "GPU_SUPG_line",          ext: "gpkg" }
 v.gpu.supg.poly:          { name: "GPU_SUPG_poly",          ext: "gpkg" }
 
-# ARS
-v.ars.perimetre.poly: { name: "ARS_PERIMETRES_poly", ext: "gpkg" }
-v.ars.captage.point:  { name: "ARS_CAPTAGE_point", ext: "gpkg" }
-
 # INFRA
 v.infra.point: { name: "INFRA_point", ext: "gpkg" }
 v.infra.line:  { name: "INFRA_line",  ext: "gpkg" }

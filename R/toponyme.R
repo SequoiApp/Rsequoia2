@@ -145,7 +145,7 @@ get_toponyme <- function(x, buffer = 1000, verbose = TRUE) {
 
   if (verbose) {
     cli::cli_h1("TOPONYME")
-    cli::cli_progress_message("Downloading TOPONYME layer...")
+    cli::cli_progress_message("Downloading TOPONYME layer...", clear = TRUE)
   }
 
   toponyme <- get_toponyme(x, buffer = buffer, verbose = FALSE)

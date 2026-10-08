@@ -3,12 +3,13 @@
 #' Internal menu used to download or generate geographic and environmental data
 #' for the currently selected sequoia2 directory.
 #'
+#' @param state Project menu selection state.
 #' @keywords internal
 #' @noRd
-menu_data <- function() {
+menu_data <- function(state) {
 
-  path <- seq_get_path()
-  info <- cli::format_inline("Dossier s\u00E9lectionn\u00E9 : {.path {path}}")
+  path <- seq_get_path(state)
+  info <- function() seq_show_selection(state$path)
 
   base_actions <- list(
     "Communes"             = function() seq_com(path),
@@ -51,15 +52,21 @@ menu_data <- function() {
 #' Open the toolbox data download menu
 #'
 #' Internal menu used to download or generate geographic and environmental data
-#' for the currently selected sequoia2 directory.
+#' for the selected geographic zone and output directory.
 #'
+#' @param state Toolbox menu selection state, including the geographic zone.
 #' @keywords internal
 #' @noRd
-menu_toolbox_data <- function(x) {
+menu_toolbox_data <- function(state) {
 
-  path <- seq_get_path()
-  info <- cli::format_inline("Dossier s\u00E9lectionn\u00E9 : {.path {path}}")
-
+  path <- seq_get_path(state)
+  x <- state$zone
+  if (is.null(x)) {
+    cli::cli_abort("Veuillez d'abord s\u00E9lectionner une zone g\u00E9ographique.")
+  }
+  info <- function() seq_show_selection(state$path)
+  print(path)
+  print(x)
   base_actions <- list(
     "Communes"             = function() fetch_com(x, path),
     "MNHN"                 = function() fetch_mnhn(x, path),

@@ -18,4 +18,6 @@ An \code{sf} object, or \code{NULL} if no feature is found.
 }
 \description{
 Downloads a single Geoportail de l'Urbanisme layer intersecting \code{x}.
+Multiple input geometries are combined with \code{\link[sf:geos_combine]{sf::st_union()}} before querying
+the API, which accepts one geometry per request.
 }

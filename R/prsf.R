@@ -50,7 +50,7 @@ get_prsf <- function(x, buffer = 5000, verbose = TRUE) {
 
   if (verbose) {
     cli::cli_h1("PRSF")
-    cli::cli_progress_message("Downloading PRSF layer...")
+    cli::cli_progress_message("Downloading PRSF layer...", clear = TRUE)
   }
 
   prsf <- get_prsf(x, buffer = buffer, verbose = FALSE)

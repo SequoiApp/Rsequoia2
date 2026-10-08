@@ -5,10 +5,11 @@
 #' @details
 #' This function is interactive and intended for manual use only.
 #'
+#' @param state Menu selection state containing the output directory.
 #' @noRd
-menu_pm <- function() {
+menu_pm <- function(state) {
 
-  path <- seq_get_path()
+  path <- seq_get_path(state)
 
   read_csv <- function(prompt) {
     x <- readline(prompt)

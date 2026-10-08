@@ -170,7 +170,7 @@ get_pedology_pdf <- function(
 
   if (verbose) {
     cli::cli_h1("PEDOLOGY")
-    cli::cli_progress_message("Downloading pedology layer...")
+    cli::cli_progress_message("Downloading pedology layer...", clear = TRUE)
   }
 
   pedology <- get_pedology(x)

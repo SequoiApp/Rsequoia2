@@ -2,47 +2,40 @@
 #'
 #' Internal menu used to access standalone sequoia2 tools.
 #'
+#' @param state Menu selection state shared with toolbox submenus.
 #' @keywords internal
 #' @noRd
-menu_toolbox <- function() {
-  old_path <- getOption("seq_dir_path", NULL)
-  on.exit(options(seq_dir_path = old_path), add = TRUE)
+menu_toolbox <- function(state = seq_menu_state()) {
 
-  path <- rstudioapi::selectDirectory(
-    caption = "S\u00E9lectionner un dossier de destination",
-    path = getOption("seq_dir_path", getwd())
-  )
-
-  if (is.null(path) || !nzchar(path)) {
-    return(invisible(NULL))
+  select_folder <- function() {
+    seq_select_folder(
+      state,
+      caption = "S\u00E9lectionner un dossier de sortie"
+    )
   }
 
-  options(seq_dir_path = path)
-
-  info <- cli::format_inline("Dossier s\u00E9lectionn\u00E9 : {.path {path}}")
-
-  download_data <- function() {
-    file <- rstudioapi::selectFile(
-      caption = "S\u00E9lectionner une couche SIG",
-      path = path,
-      filter = "Couches SIG (*.gpkg *.shp *.geojson *.json *.kml)"
+  info <- function() {
+    seq_show_selection(
+      state$path,
+      label = "Dossier de sortie",
+      missing = "Aucun dossier de sortie s\u00E9lectionn\u00E9."
     )
-
-    if (is.null(file) || !nzchar(file)) {
-      return(invisible(NULL))
-    }
-
-    zone <- sf::read_sf(file)
-    menu_toolbox_data(zone)
+    seq_show_selection(
+      state$zone_file,
+      label = "Zone g\u00E9ographique",
+      missing = "Aucune zone g\u00E9ographique s\u00E9lectionn\u00E9e."
+    )
   }
 
   actions <- list(
-    "RP PDF -> Excel" = menu_rp,
-    "Rechercher une personne morale" = menu_pm,
+    "S\u00E9lectionner un dossier de sortie" = select_folder,
+    "S\u00E9lectionner une zone g\u00E9ographique" = function() seq_select_zone(state),
+    "RP PDF -> Excel" = function() menu_rp(state),
+    "Rechercher une personne morale" = function() menu_pm(state),
     "T\u00E9l\u00E9charger PARCA depuis des IDU" = function() {
       cli::cli_alert_info("Fonctionnalit\u00E9 \u00E0 impl\u00E9menter.")
     },
-    "T\u00E9l\u00E9charger des donn\u00E9es sur une zone" = download_data
+    "T\u00E9l\u00E9charger des donn\u00E9es sur une zone" = function() menu_toolbox_data(state)
   )
 
   seq_run_menu(

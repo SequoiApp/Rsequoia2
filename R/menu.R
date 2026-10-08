@@ -4,11 +4,14 @@
 #'
 #' Opens the interactive command-line menu for the sequoia2 workflow.
 #'
-#' The selected directory is stored in the R option `seq_dir_path` and reused by
-#' the other menus and processing functions.
+#' Project and toolbox selections are kept separately for the menu session and
+#' passed explicitly to their submenus and processing functions.
 #'
 #' @export
 sequoia2 <- function() {
+
+  project_state <- seq_menu_state()
+  toolbox_state <- seq_menu_state()
 
   ask_help <- function() {
     utils::browseURL("https://github.com/SequoiApp/Rsequoia2/issues")
@@ -19,8 +22,8 @@ sequoia2 <- function() {
   }
 
   actions <- list(
-    "Projet Sequoia" = menu_sequoia,
-    "Boite \u00E0 outils" = menu_toolbox,
+    "Projet Sequoia" = function() menu_sequoia(project_state),
+    "Boite \u00E0 outils" = function() menu_toolbox(toolbox_state),
     "Gestion des dossiers" = menu_folders,
     "Documentation" = website,
     "Signaler un probl\u00E8me" = ask_help

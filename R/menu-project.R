@@ -3,29 +3,28 @@
 #' Internal menu used to run the main sequoia2 processing workflow for the
 #' selected directory.
 #'
+#' @param state Menu selection state shared with project submenus.
 #' @keywords internal
 #' @noRd
-menu_sequoia <- function() {
+menu_sequoia <- function(state = seq_menu_state()) {
 
-  path <- rstudioapi::selectDirectory(
-    caption = "S\u00E9lectionner un dossier Sequoia2",
-    path = getOption("seq_dir_path", getwd())
-  )
-
-  if (is.null(path) || !nzchar(path)) {
-    return(invisible(NULL))
+  select_folder <- function() {
+    seq_select_folder(
+      state,
+      caption = "S\u00E9lectionner un dossier Sequoia2"
+    )
   }
 
-  options(seq_dir_path = path)
-  info <- cli::format_inline("Dossier s\u00E9lectionn\u00E9 : {.path {path}}")
-
-  download_parca <- function() seq_parca(seq_get_path())
-
-  create_ua <- function() seq_parca_to_ua(seq_get_path())
-
-  correct_ua <- function() seq_ua(seq_get_path())
+  info <- function() {
+    seq_show_selection(
+      state$path,
+      missing = "Aucun dossier Sequoia s\u00E9lectionn\u00E9."
+    )
+  }
 
   aggregate_ua <- function() {
+
+    path <- seq_get_path(state)
 
     cli::cli_alert_warning(
       "Cette op\u00E9ration peut \u00E9craser des fichiers existants."
@@ -44,8 +43,6 @@ menu_sequoia <- function() {
       return(invisible(FALSE))
     }
 
-    path <- seq_get_path()
-
     seq_boundaries(path, overwrite = overwrite)
     seq_parcels(path, overwrite = overwrite)
     seq_occupation(path, overwrite = overwrite)
@@ -53,16 +50,15 @@ menu_sequoia <- function() {
     invisible(TRUE)
   }
 
-  sumarize_ua <- function() seq_summary(seq_get_path())
-
   actions <- list(
-    "G\u00E9n\u00E9rer une MATRICE CADASTRALE" = menu_matrice,
-    "T\u00E9l\u00E9charger PARCA" = download_parca,
-    "T\u00E9l\u00E9charger DONNEES" = menu_data,
-    "G\u00E9n\u00E9rer les UA" = create_ua,
-    "Corriger les UA" = correct_ua,
+    "S\u00E9lectionner un dossier Sequoia" = select_folder,
+    "G\u00E9n\u00E9rer une MATRICE CADASTRALE" = function() menu_matrice(state),
+    "T\u00E9l\u00E9charger PARCA" = function() seq_parca(seq_get_path(state)),
+    "T\u00E9l\u00E9charger DONNEES" = function() menu_data(state),
+    "G\u00E9n\u00E9rer les UA" = function() seq_parca_to_ua(seq_get_path(state)),
+    "Corriger les UA" = function() seq_ua(seq_get_path(state)),
     "Aggr\u00E9ger les UA" = aggregate_ua,
-    "Synth\u00E9tiser les UA" = sumarize_ua
+    "Synth\u00E9tiser les UA" = function() seq_summary(seq_get_path(state))
   )
 
   seq_run_menu(

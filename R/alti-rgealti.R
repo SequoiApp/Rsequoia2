@@ -55,8 +55,9 @@ get_rge <- function(
   if (verbose) {
     pb <- cli::cli_progress_message(
       "Downloading {toupper(key)} RGE ALTI dataset...",
-      .auto_close = FALSE
+      clear = TRUE
     )
+    on.exit(cli::cli_progress_done(id = pb, result = "clear"), add = TRUE)
   }
 
   files <- vapply(seq_len(nrow(x_env)), function(i) {
@@ -77,7 +78,7 @@ get_rge <- function(
   }, character(1))
 
   if (verbose) cli::cli_progress_done(pb)
-  if (verbose) cli::cli_progress_message("Optimizing raster...")
+  if (verbose) cli::cli_progress_message("Optimizing raster...", clear = TRUE)
 
   r <- .altimetry_transformer(files, x_env, crs, crop = FALSE)
   names(r) <- paste0(key, "_rge")

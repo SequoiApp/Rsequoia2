@@ -155,7 +155,7 @@ get_ser_pdf <- function(
   base_url <- "https://inventaire-forestier.ign.fr/IMG/pdf/"
 
   if (verbose) {
-    pb <- cli::cli_progress_message("Downloading IFN SER reports...")
+    pb <- cli::cli_progress_message("Downloading IFN SER reports...", clear = TRUE)
   }
 
   # Download loop ----
@@ -239,13 +239,16 @@ get_ser_pdf <- function(
         "{cli::pb_spin} Searching IFN layer: {.val {k}} | ",
         "[{cli::pb_current}/{cli::pb_total}]"
       ),
-      total = length(key)
+      total = length(key),
+      auto_terminate = FALSE,
+      clear = TRUE
     )
+    on.exit(cli::cli_progress_done(id = pb, result = "clear"), add = TRUE)
   }
 
   paths <- lapply(key, function(k) {
     if (verbose) {
-      cli::cli_progress_update(id = pb, set = list(k = k), force = TRUE)
+      cli::cli_progress_update(id = pb, force = TRUE)
     }
 
     tryCatch({

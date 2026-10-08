@@ -302,7 +302,7 @@ get_geol <- function(
 fetch_geol <- function(
     x,
     dirname,
-    key = c("carhab, bdcharm50"),
+    key = c("carhab", "bdcharm50"),
     buffer = 100,
     cache = NULL,
     verbose = TRUE,

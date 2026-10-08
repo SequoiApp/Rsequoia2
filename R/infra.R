@@ -456,19 +456,22 @@ get_infra_point <- function(x, buffer = 1000) {
         "{cli::pb_spin} Searching INFRA layer: {.val {k}} | ",
         "[{cli::pb_current}/{cli::pb_total}]"
       ),
-      total = length(layers)
+      total = length(layers),
+      auto_terminate = FALSE,
+      clear = TRUE
     )
+    on.exit(cli::cli_progress_done(id = pb, result = "clear"), add = TRUE)
   }
 
   paths <- lapply(names(layers), function(k) {
 
     if (verbose) {
-      cli::cli_progress_update(id = pb, set = list(k = k), force = TRUE)
+      cli::cli_progress_update(id = pb, force = TRUE)
     }
 
     tryCatch({
 
-      f <- layers[[k]](x, buffer = buffer, verbose = verbose)
+      f <- layers[[k]](x, buffer = buffer)
 
       if (!is.null(id)) {
         identifier <- seq_field("identifier")$name

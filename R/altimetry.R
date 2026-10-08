@@ -101,7 +101,8 @@
 
       if (verbose) {
         cli::cli_progress_message(
-          "Downloading {toupper(product)} {toupper(provider)} product..."
+          "Downloading {toupper(product)} {toupper(provider)} product...",
+          clear = TRUE
         )
       }
 
@@ -143,9 +144,7 @@
     fetch_source("lidar"),
     error = function(e) {
       if (verbose) {
-        cli::cli_alert_warning(
-          "LiDAR unavailable. Falling back to RGE ALTI."
-        )
+        cli::cli_alert_warning("LiDAR unavailable. Falling back to RGE ALTI.")
         cli::cli_alert_info(conditionMessage(e))
       }
 

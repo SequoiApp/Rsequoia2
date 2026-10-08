@@ -6,14 +6,16 @@
 #' @details
 #' This function is interactive and intended for manual use only.
 #'
+#' @param state Menu selection state containing the output directory.
 #' @noRd
-menu_rp <- function() {
+menu_rp <- function(state) {
+
+  path <- seq_get_path(state)
 
   identifiant <- readline("Choisir un IDENTIFIANT: ")
   owner <- readline("Choisir un PROPRIETAIRE: ")
 
-  path <- seq_get_path()
-  files <- select_pdf_files(path)
+  files <- select_pdf_files(path, state)
 
   if (length(files) == 0) {
     cli::cli_alert_info("Aucun fichier s\u00E9lectionn\u00E9.")
@@ -75,18 +77,20 @@ menu_rp <- function() {
 }
 
 #' Ask user to select several PDF files
+#' @param path Output directory used as the initial picker directory.
+#' @param state Menu selection state storing the last PDF directory.
 #' @noRd
-select_pdf_files <- function(path) {
+select_pdf_files <- function(path, state) {
   files <- character()
 
   repeat {
     f <- rstudioapi::selectFile(
       caption = "S\u00E9lectionner un relev\u00E9 de propri\u00E9t\u00E9",
-      path = getOption("last_pdf_path", path),
+      path = if (is.null(state$pdf_path)) path else state$pdf_path,
       filter = "PDF files (*.pdf)"
     )
 
-    if (!nzchar(f)) {
+    if (is.null(f) || !nzchar(f)) {
       break
     }
 
@@ -102,7 +106,7 @@ select_pdf_files <- function(path) {
     }
 
     files <- c(files, f)
-    options(last_pdf_path = dirname(f))
+    state$pdf_path <- dirname(f)
 
     n <- length(files)
     msg <- paste0(

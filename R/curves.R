@@ -88,7 +88,7 @@ get_curves <- function(x, buffer = 5000, verbose = TRUE) {
 
   if (verbose) {
     cli::cli_h1("CONTOUR LINES")
-    cli::cli_progress_message("Downloading CONTOUR LINES layer...")
+    cli::cli_progress_message("Downloading CONTOUR LINES layer...", clear = TRUE)
   }
 
   curves <- get_curves(x, buffer = buffer, verbose = FALSE)

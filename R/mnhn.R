@@ -110,6 +110,103 @@ get_mnhn <- function(
   return(invisible(f))
 }
 
+#' Fetch MNHN data
+#'
+#' @inheritParams get_mnhn
+#' @param dirname `character`; Output directory.
+#' @param id Optional Sequoia project identifier.
+#' @param key `character`; MNHN layer identifiers to download.
+#' @param overwrite `logical`; Whether existing files should be overwritten.
+#'
+#' @return Invisibly returns a named list of written file paths, or `NULL`
+#'   if no layer is found.
+#'
+#' @keywords internal
+#' @noRd
+.mnhn_fetcher <- function(
+    x,
+    dirname,
+    id = NULL,
+    buffer = 500,
+    key = get_keys("mnhn"),
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  if (verbose) {
+    cli::cli_h1("MNHN")
+  }
+
+  pb <- NULL
+  if (verbose) {
+    pb <- cli::cli_progress_bar(
+      format = paste0(
+        "{cli::pb_spin} Searching MNHN layer: {.val {k}} | ",
+        "[{cli::pb_current}/{cli::pb_total}]"
+      ),
+      total = length(key),
+      auto_terminate = FALSE,
+      clear = TRUE
+    )
+    on.exit(cli::cli_progress_done(id = pb, result = "clear"), add = TRUE)
+  }
+
+  paths <- lapply(key, function(k) {
+    if (verbose) {
+      cli::cli_progress_update(id = pb, force = TRUE)
+    }
+
+    tryCatch({
+      f <- get_mnhn(x, key = k, buffer = buffer, verbose = FALSE)
+
+      if (is.null(f) || nrow(f) == 0) {
+        return(NULL)
+      }
+
+      layer_key <- sprintf("v.mnhn.%s.poly", k)
+
+      if (is.null(id)) {
+        write_vect(
+          f,
+          file.path(dirname, seq_layer(layer_key)$filename),
+          overwrite = overwrite,
+          verbose = verbose
+        )
+      } else {
+        identifier <- seq_field("identifier")$name
+        f[[identifier]] <- id
+
+        seq_write(
+          f,
+          key = layer_key,
+          dirname = dirname,
+          id = id,
+          verbose = verbose,
+          overwrite = overwrite
+        )
+      }
+    }, error = function(e) {
+      if (verbose) {
+        cli::cli_alert_danger(
+          "Failed MNHN layer {.val {k}}: {conditionMessage(e)}"
+        )
+      }
+      NULL
+    })
+  })
+
+  names(paths) <- key
+  paths <- Filter(Negate(is.null), paths)
+
+  if (!length(paths)) {
+    if (verbose) {
+      cli::cli_alert_info("No MNHN layer found.")
+    }
+    return(invisible(NULL))
+  }
+
+  invisible(paths)
+}
+
 #' Search MNHN vector layers
 #'
 #' Downloads one or several MNHN vector layers intersecting x and writes
@@ -138,22 +235,13 @@ fetch_mnhn <- function(
     verbose = TRUE,
     overwrite = FALSE) {
 
-  .fetch_layers(
+  .mnhn_fetcher(
     x = x,
+    dirname = out,
     key = key,
-    fetcher = get_mnhn,
-    label = "MNHN",
     verbose = verbose,
     buffer = buffer,
-
-    writer = function(f, k) {
-      write_vect(
-        f,
-        file.path(out, seq_layer(k)$filename),
-        overwrite = overwrite,
-        verbose = verbose
-      )
-    }
+    overwrite = overwrite
   )
 }
 
@@ -193,33 +281,15 @@ seq_mnhn <- function(
     verbose = TRUE,
     overwrite = FALSE) {
 
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  identifier <- seq_field("identifier")$name
-  id <- unique(parca[[identifier]])
+  ctx <- .seq_context(dirname)
 
-  .fetch_layers(
-    x = parca,
+  .mnhn_fetcher(
+    x = ctx$parca,
+    dirname = dirname,
+    id = ctx$id,
     key = key,
-    fetcher = get_mnhn,
-    label = "MNHN",
     verbose = verbose,
     buffer = buffer,
-
-    transformer = function(f) {
-      f[[identifier]] <- id
-      f
-    },
-
-    writer = function(f, k) {
-      seq_write(
-        f,
-        sprintf("v.mnhn.%s.poly", k),
-        dirname,
-        id,
-        verbose = verbose,
-        overwrite = overwrite
-      )
-    }
+    overwrite = overwrite
   )
 }
-

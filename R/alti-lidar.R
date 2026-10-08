@@ -154,7 +154,7 @@ get_lidar <- function(
     verbose = verbose
   )
 
-  if (verbose) cli::cli_progress_message("Optimizing raster...")
+  if (verbose) cli::cli_progress_message("Optimizing raster...", clear = TRUE)
 
   r <- .altimetry_transformer(files, x_clean, crs)
 

@@ -61,7 +61,7 @@ get_old <- function(x, buffer = 1000, verbose = TRUE) {
 
   if (verbose) {
     cli::cli_h1("OLD")
-    cli::cli_progress_message("Downloading OLD layer...")
+    cli::cli_progress_message("Downloading OLD layer...", clear = TRUE)
   }
 
   old <- get_old(x, buffer = buffer, verbose = FALSE)

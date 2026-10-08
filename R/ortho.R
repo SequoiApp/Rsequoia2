@@ -68,8 +68,9 @@ get_ortho <- function(
   if (verbose) {
     pb <- cli::cli_progress_message(
       "Downloading {toupper(type)} dataset...",
-      .auto_close = FALSE
+      clear = TRUE
     )
+    on.exit(cli::cli_progress_done(id = pb, result = "clear"), add = TRUE)
   }
 
   files <- vapply(seq_len(nrow(x_env)), function(i) {
@@ -91,7 +92,7 @@ get_ortho <- function(
   }, character(1))
 
   if (verbose) cli::cli_progress_done(pb)
-  if (verbose) cli::cli_progress_message("Optimizing raster...")
+  if (verbose) cli::cli_progress_message("Optimizing raster...", clear = TRUE)
 
   invisible(.ortho_transformer(files, x_env))
 }

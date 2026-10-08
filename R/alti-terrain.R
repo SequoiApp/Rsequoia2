@@ -77,7 +77,8 @@ seq_aggregate_dem <- function(dem, agg = 5, verbose = TRUE) {
   # --- Aggregate ---
   if (verbose) {
     cli::cli_progress_message(
-      "Aggregating DEM: {round(resolution, 1)} m -> {round(fact * resolution, 1)} m to avoid terrain artefacts."
+      "Aggregating DEM: {round(resolution, 1)} m -> {round(fact * resolution, 1)} m to avoid terrain artefacts.",
+      clear = TRUE
     )
   }
 

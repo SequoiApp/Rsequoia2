@@ -148,7 +148,7 @@ get_road <- function(x, buffer = 1000, private_in = TRUE, verbose = TRUE) {
 
   if (verbose) {
     cli::cli_h1("ROAD")
-    cli::cli_progress_message("Downloading road layer...")
+    cli::cli_progress_message("Downloading road layer...", clear = TRUE)
   }
 
   road <- get_road(x, buffer = buffer, private_in = private_in, verbose = verbose)

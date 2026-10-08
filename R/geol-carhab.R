@@ -62,8 +62,8 @@ download_carhab <- function(
       )
 
     } else if (verbose) {
-      cli::cli_alert_info(
-        "Using cached CarHab archive for department {.val {one_dep}}: {.file {basename(zip_local)}}"
+      cli::cli_alert_success(
+        "Using cached BDCharm50: {.file {basename(zip_local)}}"
       )
     }
 

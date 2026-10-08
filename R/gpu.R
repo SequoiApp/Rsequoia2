@@ -1,6 +1,8 @@
 #' Download one GPU vector layer
 #'
 #' Downloads a single Geoportail de l'Urbanisme layer intersecting `x`.
+#' Multiple input geometries are combined with [sf::st_union()] before querying
+#' the API, which accepts one geometry per request.
 #'
 #' @param x `sf` or `sfc`; Geometry located in France.
 #' @param layer `character`; GPU API layer identifier.
@@ -28,6 +30,10 @@ get_gpu <- function(x, layer, verbose = TRUE) {
       "Invalid {.arg layer}. Allowed values are: {.vals {allowed}}."
     )
   )
+
+  if (length(sf::st_geometry(x)) > 1L) {
+    x <- sf::st_union(x)
+  }
 
   gpu <- suppressWarnings(happign::get_apicarto_gpu(x, layer))
 
@@ -78,6 +84,8 @@ get_gpu <- function(x, layer, verbose = TRUE) {
     cli::cli_abort("{.arg key} must be one or more of {.val {names(sources)}}.")
   }
 
+  x <- sf::st_union(x)
+
   if (verbose){
     cli::cli_h1("GPU")
   }
@@ -89,8 +97,11 @@ get_gpu <- function(x, layer, verbose = TRUE) {
         "{cli::pb_spin} Searching GPU layer: {.val {k}} | ",
         "[{cli::pb_current}/{cli::pb_total}]"
       ),
-      total = length(key)
+      total = length(key),
+      auto_terminate = FALSE,
+      clear = TRUE
     )
+    on.exit(cli::cli_progress_done(id = pb, result = "clear"), add = TRUE)
   }
 
   paths <- lapply(key, function(k) {
@@ -185,7 +196,7 @@ seq_gpu <- function(
   ctx <- .seq_context(dirname)
 
   .gpu_fetcher(
-    x = sf::st_union(ctx$parca),
+    x = ctx$parca,
     dirname = dirname,
     id = ctx$id,
     key = key,
