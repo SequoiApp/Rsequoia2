@@ -52,8 +52,12 @@ seq1_read <- function(dirname = ".", layer) {
   }
 
   if (length(file) > 1) {
+    rel <- substring(file, nchar(dirname) + 2)
+    bullets <- setNames(rel, rep("*", length(rel)))
+
     cli::cli_abort(c(
-      "x" = "Multiple files detected for {.val {layer}}. The folder must contain exactly one matching file."
+      "Multiple files found for {.val {layer}}.",
+      bullets
     ))
   }
 
@@ -85,8 +89,12 @@ seq1_id <- function(dirname = "."){
   }
 
   if (length(file) > 1) {
+    rel <- substring(file, nchar(dirname) + 2)
+    bullets <- setNames(rel, rep("*", length(rel)))
+
     cli::cli_abort(c(
-      "x" = "Multiple files _PARCA_ detected. The folder must contain exactly one matching file."
+      "Multiple files found for _PARCA_.",
+      bullets
     ))
   }
 
@@ -295,6 +303,7 @@ seq1_update <- function(
 
   }, error = function(e) {
     cli::cli_alert_danger("Erreur traitement couche 'parca_poly'")
+    cli::cli_alert_danger(conditionMessage(e))
   })
 
 
@@ -310,6 +319,7 @@ seq1_update <- function(
     }
   }, error = function(e) {
     cli::cli_alert_danger("Erreur traitement couche 'ua_poly'")
+    cli::cli_alert_danger(conditionMessage(e))
   })
 
   # COM_LINE ----
@@ -326,6 +336,7 @@ seq1_update <- function(
     }
   }, error = function(e) {
     cli::cli_alert_danger("Erreur traitement couche 'com_line'")
+    cli::cli_alert_danger(conditionMessage(e))
   })
 
   # COM_POINT ---
@@ -341,6 +352,7 @@ seq1_update <- function(
     }
   }, error = function(e) {
     cli::cli_alert_danger("Erreur traitement couche 'com_point'")
+    cli::cli_alert_danger(conditionMessage(e))
   })
 
   # INFRA_POLY ----
@@ -378,6 +390,7 @@ seq1_update <- function(
     }
   }, error = function(e) {
     cli::cli_alert_danger("Erreur traitement couche 'infra_poly'")
+    cli::cli_alert_danger(conditionMessage(e))
   })
 
   # INFRA_LINE ----
@@ -413,6 +426,7 @@ seq1_update <- function(
     }
   }, error = function(e) {
     cli::cli_alert_danger("Erreur traitement couche 'infra_line'")
+    cli::cli_alert_danger(conditionMessage(e))
   })
 
 
@@ -456,6 +470,7 @@ seq1_update <- function(
   }
   }, error = function(e) {
     cli::cli_alert_danger("Erreur traitement couche 'infra_point'")
+    cli::cli_alert_danger(conditionMessage(e))
   })
 
 
@@ -472,6 +487,7 @@ seq1_update <- function(
   }
   }, error = function(e) {
     cli::cli_alert_danger("Erreur traitement couche 'road_poly'")
+    cli::cli_alert_danger(conditionMessage(e))
   })
 
 
@@ -488,6 +504,7 @@ seq1_update <- function(
   }
   }, error = function(e) {
     cli::cli_alert_danger("Erreur traitement couche 'road_line'")
+    cli::cli_alert_danger(conditionMessage(e))
   })
 
 

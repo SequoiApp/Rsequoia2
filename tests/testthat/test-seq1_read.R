@@ -28,7 +28,7 @@ test_that("seq1_read aborts if multiple files found", {
 
   expect_error(
     seq1_read(dirname = "dummy_dir", layer = "com_line"),
-    "Multiple files detected"
+    "Multiple files"
   )
 })
 
