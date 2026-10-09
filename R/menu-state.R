@@ -41,7 +41,7 @@ seq_select_zone <- function(state) {
   }
 
   file <- rstudioapi::selectFile(
-    caption = "S\u00E9lectionner une zone g\u00E9ographique",
+    caption = "S\u00E9lectionner une emprise",
     path = path,
     filter = "Couches SIG (*.gpkg *.shp *.geojson *.json *.kml)"
   )

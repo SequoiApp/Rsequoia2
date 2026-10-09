@@ -23,7 +23,7 @@ sequoia2 <- function() {
 
   actions <- list(
     "Projet Sequoia" = function() menu_sequoia(project_state),
-    "Boite \u00E0 outils" = function() menu_toolbox(toolbox_state),
+    "Bo\u00EEte \u00E0 outils" = function() menu_toolbox(toolbox_state),
     "Gestion des dossiers" = menu_folders,
     "Documentation" = website,
     "Signaler un probl\u00E8me" = ask_help
