@@ -137,7 +137,9 @@ get_pedology_pdf <- function(
   pedology <- suppressWarnings(
     pedology |>
       sf::st_transform(sf::st_crs(x)) |>
-      sf::st_intersection(sf::st_union(sf::st_geometry(x))) |>
+      sf::st_intersection(x |> sf::st_geometry() |> sf::st_union()) |>
+      sf::st_collection_extract("POLYGON") |>
+      sf::st_cast("MULTIPOLYGON") |>
       sf::st_cast("POLYGON")
   )
 

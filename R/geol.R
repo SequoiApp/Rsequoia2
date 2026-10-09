@@ -117,13 +117,26 @@ get_geol <- function(
 #'
 #' @keywords internal
 #' @noRd
-.transform_geol <- function(x, geol) {
+.geol_transformer <- function(x, geol) {
+
+  if (is.null(geol) || !nrow(geol)) {
+    return(NULL)
+  }
+
   suppressWarnings(
     geol |>
       sf::st_transform(sf::st_crs(x)) |>
       sf::st_intersection(x |> sf::st_geometry() |> sf::st_union()) |>
+      sf::st_collection_extract("POLYGON") |>
+      sf::st_cast("MULTIPOLYGON") |>
       sf::st_cast("POLYGON")
   )
+
+  if (!nrow(geol)) {
+    return(NULL)
+  }
+
+  geol
 }
 
 #' Extract the BD Charm 50 QML style
@@ -249,11 +262,13 @@ get_geol <- function(
       overwrite = FALSE
     )
 
-    if (is.null(geol) || !nrow(geol)) {
-      next
+    geol <- .geol_transformer(x, geol)
+    if (is.null(geol)) {
+      if (verbose) {
+        cli::cli_alert_info("No geology layer found.")
+      }
+      return(invisible(NULL))
     }
-
-    geol <- .transform_geol(x, geol)
 
     if (!is.null(id)) {
       identifier <- seq_field("identifier")$name
