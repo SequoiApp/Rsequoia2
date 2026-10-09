@@ -1,45 +1,36 @@
-#' Download orthophotos from the IGN WMS (RGB or IRC)
+#' Optimize downloaded orthophoto tiles
 #'
-#' Downloads an orthophoto (RGB or infrared/IRC) from the IGN WMTS service for the
-#' area covering `x` expanded with a buffer.
-#' The result is returned as a masked `SpatRaster`, clipped to the input geometry
-#' to keep file size minimal.
+#' Builds a virtual raster from downloaded tiles, masks it to the requested
+#' area and assigns RGB/alpha bands.
 #'
+#' @param files `character`; Raster tile paths.
+#' @param x `sf` or `sfc`; Geometry used to mask the raster.
+#'
+#' @return A `SpatRaster`.
+#'
+#' @keywords internal
+#' @noRd
+.ortho_transformer <- function(files, x) {
+  r <- terra::vrt(files, options = "-hidenodata") |>
+    terra::mask(x)
+
+  terra::RGB(r) <- c(1, 2, 3, 4)
+  names(r) <- c("red", "green", "blue", "alpha")
+
+  r
+}
+
+
+#' Download orthophotos from the IGN WMTS
+#'
+#' @inheritParams seq_write
 #' @param x `sf` or `sfc`; Geometry located in France.
-#' @param type `character`; Type of orthophoto to download. Must be one of:
-#'   - `"rgb"` - true-color orthophoto
-#'   - `"irc"` - near-infrared orthophoto
-#' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
-#' the download area.
-#' @param zoom `integer` between 0 and 21. The smaller the zoom level, the less
-#' precise the resolution(see [happign::get_wmts()])
-#' @param crs `numeric` or `character`; CRS of the returned raster (see
-#' [happign::get_wmts()])
-#' @param overwrite `logical`; If `TRUE`, overwrite existing files.
-#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
+#' @param type `character`; One of `"irc"` or `"rgb"`.
+#' @param buffer `numeric`; Buffer around `x`, in meters.
+#' @param zoom `integer`; WMTS zoom level.
+#' @param crs CRS of the returned raster.
 #'
-#' @details
-#' The orthophoto retrieved contains data for the whole bounding
-#' box (bbox) of `x` (plus the buffer).
-#' To reduce the final file size and avoid unnecessary pixels, the raster is
-#' immediately masked with the buffered geometry.
-#'
-#' @return `SpatRaster` object from `terra` package
-#'
-#' @seealso [happign::get_wmts()]
-#'
-#' @examples
-#' \dontrun{
-#'
-#' p <- sf::st_sfc(st_point(c(-4.372746579180652, 47.79820761331345)), crs = 4326)
-#'
-#' ortho <- get_ortho(p, type = "rgb", buffer = 50)
-#' irc <- get_ortho(p, type = "irc", buffer = 50)
-#'
-#' terra::plotRGB(ortho)
-#' terra::plotRGB(irc)
-#'
-#' }
+#' @return A `SpatRaster`.
 #'
 #' @export
 get_ortho <- function(
@@ -49,13 +40,13 @@ get_ortho <- function(
     zoom = 12,
     crs = 2154,
     overwrite = FALSE,
-    verbose = TRUE){
+    verbose = TRUE) {
 
-  if (!inherits(x, c("sf", "sfc"))){
+  if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort(c(
       "x" = "{.arg x} is of class {.cls {class(x)}}.",
       "i" = "{.arg x} should be of class {.cls sf} or {.cls sfc}."
-      ))
+    ))
   }
 
   if (length(type) != 1 || !type %in% c("irc", "rgb")) {
@@ -70,65 +61,161 @@ get_ortho <- function(
 
   layer <- switch(
     type,
-    "irc" = "ORTHOIMAGERY.ORTHOPHOTOS.IRC",
-    "rgb" = "ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO"
+    irc = "ORTHOIMAGERY.ORTHOPHOTOS.IRC",
+    rgb = "ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO"
   )
 
   if (verbose) {
     pb <- cli::cli_progress_message(
       "Downloading {toupper(type)} dataset...",
-      .auto_close = FALSE
+      clear = TRUE
     )
+    on.exit(cli::cli_progress_done(id = pb, result = "clear"), add = TRUE)
   }
 
-  tmp <- tempdir()
-  files <- c()
-  for (i in seq_len(nrow(x_env))){
+  files <- vapply(seq_len(nrow(x_env)), function(i) {
+    file <- file.path(tempdir(), sprintf("r_%03d.tif", i))
 
-    file <- sprintf(file.path(tmp, sprintf("r_%03d.tif", i)))
+    suppressWarnings(
+      happign::get_wmts(
+        x_env[i, ],
+        layer = layer,
+        zoom = zoom,
+        crs = crs,
+        filename = file,
+        overwrite = TRUE,
+        verbose = verbose
+      )
+    )
 
-    happign::get_wmts(
-      x_env[i, ],
-      layer = layer,
-      zoom = zoom,
-      crs = crs,
-      filename = file,
-      overwrite = TRUE,
-      verbose = verbose) |> suppressWarnings()
+    file
+  }, character(1))
 
-    files <- c(files, file)
+  if (verbose) cli::cli_progress_done(pb)
+  if (verbose) cli::cli_progress_message("Optimizing raster...", clear = TRUE)
 
-  }
-
-  if (verbose) {cli::cli_progress_done(pb)}
-
-  if (verbose) {cli::cli_progress_message("Optimizing raster...")}
-  v <- terra::vrt(files, options = c("-hidenodata"))
-  r_mask <- terra::mask(v, x_env)
-  terra::RGB(r_mask) <- c(1, 2, 3, 4)
-  names(r_mask) <- c("red", "green", "blue", "alpha")
-
-  return(invisible(r_mask))
+  invisible(.ortho_transformer(files, x_env))
 }
 
-#' Download RGB and/or IRC orthophotos for a Sequoia project
+
+#' Fetch orthophoto layers
 #'
-#' Downloads one or several orthophotos (RGB and/or IRC) from the IGN WMTS service
-#' for the `parca` layer of a Sequoia project.
 #'
-#' This function is a convenience wrapper looping over [get_ortho()], allowing
-#' the user to download both products in one call and automatically write them
-#' to the project directory using [seq_write()].
+#' @inheritParams get_ortho
+#' @param dirname `character`; Output directory.
+#' @param id Optional Sequoia project identifier.
+#' @param type `character`; One or several orthophoto types.
+#'
+#' @return Invisibly returns a named list of written paths.
+#'
+#' @keywords internal
+#' @noRd
+.ortho_fetcher <- function(
+    x,
+    dirname,
+    id = NULL,
+    type = c("irc", "rgb"),
+    buffer = 200,
+    zoom = 12,
+    crs = 2154,
+    overwrite = FALSE,
+    verbose = TRUE) {
+
+  allowed <- c("irc", "rgb")
+  if (!all(type %in% allowed)) {
+    cli::cli_abort("{.arg type} must be one or more of {.vals {allowed}}.")
+  }
+
+  if (verbose) cli::cli_h1("IMAGERY")
+
+  keys <- c(
+    irc = "r.ortho.irc",
+    rgb = "r.ortho.rgb"
+  )
+
+  paths <- lapply(type, function(k) {
+    tryCatch({
+      r <- seq_retry(
+        get_ortho(
+          x,
+          type = k,
+          buffer = buffer,
+          zoom = zoom,
+          crs = crs,
+          overwrite = overwrite,
+          verbose = verbose
+        ),
+        verbose = verbose
+      )
+
+      seq_write(
+        r,
+        key = keys[[k]],
+        dirname = dirname,
+        id = id,
+        overwrite = overwrite,
+        verbose = verbose
+      )
+
+    }, error = function(e) {
+      if (verbose) {
+        cli::cli_alert_danger(
+          "Failed ORTHO layer {.val {k}}: {conditionMessage(e)}"
+        )
+      }
+      NULL
+    })
+  })
+
+  names(paths) <- unname(keys[type])
+  invisible(Filter(Negate(is.null), paths))
+}
+
+
+#' Fetch orthophotos for an area
+#'
+#' Downloads RGB and/or IRC orthophotos around `x` and writes them to
+#' `dirname`.
+#'
+#' @inheritParams get_ortho
+#' @param dirname `character`; Output directory.
+#'
+#' @return Invisibly returns a named list of written paths.
+#'
+#' @keywords internal
+#' @noRd
+fetch_ortho <- function(
+    x,
+    dirname,
+    type = c("irc", "rgb"),
+    buffer = 200,
+    zoom = 12,
+    crs = 2154,
+    overwrite = FALSE,
+    verbose = TRUE) {
+
+  .ortho_fetcher(
+    x = x,
+    dirname = dirname,
+    type = type,
+    buffer = buffer,
+    zoom = zoom,
+    crs = crs,
+    overwrite = overwrite,
+    verbose = verbose
+  )
+}
+
+
+#' Download orthophotos for a Sequoia project
+#'
+#' Downloads RGB and/or IRC orthophotos around the project area and writes
+#' them to the Sequoia project directory.
 #'
 #' @inheritParams get_ortho
 #' @inheritParams seq_write
 #'
-#' @param type `character` One or several orthophoto types to download.
-#' Must be one or both of:
-#'   - `"rgb"` - true-color orthophoto
-#'   - `"irc"` - near-infrared orthophoto
-#'
-#' @return A named list of file paths written by [seq_write()], one per `type`.
+#' @return Invisibly returns a named list of written paths.
 #'
 #' @seealso [get_ortho()], [seq_write()]
 #'
@@ -140,41 +227,19 @@ seq_ortho <- function(
     zoom = 12,
     crs = 2154,
     overwrite = FALSE,
-    verbose = TRUE){
+    verbose = TRUE) {
 
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  identifier <- seq_field("identifier")$name
-  id <- unique(parca[[identifier]])
+  ctx <- .seq_context(dirname)
 
-  if (verbose){
-    cli::cli_h1("IMAGERY")
-  }
-
-  paths <- lapply(type, function(type) {
-    r <- seq_retry(
-      get_ortho(
-        parca,
-        type = type,
-        zoom = zoom,
-        crs = crs,
-        buffer = buffer,
-        overwrite = overwrite,
-        verbose = verbose
-      ),
-      verbose = verbose
-    )
-
-    path <- seq_write(
-      r,
-      key = switch(type, "irc" = "r.ortho.irc", "rgb" = "r.ortho.rgb"),
-      id = id,
-      dirname = dirname,
-      overwrite = overwrite,
-      verbose = verbose
-    )
-
-  })
-
-  return(invisible(paths))
-
+  .ortho_fetcher(
+    x = ctx$parca,
+    dirname = dirname,
+    id = ctx$id,
+    type = type,
+    buffer = buffer,
+    zoom = zoom,
+    crs = crs,
+    overwrite = overwrite,
+    verbose = verbose
+  )
 }

@@ -2,11 +2,11 @@
 % Please edit documentation in R/geol.R
 \name{seq_geol}
 \alias{seq_geol}
-\title{Create geology layers for a Sequoia project from BRGM data}
+\title{Create geology layers for a Sequoia project}
 \usage{
 seq_geol(
   dirname = ".",
-  key = NULL,
+  key = c("carhab", "bdcharm50"),
   cache = NULL,
   buffer = 100,
   verbose = TRUE,
@@ -17,10 +17,7 @@ seq_geol(
 \item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 
-\item{key}{\code{character}. Optional geology layer identifier(s). If \code{NULL},
-all available geology layers are created. Available layers are
-\code{"v.sol.carhab.poly"} and \code{"v.sol.bdcharm50.poly"}. Partial matching is
-supported through \code{\link[=seq_key]{seq_key()}}.}
+\item{key}{\code{character}; Geology layer identifier(s).}
 
 \item{cache}{\code{character}; Optional cache directory. If \code{NULL}, the
 dataset-specific cache from \code{\link[=seq_cache]{seq_cache()}} is used.}
@@ -34,20 +31,9 @@ messages.}
 \item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
-Invisibly returns a named \code{list} of file paths to the created layers.
+Invisibly returns a named list of written file paths.
 }
 \description{
-Uses the project's \emph{PARCA} layer as the area of interest, downloads the
-requested BRGM geology dataset(s), clips them to the parcel geometry, and
-writes the resulting layers to the project directory with \code{\link[=seq_write]{seq_write()}}.
-}
-\details{
-\strong{BD Charm 50} contains harmonised 1:50,000 geological map data from BRGM.
-It is detailed and may contain finely split geological units.
-
-\strong{CarHab} is a simplified and harmonised reinterpretation of geological
-formations into broader lithological classes, designed for ecological
-modelling.
-
-More info: \url{https://infoterre.brgm.fr/page/carhab-donnees-geologiques}
+Uses the project PARCA layer as the area of interest, downloads the
+requested BRGM geology layers, and writes them to the project directory.
 }

@@ -10,6 +10,6 @@ sequoia2()
 Opens the interactive command-line menu for the sequoia2 workflow.
 }
 \details{
-The selected directory is stored in the R option \code{seq_dir_path} and reused by
-the other menus and processing functions.
+Project and toolbox selections are kept separately for the menu session and
+passed explicitly to their submenus and processing functions.
 }

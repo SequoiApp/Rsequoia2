@@ -2,7 +2,7 @@
 % Please edit documentation in R/ortho.R
 \name{get_ortho}
 \alias{get_ortho}
-\title{Download orthophotos from the IGN WMS (RGB or IRC)}
+\title{Download orthophotos from the IGN WMTS}
 \usage{
 get_ortho(
   x,
@@ -17,54 +17,22 @@ get_ortho(
 \arguments{
 \item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
 
-\item{type}{\code{character}; Type of orthophoto to download. Must be one of:
-\itemize{
-\item \code{"rgb"} - true-color orthophoto
-\item \code{"irc"} - near-infrared orthophoto
-}}
+\item{type}{\code{character}; One of \code{"irc"} or \code{"rgb"}.}
 
-\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
-the download area.}
+\item{buffer}{\code{numeric}; Buffer around \code{x}, in meters.}
 
-\item{zoom}{\code{integer} between 0 and 21. The smaller the zoom level, the less
-precise the resolution(see \code{\link[happign:get_wmts]{happign::get_wmts()}})}
+\item{zoom}{\code{integer}; WMTS zoom level.}
 
-\item{crs}{\code{numeric} or \code{character}; CRS of the returned raster (see
-\code{\link[happign:get_wmts]{happign::get_wmts()}})}
+\item{crs}{CRS of the returned raster.}
 
 \item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 }
 \value{
-\code{SpatRaster} object from \code{terra} package
+A \code{SpatRaster}.
 }
 \description{
-Downloads an orthophoto (RGB or infrared/IRC) from the IGN WMTS service for the
-area covering \code{x} expanded with a buffer.
-The result is returned as a masked \code{SpatRaster}, clipped to the input geometry
-to keep file size minimal.
-}
-\details{
-The orthophoto retrieved contains data for the whole bounding
-box (bbox) of \code{x} (plus the buffer).
-To reduce the final file size and avoid unnecessary pixels, the raster is
-immediately masked with the buffered geometry.
-}
-\examples{
-\dontrun{
-
-p <- sf::st_sfc(st_point(c(-4.372746579180652, 47.79820761331345)), crs = 4326)
-
-ortho <- get_ortho(p, type = "rgb", buffer = 50)
-irc <- get_ortho(p, type = "irc", buffer = 50)
-
-terra::plotRGB(ortho)
-terra::plotRGB(irc)
-
-}
-
-}
-\seealso{
-\code{\link[happign:get_wmts]{happign::get_wmts()}}
+Download orthophotos from the IGN WMTS
 }

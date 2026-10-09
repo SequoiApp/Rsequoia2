@@ -1,17 +1,18 @@
-#' Download Digital Elevation Model (DEM) raster from IGN RGEAlti
+#' Download an altimetry raster from IGN RGE ALTI
 #'
-#' Downloads DEM from the IGN WMS service for the area covering `x` expanded
-#' with a buffer.
-#' The result is returned as a masked `SpatRaster`, clipped to the buffer
-#' geometry to keep file size minimal.
+#' Downloads an MNT, MNS or MNH from the IGN WMS service for the area covering
+#' `x`. The MNH is computed from the downloaded MNT and MNS.
 #'
 #' @param x `sf` or `sfc`; Geometry located in France.
+#' @param key `character`; RGE ALTI product to retrieve. One of `"mnt"`,
+#'   `"mns"` or `"mnh"`.
 #' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
 #' the download area.
 #' @param res `numeric`; resolution specified in the units of the coordinate
 #' system (see [happign::get_wms_raster()])
 #' @param crs `numeric` or `character`; CRS of the returned raster (see
 #' [happign::get_wms_raster()])
+#' @param minmax `numeric`; Accepted MNH range.
 #' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return `SpatRaster` object from `terra` package
@@ -19,57 +20,94 @@
 #' @seealso [happign::get_wms_raster()]
 #'
 #' @export
-get_dem <- function(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE) {
+get_rge <- function(
+    x,
+    key = c("mnt", "mns", "mnh"),
+    buffer = 200,
+    res = 1,
+    crs = 2154,
+    minmax = c(0, 50),
+    verbose = TRUE) {
+
+  key <- match.arg(key)
 
   if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
   }
 
+  if (key == "mnh") {
+    mnt <- get_rge(x, "mnt", buffer, res, crs, minmax, verbose)
+    mns <- get_rge(x, "mns", buffer, res, crs, minmax, verbose)
+    r <- get_chm(dem = mnt, dsm = mns, minmax = minmax)
+    names(r) <- "mnh_rge"
+    return(invisible(r))
+  }
+
   x <- sf::st_transform(x, 2154)
   x_env <- seq_envelope(x, buffer)
 
+  layer <- switch(
+    key,
+    mnt = "ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES",
+    mns = "ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES.MNS"
+  )
+
   if (verbose) {
-    pb <- cli::cli_progress_message("Downloading DEM dataset...", .auto_close = FALSE)
+    pb <- cli::cli_progress_message(
+      "Downloading {toupper(key)} RGE ALTI dataset...",
+      clear = TRUE
+    )
+    on.exit(cli::cli_progress_done(id = pb, result = "clear"), add = TRUE)
   }
 
-  tmp <- tempdir()
-  files <- c()
-  for (i in seq_len(nrow(x_env))){
+  files <- vapply(seq_len(nrow(x_env)), function(i) {
+    file <- file.path(tempdir(), sprintf("rge_%s_%03d.tif", key, i))
 
-    file <- sprintf(file.path(tmp, sprintf("r_%03d.tif", i)))
-
-    r <- happign::get_wms_raster(
+    suppressWarnings(happign::get_wms_raster(
       x = x_env[i, ],
-      layer = "ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES",
+      layer = layer,
       rgb = FALSE,
       res = res,
       crs = crs,
       filename = file,
       overwrite = TRUE,
-      verbose = verbose) |> suppressWarnings()
+      verbose = verbose
+    ))
 
-    files <- c(files, file)
+    file
+  }, character(1))
 
-  }
+  if (verbose) cli::cli_progress_done(pb)
+  if (verbose) cli::cli_progress_message("Optimizing raster...", clear = TRUE)
 
-  if (verbose) {cli::cli_process_done(pb)}
+  r <- .altimetry_transformer(files, x_env, crs, crop = FALSE)
+  names(r) <- paste0(key, "_rge")
 
-  if (verbose) {cli::cli_progress_message("Optimizing raster...")}
-  v <- terra::vrt(files, options = c("-hidenodata"))
-  r_mask <- terra::mask(v, x_env)
-  names(r_mask) <- "dem_rgealti"
-
-  return(invisible(r_mask))
+  invisible(r)
 }
 
-#' Download Digital Surface Model (DSM) raster from IGN RGEAlti
+#' Download Digital Elevation Model (DEM) raster from IGN RGE ALTI
 #'
-#' Downloads DSM from the IGN WMS service for the area covering `x` expanded
-#' with a buffer.
-#' The result is returned as a masked `SpatRaster`, clipped to the buffer
-#' geometry to keep file size minimal.
+#' Compatibility wrapper around [get_rge()] for an MNT.
 #'
-#' @inheritParams get_dem
+#' @inheritParams get_rge
+#'
+#' @return `SpatRaster` object from `terra` package
+#'
+#' @seealso [happign::get_wms_raster()]
+#'
+#' @export
+get_dem <- function(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE) {
+  r <- get_rge(x, "mnt", buffer, res, crs, verbose = verbose)
+  names(r) <- "dem_rgealti"
+  invisible(r)
+}
+
+#' Download Digital Surface Model (DSM) raster from IGN RGE ALTI
+#'
+#' Compatibility wrapper around [get_rge()] for an MNS.
+#'
+#' @inheritParams get_rge
 #'
 #' @return `SpatRaster` object from `terra` package
 #'
@@ -77,45 +115,9 @@ get_dem <- function(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE) {
 #'
 #' @export
 get_dsm <- function(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE) {
-
-  if (!inherits(x, c("sf", "sfc"))) {
-    cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}, not {.cls {class(x)}}.")
-  }
-
-  x <- sf::st_transform(x, 2154)
-  x_env <- seq_envelope(x, buffer)
-
-  if (verbose) {
-    pb <- cli::cli_progress_message("Downloading DSM dataset...", .auto_close = FALSE)
-  }
-
-  tmp <- tempdir()
-  files <- c()
-  for (i in seq_len(nrow(x_env))){
-
-    file <- sprintf(file.path(tmp, sprintf("r_%03d.tif", i)))
-
-    happign::get_wms_raster(
-      x_env[i, ],
-      layer = "ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES.MNS",
-      rgb = FALSE,
-      res = res,
-      crs = crs,
-      filename = file,
-      overwrite = TRUE,
-      verbose = verbose) |> suppressWarnings()
-
-    files <- c(files, file)
-
-  }
-  if (verbose) {cli::cli_process_done(pb)}
-
-  if (verbose) {cli::cli_progress_message("Optimizing raster...")}
-  v <- terra::vrt(files, options = c("-hidenodata"))
-  r_mask <- terra::mask(v, x_env)
-  names(r_mask) <- "dsm_rgealti"
-
-  return(invisible(r_mask))
+  r <- get_rge(x, "mns", buffer, res, crs, verbose = verbose)
+  names(r) <- "dsm_rgealti"
+  invisible(r)
 }
 
 #' Compute Canopy Height Model (CHM)
@@ -131,7 +133,7 @@ get_dsm <- function(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE) {
 #' Output values outside `minmax` are clamped: negative values are set to `NA`
 #' and excessively high values are capped.
 #'
-#' @inheritParams get_dem
+#' @inheritParams get_rge
 #' @param dem `SpatRaster` representing ground elevation (DEM). Must be supplied
 #' only when `x` is `NULL`.
 #' @param dsm A `SpatRaster` representing surface elevation (DSM). Must be supplied
@@ -192,147 +194,4 @@ get_chm <- function(x = NULL, dem = NULL, dsm = NULL, minmax = c(0, 50), ...){
 
   return(chm)
 
-}
-
-#' Create RGE ALTI layers for a Sequoia project
-#'
-#' Uses the project's _PARCA_ layer to download and write RGE ALTI MNT, MNS
-#' and/or MNH rasters.
-#'
-#' @inheritParams get_dem
-#' @inheritParams seq_write
-#' @param key `character`; RGE ALTI product(s) to create. One or more of
-#'   `"mnt"`, `"mns"` and `"mnh"`.
-#'
-#' @return Invisibly returns a named `character` vector of output raster paths.
-#'
-#' @export
-seq_rgealti <- function(
-    dirname = ".",
-    key = c("mnt", "mns", "mnh"),
-    buffer = 200,
-    res = 1,
-    crs = 2154,
-    overwrite = FALSE,
-    verbose = TRUE
-) {
-
-  key <- match.arg(key, several.ok = TRUE)
-
-  if (verbose) {
-    cli::cli_h1("RGE ALTI")
-  }
-
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-
-  identifier <- seq_field("identifier")$name
-  id <- unique(parca[[identifier]])
-
-  key_map <- c(
-    mnt = "r.alt.mnt.rge",
-    mns = "r.alt.mns.rge",
-    mnh = "r.alt.mnh.rge"
-  )
-
-  seq_output_path <- function(seq_key) {
-    meta <- seq_layer(seq_key, verbose = FALSE)
-
-    path <- file.path(
-      dirname,
-      meta$path,
-      sprintf("%s_%s.%s", id, meta$name, meta$ext)
-    )
-
-    normalizePath(path, winslash = "/", mustWork = FALSE)
-  }
-
-  read_or_create <- function(one_key, compute) {
-    seq_key <- key_map[[one_key]]
-    path <- seq_output_path(seq_key)
-
-    if (file.exists(path) && !overwrite) {
-      if (verbose) {
-        cli::cli_alert_info("Using existing {.file {basename(path)}}.")
-      }
-
-      return(path)
-    }
-
-    r <- compute()
-
-    seq_write(
-      r,
-      key = seq_key,
-      id = id,
-      dirname = dirname,
-      overwrite = overwrite,
-      verbose = verbose
-    )
-  }
-
-  rasters <- list()
-
-  if ("mnt" %in% key) {
-    rasters$mnt <- read_or_create(
-      "mnt",
-      function() {
-        get_dem(
-          x = parca,
-          buffer = buffer,
-          res = res,
-          crs = crs,
-          verbose = verbose
-        ) |>
-          seq_retry(verbose = verbose)
-      }
-    )
-  }
-
-  if ("mns" %in% key) {
-    rasters$mns <- read_or_create(
-      "mns",
-      function() {
-        get_dsm(
-          x = parca,
-          buffer = buffer,
-          res = res,
-          crs = crs,
-          verbose = verbose
-        ) |>
-          seq_retry(verbose = verbose)
-      }
-    )
-  }
-
-  if ("mnh" %in% key) {
-    rasters$mnh <- read_or_create(
-      "mnh",
-      function() {
-
-        dem <- seq_read(
-          key_map[["mnt"]],
-          dirname = dirname,
-          verbose = FALSE
-        )
-
-        dsm <- seq_read(
-          key_map[["mns"]],
-          dirname = dirname,
-          verbose = FALSE
-        )
-
-        get_chm(
-          x = NULL,
-          dem = dem,
-          dsm = dsm,
-          verbose = verbose
-        )
-      }
-    )
-  }
-
-  paths <- unlist(rasters, use.names = FALSE)
-  names(paths) <- names(rasters)
-
-  invisible(paths)
 }

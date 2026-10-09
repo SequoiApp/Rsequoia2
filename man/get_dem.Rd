@@ -2,7 +2,7 @@
 % Please edit documentation in R/alti-rgealti.R
 \name{get_dem}
 \alias{get_dem}
-\title{Download Digital Elevation Model (DEM) raster from IGN RGEAlti}
+\title{Download Digital Elevation Model (DEM) raster from IGN RGE ALTI}
 \usage{
 get_dem(x, buffer = 200, res = 1, crs = 2154, verbose = TRUE)
 }
@@ -24,10 +24,7 @@ system (see \code{\link[happign:get_wms_raster]{happign::get_wms_raster()}})}
 \code{SpatRaster} object from \code{terra} package
 }
 \description{
-Downloads DEM from the IGN WMS service for the area covering \code{x} expanded
-with a buffer.
-The result is returned as a masked \code{SpatRaster}, clipped to the buffer
-geometry to keep file size minimal.
+Compatibility wrapper around \code{\link[=get_rge]{get_rge()}} for an MNT.
 }
 \seealso{
 \code{\link[happign:get_wms_raster]{happign::get_wms_raster()}}

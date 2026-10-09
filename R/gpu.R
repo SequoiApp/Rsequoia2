@@ -1,150 +1,94 @@
-#' Download GPU vector layer
+#' Download one GPU vector layer
 #'
-#' Downloads a vector layer with `hhapign` for the area covering `x`
-#' expanded with a buffer.
+#' Downloads a single Geoportail de l'Urbanisme layer intersecting `x`.
+#' Multiple input geometries are combined with [sf::st_union()] before querying
+#' the API, which accepts one geometry per request.
 #'
 #' @param x `sf` or `sfc`; Geometry located in France.
-#' @param key `character`; Layer to download.
-#'   Must be one of from `get_keys("gpu", reduce = FALSE)`
-#' @param verbose `logical`; If `TRUE`, display progress and informational
-#'   messages.
+#' @param layer `character`; GPU API layer identifier.
+#' @param verbose `logical`; If `TRUE`, display messages.
 #'
-#' @return `sf` object from `sf` package
+#' @return An `sf` object, or `NULL` if no feature is found.
 #'
 #' @export
-#'
-get_gpu <- function(x,
-                    key,
-                    verbose = TRUE){
+get_gpu <- function(x, layer, verbose = TRUE) {
 
-  if (!inherits(x, c("sf", "sfc"))){
-    cli::cli_abort(c(
-      "x" = "{.arg x} is of class {.cls {class(x)}}.",
-      "i" = "{.arg x} should be of class {.cls sf} or {.cls sfc}."
-    ))
+  if (!inherits(x, c("sf", "sfc"))) {
+    cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}.")
+  }
+
+  allowed <- c(
+    "municipality", "document", "zone-urba",
+    "prescription-surf", "prescription-lin", "prescription-pct",
+    "assiette-sup-s", "assiette-sup-l", "assiette-sup-p",
+    "generateur-sup-s", "generateur-sup-l", "generateur-sup-p"
+  )
+
+  layer <- tryCatch(
+    match.arg(layer, allowed),
+    error = function(e) cli::cli_abort(
+      "Invalid {.arg layer}. Allowed values are: {.vals {allowed}}."
+    )
+  )
+
+  if (length(sf::st_geometry(x)) > 1L) {
+    x <- sf::st_union(x)
+  }
+
+  gpu <- suppressWarnings(happign::get_apicarto_gpu(x, layer))
+
+  if (is.null(gpu) || !nrow(gpu)) {
+    if (verbose) cli::cli_alert_warning("GPU layer {.val {layer}}: no intersecting features.")
+    return(invisible(NULL))
+  }
+
+  invisible(gpu)
+}
+
+
+#' Fetch GPU layers
+#'
+#' @param x `sf` or `sfc`; Area of interest.
+#' @param dirname `character`; Output directory.
+#' @param id Optional Sequoia project identifier.
+#' @param key `character`; GPU Sequoia layer identifiers.
+#' @param verbose `logical`; If `TRUE`, display messages.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing layers.
+#'
+#' @return Invisibly returns a named list of written paths.
+#'
+#' @keywords internal
+#' @noRd
+.gpu_fetcher <- function(
+    x,
+    dirname,
+    id = NULL,
+    key = get_keys("gpu", reduce = FALSE),
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  sources <- list(
+    "v.gpu.municipality.poly"  = "municipality",
+    "v.gpu.document.poly"      = "document",
+    "v.gpu.zone.poly"          = "zone-urba",
+    "v.gpu.prescription.poly"  = "prescription-surf",
+    "v.gpu.prescription.line"  = "prescription-lin",
+    "v.gpu.prescription.point" = "prescription-pct",
+    "v.gpu.supa.poly"          = c("assiette-sup-s", "assiette-sup-l", "assiette-sup-p"),
+    "v.gpu.supg.poly"          = "generateur-sup-s",
+    "v.gpu.supg.line"          = "generateur-sup-l",
+    "v.gpu.supg.point"         = "generateur-sup-p"
+  )
+
+  if (!all(key %in% names(sources))) {
+    cli::cli_abort("{.arg key} must be one or more of {.val {names(sources)}}.")
   }
 
   x <- sf::st_union(x)
 
-  if (length(key) != 1) {
-    cli::cli_abort(c(
-      "x" = "{.arg key} must contain exactly one element.",
-      "i" = "You supplied {length(key)}."
-    ))
-  }
-
-  if (!key %in% get_keys("gpu", reduce = FALSE)){
-    cli::cli_abort(c(
-      "x" = "{.arg key} {.val {key}} isn't valid.",
-      "i" = "Run {.run Rsequoia2::get_keys(\"gpu\", reduce = FALSE)} for available layers."
-    ))
-  }
-
-  layers <- switch(
-    key,
-    "v.gpu.municipality.poly" = "municipality",
-    "v.gpu.document.poly"     = "document",
-    "v.gpu.zone.poly"         = "zone-urba",
-    "v.gpu.prescription.poly" = "prescription-surf",
-    "v.gpu.prescription.line" = "prescription-lin",
-    "v.gpu.prescription.point"= "prescription-pct",
-    "v.gpu.supa.poly"         = c("assiette-sup-s", "assiette-sup-l", "assiette-sup-p"),
-    "v.gpu.supg.poly"         = "generateur-sup-s",
-    "v.gpu.supg.line"         = "generateur-sup-l",
-    "v.gpu.supg.point"        = "generateur-sup-p"
-  )
-
-  if (length(layers) > 1) {
-
-    res <- lapply(layers, function(k) {
-      quiet(happign::get_apicarto_gpu(x, k))
-    })
-
-    res <- res[!vapply(res, is.null, logical(1))]
-
-    if (!length(res) || !any(vapply(res, nrow, integer(1)))) {
-      if (verbose){
-        cli::cli_alert_warning("Layer {.field {key}}: no intersecting features")
-      }
-      return(invisible(NULL))
-    }
-
-    g <- do.call(rbind, res)
-
-  } else {
-
-    g <- quiet(happign::get_apicarto_gpu(x, layers))
-
-    if (is.null(g) || !nrow(g)) {
-      if (verbose){
-        cli::cli_alert_warning("Layer {.field {key}}: no intersecting features")
-      }
-      return(invisible(NULL))
-    }
-  }
-
-  return(invisible(g))
-}
-
-#' Generate GPU layers for a Sequoia project
-#'
-#' Retrieves applicable GPU (Geoportail de l'Urbanisme) layers intersecting
-#' and surrounding the project area, and writes the resulting layer to disk.
-#'
-#' @inheritParams seq_write
-#' @param key `character`; List of layer identifiers to download. If not
-#'   provided, the function uses `get_keys("gpu", reduce = FALSE)` to
-#'   automatically select all GPU layers defined in the Sequoia configuration
-#'   (`inst/config/seq_layers.yaml`)
-#'
-#' @return
-#' Invisibly returns a named list of file paths corresponding to the
-#' GPU layers written to disk. Layers with no intersecting features
-#' are not included.
-#'
-#' @details
-#' The function queries the GPU API via the `happign` package for the
-#' following thematic layers:
-#'
-#' * Municipality boundaries
-#' * Urban planning documents
-#' * Urban zones
-#' * Surface, linear and point prescriptions
-#' * SUP assiettes (SUPA)
-#' * SUP generateurs (SUPG)
-#'
-#' Only layers intersecting the project area are written. Empty or unavailable
-#' layers are silently skipped.
-#'
-#' Output file names, formats and locations are fully driven by the
-#' project configuration (see `files_structure.yaml`).
-#'
-#' @seealso [seq_write()], [happign::get_apicarto_gpu()]
-#'
-#' @export
-seq_gpu <- function(
-    dirname = ".",
-    key = get_keys("gpu", reduce = FALSE),
-    verbose = TRUE,
-    overwrite = FALSE
-) {
-
-  # area of interest
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  identifier <- seq_field("identifier")$name
-  id <- unique(parca[[identifier]])
-
-  geom <- sf::st_union(parca)
-
   if (verbose){
     cli::cli_h1("GPU")
   }
-
-  paths <- vector("list", length(key))
-  names(paths) <- key
-  valid <- character()
-  empty <- character()
-  failed <- character()
 
   pb <- NULL
   if (verbose) {
@@ -154,48 +98,109 @@ seq_gpu <- function(
         "[{cli::pb_current}/{cli::pb_total}]"
       ),
       total = length(key),
-      auto_terminate = FALSE
+      auto_terminate = FALSE,
+      clear = TRUE
     )
+    on.exit(cli::cli_progress_done(id = pb, result = "clear"), add = TRUE)
   }
 
-  path <- list()
-  for (k in key) {
-
-    if (verbose) {
+  paths <- lapply(key, function(k) {
+    if (verbose){
       cli::cli_progress_update(id = pb, force = TRUE)
     }
 
-    f_path <- tryCatch({
-      f <- get_gpu(x = geom, key = k, verbose = FALSE)
+    tryCatch({
+      gpu <- lapply(sources[[k]], \(layer) get_gpu(x, layer, verbose = FALSE))
+      gpu <- Filter(\(x) !is.null(x) && nrow(x), gpu)
 
-      if (is.null(f) || nrow(f) == 0) {
-        NULL
-      } else {
-        f[[identifier]] <- id
+      if (!length(gpu)){
+        return(NULL)
+      }
 
-        seq_write(
-          sf::st_transform(f, 2154),
-          k,
-          dirname,
-          id,
-          verbose = verbose,
-          overwrite = overwrite
+      gpu <- do.call(rbind, gpu) |> sf::st_transform(2154)
+      if (!is.null(id)){
+        identifier <- seq_field("identifier")$name
+        gpu[[identifier]] <- id
+      }
+
+      seq_write(
+        gpu,
+        key = k,
+        dirname = dirname,
+        id = id,
+        verbose = verbose,
+        overwrite = overwrite
+      )
+
+    }, error = function(e) {
+      if (verbose) {
+        cli::cli_alert_danger(
+          "Failed GPU layer {.val {k}}: {conditionMessage(e)}"
         )
       }
-    }, error = function(e) NULL)
+      NULL
+    })
+  })
 
-    if (!is.null(f_path)) {
-      path <- c(path, f_path)
-    }
+  names(paths) <- key
+  invisible(Filter(Negate(is.null), paths))
+}
 
-  }
 
-  if (!length(path)) {
-    if (verbose){
-      cli::cli_alert_info("No GPU layer found.")
-    }
-    return(invisible(NULL))
-  }
+#' Fetch GPU layers for an area
+#'
+#' @param x `sf` or `sfc`; Area of interest.
+#' @param dirname `character`; Output directory.
+#' @param key `character`; GPU Sequoia layer identifiers.
+#' @param verbose `logical`; If `TRUE`, display messages.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing layers.
+#'
+#' @return Invisibly returns a named list of written paths.
+#'
+#' @keywords internal
+#' @noRd
+fetch_gpu <- function(
+    x,
+    dirname,
+    key = get_keys("gpu", reduce = FALSE),
+    verbose = TRUE,
+    overwrite = FALSE) {
 
-  invisible(path)
+  .gpu_fetcher(
+    x = x, dirname = dirname, key = key,
+    verbose = verbose, overwrite = overwrite
+  )
+}
+
+
+#' Generate GPU layers for a Sequoia project
+#'
+#' Retrieves GPU layers intersecting the project area and writes them to the
+#' Sequoia project directory.
+#'
+#' @inheritParams seq_write
+#' @param key `character`; GPU layer identifiers. Defaults to
+#'   `get_keys("gpu", reduce = FALSE)`.
+#'
+#' @return Invisibly returns a named list of written paths.
+#'
+#' @seealso [get_gpu()], [seq_write()]
+#'
+#' @export
+seq_gpu <- function(
+    dirname = ".",
+    key = get_keys("gpu", reduce = FALSE),
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  ctx <- .seq_context(dirname)
+
+  .gpu_fetcher(
+    x = ctx$parca,
+    dirname = dirname,
+    id = ctx$id,
+    key = key,
+    verbose = verbose,
+    overwrite = overwrite
+  )
 }

@@ -36,7 +36,7 @@ get_accessibility <- function(
   if (!type %in% c("porteur", "skidder")){
     cli::cli_abort(c(
       "x" = "{.code type = {.val {type}}} isn't valid.",
-      "i" = "{.arg type} should be one of {.val porteur} or  {.val skidder}"
+      "i" = "{.arg type} should be one of {.val porteur} or {.val skidder}"
     ))
   }
 
@@ -68,37 +68,57 @@ get_accessibility <- function(
   return(invisible(sf::st_transform(access, crs)))
 }
 
-#' Generate access point layer for a Sequoia project
+#' Clip access data to an area
 #'
-#' Create an empty `sf` for access point features, and writes the resulting
-#' layer to disk.
+#' @param access `sf`; Raw access data.
+#' @param x `sf` or `sfc`; Area used to clip access data.
 #'
-#' @inheritParams seq_write
+#' @return An `sf` polygon layer, or `NULL` if there is no intersection.
 #'
-#' @details
-#' The access point layer is an empty layer : user must point access themselves.
-#' The layer is written to disk using [seq_write()] with the key `"v.access.entry.point"`.
-#'
-#' @return
-#' Invisibly returns a named list of file paths written by [seq_write()].
-#'
-#' @seealso
-#' [seq_write()]
-#'
-#' @export
-seq_access <- function(
-    dirname = ".",
-    verbose = TRUE,
-    overwrite = FALSE
-) {
+#' @keywords internal
+#' @noRd
+.access_transformer <- function(access, x) {
 
-  if (verbose) {
-    cli::cli_h1("ACCESSIBILITY")
+  if (is.null(access) || !nrow(access)) {
+    return(NULL)
   }
 
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  identifier <- seq_field("identifier")$name
-  id <- unique(parca[[identifier]])
+  access <- suppressWarnings(
+    access |>
+      sf::st_transform(sf::st_crs(x)) |>
+      sf::st_intersection(sf::st_union(sf::st_geometry(x))) |>
+      sf::st_cast("POLYGON")
+  )
+
+  if (!nrow(access)) {
+    return(NULL)
+  }
+
+  access
+}
+
+#' Fetch accessibility layers
+#'
+#' @inheritParams get_accessibility
+#' @param dirname `character`; Output directory.
+#' @param id Optional Sequoia project identifier.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing layers.
+#'
+#' @return Invisibly returns a named list of written paths.
+#'
+#' @keywords internal
+#' @noRd
+.access_fetcher <- function(
+    x,
+    dirname,
+    id = NULL,
+    buffer = 0,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  if (verbose){
+    cli::cli_h1("ACCESSIBILITY")
+  }
 
   layers <- c(
     porteur = "v.access.porteur.poly",
@@ -109,72 +129,135 @@ seq_access <- function(
   if (verbose) {
     pb <- cli::cli_progress_bar(
       format = paste0(
-        "{cli::pb_spin} ACCESSIBILITY layer: {.val {k}} | ",
+        "{cli::pb_spin} Searching ACCESSIBILITY layer: {.val {k}} | ",
         "[{cli::pb_current}/{cli::pb_total}]"
       ),
       total = length(layers),
-      auto_terminate = FALSE
+      auto_terminate = FALSE,
+      clear = TRUE
     )
+    on.exit(cli::cli_progress_done(id = pb, result = "clear"), add = TRUE)
   }
 
-  path <- list()
-
-  for (k in names(layers)) {
+  paths <- lapply(names(layers), function(k) {
 
     if (verbose) {
       cli::cli_progress_update(id = pb, force = TRUE)
     }
 
-    f_path <- tryCatch({
-      f <- get_accessibility(
-        x = parca,
-        buffer = 0,
-        type = k,
-        verbose = FALSE
+    tryCatch({
+      access <- get_accessibility(x, type = k, buffer = buffer, verbose = FALSE)
+      access <- .access_transformer(access, x)
+
+      if (is.null(access)) {
+        if (verbose) {
+          cli::cli_alert_info("No pedology layer found.")
+        }
+        return(invisible(NULL))
+      }
+
+      if (!is.null(id)) {
+        identifier <- seq_field("identifier")$name
+        access[[identifier]] <- id
+      }
+
+      seq_write(
+        access,
+        key = layers[[k]],
+        dirname = dirname,
+        id = id,
+        verbose = verbose,
+        overwrite = overwrite
       )
-
-      if (is.null(f) || nrow(f) == 0) {
-        NULL
-      } else {
-        f <- f |>
-          sf::st_transform(sf::st_crs(parca)) |>
-          sf::st_intersection(sf::st_union(sf::st_geometry(parca))) |>
-          sf::st_cast("POLYGON") |>
-          suppressWarnings()
-
-        f[[identifier]] <- id
-
-        seq_write(
-          f,
-          layers[[k]],
-          dirname,
-          id,
-          verbose = verbose,
-          overwrite = overwrite
+    }, error = function(e) {
+      if (verbose) {
+        cli::cli_alert_danger(
+          "Failed ACCESSIBILITY layer {.val {k}}: {conditionMessage(e)}"
         )
       }
-    }, error = function(e) NULL)
+      NULL
+    })
+  })
 
-    if (!is.null(f_path)) {
-      path <- c(path, f_path)
-    }
+  names(paths) <- unname(layers)
+  paths <- Filter(Negate(is.null), paths)
 
+  # Empty access-entry layer, completed manually by the user
+  entry <- create_empty_sf("POINT") |> seq_normalize("vct_point")
+  if (!is.null(id)){
+    identifier <- seq_field("identifier")$name
+    entry[[identifier]] <- rep(id, nrow(entry))
   }
 
-  # Empty access-entry layer
-  access <- create_empty_sf("POINT") |>
-    seq_normalize("vct_point")
-
-  access_path <- seq_write(
-    access,
-    "v.access.entry.point",
-    dirname,
-    id,
+  paths[["v.access.entry.point"]] <- seq_write(
+    x = entry,
+    key = "v.access.entry.point",
+    dirname = dirname,
+    id = id,
     verbose = verbose,
     overwrite = overwrite
   )
 
-  path <- c(path, access_path)
+  invisible(paths)
+}
 
-  invisible(path)
+
+#' Fetch accessibility layers for an area
+#'
+#' Retrieves accessibility layers around `x` and writes them to `dirname`.
+#'
+#' @inheritParams get_accessibility
+#' @param dirname `character`; Output directory.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing layers.
+#'
+#' @return Invisibly returns a named list of written paths.
+#'
+#' @keywords internal
+#' @noRd
+fetch_access <- function(
+    x,
+    dirname,
+    buffer = 0,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  .access_fetcher(
+    x = x,
+    dirname = dirname,
+    buffer = buffer,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+}
+
+
+#' Generate accessibility layers for a Sequoia project
+#'
+#' Retrieves porter and skidder accessibility polygons for the project area
+#' and creates an empty access-entry point layer.
+#'
+#' @inheritParams get_accessibility
+#' @inheritParams seq_write
+#'
+#' @return Invisibly returns a named list of written paths.
+#'
+#' @seealso [get_accessibility()], [seq_write()]
+#'
+#' @export
+seq_access <- function(
+    dirname = ".",
+    buffer = 0,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  ctx <- .seq_context(dirname)
+
+  .access_fetcher(
+    x = ctx$parca,
+    dirname = dirname,
+    id = ctx$id,
+    buffer = buffer,
+    verbose = verbose,
+    overwrite = overwrite
+  )
 }

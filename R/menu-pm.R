@@ -5,10 +5,11 @@
 #' @details
 #' This function is interactive and intended for manual use only.
 #'
+#' @param state Menu selection state containing the output directory.
 #' @noRd
-menu_pm <- function() {
+menu_pm <- function(state) {
 
-  path <- seq_get_path()
+  path <- seq_get_path(state)
 
   read_csv <- function(prompt) {
     x <- readline(prompt)
@@ -19,19 +20,19 @@ menu_pm <- function() {
 
   search_by <- seq_select(
     c("Communale", "Departementale", "Regionale"),
-    info = "Rechercher une personne morale a l'echelle :"
+    info = "Rechercher une personne morale \u00E0 l'\u00E9chelle :"
   )
 
   dep <- NULL
   insee <- NULL
 
   if (search_by == 1) {
-    insee <- read_csv("Code(s) INSEE, separes par des virgules : ")
+    insee <- read_csv("Code(s) INSEE, s\u00E9par\u00E9(s) par des virgules : ")
     insee <- check_insee(insee)
   }
 
   if (search_by == 2) {
-    dep <- read_csv("Code(s) departement, separes par des virgules : ")
+    dep <- read_csv("Code(s) d\u00E9partement, s\u00E9par\u00E9(s) par des virgules : ")
     dep <- check_dep(dep)
   }
 
@@ -44,9 +45,9 @@ menu_pm <- function() {
     dep <- cog$dep$DEP[cog$dep$REG %in% reg_code]
   }
 
-  cli::cli_alert_info("Plusieurs mots peuvent etre combines, par exemple : GF, ETANGS")
-  cli::cli_alert_info("La casse et les caractere speciaux sont ignores pour la recherche")
-  pattern <- read_csv("Nom(s), separes par des virgules : ")
+  cli::cli_alert_info("Plusieurs mots peuvent \u00EAtre combin\u00E9s, par exemple : GF, ETANGS")
+  cli::cli_alert_info("La casse et les caract\u00E8res sp\u00E9ciaux sont ignor\u00E9s pour la recherche")
+  pattern <- read_csv("Nom(s), s\u00E9par\u00E9(s) par des virgules : ")
 
   if (length(pattern) == 0) {
     cli::cli_alert_warning("Aucun nom saisi.")
@@ -55,13 +56,13 @@ menu_pm <- function() {
 
   found <- search_pm(pattern = pattern, dep = dep, insee = insee)
   if (nrow(found) == 0) {
-    cli::cli_alert_warning("Aucune personne morale trouvee.")
+    cli::cli_alert_warning("Aucune personne morale trouv\u00E9e.")
     return(invisible(NULL))
   }
 
   selected_pm <- select_pm(found)
   if (length(selected_pm) == 0) {
-    cli::cli_alert_warning("Aucune personne morale selectionnee.")
+    cli::cli_alert_warning("Aucune personne morale s\u00E9lectionn\u00E9e.")
     return(invisible(NULL))
   }
 
@@ -71,7 +72,7 @@ menu_pm <- function() {
   m <- pm$m
   m_detail <- pm$m_detail
 
-  cli::cli_alert_success("Personne morale recuperee.")
+  cli::cli_alert_success("Personne morale r\u00E9cup\u00E9r\u00E9e.")
   cli::cli_alert_info("Veuillez indiquer l'identifiant du dossier.")
   identifiant <- readline("Identifiant du dossier : ")
 

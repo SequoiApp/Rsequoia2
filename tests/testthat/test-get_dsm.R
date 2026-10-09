@@ -106,7 +106,11 @@ test_that("get_dsm() writes temporary raster files", {
 
   dsm <- get_dsm(Rsequoia2:::seq_point, buffer = 1, verbose = FALSE)
 
-  files <- list.files(tempdir(), pattern = "^r_\\d{3}\\.tif$", full.names = TRUE)
+  files <- list.files(
+    tempdir(),
+    pattern = "^rge_mns_\\d{3}\\.tif$",
+    full.names = TRUE
+  )
 
   expect_true(length(files) >= 1)
 })

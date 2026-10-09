@@ -19,6 +19,12 @@
 #' @export
 get_pedology <- function(x) {
 
+  if (!inherits(x, c("sf", "sfc"))) {
+    cli::cli_abort(
+      "{.arg x} must be of class {.cls sf} or {.cls sfc}."
+    )
+  }
+
   crs <- 2154
   x <- sf::st_transform(x, crs)
 
@@ -27,12 +33,13 @@ get_pedology <- function(x) {
     x,
     "INRA.CARTE.SOLS:geoportail_vf",
     predicate = happign::intersects(),
-    verbose = FALSE) |>
-    sf::st_transform(crs)
+    verbose = FALSE)
 
   if (!nrow(pedology)) {
     return(NULL)
   }
+
+  pedology <- sf::st_transform(pedology, crs)
 
   return(invisible(pedology))
 }
@@ -71,10 +78,12 @@ get_pedology_pdf <- function(
 ) {
 
   id_ucs <- unique(id_ucs)
-  if (is.null(id_ucs) || length(id_ucs) == 0) {
+
+  if (!length(id_ucs)) {
     cli::cli_abort("{.arg id_ucs} must be a non-empty vector.")
   }
-  if (any(is.na(id_ucs))) {
+
+  if (anyNA(id_ucs)) {
     cli::cli_abort("{.arg id_ucs} must not contain NA values.")
   }
 
@@ -109,77 +118,147 @@ get_pedology_pdf <- function(
   return(invisible(paths))
 }
 
-#' Generate pedology polygon layer and associated PDF reports
-#'
-#' Retrieves pedology polygon features intersecting the project area,
-#' writes the resulting layer to disk and downloads associated pedology
-#' PDF reports into the project directory.
-#'
-#' @inheritParams seq_write
-#'
-#' @details
-#' Pedology polygon features are retrieved using [get_pedology()].
-#'
-#' If no pedology features intersect the project area, the function
-#' returns `NULL` invisibly and no file is written.
-#'
-#' When pedology features are present, the polygon layer is written
-#' to disk using [seq_write()] with the key `"v.sol.pedo.poly"`.
-#' Associated UCS PDF reports are then downloaded into `dirname`
-#' using [get_pedology_pdf()].
-#'
-#' @return
-#' Invisibly returns a named list of file paths written by [seq_write()].
-#' Returns `NULL` invisibly when no pedology features are found.
-#'
-#' @seealso
-#' [get_pedology()], [get_pedology_pdf()], [seq_write()]
-#'
-#' @export
-seq_pedology <- function(dirname = ".", verbose = TRUE, overwrite = FALSE){
 
-  # Read project area (PARCA) ----
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id_field <- seq_field("identifier")$name
-  id <- unique(parca[[id_field]])
+#' Clip pedology data to an area
+#'
+#' @param pedology `sf`; Raw pedology data.
+#' @param x `sf` or `sfc`; Area used to clip pedology data.
+#'
+#' @return An `sf` polygon layer, or `NULL` if there is no intersection.
+#'
+#' @keywords internal
+#' @noRd
+.pedology_transformer <- function(pedology, x) {
 
-  if (verbose){
-    cli::cli_h1("PEDOLOGY")
-    pb <- cli::cli_progress_message("Downloading pedology layer...")
-  }
-
-  # Retrieve pedology ----
-  pedo <- get_pedology(parca)
-  if (is.null(pedo)){
+  if (is.null(pedology) || !nrow(pedology)) {
     return(NULL)
   }
 
-  pedo <- pedo |>
-    sf::st_transform(sf::st_crs(parca)) |>
-    sf::st_intersection(parca |> sf::st_geometry() |> sf::st_union()) |>
-    sf::st_cast("POLYGON") |>
-    suppressWarnings()
+  pedology <- suppressWarnings(
+    pedology |>
+      sf::st_transform(sf::st_crs(x)) |>
+      sf::st_intersection(sf::st_union(sf::st_geometry(x))) |>
+      sf::st_cast("POLYGON")
+  )
 
-  pedo_path <- NULL
-  if (!is.null(pedo)){
-    pedo[[id_field]] <- id
-
-    pedo_path <- seq_write(
-      pedo,
-      "v.sol.pedo.poly",
-      dirname = dirname,
-      id = id,
-      verbose = verbose,
-      overwrite = overwrite
-    )
-
-    get_pedology_pdf(
-      id_ucs = pedo$id_ucs,
-      dirname = dirname(pedo_path),
-      verbose = verbose
-    )
+  if (!nrow(pedology)) {
+    return(NULL)
   }
 
-  return(invisible(pedo_path))
+  pedology
 }
 
+#' Fetch pedology data
+#'
+#'
+#' @param x `sf` or `sfc`; Area of interest.
+#' @param dirname `character`; Output directory.
+#' @param id Optional Sequoia project identifier.
+#' @param verbose `logical`; If `TRUE`, display messages.
+#' @param overwrite `logical`; If `TRUE`, overwrite existing files.
+#'
+#' @return Invisibly returns the written pedology layer path, or `NULL`.
+#'
+#' @keywords internal
+#' @noRd
+.pedology_fetcher <- function(
+    x,
+    dirname,
+    id = NULL,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  if (verbose) {
+    cli::cli_h1("PEDOLOGY")
+    cli::cli_progress_message("Downloading pedology layer...", clear = TRUE)
+  }
+
+  pedology <- get_pedology(x)
+  pedology <- .pedology_transformer(pedology, x)
+
+  if (is.null(pedology)) {
+    if (verbose) {
+      cli::cli_alert_info("No pedology layer found.")
+    }
+    return(invisible(NULL))
+  }
+
+  if (!is.null(id)) {
+    identifier <- seq_field("identifier")$name
+    pedology[[identifier]] <- id
+  }
+
+  path <- seq_write(
+    pedology,
+    key = "v.sol.pedo.poly",
+    dirname = dirname,
+    id = id,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+
+  get_pedology_pdf(
+    id_ucs = pedology$id_ucs,
+    dirname = dirname(path),
+    verbose = verbose
+  )
+
+  invisible(path)
+}
+
+
+#' Fetch pedology layer for an area
+#'
+#' Downloads pedology data for `x` and writes the resulting layer and
+#' associated PDF reports to `dirname`.
+#'
+#' @inheritParams get_pedology
+#' @param dirname `character`; Output directory.
+#' @param verbose `logical`; If `TRUE`, display messages.
+#' @param overwrite `logical`; If `TRUE`, overwrite the vector layer.
+#'
+#' @return Invisibly returns the written pedology layer path, or `NULL`.
+#'
+#' @keywords internal
+#' @noRd
+fetch_pedology <- function(
+    x,
+    dirname,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  .pedology_fetcher(
+    x = x,
+    dirname = dirname,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+}
+
+
+#' Generate pedology data for a Sequoia project
+#'
+#' Retrieves pedology features and associated PDF reports for the project area.
+#'
+#' @inheritParams seq_write
+#'
+#' @return Invisibly returns the written pedology layer path, or `NULL`.
+#'
+#' @seealso [get_pedology()], [get_pedology_pdf()]
+#'
+#' @export
+seq_pedology <- function(
+    dirname = ".",
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  ctx <- .seq_context(dirname)
+
+  .pedology_fetcher(
+    x = ctx$parca,
+    dirname = dirname,
+    id = ctx$id,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+}

@@ -6,17 +6,19 @@
 #' @details
 #' This function is interactive and intended for manual use only.
 #'
+#' @param state Menu selection state containing the output directory.
 #' @noRd
-menu_rp <- function() {
+menu_rp <- function(state) {
 
-  identifiant <- readline("Choose the forest identifiant: ")
-  owner <- readline("Choose the forest owner: ")
+  path <- seq_get_path(state)
 
-  path <- seq_get_path()
-  files <- select_pdf_files(path)
+  identifiant <- readline("Choisir un IDENTIFIANT: ")
+  owner <- readline("Choisir un PROPRIETAIRE: ")
+
+  files <- select_pdf_files(path, state)
 
   if (length(files) == 0) {
-    cli::cli_alert_info("Aucun fichier selectionne.")
+    cli::cli_alert_info("Aucun fichier s\u00E9lectionn\u00E9.")
     return(invisible(NULL))
   }
 
@@ -30,8 +32,8 @@ menu_rp <- function() {
 
   cli::cli_h2("Summary")
   cli::cli_bullets(c(
-    "Number of parcels: {nrow(m)}",
-    "Total area: {format(round(sum(m$SURF_CA), 2), nsmall = 2)} ha"
+    "Nombre de parcelles: {nrow(m)}",
+    "Surface totale: {format(round(sum(m$SURF_CA), 2), nsmall = 2)} ha"
   ))
 
   cli::cli_text("")
@@ -75,26 +77,28 @@ menu_rp <- function() {
 }
 
 #' Ask user to select several PDF files
+#' @param path Output directory used as the initial picker directory.
+#' @param state Menu selection state storing the last PDF directory.
 #' @noRd
-select_pdf_files <- function(path) {
+select_pdf_files <- function(path, state) {
   files <- character()
 
   repeat {
     f <- rstudioapi::selectFile(
-      caption = "Selectionner un releve de propriete",
-      path = getOption("last_pdf_path", path),
+      caption = "S\u00E9lectionner un relev\u00E9 de propri\u00E9t\u00E9",
+      path = if (is.null(state$pdf_path)) path else state$pdf_path,
       filter = "PDF files (*.pdf)"
     )
 
-    if (!nzchar(f)) {
+    if (is.null(f) || !nzchar(f)) {
       break
     }
 
     if (f %in% files) {
       rstudioapi::showDialog(
-        title = "Fichier deja selectionne",
+        title = "Fichier deja s\u00E9lectionn\u00E9",
         message = paste0(
-          "Ce fichier est deja selectionne : ",
+          "Ce fichier est deja s\u00E9lectionn\u00E9 : ",
           basename(f)
         )
       )
@@ -102,17 +106,17 @@ select_pdf_files <- function(path) {
     }
 
     files <- c(files, f)
-    options(last_pdf_path = dirname(f))
+    state$pdf_path <- dirname(f)
 
     n <- length(files)
     msg <- paste0(
-      n, " fichier", if (n > 1) "s" else "", " selectionne", if (n > 1) "s" else "", " : \n",
+      n, " fichier", if (n > 1) "s" else "", " s\u00E9lectionn\u00E9", if (n > 1) "s" else "", " : \n",
       paste("-", basename(files), collapse = "\n")
     )
 
     another <- rstudioapi::showQuestion(
-      title = "Selection des fichiers",
-      message = paste0(msg, "\n\nVoulez-vous selectionner un autre fichier ?"),
+      title = "S\u00E9lection des fichiers",
+      message = paste0(msg, "\n\nVoulez-vous s\u00E9lectionner un autre fichier ?"),
       ok = "Oui",
       cancel = "Lancer la conversion"
     )

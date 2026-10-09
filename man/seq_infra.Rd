@@ -2,7 +2,7 @@
 % Please edit documentation in R/infra.R
 \name{seq_infra}
 \alias{seq_infra}
-\title{Generate infrastructure polygon, line and point layers for a Sequoia project}
+\title{Generate infrastructure layers for a Sequoia project}
 \usage{
 seq_infra(dirname = ".", buffer = 1000, verbose = TRUE, overwrite = FALSE)
 }
@@ -18,23 +18,12 @@ messages.}
 \item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
-A named list of file paths written by \code{\link[=seq_write]{seq_write()}},
-one per hydrographic layer.
+Invisibly returns a named list of written file paths.
 }
 \description{
-This function is a convenience wrapper around \code{\link[=get_infra_poly]{get_infra_poly()}},
-\code{\link[=get_infra_line]{get_infra_line()}} and \code{\link[=get_infra_point]{get_infra_point()}}, allowing the user to download
-all products in one call and automatically write them to the project
-directory using \code{\link[=seq_write]{seq_write()}}.
-}
-\details{
-Each infrastructure layer is always written to disk using \code{\link[=seq_write]{seq_write()}},
-even when it contains no features (\code{nrow == 0}).
-
-Informational messages are displayed to indicate whether a layer
-contains features or is empty.
+Retrieves infrastructure polygon, line and point layers around the project
+area and writes them to the Sequoia project directory.
 }
 \seealso{
-\code{\link[=get_infra_poly]{get_infra_poly()}}, \code{\link[=get_infra_line]{get_infra_line()}}, \code{\link[=get_infra_point]{get_infra_point()}},
-\code{\link[=seq_write]{seq_write()}}
+\code{\link[=get_infra_poly]{get_infra_poly()}}, \code{\link[=get_infra_line]{get_infra_line()}}, \code{\link[=get_infra_point]{get_infra_point()}}
 }

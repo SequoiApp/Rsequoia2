@@ -108,158 +108,249 @@ get_geol <- function(
   return(geol)
 }
 
-#' Create geology layers for a Sequoia project from BRGM data
+#' Clip raw geology data to an area
 #'
-#' Uses the project's _PARCA_ layer as the area of interest, downloads the
-#' requested BRGM geology dataset(s), clips them to the parcel geometry, and
-#' writes the resulting layers to the project directory with [seq_write()].
+#' @param x `sf` or `sfc`; Area used to clip the geology data.
+#' @param geol `sf`; Raw geology data.
 #'
-#' @inheritParams seq_write
-#' @inheritParams get_geol
-#' @param key `character`. Optional geology layer identifier(s). If `NULL`,
-#'   all available geology layers are created. Available layers are
-#'   `"v.sol.carhab.poly"` and `"v.sol.bdcharm50.poly"`. Partial matching is
-#'   supported through [seq_key()].
+#' @return An `sf` object clipped to `x`.
 #'
-#' @details
-#' **BD Charm 50** contains harmonised 1:50,000 geological map data from BRGM.
-#' It is detailed and may contain finely split geological units.
+#' @keywords internal
+#' @noRd
+.transform_geol <- function(x, geol) {
+  suppressWarnings(
+    geol |>
+      sf::st_transform(sf::st_crs(x)) |>
+      sf::st_intersection(x |> sf::st_geometry() |> sf::st_union()) |>
+      sf::st_cast("POLYGON")
+  )
+}
+
+#' Extract the BD Charm 50 QML style
 #'
-#' **CarHab** is a simplified and harmonised reinterpretation of geological
-#' formations into broader lithological classes, designed for ecological
-#' modelling.
+#' @param x `sf` or `sfc`; Area used to identify the relevant department.
+#' @param layer_path `character`; Path of the BD Charm 50 layer. The QML file
+#'   is written next to it with the same basename.
+#' @param cache `character`; Optional BD Charm 50 cache directory.
+#' @param verbose `logical`; If `TRUE`, display informational messages.
+#' @param overwrite `logical`; If `TRUE`, overwrite an existing QML file.
 #'
-#' More info: <https://infoterre.brgm.fr/page/carhab-donnees-geologiques>
+#' @return Invisibly returns the QML path, or `NULL` when no unique style is
+#'   found.
 #'
-#' @return Invisibly returns a named `list` of file paths to the created layers.
-#'
-#' @export
-seq_geol <- function(
-    dirname = ".",
-    key = NULL,
+#' @keywords internal
+#' @noRd
+.extract_geol_qml <- function(
+    x,
+    layer_path,
     cache = NULL,
-    buffer = 100,
     verbose = TRUE,
-    overwrite = FALSE
-) {
+    overwrite = FALSE) {
 
-  if (verbose) cli::cli_h1("GEOLOGY")
+  qml_path <- paste0(tools::file_path_sans_ext(layer_path), ".qml")
 
-  # KEY CHECK ----
-  allowed <- c("v.sol.carhab.poly", "v.sol.bdcharm50.poly")
-
-  if (is.null(key)) {
-    key <- allowed
-  } else {
-    key <- lapply(key, seq_key, allow_multiple = TRUE) |>
-      unlist(use.names = FALSE)
-
-    key <- intersect(key, allowed)
-
-    if (length(key) == 0) {
-      cli::cli_abort(c(
-        "Invalid {.arg key}.",
-        "x" = "No valid geology layer selected.",
-        "i" = "Allowed geology keys are: {.vals {allowed}}."
-      ))
-    }
+  if (file.exists(qml_path) && !overwrite) {
+    return(invisible(qml_path))
   }
 
-  # BASE INFO ----
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  identifier <- seq_field("identifier")$name
-  id <- unique(parca[[identifier]])
+  dep <- happign::get_wfs(
+    sf::st_transform(x, 2154),
+    layer = "BDCARTO_V5:departement",
+    predicate = happign::intersects()
+  )
+
+  dep <- check_dep(unique(dep[["code_insee"]]))
+
+  if (is.null(cache)) {
+    cache <- seq_cache("bdcharm50")$path
+  }
+
+  zip_path <- download_bdcharm50(
+    dep = dep,
+    cache = cache,
+    verbose = FALSE,
+    overwrite = FALSE
+  )
+
+  qml_zip <- grep(
+    "S_FGEOL.*\\.qml$",
+    archive::archive(zip_path[[1]])$path,
+    value = TRUE,
+    ignore.case = TRUE
+  )
+
+  if (length(qml_zip) != 1) {
+    if (verbose) {
+      cli::cli_warn("Could not find a unique BD Charm 50 QML style in archive.")
+    }
+
+    return(invisible(NULL))
+  }
+
+  archive::archive_extract(
+    zip_path[[1]],
+    dir = dirname(layer_path),
+    files = qml_zip
+  )
+
+  extracted_path <- file.path(dirname(layer_path), qml_zip)
+
+  if (file.exists(qml_path) && overwrite) {
+    file.remove(qml_path)
+  }
+
+  file.rename(extracted_path, qml_path) |> invisible()
+
+  return(invisible(qml_path))
+}
+
+#' Fetch geology layers
+#'
+#' @inheritParams get_geol
+#' @param dirname `character`; Output directory.
+#' @param id Optional Sequoia project identifier.
+#'
+#' @return Invisibly returns a named list of written file paths.
+#'
+#' @keywords internal
+#' @noRd
+.geol_fetcher <- function(
+    x,
+    dirname,
+    id = NULL,
+    key = c("carhab", "bdcharm50"),
+    buffer = 100,
+    cache = NULL,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  allowed <- c("carhab", "bdcharm50")
+  key <- tryCatch(
+    match.arg(key, allowed, several.ok = TRUE),
+    error = function(e) {
+      cli::cli_abort("Invalid {.arg key}. Allowed values are: {.vals {allowed}}.")
+    }
+  )
+
+  if (verbose) {
+    cli::cli_h1("GEOLOGY")
+  }
 
   outputs <- list()
 
-  # CREATE LAYERS ----
-  for (i in seq_along(key)) {
-
-    layer_key <- key[[i]]
-
-    geol_key <- switch(
-      layer_key,
-      "v.sol.carhab.poly" = "carhab",
-      "v.sol.bdcharm50.poly" = "bdcharm50"
-    )
-
-    if (verbose) {
-      pb <- cli::cli_progress_message("Downloading {geol_key} layer...")
-    }
+  for (k in key) {
 
     geol <- get_geol(
-      x = parca,
-      key = geol_key,
+      x = x,
+      key = k,
       buffer = buffer,
       cache = cache,
-      verbose = FALSE,
+      verbose = verbose,
       overwrite = FALSE
     )
 
-    geol <- geol |>
-      sf::st_transform(sf::st_crs(parca)) |>
-      sf::st_intersection(parca |> sf::st_geometry() |> sf::st_union()) |>
-      sf::st_cast("POLYGON")|>
-      suppressWarnings()
+    if (is.null(geol) || !nrow(geol)) {
+      next
+    }
 
-    geol[[identifier]] <- id
+    geol <- .transform_geol(x, geol)
+
+    if (!is.null(id)) {
+      identifier <- seq_field("identifier")$name
+      geol[[identifier]] <- id
+    }
 
     path <- seq_write(
       geol,
-      layer_key,
+      key = k,
       dirname = dirname,
       id = id,
       verbose = verbose,
       overwrite = overwrite
     )
 
-    outputs[[layer_key]] <- path
+    outputs[[k]] <- path
 
-    # QML handling for BD Charm 50 ----
-    if (identical(layer_key, "v.sol.bdcharm50.poly")) {
-
-      dep <- unique(parca[[seq_field("dep_code")$name]])
-
-      qml_cache <- cache
-      if (is.null(qml_cache)) {
-        qml_cache <- seq_cache("bdcharm50")$path
-      }
-
-      zip_path <- download_bdcharm50(
-        dep = dep,
-        cache = qml_cache,
-        verbose = FALSE,
-        overwrite = FALSE
+    if (identical(k, "bdcharm50")) {
+      .extract_geol_qml(
+        x = x,
+        layer_path = path,
+        cache = cache,
+        verbose = verbose,
+        overwrite = overwrite
       )
-
-      qml_zip <- grep(
-        "S_FGEOL.*\\.qml$",
-        archive::archive(zip_path[[1]])$path,
-        value = TRUE,
-        ignore.case = TRUE
-      )
-
-      if (length(qml_zip) == 1) {
-        archive::archive_extract(
-          zip_path[[1]],
-          dir = dirname,
-          files = qml_zip
-        )
-
-        qml_path <- paste0(
-          tools::file_path_sans_ext(path),
-          ".qml"
-        )
-
-        file.rename(file.path(dirname, qml_zip), qml_path) |>
-          invisible()
-      } else if (verbose) {
-        cli::cli_warn(
-          "Could not find a unique BD Charm 50 QML style in archive."
-        )
-      }
     }
   }
 
-  return(invisible(outputs))
+  invisible(outputs)
+}
+
+
+#' Fetch geology layers for an area
+#'
+#' Downloads the requested BRGM geology layers for `x` and writes them to
+#' `dirname`.
+#'
+#' @inheritParams get_geol
+#' @param dirname `character`; Output directory.
+#' @param key `character`; Geology layer identifier(s).
+#'
+#' @return Invisibly returns a named list of written file paths.
+#'
+#' @keywords internal
+#' @noRd
+fetch_geol <- function(
+    x,
+    dirname,
+    key = c("carhab", "bdcharm50"),
+    buffer = 100,
+    cache = NULL,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  .geol_fetcher(
+    x = x,
+    dirname = dirname,
+    id = NULL,
+    key = key,
+    buffer = buffer,
+    cache = cache,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+}
+
+
+#' Create geology layers for a Sequoia project
+#'
+#' Uses the project PARCA layer as the area of interest, downloads the
+#' requested BRGM geology layers, and writes them to the project directory.
+#'
+#' @inheritParams seq_write
+#' @inheritParams get_geol
+#'
+#' @param key `character`; Geology layer identifier(s).
+#' @return Invisibly returns a named list of written file paths.
+#'
+#' @export
+seq_geol <- function(
+    dirname = ".",
+    key = c("carhab", "bdcharm50"),
+    cache = NULL,
+    buffer = 100,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  ctx <- .seq_context(dirname)
+
+  .geol_fetcher(
+    x = ctx$parca,
+    dirname = dirname,
+    id = ctx$id,
+    key = key,
+    buffer = buffer,
+    cache = cache,
+    verbose = verbose,
+    overwrite = overwrite
+  )
 }
