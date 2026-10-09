@@ -184,7 +184,8 @@ get_parca <- function(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE){
           )
         }
       }
-    }, error = \(e) cli::cli_warn("BDP not available, ETALAB geom only is used.")
+    }, error = \(e)
+    cli::cli_warn("BDP not available, ETALAB geom only is used.")
     )
   }
 
@@ -193,11 +194,17 @@ get_parca <- function(idu, bdp_geom = FALSE, lieu_dit = FALSE, verbose = TRUE){
   if (lieu_dit){
     if (verbose) cli::cli_alert_info("Downloading and joining Lieux dits...")
     locality <- seq_field("locality")$name
-    lieux_dits <- get_lieux_dits(idu)
-    etalab <- sf::st_join(etalab, lieux_dits[locality], largest = TRUE, suffix = c("_drop", "")) |>
-      suppressWarnings()
-    etalab[[paste0(locality, "_drop")]] <- NULL
-    if (verbose) cli::cli_alert_success("Lieux dits joined.")
+    etalab <- tryCatch({
+      lieux_dits <- get_lieux_dits(idu) |> suppressWarnings()
+      joined <- sf::st_join(etalab, lieux_dits[locality], largest = TRUE, suffix = c("_drop", "")) |>
+        suppressWarnings()
+      joined[[paste0(locality, "_drop")]] <- NULL
+      if (verbose) cli::cli_alert_success("Lieux dits joined.")
+      joined
+    }, error = \(e) {
+      cli::cli_alert_warning("Lieux-dits unavailable; automatic completion skipped.")
+      etalab
+    })
   }
 
   raw_parca <- seq_normalize(etalab, "parca") |>
