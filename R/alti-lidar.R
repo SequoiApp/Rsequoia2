@@ -129,25 +129,37 @@ get_lidar <- function(
   }
 
   x_clean <- x |>
+    sf::st_geometry() |>
     sf::st_transform(crs) |>
-    sf::st_make_valid() |>
-    sf::st_collection_extract("POLYGON") |>
-    suppressWarnings()
+    sf::st_make_valid()
 
-  x_env <- seq_envelope(
-    x = x_clean,
-    buffer = buffer,
-    crs = crs
-  )
+  x_clean <- x_clean[!sf::st_is_empty(x_clean)]
+  if (length(x_clean) == 0) {
+    cli::cli_abort("{.arg x} has no valid geometry after cleaning.")
+  }
 
-  x_clean <- x_env[!sf::st_is_empty(x_env), ]
+  point_or_line <- sf::st_dimension(x_clean) < 2
+  has_point_or_line <- any(point_or_line)
+  if (buffer == 0 && has_point_or_line) {
+    cli::cli_abort(c(
+      "x" = "{.arg buffer} must be positive for points and lines.",
+      "i" = "{cli::qty(sum(point_or_line))}Row{?s} {.val {which(point_or_line)}} {cli::qty(sum(point_or_line))}{?is/are} point or line."
+    ))
+  }
 
-  if (nrow(x_clean) == 0) {
-    cli::cli_abort("{.arg x} has no valid polygon geometry after cleaning.")
+  x_env <- x_clean |>
+    sf::st_buffer(buffer) |>
+    sf::st_union() |>
+    suppressWarnings(sf::st_collection_extract("POLYGON")) |>
+    sf::st_cast("POLYGON", warn = FALSE)
+
+  x_env <- x_env[!sf::st_is_empty(x_env)]
+  if (length(x_env) == 0) {
+    cli::cli_abort("{.arg x} has no valid polygon geometry after buffering.")
   }
 
   files <- download_lidar(
-    x = x_clean,
+    x = x_env,
     key = key,
     cache = cache,
     overwrite = overwrite,

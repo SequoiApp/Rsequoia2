@@ -28,7 +28,7 @@ get_vege_poly <- function(x, buffer = 1000, clip = TRUE, tol = 500) {
   )
 
   empty <- function() {
-    cli::cli_warn("No vegetation data found. Empty {.cls sf} is returned.")
+    cli::cli_alert_warning("No vegetation data found. Empty {.cls sf} is returned.")
     invisible(create_empty_sf("POLYGON") |> seq_normalize("vct_poly"))
   }
 

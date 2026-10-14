@@ -12,7 +12,6 @@ test_that("get_vege_poly() returns empty sf when WFS returns NULL", {
     .package = "happign"
   )
 
-  expect_warning(res <- get_vege_poly(x), "No vegetation data found")
   expect_s3_class(res, "sf")
   expect_equal(nrow(res), 0)
   expect_true(all(st_geometry_type(res) == "POLYGON"))

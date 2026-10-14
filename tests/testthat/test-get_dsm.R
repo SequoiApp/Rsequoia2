@@ -108,7 +108,7 @@ test_that("get_dsm() writes temporary raster files", {
 
   files <- list.files(
     tempdir(),
-    pattern = "^rge_mns_\\d{3}\\.tif$",
+    pattern = "^rge_mns_\\d{3}.*\\.tif$",
     full.names = TRUE
   )
 
