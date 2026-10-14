@@ -80,7 +80,6 @@ test_that("read_matrice() errors when multiple IDENTIFIANT values", {
   m <- fake_matrice(id = c("A", "B"))
 
   openxlsx2::write_xlsx(m, f)
-  on.exit(unlink(f))
 
   expect_error(read_matrice(seq_cache), "Multiple IDs detected")
 
@@ -99,7 +98,6 @@ test_that("read_matrice() reports all empty required fields", {
   m[seq_field("number")$name] <- c("0003", "0003", NA)
 
   openxlsx2::write_xlsx(m, f)
-  on.exit(unlink(f))
 
   expect_error(
     read_matrice(seq_cache),

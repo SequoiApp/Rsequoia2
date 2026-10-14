@@ -10,16 +10,25 @@
 #'
 #' @keywords internal
 #' @noRd
-.ortho_transformer <- function(files, x) {
-  r <- terra::vrt(files, options = "-hidenodata") |>
-    terra::mask(x)
+.ortho_transformer <- function(files, x, crs = 2154, crop = TRUE) {
+  r <- terra::vrt(files, options = "-hidenodata")
+
+  x <- sf::st_transform(x, terra::crs(r))
+  x <- terra::vect(x)
+
+  if (crop) r <- terra::crop(r, x)
+  r <- terra::mask(r, x)
+
+  target_crs <- sf::st_crs(crs)
+  if (!terra::same.crs(r, target_crs$wkt)) {
+    r <- terra::project(r, target_crs$wkt)
+  }
 
   terra::RGB(r) <- c(1, 2, 3, 4)
   names(r) <- c("red", "green", "blue", "alpha")
 
   r
 }
-
 
 #' Download orthophotos from the IGN WMTS
 #'
@@ -56,8 +65,39 @@ get_ortho <- function(
     ))
   }
 
-  x <- sf::st_transform(x, 2154)
-  x_env <- seq_envelope(x, buffer)
+  if (!is.numeric(buffer) || length(buffer) != 1L || !is.finite(buffer) || buffer < 0) {
+    cli::cli_abort("{.arg buffer} must be a finite, non-negative number.")
+  }
+
+  x_clean <- x |>
+    sf::st_geometry() |>
+    sf::st_transform(crs) |>
+    sf::st_make_valid()
+
+  x_clean <- x_clean[!sf::st_is_empty(x_clean)]
+  if (length(x_clean) == 0) {
+    cli::cli_abort("{.arg x} has no valid geometry after cleaning.")
+  }
+
+  point_or_line <- sf::st_dimension(x_clean) < 2
+  has_point_or_line <- any(point_or_line)
+  if (buffer == 0 && has_point_or_line) {
+    cli::cli_abort(c(
+      "x" = "{.arg buffer} must be positive for points and lines.",
+      "i" = "{cli::qty(sum(point_or_line))}Row{?s} {.val {which(point_or_line)}} {cli::qty(sum(point_or_line))}{?is/are} point or line."
+    ))
+  }
+
+  x_env <- x_clean |>
+    sf::st_buffer(buffer) |>
+    sf::st_union() |>
+    suppressWarnings(sf::st_collection_extract("POLYGON")) |>
+    sf::st_cast("POLYGON", warn = FALSE)
+
+  x_env <- x_env[!sf::st_is_empty(x_env)]
+  if (length(x_env) == 0) {
+    cli::cli_abort("{.arg x} has no valid polygon geometry after buffering.")
+  }
 
   layer <- switch(
     type,
@@ -73,12 +113,12 @@ get_ortho <- function(
     on.exit(cli::cli_progress_done(id = pb, result = "clear"), add = TRUE)
   }
 
-  files <- vapply(seq_len(nrow(x_env)), function(i) {
+  files <- vapply(seq_along(x_env), function(i) {
     file <- file.path(tempdir(), sprintf("r_%03d.tif", i))
 
     suppressWarnings(
       happign::get_wmts(
-        x_env[i, ],
+        x_env[i],
         layer = layer,
         zoom = zoom,
         crs = crs,

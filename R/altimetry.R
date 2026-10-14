@@ -15,8 +15,8 @@
 .altimetry_transformer <- function(files, x, crs = 2154, crop = TRUE) {
   r <- terra::vrt(files, options = "-hidenodata")
 
-  x <- sf::st_transform(x, terra::crs(r))
-  x <- terra::vect(x)
+  x <- sf::st_transform(sf::st_geometry(x), terra::crs(r))
+  x <- terra::vect(sf::st_sf(geometry = x))
 
   if (crop) r <- terra::crop(r, x)
   r <- terra::mask(r, x)
