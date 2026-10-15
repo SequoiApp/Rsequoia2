@@ -30,6 +30,7 @@ seq_select_folder <- function(state, caption) {
 #' Select and read a geographic zone for the menu session
 #'
 #' @param state Menu selection state.
+#' @return Invisibly returns the selected sf layer, or NULL on cancellation.
 #' @noRd
 seq_select_zone <- function(state) {
   path <- if (!is.null(state$zone_file)) {
@@ -53,7 +54,7 @@ seq_select_zone <- function(state) {
   zone <- sf::read_sf(file)
   state$zone <- zone
   state$zone_file <- file
-  invisible(NULL)
+  invisible(zone)
 }
 
 #' Display the status of a folder or zone selection
