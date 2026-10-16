@@ -46,6 +46,7 @@ menu_sequoia <- function(state = seq_menu_state()) {
     seq_boundaries(path, overwrite = overwrite)
     seq_parcels(path, overwrite = overwrite)
     seq_occupation(path, overwrite = overwrite)
+    seq_ame(path, overwrite = overwrite)
 
     invisible(TRUE)
   }
