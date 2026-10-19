@@ -366,3 +366,332 @@ seq_multi_download <- function(
   return(list(parca = parca, id = id))
 
 }
+
+#' @title Validate logical scalar(s)
+#'
+#' @description
+#' Validates that each provided argument is a logical scalar (`TRUE` or `FALSE`).
+#' It is designed for internal argument validation in functions that expect
+#' boolean flags.
+#'
+#' @param ... Objects to validate. Each must be:
+#'   * a `logical` vector,
+#'   * of length 1,
+#'   * not `NA`.
+#'   If `null_is_valid = TRUE`, `NULL` values are also accepted.
+#' @param null_is_valid A `logical`. If `TRUE`, allows `NULL` values.
+#'   If `FALSE` (default), `NULL` is rejected.
+#'
+#' @return
+#' Invisibly returns `TRUE` if all inputs are valid.
+#'
+#' @details
+#' The function supports validating multiple arguments at once.
+#' Each argument is checked independently and triggers an error immediately if invalid.
+#'
+#' @keywords internal
+check_boolean <- function(..., null_is_valid = FALSE) {
+
+  old_warn <- getOption("warn")
+  on.exit(options(warn = old_warn), add = TRUE)
+  options(warn = -1)
+
+  dots  <- list(...)
+  calls <- as.list(substitute(list(...)))[-1]
+  nms   <- names(dots)
+
+  for (i in seq_along(dots)) {
+
+    x <- dots[[i]]
+
+    nm <- if (!is.null(nms) && nzchar(nms[i])) {
+      nms[i]
+    } else {
+      deparse(calls[[i]])
+    }
+
+    # NULL handling
+    if (is.null(x)) {
+      if (isTRUE(null_is_valid)) {
+        next
+      } else {
+        cli::cli_abort(
+          "{.arg {nm}} must be a single TRUE or FALSE (NULL not allowed)"
+        )
+      }
+    }
+
+    # Type check
+    if (!is.logical(x)) {
+      cli::cli_abort(
+        "{.arg {nm}} must be a logical (TRUE or FALSE)"
+      )
+    }
+
+    # Length check
+    if (length(x) != 1L) {
+      cli::cli_abort(
+        "{.arg {nm}} must be a single TRUE or FALSE"
+      )
+    }
+
+    # NA check
+    if (is.na(x)) {
+      cli::cli_abort(
+        "{.arg {nm}} must be TRUE or FALSE (not NA)"
+      )
+    }
+  }
+
+  invisible(TRUE)
+}
+
+#' @title Validate non-empty character scalar(s)
+#'
+#' @description
+#' Validates that each provided argument is a non-empty character scalar.
+#' It is designed for internal argument validation in functions that expect
+#' single string inputs (e.g. keys, field names, paths).
+#'
+#' @param ... Objects to validate. Each must be:
+#'   * a `character` vector,
+#'   * of length 1,
+#'   * not `NA`,
+#'   * not an empty string.
+#' @param unique A `logical`. If `TRUE` (default), validates that each argument
+#'   is of length 1. If `FALSE`, validates that each argument is a non-empty
+#'   character vector (any length ≥ 1).
+#'
+#' @return
+#' Invisibly returns `TRUE` if all inputs are valid.
+#'
+#' @details
+#' The function supports validating multiple arguments at once.
+#' Each argument is checked independently and errors immediately if invalid.
+#'
+#' @keywords internal
+check_character <- function(..., unique = TRUE) {
+
+  old_warn <- getOption("warn")
+  on.exit(options(warn = old_warn), add = TRUE)
+  options(warn = -1)
+
+  dots  <- list(...)
+  calls <- as.list(substitute(list(...)))[-1]
+  nms   <- names(dots)
+
+  for (i in seq_along(dots)) {
+
+    x <- dots[[i]]
+
+    nm <- if (!is.null(nms) && nzchar(nms[i])) {
+      nms[i]
+    } else {
+      deparse(calls[[i]])
+    }
+
+    # Type verification
+    if (!is.character(x)) {
+      cli::cli_abort(
+        "{.arg {nm}} must be a character vector"
+      )
+    }
+
+    # Length check according to 'unique'
+    if (unique) {
+      if (length(x) != 1L) {
+        cli::cli_abort(
+          "{.arg {nm}} must be a single non-empty character"
+        )
+      }
+      # For a scalar, check NA and empty string
+      if (is.na(x) || !nzchar(x)) {
+        cli::cli_abort(
+          "{.arg {nm}} must be a single non-empty character"
+        )
+      }
+    } else {
+      # For unique = FALSE, check that there are no empty or NA elements
+      if (length(x) == 0L) {
+        cli::cli_abort(
+          "{.arg {nm}} must be a non-empty character vector"
+        )
+      }
+      if (any(is.na(x)) || any(!nzchar(x))) {
+        cli::cli_abort(
+          "{.arg {nm}} must be a non-empty character vector (no NA or empty strings)"
+        )
+      }
+    }
+  }
+
+  invisible(TRUE)
+}
+
+#' @title Validate data.frame / sf inputs and required structure
+#'
+#' @description
+#' Validates that provided objects are tabular structures (e.g. `data.frame` or `sf`)
+#' and optionally enforce required column presence.
+#' This function is intended for internal argument validation in data-processing
+#' pipelines relying on structured spatial or non-spatial tabular data.
+#'
+#' @param ... Objects to validate. Each must inherit from the class specified
+#'   in `class` and contain at least one row.
+#' @param class A `character` vector specifying allowed classes (e.g.
+#'   `c("data.frame", "sf")`). Objects must inherit from at least one of them.
+#' @param fields A `character` vector of required column names.
+#'   If `NULL` (default), column validation is skipped.
+#'   Must be non-empty if provided.
+#'
+#' @return
+#' Invisibly returns `TRUE` if all inputs satisfy the validation rules.
+#'
+#' @details
+#' Each input object is validated independently.
+#' The function checks:
+#' \itemize{
+#'   \item class inheritance (via `inherits()`),
+#'   \item non-zero number of rows,
+#'   \item presence of required columns (if provided).
+#' }
+#'
+#' Validation fails immediately on the first detected inconsistency.
+#'
+#' @keywords internal
+check_table <- function(..., class, fields = NULL) {
+
+  # --- Silence warnings locally ---
+  old_warn <- getOption("warn")
+  on.exit(options(warn = old_warn), add = TRUE)
+  options(warn = -1)
+
+  # --- Capture arguments ---
+  dots  <- list(...)
+  calls <- as.list(substitute(list(...)))[-1]
+  nms   <- names(dots)
+
+  # --- Validate 'class' ---
+  if (!is.character(class) || length(class) == 0L) {
+    cli::cli_abort("{.arg class} must be a non-empty character vector")
+  }
+
+  # --- Validate 'fields' only if provided ---
+  if (!is.null(fields)) {
+
+    if (!is.character(fields) || length(fields) == 0L) {
+      cli::cli_abort("{.arg fields} must be NULL or a non-empty character vector")
+    }
+
+    if (any(is.na(fields)) || any(!nzchar(fields))) {
+      cli::cli_abort("{.arg fields} must not contain NA or empty strings")
+    }
+  }
+
+  # --- Loop over inputs ---
+  for (i in seq_along(dots)) {
+
+    x <- dots[[i]]
+
+    nm <- if (!is.null(nms) && nzchar(nms[i])) {
+      nms[i]
+    } else {
+      deparse(calls[[i]])
+    }
+
+    # --- Class check ---
+    if (!inherits(x, class)) {
+      cli::cli_abort(
+        "{.arg {nm}} must inherit from {.cls {class}}"
+      )
+    }
+
+    # --- Empty check ---
+    if (nrow(x) == 0) {
+      cli::cli_abort(
+        "{.arg {nm}} is empty"
+      )
+    }
+
+    # --- Fields check (only if provided) ---
+    if (!is.null(fields)) {
+      missing_fields <- setdiff(fields, names(x))
+
+      if (length(missing_fields) > 0) {
+        cli::cli_abort(
+          "{.val {length(missing_fields)}} missing column{?s} in {.arg {nm}}: {.val {missing_fields}}"
+        )
+      }
+    }
+  }
+
+  invisible(TRUE)
+}
+
+#' @title Validate scalar numeric values
+#'
+#' @description
+#' Checks that each supplied argument is a scalar numeric value and
+#' optionally validates minimum and maximum bounds.
+#'
+#' @param ... Named numeric values to validate.
+#' @param min Optional minimum allowed value.
+#' @param max Optional maximum allowed value.
+#' @param null_is_valid Logical. Whether `NULL` values are accepted.
+#'
+#' @return Invisibly returns `TRUE`.
+#'
+#' @importFrom cli cli_abort
+#'
+#' @keywords internal
+check_numeric <- function(
+    ...,
+    min = NULL,
+    max = NULL,
+    null_is_valid = FALSE
+) {
+
+  args <- list(...)
+
+  if (length(args) == 0) {
+    cli::cli_abort("At least one argument must be supplied.")
+  }
+
+  for (name in names(args)) {
+
+    x <- args[[name]]
+
+    if (is.null(x)) {
+
+      if (null_is_valid) {
+        next
+      }
+
+      cli::cli_abort(
+        "{.arg {name}} cannot be {.val NULL}."
+      )
+    }
+
+    if (!is.numeric(x) || length(x) != 1 || is.na(x)) {
+      cli::cli_abort(
+        "{.arg {name}} must be a scalar numeric value."
+      )
+    }
+
+    if (!is.null(min) && x < min) {
+      cli::cli_abort(
+        "{.arg {name}} must be greater than or equal to {.val {min}}."
+      )
+    }
+
+    if (!is.null(max) && x > max) {
+      cli::cli_abort(
+        "{.arg {name}} must be less than or equal to {.val {max}}."
+      )
+    }
+
+  }
+
+  invisible(TRUE)
+
+}

@@ -167,3 +167,6 @@ v.cad.tronfluv.poly:    { name: "CAD_TRONFLUV_poly",  ext: "gpkg" }
 v.cad.tronroute.poly:   { name: "CAD_TRONROUTE_poly", ext: "gpkg" }
 v.cad.tsurf.point:      { name: "CAD_TSURF_point",    ext: "gpkg" }
 v.cad.zoncommuni.line:  { name: "CAD_ZONCOMMUNI_line",ext: "gpkg" }
+
+# CLIMAT
+v.clim.type.poly:  { name: "CLIM_TYPE_poly",ext: "gpkg" }
