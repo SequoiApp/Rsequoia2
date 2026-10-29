@@ -46,6 +46,7 @@ v.com.graphic.point:  { name: "COM_GRAPHIC_point",  ext: "gpkg" }
 v.sol.bdcharm50.poly: { name: "SOL_BDCHARM50_poly", ext: "gpkg" }
 v.sol.carhab.poly:    { name: "SOL_CARHAB_poly",    ext: "gpkg" }
 v.sol.pedo.poly:      { name: "SOL_PEDO_poly",      ext: "gpkg" }
+v.sol.guides.poly:    { name: "SOL_GUIDES_poly",    ext: "gpkg" }
 
 # PATRIMONIAUX
 v.pat.imdn.poly:   { name: "PAT_IMDN_poly", ext: "gpkg" }
@@ -80,6 +81,7 @@ v.infra.poly:  { name: "INFRA_poly",  ext: "gpkg" }
 v.vege.point: { name: "VEGE_point", ext: "gpkg" }
 v.vege.line:  { name: "VEGE_line",  ext: "gpkg" }
 v.vege.poly:  { name: "VEGE_poly",  ext: "gpkg" }
+v.forest.poly:  { name: "FORET_poly",  ext: "gpkg" }
 
 # HYDRO
 v.hydro.point: { name: "HYDRO_point", ext: "gpkg" }
@@ -167,3 +169,6 @@ v.cad.tronfluv.poly:    { name: "CAD_TRONFLUV_poly",  ext: "gpkg" }
 v.cad.tronroute.poly:   { name: "CAD_TRONROUTE_poly", ext: "gpkg" }
 v.cad.tsurf.point:      { name: "CAD_TSURF_point",    ext: "gpkg" }
 v.cad.zoncommuni.line:  { name: "CAD_ZONCOMMUNI_line",ext: "gpkg" }
+
+# CLIMAT
+v.clim.type.poly:  { name: "CLIM_TYPE_poly",ext: "gpkg" }
