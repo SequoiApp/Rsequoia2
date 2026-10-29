@@ -52,8 +52,8 @@ meteo:
   description: "Donnees meteorologique mensuelles"
   source: "METEO FRANCE"
 
-climat_metropole:
+climat_typo:
   label: "Typologie climatique métropolitaine"
-  cache_dir: ["climato", "metropole"]
+  cache_dir: ["climat", "typologie"]
   description: "Les types de climat en France métropolitaine"
   source: "INRAE"
