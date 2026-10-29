@@ -22,7 +22,13 @@ get_forest<- function(
 ) {
 
   if (!inherits(x, c("sf", "sfc"))) {
-    cli::cli_abort("{.arg x} must be {.cls sf} or {.cls sfc}.")
+    cli::cli_abort("{.arg x} must be of class {.cls sf} or {.cls sfc}.")
+  }
+
+  if (length(x) == 0L || any(sf::st_is_empty(x))) {
+    cli::cli_abort(
+      "{.arg x} must not contain empty geometries."
+    )
   }
 
   crs <- 2154

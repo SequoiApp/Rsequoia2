@@ -5,7 +5,7 @@
 \title{Download french climate typology raster}
 \usage{
 download_climate(
-  cache = seq_cache("climat_metropole")$path,
+  cache = seq_cache("climat_typo")$path,
   overwrite = FALSE,
   verbose = TRUE
 )

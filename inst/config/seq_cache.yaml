@@ -57,3 +57,9 @@ climat_typo:
   cache_dir: ["climat", "typologie"]
   description: "Les types de climat en France métropolitaine"
   source: "INRAE"
+
+guides:
+  label: "Guides des stations"
+  cache_dir: ["guides"]
+  description: "Guides des stations forestières en France Métropolitaine"
+  source: "La Forestiere"

@@ -46,6 +46,7 @@ v.com.graphic.point:  { name: "COM_GRAPHIC_point",  ext: "gpkg" }
 v.sol.bdcharm50.poly: { name: "SOL_BDCHARM50_poly", ext: "gpkg" }
 v.sol.carhab.poly:    { name: "SOL_CARHAB_poly",    ext: "gpkg" }
 v.sol.pedo.poly:      { name: "SOL_PEDO_poly",      ext: "gpkg" }
+v.sol.guides.poly:    { name: "SOL_GUIDES_poly",    ext: "gpkg" }
 
 # PATRIMONIAUX
 v.pat.imdn.poly:   { name: "PAT_IMDN_poly", ext: "gpkg" }

@@ -16,7 +16,7 @@
 #'
 #' @export
 download_climate <- function(
-    cache = seq_cache("climat_metropole")$path,
+    cache = seq_cache("climat_typo")$path,
     overwrite = FALSE,
     verbose = TRUE
 ) {
@@ -130,7 +130,8 @@ get_climate <- function(
   if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort("{.arg x} must be of class {.cls sf} or {.cls sfc}.")
   }
-  if (any(sf::st_is_empty(x))) {
+
+  if (length(x) == 0L || any(sf::st_is_empty(x))) {
     cli::cli_abort(
       "{.arg x} must not contain empty geometries."
     )
