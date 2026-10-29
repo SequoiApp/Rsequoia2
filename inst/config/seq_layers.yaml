@@ -80,6 +80,7 @@ v.infra.poly:  { name: "INFRA_poly",  ext: "gpkg" }
 v.vege.point: { name: "VEGE_point", ext: "gpkg" }
 v.vege.line:  { name: "VEGE_line",  ext: "gpkg" }
 v.vege.poly:  { name: "VEGE_poly",  ext: "gpkg" }
+v.forest.poly:  { name: "FORET_poly",  ext: "gpkg" }
 
 # HYDRO
 v.hydro.point: { name: "HYDRO_point", ext: "gpkg" }
