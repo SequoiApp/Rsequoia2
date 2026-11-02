@@ -131,12 +131,6 @@ get_climate <- function(
     cli::cli_abort("{.arg x} must be of class {.cls sf} or {.cls sfc}.")
   }
 
-  if (length(x) == 0L || any(sf::st_is_empty(x))) {
-    cli::cli_abort(
-      "{.arg x} must not contain empty geometries."
-    )
-  }
-
   # --- Prepare spatial extent ---
   x_clean <- x |>
     sf::st_geometry() |>
