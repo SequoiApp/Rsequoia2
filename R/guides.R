@@ -162,17 +162,12 @@ get_guides <- function(
   )
 
   layers <- c("guides", "guides_urls", "stations")
-
-  datas <- lapply(layers, function(layer) {
+  guides_layers <- lapply(layers, function(layer) {
     sf::read_sf(file, layer = layer)
-  })
-
-  names(datas) <- layers
+  }) |> setNames(layers)
 
   # --- Intersect ---
-  idx <- sf::st_intersects(datas$guides, fetch_envelope)
-
-  guides <- datas$guides[lengths(idx) > 0, ]
+  guide <- sf::st_filter(guides_layers$guides, fetch_envelope)
 
   if(!nrow(guides)){
     if (verbose){
