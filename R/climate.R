@@ -179,12 +179,6 @@ get_climate <- function(
     )
   }
 
-  if (!terra::same.crs(metropole, vector)) {
-    cli::cli_abort(
-      "Climate raster and input geometry must use the same CRS."
-    )
-  }
-
   # --- Check spatial overlap ---
   raster_ext <- terra::ext(metropole)
   vector_ext <- terra::ext(vector)
@@ -205,6 +199,7 @@ get_climate <- function(
     cli::cli_alert_info("Extracting climate classification...")
   }
 
+  vector <- terra::project(vector, metropole)
   raster <- terra::crop(metropole, vector, mask = TRUE)
 
   # --- Apply categorical labels ---
