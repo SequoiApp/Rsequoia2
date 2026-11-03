@@ -173,10 +173,6 @@ get_climate <- function(
 
   metropole <- terra::rast(file)
 
-  if (!inherits(metropole, "SpatRaster")) {
-    cli::cli_abort("Climate raster must be a {.cls SpatRaster}.")
-  }
-
   if (terra::nlyr(metropole) != 1L) {
     cli::cli_abort(
       "Climate raster must contain exactly one layer."
