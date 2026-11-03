@@ -209,16 +209,7 @@ get_climate <- function(
     cli::cli_alert_info("Extracting climate classification...")
   }
 
-  raster <- terra::crop(
-    metropole,
-    vector,
-    snap = "out"
-  )
-
-  raster <- terra::mask(
-    raster,
-    vector
-  )
+  raster <- terra::crop(metropole, vector, mask = TRUE)
 
   # --- Apply categorical labels ---
   raster <- terra::as.factor(raster)
