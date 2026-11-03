@@ -180,15 +180,8 @@ get_climate <- function(
   }
 
   # --- Check spatial overlap ---
-  raster_ext <- terra::ext(metropole)
-  vector_ext <- terra::ext(vector)
-
-  if (
-    terra::xmax(raster_ext) < terra::xmin(vector_ext) ||
-    terra::xmin(raster_ext) > terra::xmax(vector_ext) ||
-    terra::ymax(raster_ext) < terra::ymin(vector_ext) ||
-    terra::ymin(raster_ext) > terra::ymax(vector_ext)
-  ) {
+  has_no_overlap <- is.null(terra::intersect(terra::ext(metropole), terra::ext(vector)))
+  if (has_no_overlap) {
     cli::cli_abort(
       "Input geometry does not overlap the climate raster."
     )
