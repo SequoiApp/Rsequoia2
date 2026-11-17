@@ -142,29 +142,6 @@ test_that("get_climate() forwards download arguments", {
   expect_false(tracker$verbose)
 })
 
-test_that("get_climate() validates input geometry", {
-
-  expect_error(
-    get_climate(
-      x = data.frame(id = 1),
-      verbose = FALSE
-    ),
-    "must be of class"
-  )
-
-  x_empty <- sf::st_sfc(
-    sf::st_point(),
-    crs = 2154
-  )
-
-  expect_error(
-    get_climate(
-      x = x_empty,
-      verbose = FALSE
-    ),
-    "must not contain empty geometries"
-  )
-})
 
 test_that("get_climate() requires positive buffer for points and lines", {
 

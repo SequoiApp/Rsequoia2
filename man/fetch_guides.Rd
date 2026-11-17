@@ -6,28 +6,28 @@
 \usage{
 fetch_guides(
   x,
-  buffer = 100,
   dirname,
+  buffer = 100,
   cache = NULL,
-  overwrite = FALSE,
-  verbose = TRUE
+  verbose = TRUE,
+  overwrite = FALSE
 )
 }
 \arguments{
 \item{x}{\code{sf} or \code{sfc}; Area used to retrieve forestry guides.}
 
+\item{dirname}{\code{character}; Output directory.}
+
 \item{buffer}{\code{numeric}; Buffer distance, in meters, applied around \code{x}
 before spatial intersection. Default is \code{100}.}
-
-\item{dirname}{\code{character}; Output directory.}
 
 \item{cache}{\code{character}; Directory where the GeoPackage is stored.
 Defaults to the guides cache directory, see \code{\link[=seq_cache]{seq_cache()}}.}
 
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
+
 \item{overwrite}{\code{logical}; If \code{TRUE}, re-download the GeoPackage even when
 it already exists in \code{cache}.}
-
-\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 Invisibly returns the path of the written GeoPackage, or

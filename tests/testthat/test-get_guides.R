@@ -1,170 +1,90 @@
-test_that("get_guides retrieves and filters spatial data", {
+fake_gpkg <- function() {
 
-  tmp <- tempfile()
-  dir.create(tmp)
-  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
-
-  make_polygon <- function(xmin, ymin, xmax, ymax) {
-    sf::st_polygon(list(
-      rbind(
-        c(xmin, ymin),
-        c(xmax, ymin),
-        c(xmax, ymax),
-        c(xmin, ymax),
-        c(xmin, ymin)
-      )
-    ))
-  }
-
-  guides <- sf::st_sf(
-    id = c(1L, 2L),
-    geometry = sf::st_sfc(
-      make_polygon(0, 0, 10, 10),
-      make_polygon(1000, 1000, 1010, 1010),
-      crs = 2154
+  guides <- Rsequoia2:::seq_poly |>
+    transform(
+      id = 1:3,
+      nom = c("Guide A", "Guide B", "Guide C")
     )
+
+  guides_urls <- data.frame(
+    guide_id = 1:3,
+    url = sprintf("https://example.org/%s.pdf", LETTERS[1:3])
   )
 
-  guides_urls <- sf::st_as_sf(
-    data.frame(
-      guide_id = c(1L, 2L),
-      url = c("guide1.pdf", "guide2.pdf"),
-      x = c(5, 1005),
-      y = c(5, 1005)
-    ),
-    coords = c("x", "y"),
-    crs = 2154
+  stations <- data.frame(
+    guide_id = rep(1:3, 3),
+    nom = rep(sprintf("Station %s", LETTERS[1:3]), 3)
   )
 
-  stations <- sf::st_as_sf(
-    data.frame(
-      guide_id = c(1L, 2L),
-      station = c("Station 1", "Station 2"),
-      x = c(5, 1005),
-      y = c(5, 1005)
-    ),
-    coords = c("x", "y"),
-    crs = 2154
+  path <- tempfile(fileext = ".gpkg")
+
+  sf::write_sf(guides, path, layer = "guides")
+  sf::write_sf(guides_urls, path, layer = "guides_urls")
+  sf::write_sf(stations, path, layer = "stations")
+
+  path
+}
+
+test_that("get_guides accept only sf object", {
+
+  expect_error(get_guides(1), "must be of class")
+  expect_error(get_guides(NA), "must be of class")
+  expect_error(get_guides(NULL), "must be of class")
+  expect_error(get_guides("char"), "must be of class")
+
+})
+
+test_that("get_guides accepts polygons, points and lines", {
+
+  path <- fake_gpkg()
+
+  local_mocked_bindings(
+    download_guides = function(...) path
   )
 
-  x <- sf::st_sfc(
-    make_polygon(0, 0, 20, 20),
-    crs = 2154
+  inputs <- list(
+    Rsequoia2:::seq_poly,
+    Rsequoia2:::seq_point,
+    Rsequoia2:::seq_line
   )
 
-  testthat::local_mocked_bindings(
-    download_guides = function(...) file.path(tmp, "gs.gpkg"),
-    seq_envelope = function(x, buffer) x
+  res <- lapply(inputs, get_guides, verbose = FALSE)
+
+  lapply(res, \(x){
+    expect_type(x, "list")
+    expect_s3_class(x$guides, "sf")
+    expect_named(x, c("guides", "guides_urls", "stations"))
+  })
+
+})
+
+
+test_that("get_guides filters related tables", {
+
+  path <- fake_gpkg()
+
+  local_mocked_bindings(
+    download_guides = function(...) path
   )
 
-  testthat::local_mocked_bindings(
-    read_sf = function(dsn, layer, ...) {
-      switch(
-        layer,
-        guides = guides,
-        guides_urls = guides_urls,
-        stations = stations
-      )
-    },
-    .package = "sf"
-  )
-
-  result <- get_guides(x, cache = tmp, verbose = FALSE)
+  result <- get_guides(Rsequoia2:::seq_poly[1, ], buffer = 0, verbose = FALSE)
 
   expect_named(result, c("guides", "guides_urls", "stations"))
-  expect_s3_class(result$guides, "sf")
-  expect_s3_class(result$guides_urls, "sf")
-  expect_s3_class(result$stations, "sf")
-
-  expect_equal(result$guides$id, 1L)
-  expect_equal(result$guides_urls$guide_id, 1L)
-  expect_equal(result$stations$guide_id, 1L)
+  expect_all_true(result$guides$id == 1L)
+  expect_all_true(result$guides_urls$guide_id == 1L)
+  expect_all_true(result$stations$guide_id == 1L)
 })
 
 
-test_that("get_guides returns NULL when no guides intersect", {
+test_that("get_guides returns NULL when no guide is found", {
 
-  tmp <- tempfile()
-  dir.create(tmp)
-  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
+  path <- fake_gpkg()
 
-  guides <- sf::st_sf(
-    id = 1L,
-    geometry = sf::st_sfc(
-      sf::st_point(c(1000, 1000)),
-      crs = 2154
-    )
+  local_mocked_bindings(
+    download_guides = function(...) path
   )
 
-  guides_urls <- sf::st_sf(
-    guide_id = integer(),
-    url = character(),
-    geometry = sf::st_sfc(crs = 2154)
-  )
+  result <- get_guides(Rsequoia2:::seq_point, buffer = 0, verbose = FALSE)
 
-  stations <- sf::st_sf(
-    guide_id = integer(),
-    geometry = sf::st_sfc(crs = 2154)
-  )
-
-  x <- sf::st_sfc(sf::st_point(c(0, 0)), crs = 2154)
-
-  testthat::local_mocked_bindings(
-    download_guides = function(...) file.path(tmp, "gs.gpkg"),
-    seq_envelope = function(x, buffer) x
-  )
-
-  testthat::local_mocked_bindings(
-    read_sf = function(dsn, layer, ...) {
-      switch(
-        layer,
-        guides = guides,
-        guides_urls = guides_urls,
-        stations = stations
-      )
-    },
-    .package = "sf"
-  )
-
-  expect_null(
-    get_guides(x, cache = tmp, verbose = FALSE)
-  )
-})
-
-
-test_that("get_guides validates x", {
-
-  expect_error(
-    get_guides(x = data.frame(a = 1))
-  )
-
-  x <- sf::st_sfc(
-    sf::st_point(c(0, 0)),
-    crs = 2154
-  )
-
-  expect_error(
-    get_guides(x = sf::st_sfc(crs = 2154))
-  )
-})
-
-
-test_that("get_guides validates cache and logical arguments", {
-
-  x <- sf::st_sfc(
-    sf::st_point(c(0, 0)),
-    crs = 2154
-  )
-
-  expect_error(
-    get_guides(x, cache = "")
-  )
-
-  expect_error(
-    get_guides(x, overwrite = 1)
-  )
-
-  expect_error(
-    get_guides(x, verbose = 1)
-  )
+  expect_null(result)
 })

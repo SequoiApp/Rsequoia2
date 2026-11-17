@@ -147,7 +147,7 @@ get_ser_pdf <- function(
     cli::cli_abort("{.arg id_ser} must be a non-empty vector.")
   }
   if (any(is.na(id_ser))) {
-    cli::cli_abort("{.arg id_ucs} must not contain NA values.")
+    cli::cli_abort("{.arg id_ser} must not contain NA values.")
   }
 
   dir.create(dirname, recursive = TRUE, showWarnings = FALSE)
@@ -161,19 +161,19 @@ get_ser_pdf <- function(
   # Download loop ----
   for (code in id_ser) {
 
-    file_name <- sprintf("%s_%s.pdf", substr(code, 1, 1), substr(code, 2, 3))
-    url <- paste0(base_url, file_name)
-    destfile  <- file.path(dirname, file_name)
+    filename <- sprintf("%s_%s.pdf", substr(code, 1, 1), substr(code, 2, 3))
+    url <- paste0(base_url, filename)
+    destfile  <- file.path(dirname, filename)
 
     if (file.exists(destfile) && !overwrite) {
       if (verbose) {
-        cli::cli_alert_info("Already exists: {.file {file_name}}")
+        cli::cli_alert_info("Already exists: {.file {filename}}")
       }
       next
     }
 
     if (verbose) {
-      cli::cli_alert("{.file {file_name}} saved")
+      cli::cli_alert("{.file {filename}} saved")
     }
 
     tryCatch(
@@ -185,7 +185,7 @@ get_ser_pdf <- function(
       ),
       error = function(e) {
         if (verbose) {
-          cli::cli_alert_danger("Failed to download {.file {file_name}}")
+          cli::cli_alert_danger("Failed to download {.file {filename}}")
         }
       }
     )

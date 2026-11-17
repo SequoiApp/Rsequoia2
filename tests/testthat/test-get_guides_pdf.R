@@ -1,323 +1,160 @@
-test_that("get_guides_pdf() validates guides_urls", {
+fake_gpkg <- function() {
 
-  expect_error(
-    get_guides_pdf(NULL),
-    "must be <data.frame>"
-  )
-
-  expect_error(
-    get_guides_pdf(data.frame()),
-    "can't be empty"
-  )
-
-})
-
-test_that("get_guides_pdf() validates dirname", {
+  guides <- Rsequoia2:::seq_poly |>
+    transform(
+      id = 1:3,
+      nom = c("Guide A", "Guide B", "Guide C")
+    )
 
   guides_urls <- data.frame(
-    guide_id = 1L,
-    url = "https://example.com/guide.pdf"
-  )
-
-  expect_error(
-    get_guides_pdf(guides_urls, dirname = ""),
-    "non-empty character scalar"
-  )
-
-  expect_error(
-    get_guides_pdf(guides_urls, dirname = NA_character_),
-    "non-empty character scalar"
-  )
-
-  expect_error(
-    get_guides_pdf(guides_urls, dirname = c("a", "b")),
-    "non-empty character scalar"
-  )
-
-})
-
-test_that("get_guides_pdf() validates overwrite and verbose", {
-
-  guides_urls <- data.frame(
-    guide_id = 1L,
-    url = "https://example.com/guide.pdf"
-  )
-
-  tmp <- tempfile()
-  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
-
-  expect_error(
-    get_guides_pdf(guides_urls, dirname = tmp, overwrite = 1),
-    "single non-missing logical"
-  )
-
-  expect_error(
-    get_guides_pdf(guides_urls, dirname = tmp, overwrite = NA),
-    "single non-missing logical"
-  )
-
-  expect_error(
-    get_guides_pdf(guides_urls, dirname = tmp, verbose = 1),
-    "single non-missing logical"
-  )
-
-  expect_error(
-    get_guides_pdf(guides_urls, dirname = tmp, verbose = NA),
-    "single non-missing logical"
-  )
-
-})
-
-test_that("get_guides_pdf() creates output directory if missing", {
-
-  guides_urls <- data.frame(
-    guide_id = 1L,
-    url = "https://example.com/guide.pdf"
-  )
-
-  tmp <- tempfile()
-  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
-
-  local_mocked_bindings(
-    download.file = function(url, destfile, ...) {
-      writeBin(as.raw(1:3), destfile)
-      0L
-    },
-    .package = "utils"
-  )
-
-  expect_false(dir.exists(tmp))
-
-  result <- get_guides_pdf(
-    guides_urls,
-    dirname = tmp,
-    verbose = FALSE
-  )
-
-  expect_true(dir.exists(tmp))
-  expect_identical(result, normalizePath(tmp))
-})
-
-test_that("get_guides_pdf() skips existing files when overwrite is FALSE", {
-
-  guides_urls <- data.frame(
-    guide_id = 1L,
-    url = "https://example.com/guide.pdf"
-  )
-
-  tmp <- tempfile()
-  dir.create(tmp)
-  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
-
-  file <- file.path(tmp, "guide.pdf")
-  writeBin(as.raw(1:3), file)
-
-  called <- FALSE
-
-  local_mocked_bindings(
-    download.file = function(...) {
-      called <<- TRUE
-      0L
-    },
-    .package = "utils"
-  )
-
-  get_guides_pdf(
-    guides_urls,
-    dirname = tmp,
-    overwrite = FALSE,
-    verbose = FALSE
-  )
-
-  expect_false(called)
-  expect_true(file.exists(file))
-})
-
-test_that("get_guides_pdf() downloads when overwrite is TRUE", {
-
-  guides_urls <- data.frame(
-    guide_id = 1L,
-    url = "https://example.com/guide.pdf"
-  )
-
-  tmp <- tempfile()
-  dir.create(tmp)
-  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
-
-  file <- file.path(tmp, "guide.pdf")
-  writeBin(as.raw(1:3), file)
-
-  called <- FALSE
-
-  local_mocked_bindings(
-    download.file = function(url, destfile, ...) {
-      called <<- TRUE
-      writeBin(as.raw(4:6), destfile)
-      0L
-    },
-    .package = "utils"
-  )
-
-  get_guides_pdf(
-    guides_urls,
-    dirname = tmp,
-    overwrite = TRUE,
-    verbose = FALSE
-  )
-
-  expect_true(called)
-  expect_identical(readBin(file, "raw", n = 3L), as.raw(4:6))
-})
-
-test_that("get_guides_pdf() tries subsequent URLs after a failure", {
-
-  guides_urls <- data.frame(
-    guide_id = c(1L, 1L),
+    guide_id = c(1, 1, 2, 3),
     url = c(
-      "https://example.com/first.pdf",
-      "https://example.com/second.pdf"
+      "https://example.org/A.pdf",
+      "https://example.org/A-alt.pdf",
+      "https://example.org/B.pdf",
+      "https://example.org/C.pdf"
     )
   )
 
-  tmp <- tempfile()
-  dir.create(tmp)
-  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
+  stations <- data.frame(
+    guide_id = rep(1:3, 3),
+    nom = rep(sprintf("Station %s", LETTERS[1:3]), 3)
+  )
 
-  calls <- character()
+  path <- tempfile(fileext = ".gpkg")
 
-  local_mocked_bindings(
-    download.file = function(url, destfile, ...) {
-      calls <<- c(calls, url)
+  sf::write_sf(guides, path, layer = "guides")
+  sf::write_sf(guides_urls, path, layer = "guides_urls")
+  sf::write_sf(stations, path, layer = "stations")
 
-      if (grepl("first.pdf", url, fixed = TRUE)) {
-        stop("network error")
-      }
+  path
+}
 
-      writeBin(as.raw(1:3), destfile)
-      0L
+test_that("get_guide_pdf() downloads, caches and overwrites", {
+
+  gpkg <- fake_gpkg()
+  dirname <- tempfile("guides_")
+  on.exit(unlink(c(gpkg, dirname), recursive = TRUE), add = TRUE)
+
+  tracker <- new.env(parent = emptyenv())
+  tracker$called <- 0L
+
+  testthat::local_mocked_bindings(
+    download_guides = function(...) gpkg,
+    .package = "Rsequoia2"
+  )
+
+  testthat::local_mocked_bindings(
+    curl_download = function(url, destfile, quiet, mode) {
+      tracker$called <- tracker$called + 1L
+      writeLines(paste("version", tracker$called), destfile)
     },
-    .package = "utils"
+    .package = "curl"
   )
 
-  get_guides_pdf(
-    guides_urls,
-    dirname = tmp,
-    verbose = FALSE
-  )
+  # Download missing PDF
+  out <- get_guide_pdf(1, dirname = dirname, verbose = FALSE)
 
-  expect_equal(
-    calls,
-    c(
-      "https://example.com/first.pdf",
-      "https://example.com/second.pdf"
-    )
-  )
+  expect_equal(tracker$called, 1L)
+  expect_true(file.exists(file.path(dirname, "guide_a.pdf")))
+  expect_equal(out, normalizePath(dirname))
 
-  expect_true(file.exists(file.path(tmp, "second.pdf")))
+  # Reuse cached PDF
+  get_guide_pdf(1, dirname = dirname, verbose = FALSE)
+  expect_equal(tracker$called, 1L)
+
+  # Overwrite existing PDF
+  get_guide_pdf(1, dirname = dirname, verbose = FALSE, overwrite = TRUE)
+  expect_equal(tracker$called, 2L)
 })
 
-test_that("get_guides_pdf() handles download errors gracefully", {
 
-  guides_urls <- data.frame(
-    guide_id = 1L,
-    url = "https://example.com/guide.pdf"
+test_that("get_guide_pdf() downloads multiple guides", {
+
+  gpkg <- fake_gpkg()
+  dirname <- tempfile("guides_")
+  on.exit(unlink(c(gpkg, dirname), recursive = TRUE), add = TRUE)
+
+  testthat::local_mocked_bindings(
+    download_guides = function(...) gpkg,
+    .package = "Rsequoia2"
   )
 
-  tmp <- tempfile()
-  dir.create(tmp)
-  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
-
-  local_mocked_bindings(
-    download.file = function(...) {
-      stop("network error")
+  testthat::local_mocked_bindings(
+    curl_download = function(url, destfile, quiet, mode) {
+      file.create(destfile)
     },
-    .package = "utils"
+    .package = "curl"
   )
 
-  expect_silent(
-    get_guides_pdf(
-      guides_urls,
-      dirname = tmp,
-      verbose = FALSE
-    )
-  )
+  get_guide_pdf(1:3, dirname = dirname, verbose = FALSE)
+
+  expect_true(all(file.exists(
+    file.path(dirname, c("guide_a.pdf", "guide_b.pdf", "guide_c.pdf"))
+  )))
 })
 
-test_that("get_guides_pdf() downloads each unique URL only once", {
 
-  guides_urls <- data.frame(
-    guide_id = c(1L, 1L, 1L),
-    url = c(
-      "https://example.com/guide.pdf",
-      "https://example.com/guide.pdf",
-      "https://example.com/other.pdf"
-    )
+test_that("get_guide_pdf() tries alternative URLs", {
+
+  gpkg <- fake_gpkg()
+  dirname <- tempfile("guides_")
+  on.exit(unlink(c(gpkg, dirname), recursive = TRUE), add = TRUE)
+
+  tracker <- new.env(parent = emptyenv())
+  tracker$urls <- character()
+
+  testthat::local_mocked_bindings(
+    download_guides = function(...) gpkg,
+    .package = "Rsequoia2"
   )
 
-  tmp <- tempfile()
-  dir.create(tmp)
-  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
+  testthat::local_mocked_bindings(
+    curl_download = function(url, destfile, quiet, mode) {
+      tracker$urls <- c(tracker$urls, url)
 
-  calls <- character()
+      # First URL fails, second succeeds
+      if (length(tracker$urls) == 1L) stop("Download failed")
 
-  local_mocked_bindings(
-    download.file = function(url, destfile, ...) {
-      calls <<- c(calls, url)
-      writeBin(as.raw(1:3), destfile)
-      0L
+      file.create(destfile)
     },
-    .package = "utils"
+    .package = "curl"
   )
 
-  get_guides_pdf(
-    guides_urls,
-    dirname = tmp,
-    verbose = FALSE
-  )
+  get_guide_pdf(1, dirname = dirname, verbose = FALSE)
 
-  expect_length(calls, 1L)
-  expect_equal(calls, "https://example.com/guide.pdf")
+  expect_setequal(
+    tracker$urls,
+    c("https://example.org/A.pdf", "https://example.org/A-alt.pdf")
+  )
+  expect_length(tracker$urls, 2)
+  expect_true(file.exists(file.path(dirname, "guide_a.pdf")))
 })
 
-test_that("get_guides_pdf() builds CNPF download URLs", {
 
-  guides_urls <- data.frame(
-    guide_id = 12L,
-    url = "https://cloud.cnpf.fr/s/abcdef"
+test_that("get_guide_pdf() rejects invalid guide IDs", {
+
+  gpkg <- fake_gpkg()
+  dirname <- tempfile("guides_")
+  on.exit(unlink(c(gpkg, dirname), recursive = TRUE), add = TRUE)
+
+  testthat::local_mocked_bindings(
+    download_guides = function(...) gpkg,
+    .package = "Rsequoia2"
   )
 
-  tmp <- tempfile()
-  dir.create(tmp)
-  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
-
-  downloaded_url <- NULL
-  downloaded_file <- NULL
-
-  local_mocked_bindings(
-    download.file = function(url, destfile, ...) {
-      downloaded_url <<- url
-      downloaded_file <<- destfile
-      writeBin(as.raw(1:3), destfile)
-      0L
-    },
-    .package = "utils"
+  expect_error(
+    get_guide_pdf(character(), dirname = dirname, verbose = FALSE),
+    "valid IDs"
   )
 
-  get_guides_pdf(
-    guides_urls,
-    dirname = tmp,
-    verbose = FALSE
+  expect_error(
+    get_guide_pdf(NA, dirname = dirname, verbose = FALSE),
+    "valid IDs"
   )
 
-  expect_equal(
-    downloaded_url,
-    "https://cloud.cnpf.fr/public.php/dav/files/abcdef/"
+  expect_error(
+    get_guide_pdf(99, dirname = dirname, verbose = FALSE),
+    "No download URLs found"
   )
-
-  expect_equal(
-    basename(downloaded_file),
-    "Guide_12.pdf"
-  )
-
-  expect_true(file.exists(downloaded_file))
 })

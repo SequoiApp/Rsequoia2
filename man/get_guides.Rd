@@ -4,7 +4,7 @@
 \alias{get_guides}
 \title{Retrieve forestry guides for an area}
 \usage{
-get_guides(x, buffer = 100, cache = NULL, overwrite = FALSE, verbose = TRUE)
+get_guides(x, buffer = 100, cache = NULL, verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
 \item{x}{\code{sf} or \code{sfc}; Area used to retrieve forestry guides.}
@@ -15,10 +15,10 @@ before spatial intersection. Default is \code{100}.}
 \item{cache}{\code{character}; Directory where the GeoPackage is stored.
 Defaults to the guides cache directory, see \code{\link[=seq_cache]{seq_cache()}}.}
 
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
+
 \item{overwrite}{\code{logical}; If \code{TRUE}, re-download the GeoPackage even when
 it already exists in \code{cache}.}
-
-\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 A named \code{list} containing three \code{sf} objects:

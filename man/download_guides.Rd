@@ -6,18 +6,18 @@
 \usage{
 download_guides(
   cache = seq_cache("guides")$path,
-  overwrite = FALSE,
-  verbose = TRUE
+  verbose = TRUE,
+  overwrite = FALSE
 )
 }
 \arguments{
 \item{cache}{\code{character}; Directory where the GeoPackage is stored.
 Defaults to the guides cache directory, see \code{\link[=seq_cache]{seq_cache()}}.}
 
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
+
 \item{overwrite}{\code{logical}; If \code{TRUE}, re-download the file even when
 it already exists in \code{cache}.}
-
-\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 }
 \value{
 Invisibly returns a \code{character} scalar containing the local

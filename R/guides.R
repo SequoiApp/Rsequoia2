@@ -1,4 +1,4 @@
-#' @title Download forestry guides dataset
+#' Download forestry guides dataset
 #'
 #' @description
 #' Downloads the forestry guides GeoPackage and stores it in the Rsequoia2
@@ -56,7 +56,7 @@ download_guides <- function(
   invisible(gpkg_path)
 }
 
-#' @title Retrieve forestry guides for an area
+#' Retrieve forestry guides for an area
 #'
 #' @description
 #' Downloads and reads the forestry guides GeoPackage, then retrieves the
@@ -81,30 +81,26 @@ get_guides <- function(
     x,
     buffer = 100,
     cache = NULL,
-    overwrite = FALSE,
-    verbose = TRUE
+    verbose = TRUE,
+    overwrite = FALSE
 ){
 
-  # --- Validate arguments ---
   if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort("{.arg x} must be of class {.cls sf} or {.cls sfc}.")
   }
 
-  if (length(x) == 0L || any(sf::st_is_empty(x))) {
-    cli::cli_abort(
-      "{.arg x} must not contain empty geometries."
-    )
+  crs <- 2154
+  x <- sf::st_transform(x, crs)
+  buffered_envelope <- sf::st_buffer(x, buffer)
+
+  if (is.null(cache)){
+    cache <- seq_cache("guides")$path
   }
 
-  # --- Prepare x ---
-  x <- sf::st_transform(x, 2154)
-  fetch_envelope <- seq_envelope(x, buffer)
-
-  # --- Load gs ---
   file <- download_guides(
     cache = cache,
-    overwrite = overwrite,
-    verbose = verbose
+    verbose = verbose,
+    overwrite = overwrite
   )
 
   layers <- c("guides", "guides_urls", "stations")
@@ -113,8 +109,7 @@ get_guides <- function(
   }) |> setNames(layers)
 
   # --- Intersect ---
-  guide <- sf::st_filter(guides_layers$guides, fetch_envelope)
-
+  guides <- sf::st_filter(guides_layers$guides, buffered_envelope)
   if(!nrow(guides)){
     if (verbose){
       cli::cli_alert_warning("No guides available for {.arg x}")
@@ -125,145 +120,116 @@ get_guides <- function(
 
   # --- Filter related data ---
   guide_ids <- guides$id
+  guides_urls <- guides_layers$guides_urls[guides_layers$guides_urls$guide_id %in% guide_ids, ]
+  stations <- guides_layers$stations[guides_layers$stations$guide_id %in% guide_ids, ]
 
-  guides_urls <- datas$guides_urls[datas$guides_urls$guide_id %in% guide_ids, ]
-
-  stations <- datas$stations[datas$stations$guide_id %in% guide_ids, ]
-
-  # --- Res
-  res <- list(
-    guides = guides,
-    guides_urls = guides_urls,
-    stations = stations
-  )
-
-  return(res)
+  return(list(guides = guides, guides_urls = guides_urls, stations = stations))
 }
 
-#' @title Download forestry guide PDFs
+#' Download forestry guide PDFs
 #'
-#' @description
-#' Downloads the PDF documents associated with forestry guides.
-#' Multiple URLs may be available for a guide; subsequent URLs are tried
-#' only if the previous download fails.
+#' Downloads PDF documents associated with forestry guides using their IDs.
+#' Guide metadata and download URLs are retrieved from [download_guides()].
+#' When multiple URLs are available for a guide, they are tried sequentially
+#' until a download succeeds.
 #'
 #' Existing files are reused unless `overwrite = TRUE`.
+#' PDF filenames are generated from normalized guide names.
 #'
-#' @param guides_urls `data.frame`; Table containing guide identifiers
-#'   (`guide_id`) and download URLs (`url`).
-#' @param dirname `character`; Directory where the PDF files are stored.
-#'   Defaults to the guides cache directory, see [Rsequoia2::seq_cache()].
+#' @param guide_id `character` or `numeric`; Vector of forestry guide IDs.
+#' @param dirname `character`; Directory where PDF files are stored.
+#'   Defaults to the guides cache directory, see [seq_cache()].
+#' @param verbose `logical`; If `TRUE`, display download progress and messages.
 #' @param overwrite `logical`; If `TRUE`, re-download existing PDF files.
-#' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return Invisibly returns a `character` scalar containing the normalized
 #'   output directory path.
 #'
 #' @export
-get_guides_pdf <- function(
-    guides_urls,
+get_guide_pdf <- function(
+    guide_id,
     dirname = seq_cache("guides")$path,
-    overwrite = FALSE,
-    verbose = TRUE
-){
+    verbose = TRUE,
+    overwrite = FALSE
+) {
 
-  # --- Validate arguments ---
-  if (!inherits(guides_urls, "data.frame")) {
-    cli::cli_abort("{.arg guides_urls} must be {.cls data.frame}.")
+  ids <- unique(guide_id)
+  if (!length(ids) || anyNA(ids) || any(!nzchar(as.character(ids)))) {
+    cli::cli_abort("{.arg guide_id} must contain valid IDs.")
   }
 
-  guides_urls <- unique(guides_urls)
+  # --- Read metadata ---
+  gpkg <- download_guides(verbose = FALSE)
+  all_urls <- sf::read_sf(gpkg, layer = "guides_urls")
+  all_guides <- sf::read_sf(gpkg, layer = "guides") |>
+    sf::st_drop_geometry()
 
-  if (!nrow(guides_urls)){
-    cli::cli_abort("{.arg guides_urls} can't be empty.")
-  }
+  urls <- merge(
+    all_urls[all_urls$guide_id %in% ids, c("guide_id", "url")],
+    all_guides[, c("id", "nom")],
+    by.x = "guide_id",
+    by.y = "id",
+    sort = FALSE
+  )
 
-  if (!is.character(dirname) || length(dirname) != 1L || is.na(dirname) || !nzchar(dirname)) {
-    cli::cli_abort(
-      "{.arg dirname} must be a non-empty character scalar."
-    )
+  urls <- urls[!is.na(urls$url) & nzchar(urls$url), ]
+
+  if (!nrow(urls)) {
+    cli::cli_abort("No download URLs found for the supplied guide IDs.")
   }
 
   dir.create(dirname, recursive = TRUE, showWarnings = FALSE)
 
-  if (!is.logical(overwrite) || length(overwrite) != 1L || is.na(overwrite)) {
-    cli::cli_abort(
-      "{.arg overwrite} must be a single non-missing logical value."
-    )
-  }
+  # --- Download guides ---
+  for (guide in split(urls, urls$guide_id)) {
 
-  if (!is.logical(verbose) || length(verbose) != 1L || is.na(verbose)) {
-    cli::cli_abort(
-      "{.arg verbose} must be a single non-missing logical value."
-    )
-  }
+    name <- tolower(iconv(guide$nom[1], to = "ASCII//TRANSLIT"))
+    name <- gsub("^_|_$", "", gsub("[^a-z0-9]+", "_", name))
 
-  # --- Download loop ----
-  for (id in unique(guides_urls$guide_id)) {
+    filename <- paste0(name, ".pdf")
+    destfile <- file.path(dirname, filename)
 
-    urls <- unique(guides_urls$url[guides_urls$guide_id == id])
-    urls <- urls[!is.na(urls) & nzchar(urls)]
+    if (file.exists(destfile) && !overwrite) {
+      if (verbose) cli::cli_alert_success("Already exists: {.file {filename}}")
+      next
+    }
 
-    for (url in urls) {
+    if (verbose) {
+      cli::cli_progress_step(
+        "Downloading {guide$nom[1]}",
+        msg_done = "Downloaded {.file {filename}}",
+        msg_failed = "Failed to download {guide_name}"
+      )
+    }
 
-      filename <- basename(url)
+    for (url in unique(guide$url)) {
 
-      if (!grepl("\\.pdf$", filename, ignore.case = TRUE)) {
-        if (grepl("cloud.cnpf.fr", url, ignore.case = TRUE)) {
-          url <- sprintf(
-            "https://cloud.cnpf.fr/public.php/dav/files/%s/",
-            filename
-          )
-        }
-
-        filename <- paste0("Guide_", id, ".pdf")
+      if (grepl("cloud.cnpf.fr", url, fixed = TRUE)) {
+        token <- basename(url)
+        url <- sprintf("https://cloud.cnpf.fr/public.php/dav/files/%s/", token)
       }
 
-      destfile <- file.path(dirname, filename)
+      result <- try(
+        curl::curl_download(url, destfile, quiet = TRUE, mode = "wb"),
+        silent = TRUE
+      )
 
-      if (file.exists(destfile) && !overwrite) {
-        if (verbose) {
-          cli::cli_alert_info("Already exists: {.file {filename}}")
-        }
-        break
-      }
+      if (!inherits(result, "try-error")) break
 
-      success <- tryCatch({
-        status <- utils::download.file(
-          url = url,
-          destfile = destfile,
-          mode = "wb",
-          quiet = TRUE
-        )
+      unlink(destfile)
+    }
 
-        identical(status, 0L) &&
-          file.exists(destfile) &&
-          file.info(destfile)$size > 0
-      }, error = function(e) FALSE)
-
-      if (success) {
-        if (verbose) {
-          cli::cli_alert_success("Downloaded {.file {filename}}.")
-        }
-        break
-      }
-
-      if (file.exists(destfile)) {
-        unlink(destfile)
-      }
-
-      if (verbose) {
-        cli::cli_alert_warning(
-          "Download failed for {.url {url}}."
-        )
-      }
+    if (verbose) {
+      cli::cli_progress_done(
+        result = if (file.exists(destfile)) "done" else "failed"
+      )
     }
   }
 
   invisible(normalizePath(dirname))
 }
 
-#' @title Fetch forestry guides for an area
+#' Fetch forestry guides for an area
 #'
 #' @description
 #' Retrieves forestry guides intersecting `x`, writes the guides and their
@@ -285,21 +251,15 @@ get_guides_pdf <- function(
 #' @noRd
 .guides_fetcher <- function(
     x,
-    buffer = 100,
-    cache = NULL,
     dirname,
     id = NULL,
-    overwrite = FALSE,
-    verbose = TRUE
-){
+    buffer = 100,
+    cache = NULL,
+    verbose = TRUE,
+    overwrite = FALSE
+) {
 
-  if (verbose) {
-    cli::cli_h1("GUIDES")
-    cli::cli_progress_message(
-      "Downloading GUIDES layers...",
-      clear = TRUE
-    )
-  }
+  if (verbose) cli::cli_h1("GUIDES")
 
   # --- Fetch data ---
   guides <- get_guides(
@@ -311,10 +271,7 @@ get_guides_pdf <- function(
   )
 
   if (is.null(guides)) {
-    if (verbose) {
-      cli::cli_alert_warning("No guides found.")
-    }
-
+    if (verbose) cli::cli_alert_warning("No guides found.")
     return(invisible(NULL))
   }
 
@@ -324,40 +281,26 @@ get_guides_pdf <- function(
     guides$guides[[identifier]] <- id
   }
 
-  # --- Determine output path ---
+  # --- Write main layer ---
   path <- seq_write(
     guides$guides,
     key = "v.sol.guides.poly",
     dirname = dirname,
     id = id,
-    verbose = FALSE,
+    verbose = verbose,
     overwrite = overwrite
   )
 
   # --- Write related layers ---
-  sf::write_sf(
-    guides$guides_urls,
-    dsn = path,
-    layer = "guides_urls",
-    delete_layer = TRUE
-  )
-
-  sf::write_sf(
-    guides$stations,
-    dsn = path,
-    layer = "stations",
-    delete_layer = TRUE
-  )
-
-  if (verbose) {
-    cli::cli_alert_success(
-      "GUIDES layers saved to {.file {path}}."
-    )
+  existing <- sf::st_layers(path)$name
+  for (layer in setdiff(names(guides), "guides")) {
+    if (!overwrite && layer %in% existing) next
+    sf::write_sf(guides[[layer]], dsn = path, layer = layer)
   }
 
-  # --- Download related pdfs ---
-  get_guides_pdf(
-    guides$guides_urls,
+  # --- Download related PDFs ---
+  get_guide_pdf(
+    guide_id = guides$guides$id,
     dirname = dirname,
     overwrite = overwrite,
     verbose = verbose
@@ -366,7 +309,7 @@ get_guides_pdf <- function(
   invisible(path)
 }
 
-#' @title Fetch forestry guides for an area
+#' Fetch forestry guides for an area
 #'
 #' @description
 #' Retrieves forestry guides intersecting `x`, writes the guides and their
@@ -382,25 +325,25 @@ get_guides_pdf <- function(
 #' @export
 fetch_guides <- function(
     x,
-    buffer = 100,
     dirname,
+    buffer = 100,
     cache = NULL,
-    overwrite = FALSE,
-    verbose = TRUE
+    verbose = TRUE,
+    overwrite = FALSE
 ) {
 
   .guides_fetcher(
     x = x,
-    buffer = buffer,
-    cache = cache,
     dirname = dirname,
     id = NULL,
-    overwrite = overwrite,
-    verbose = verbose
+    buffer = buffer,
+    cache = cache,
+    verbose = verbose,
+    overwrite = overwrite
   )
 }
 
-#' @title Create forestry guide layers for a Sequoia project
+#' Create forestry guide layers for a Sequoia project
 #'
 #' @description
 #' Uses the project PARCA layer as the area of interest, retrieves the
@@ -426,10 +369,10 @@ seq_guides <- function(
 
   .guides_fetcher(
     x = ctx$parca,
-    buffer = buffer,
-    cache = cache,
     dirname = dirname,
     id = ctx$id,
+    buffer = buffer,
+    cache = cache,
     overwrite = overwrite,
     verbose = verbose
   )
