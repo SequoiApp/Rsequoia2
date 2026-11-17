@@ -20,94 +20,40 @@
 #' @export
 download_guides <- function(
     cache = seq_cache("guides")$path,
-    overwrite = FALSE,
-    verbose = TRUE
+    verbose = TRUE,
+    overwrite = FALSE
 ){
 
-  # --- Validate arguments ---
-  if (is.null(cache)) {
-    cache <- seq_cache("guides")$path
-  }
-
-  if (!is.character(cache) || length(cache) != 1L || is.na(cache) || !nzchar(cache)) {
-    cli::cli_abort(
-      "{.arg cache} must be a non-empty character scalar."
-    )
-  }
-
-  if (!is.logical(overwrite) || length(overwrite) != 1L || is.na(overwrite)) {
-    cli::cli_abort(
-      "{.arg overwrite} must be a single non-missing logical value."
-    )
-  }
-
-  if (!is.logical(verbose) || length(verbose) != 1L || is.na(verbose)) {
-    cli::cli_abort(
-      "{.arg verbose} must be a single non-missing logical value."
-    )
-  }
-
-  # --- Create destination directory ---
   if (!dir.exists(cache)) {
     dir.create(cache, recursive = TRUE, showWarnings = FALSE)
   }
 
-  if (!dir.exists(cache)) {
-    cli::cli_abort(
-      "Cannot create destination directory {.path {cache}}."
-    )
-  }
-
-  # --- URL ---
   url <- "https://www.data.gouv.fr/api/1/datasets/r/a875438e-6555-4f45-bb48-b8c92c783a29"
+  gpkg_name <- "guides_stations_forestieres.gpkg"
+  gpkg_path <- file.path(cache, gpkg_name)
 
-  # --- Determine destination file ---
-  destfile <- file.path(cache, "gs.gpkg")
-
-  if (file.exists(destfile) && !overwrite) {
-    if (verbose) {
-      cli::cli_alert_info(
-        "File already exists: {.file {destfile}}"
+  if (!file.exists(gpkg_path) || overwrite){
+    if (verbose){
+      cli::cli_progress_step(
+        "Downloading {.file {gpkg_name}}",
+        msg_done = "Downloading {.file {gpkg_name}}",
+        spinner = TRUE
       )
     }
 
-    return(invisible(destfile))
-  }
-
-  # --- Download file ---
-  if (verbose) {
-    cli::cli_alert_info(
-      "Downloading {.file {basename(destfile)}}..."
+    curl::curl_download(
+      url = url,
+      destfile = gpkg_path,
+      quiet = TRUE
     )
-  }
 
-  status <- utils::download.file(
-    url = url,
-    destfile = destfile,
-    mode = "wb",
-    quiet = TRUE
-  )
-
-  if (
-    status != 0L ||
-    !file.exists(destfile) ||
-    is.na(file.info(destfile)$size) ||
-    file.info(destfile)$size == 0
-  ) {
-    unlink(destfile)
-
-    cli::cli_abort(
-      "Download failed or returned an empty file for {.url {url}}."
-    )
-  }
-
-  if (verbose) {
+  } else if (verbose) {
     cli::cli_alert_success(
-      "File downloaded to {.file {destfile}}."
+      "Using cached {.file {gpkg_name}}"
     )
   }
 
-  invisible(destfile)
+  invisible(gpkg_path)
 }
 
 #' @title Retrieve forestry guides for an area
