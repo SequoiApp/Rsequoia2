@@ -1,7 +1,7 @@
 test_that("seq_forest() writes expected layer", {
   with_seq_cache({
     local_mocked_bindings(
-      get_forest = function(...) Rsequoia2:::seq_poly
+      get_forest = function(...) seq_read("parca", seq_cache)
     )
 
     path <- seq_forest(seq_cache, verbose = FALSE, overwrite = TRUE)

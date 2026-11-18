@@ -109,7 +109,8 @@ get_guides <- function(
   }) |> setNames(layers)
 
   # --- Intersect ---
-  guides <- sf::st_filter(guides_layers$guides, buffered_envelope)
+  guides <- guides_layers$guides
+  guides <- guides[lengths(sf::st_intersects(guides, buffered_envelope)) > 0, ]
   if(!nrow(guides)){
     if (verbose){
       cli::cli_alert_warning("No guides available for {.arg x}")
@@ -198,7 +199,7 @@ get_guide_pdf <- function(
       cli::cli_progress_step(
         "Downloading {guide$nom[1]}",
         msg_done = "Downloaded {.file {filename}}",
-        msg_failed = "Failed to download {guide_name}"
+        msg_failed = "Failed to download {filename}"
       )
     }
 
@@ -231,7 +232,6 @@ get_guide_pdf <- function(
 
 #' Fetch forestry guides for an area
 #'
-#' @description
 #' Retrieves forestry guides intersecting `x`, writes the guides and their
 #' associated URLs and stations to a GeoPackage, and downloads the
 #' associated PDF documents.
@@ -301,7 +301,7 @@ get_guide_pdf <- function(
   # --- Download related PDFs ---
   get_guide_pdf(
     guide_id = guides$guides$id,
-    dirname = dirname,
+    dirname = dirname(path),
     overwrite = overwrite,
     verbose = verbose
   )

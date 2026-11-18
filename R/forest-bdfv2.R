@@ -52,10 +52,10 @@ get_forest <- function(x, verbose = TRUE) {
     return(NULL)
   }
 
-  suppressWarnings(
+  forest <- suppressWarnings(
     forest |>
       sf::st_transform(sf::st_crs(x)) |>
-      sf::st_intersection(x |> sf::st_geometry() |> sf::st_union()) |>
+      sf::st_intersection(sf::st_union(sf::st_geometry(x))) |>
       sf::st_collection_extract("POLYGON") |>
       sf::st_cast("MULTIPOLYGON") |>
       sf::st_cast("POLYGON")
