@@ -1,25 +1,12 @@
-#' @title Retrieve BD_FORET_V2 around an area
-#'
-#' @description
-#' Builds a convex buffer around the input geometry, retrieves BD_FORET_V2
-#' features and returns an `sf` point layer.
+#' Retrieve BD_FORET_V2 around an area
 #'
 #' @param x An `sf` object defining the input area of interest.
-#' @param buffer `numeric`; Buffer around `x` (in **meters**) used to enlarge
 #' @param verbose `logical`; If `TRUE`, display progress and informational messages.
 #'
 #' @return An `sf` object containing BD_FORET_V2 features.
 #'
-#' @details
-#' The function creates a convex buffer around the input geometry `x`
-#' and retrieves BD_FORET_V2 features before returns as a single `sf` point layer.
-#'
 #' @export
-get_forest<- function(
-    x,
-    buffer = 1000,
-    verbose = TRUE
-) {
+get_forest <- function(x, verbose = TRUE) {
 
   if (!inherits(x, c("sf", "sfc"))) {
     cli::cli_abort("{.arg x} must be of class {.cls sf} or {.cls sfc}.")
@@ -33,20 +20,52 @@ get_forest<- function(
 
   crs <- 2154
   x <- sf::st_transform(x, crs)
-  fetch_envelope <- seq_envelope(x, buffer)
+
+  if (verbose) cli::cli_alert_info("Downloading forest dataset...")
 
   forest <- happign::get_wfs(
-    fetch_envelope,
+    x,
     layer = "LANDCOVER.FORESTINVENTORY.V2:formation_vegetale",
     predicate = happign::intersects(),
     verbose = FALSE
+  )
+
+  if (is.null(forest) || !nrow(forest)) {
+    return(NULL)
+  }
+
+  return(invisible(sf::st_transform(forest, crs)))
+}
+
+#' Clip forest data to an area
+#'
+#' @param x `sf` or `sfc`; Area used to clip the geology data.
+#' @param forest `sf`; forest data.
+#'
+#' @return An `sf` object clipped to `x`.
+#'
+#' @keywords internal
+#' @noRd
+.forest_transformer <- function(x, forest) {
+
+  if (is.null(forest) || !nrow(forest)) {
+    return(NULL)
+  }
+
+  suppressWarnings(
+    forest |>
+      sf::st_transform(sf::st_crs(x)) |>
+      sf::st_intersection(x |> sf::st_geometry() |> sf::st_union()) |>
+      sf::st_collection_extract("POLYGON") |>
+      sf::st_cast("MULTIPOLYGON") |>
+      sf::st_cast("POLYGON")
   )
 
   if (!nrow(forest)) {
     return(NULL)
   }
 
-  return(invisible(sf::st_transform(forest, crs)))
+  forest
 }
 
 #' @title Fetch BD_FORET_V2 data
@@ -64,20 +83,19 @@ get_forest<- function(
     x,
     dirname,
     id = NULL,
-    buffer = 1000,
     verbose = TRUE,
     overwrite = FALSE
 ) {
 
   if (verbose) {
     cli::cli_h1("BD FORET V2")
-    cli::cli_progress_message("Downloading BD_FORET_V2 layer...", clear = TRUE)
+    cli::cli_progress_message("Downloading BD FORET V2 layer...", clear = TRUE)
   }
 
-  forest <- get_forest(x, buffer = buffer, verbose = FALSE)
-
+  forest <- get_forest(x, verbose = FALSE)
+  forest <- .forest_transformer(x, forest)
   if (is.null(forest)) {
-    if (verbose) cli::cli_alert_warning("No BD_FORET_V2 found.")
+    if (verbose) cli::cli_alert_warning("No BD FORET V2 found.")
     return(invisible(NULL))
   }
 
@@ -115,7 +133,6 @@ get_forest<- function(
 #' @noRd
 fetch_forest <- function(
     x,
-    buffer = 1000,
     dirname,
     verbose = TRUE,
     overwrite = FALSE
@@ -124,7 +141,6 @@ fetch_forest <- function(
   .forest_fetcher(
     x = x,
     dirname = dirname,
-    buffer = buffer,
     verbose = verbose,
     overwrite = overwrite
   )
@@ -159,7 +175,6 @@ fetch_forest <- function(
 #' @export
 seq_forest <- function(
     dirname = ".",
-    buffer = 1000,
     verbose = TRUE,
     overwrite = FALSE
 ) {
@@ -170,7 +185,6 @@ seq_forest <- function(
     x = ctx$parca,
     dirname = dirname,
     id = ctx$id,
-    buffer = buffer,
     verbose = verbose,
     overwrite = overwrite
   )

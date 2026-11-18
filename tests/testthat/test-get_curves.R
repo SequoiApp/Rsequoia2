@@ -1,44 +1,54 @@
-test_that("get_curves() returns null when no data", {
-  x <- sf::st_as_sf(sf::st_sfc(sf::st_point(c(5, 5)), crs = 2154))
+test_that("get_curves() returns NULL when no data", {
 
   testthat::local_mocked_bindings(
-    get_wfs = function(...) create_empty_sf("POINT"),
+    get_wfs = function(...) Rsequoia2:::seq_empty,
     .package = "happign"
   )
 
-  curves <- get_curves(x, verbose = FALSE)
+  curves <- get_curves(Rsequoia2:::seq_poly, verbose = FALSE)
 
-  # tests
-  expect_null(curves, "sf")
+  expect_null(curves)
 })
 
 test_that("get_curves() works", {
 
-  x <- sf::st_as_sf(sf::st_sfc(sf::st_point(c(5, 5)), crs = 2154))
-  line <- sf::st_as_sf(sf::st_sfc(sf::st_linestring(matrix(1:10, , 2)), crs = 2154))
-
   testthat::local_mocked_bindings(
-    get_wfs = function(...) line,
+    get_wfs = function(...) Rsequoia2:::seq_line,
     .package = "happign"
   )
 
-  curves <- get_curves(x, verbose = FALSE)
+  curves <- get_curves(Rsequoia2:::seq_poly, verbose = FALSE)
 
   expect_s3_class(curves, "sf")
-  expect_all_true(sf::st_geometry_type(curves) == "LINESTRING")
+  expect_true(all(sf::st_geometry_type(curves) == "LINESTRING"))
 })
 
-test_that("get_curves() force crs to 2154", {
-
-  x <- sf::st_as_sf(sf::st_sfc(sf::st_point(c(5, 5)), crs = 4326))
-  line <- sf::st_as_sf(sf::st_sfc(sf::st_linestring(matrix(1:10, , 2)), crs = 2154))
+test_that("get_curves() forces CRS to 2154", {
 
   testthat::local_mocked_bindings(
-    get_wfs = function(...) line,
+    get_wfs = function(...) Rsequoia2:::seq_line |> sf::st_transform(4326),
     .package = "happign"
   )
 
-  curves <- get_curves(x, verbose = FALSE)
+  curves <- get_curves(Rsequoia2:::seq_poly, verbose = FALSE)
 
-  expect_equal(sf::st_crs(curves)$srid, "EPSG:2154")
+  expect_equal(sf::st_crs(curves)$epsg, 2154)
+})
+
+test_that("get_curves() rejects invalid input", {
+
+  expect_error(
+    get_curves(data.frame(x = 1)),
+    "must be"
+  )
+})
+
+test_that("get_curves() handles NULL response", {
+
+  testthat::local_mocked_bindings(
+    get_wfs = function(...) NULL,
+    .package = "happign"
+  )
+
+  expect_null(get_curves(Rsequoia2:::seq_poly, verbose = FALSE))
 })
