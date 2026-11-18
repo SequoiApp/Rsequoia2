@@ -5,12 +5,12 @@ test_that("get_vege_poly() validates x", {
 
 test_that("get_vege_poly() returns empty sf when WFS returns NULL", {
 
-  x <- sf::st_as_sf(sf::st_sfc(sf::st_point(c(5, 5)), crs = 2154))
-
   testthat::local_mocked_bindings(
     get_wfs = function(...) NULL,
     .package = "happign"
   )
+
+  res <- get_vege_poly(Rsequoia2:::seq_point) |> suppressMessages()
 
   expect_s3_class(res, "sf")
   expect_equal(nrow(res), 0)
@@ -18,14 +18,13 @@ test_that("get_vege_poly() returns empty sf when WFS returns NULL", {
 })
 
 test_that("get_vege_poly() returns polygons when WFS returns data", {
-  x <- Rsequoia2:::seq_poly
 
   local_mocked_bindings(
     get_wfs = function(...) Rsequoia2:::seq_poly,
     .package = "happign"
   )
 
-  res <- get_vege_poly(x, buffer = 0, clip = FALSE, tol = 0)
+  res <- get_vege_poly(Rsequoia2:::seq_poly, buffer = 0, clip = FALSE, tol = 0)
 
   expect_s3_class(res, "sf")
   expect_gt(nrow(res), 0)
@@ -34,14 +33,12 @@ test_that("get_vege_poly() returns polygons when WFS returns data", {
 
 test_that("get_vege_poly() sets type and source fields", {
 
-  x <- sf::st_as_sf(sf::st_sfc(sf::st_point(c(5, 5)), crs = 2154))
-
   testthat::local_mocked_bindings(
     get_wfs = function(...) Rsequoia2:::seq_poly,
     .package = "happign"
   )
 
-  res <- get_vege_poly(x, 0)
+  res <- get_vege_poly(Rsequoia2:::seq_poly, 0)
 
   type <- seq_field("type")$name
   source <- seq_field("source")$name
