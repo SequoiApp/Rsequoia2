@@ -168,7 +168,17 @@ get_lidar <- function(
 
   if (verbose) cli::cli_progress_message("Optimizing raster...", clear = TRUE)
 
-  r <- .altimetry_transformer(files, x_clean, crs)
+  r <- tryCatch({
+    .altimetry_transformer(files, x_clean, crs)
+  }, error = function(e){
+    cli::cli_abort(
+      c(
+        "Failed to process LiDAR raster.",
+        "i" = "A cached tile may be corrupted (see error below). Remove it from {.path {cache}} and retry."
+      ),
+      parent = e
+    )
+  })
 
   names(r) <- paste0(key, "_lidar")
 
