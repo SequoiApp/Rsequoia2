@@ -2,7 +2,7 @@
 % Please edit documentation in R/ifn.R
 \name{seq_ifn}
 \alias{seq_ifn}
-\title{Generate regional layers for a Sequoia project}
+\title{Generate IFN layers for a Sequoia project}
 \usage{
 seq_ifn(
   dirname = ".",
@@ -15,9 +15,7 @@ seq_ifn(
 \item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 
-\item{key}{\code{character}; List of ifn layer identifiers to download. If not
-provided, the function uses \code{get_keys("ifn")} to automatically select all
-IFN layers defined in the Sequoia configuration (\code{inst/config/seq_layers.yaml})}
+\item{key}{\code{character}; IFN layer identifiers. Defaults to \code{get_keys("ifn")}.}
 
 \item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
 messages.}
@@ -25,23 +23,12 @@ messages.}
 \item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
-Invisibly returns a named list of file paths written by \code{\link[=seq_write]{seq_write()}}.
-Returns \code{NULL} invisibly if no regional layer is written.
+Invisibly returns a named list of written paths.
 }
 \description{
-Retrieves official IGN regional datasets intersecting the project
-area and writes the resulting layers to disk.
-}
-\details{
-Regional datasets are retrieved using \code{\link[=get_ifn]{get_ifn()}} based on the
-project area defined by the PARCA polygon.
-
-Each regional layer is written to disk using \code{\link[=seq_write]{seq_write()}} with a
-dedicated output key corresponding to the requested region k.
-
-If no feature is found for a given k, the corresponding layer
-is not written.
+Retrieves IFN regional layers around the project area and writes them to
+the Sequoia project directory.
 }
 \seealso{
-\code{\link[=get_ifn]{get_ifn()}}, \code{\link[=seq_write]{seq_write()}}
+\code{\link[=get_ifn]{get_ifn()}}, \code{\link[=get_ser_pdf]{get_ser_pdf()}}, \code{\link[=seq_write]{seq_write()}}
 }

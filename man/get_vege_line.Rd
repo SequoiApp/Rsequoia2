@@ -4,35 +4,22 @@
 \alias{get_vege_line}
 \title{Retrieve forest vegetation lines around an area}
 \usage{
-get_vege_line(x, poly = NULL)
+get_vege_line(x, buffer = 1000, clip = TRUE, tol = 500, poly = NULL)
 }
 \arguments{
 \item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
 
-\item{poly}{Optional preloaded vegetation polygon layer. Supplying it avoids
-downloading the same source data again.}
+\item{buffer}{\code{numeric}; Buffer around \code{x}, in meters.}
+
+\item{clip}{\code{logical}; If \code{TRUE}, remove the forest area itself.}
+
+\item{tol}{\code{numeric}; Minimum area threshold in square meters.}
+
+\item{poly}{Optional preloaded vegetation polygon layer.}
 }
 \value{
-An \code{sf} object containing forest vegetation line features.
+An \code{sf} line layer.
 }
 \description{
 Retrieve forest vegetation lines around an area
-}
-\details{
-The function derives forest vegetation linear features from
-vegetation polygons obtained with \code{\link[=get_vege_poly]{get_vege_poly()}}.
-
-GIS workflow :
-\itemize{
-\item Polygon are intersected to a 1500m buffer;
-\item Polygon are cast to \code{LINESTRING};
-\item Line are intersected with a 1500 buffer to remove intersection line
-from first step
-}
-
-If no vegetation polygons are available, the function returns
-an empty standardized \code{sf} object.
-}
-\seealso{
-get_vege_poly
 }

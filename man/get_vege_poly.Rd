@@ -4,24 +4,21 @@
 \alias{get_vege_poly}
 \title{Retrieve forest vegetation polygons around an area}
 \usage{
-get_vege_poly(x, tol = 500)
+get_vege_poly(x, buffer = 1000, clip = TRUE, tol = 500)
 }
 \arguments{
 \item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
 
-\item{tol}{\code{numeric}. Minimum area threshold in square meters.}
+\item{buffer}{\code{numeric}; Buffer around \code{x}, in meters.}
+
+\item{clip}{\code{logical}; If \code{TRUE}, remove the forest area itself.}
+
+\item{tol}{\code{numeric}; Minimum area threshold in square meters.}
 }
 \value{
-An \code{sf} object containing forest vegetation polygons
+An \code{sf} polygon layer. An empty standardized layer is returned
+when no vegetation is found.
 }
 \description{
 Retrieve forest vegetation polygons around an area
-}
-\details{
-The function retrieves the IGN forest mask layer within a 1000 m
-convex buffer around \code{x}. Retrieved polygons are then intersected
-with a 1500 m convex buffer, cast to polygons, and normalized.
-
-If no forest data are found, the function returns an empty
-\code{sf} object with a standardized structure.
 }

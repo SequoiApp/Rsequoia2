@@ -2,7 +2,7 @@
 % Please edit documentation in R/meteo-france.R
 \name{seq_meteo_france}
 \alias{seq_meteo_france}
-\title{Download Meteo-France meteorological data for a sequoia process}
+\title{Download Meteo-France data for a Sequoia project}
 \usage{
 seq_meteo_france(
   dirname = ".",
@@ -24,15 +24,13 @@ messages.}
 \item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
-A named \code{list} of file paths :
+Invisibly returns a named list containing:
 \itemize{
-\item `"fiche.meteo"``: Path to the downloaded climatological station PDF
-\item `"meteofrance"``: Path to the generated Excel workbook
+\item \code{fiche.meteo}: climatological station PDF;
+\item \code{meteofrance}: generated Meteo-France workbook.
 }
 }
 \description{
-Downloads and formats meteorological data from Meteo-France.
-This includes download of the nearest climatological station fiche (PDF),
-ombrothermic summaries, precipitation statistics. Results are written
-to an Excel workbook based on the internal template \code{CLIMAT_MF.xlsx}.
+Downloads the nearest climatological station fiche and generates the
+Meteo-France workbook for the project area.
 }

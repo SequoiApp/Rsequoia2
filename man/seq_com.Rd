@@ -2,7 +2,7 @@
 % Please edit documentation in R/com.R
 \name{seq_com}
 \alias{seq_com}
-\title{Generate commune polygon, line and point layers for a Sequoia project}
+\title{Generate commune layers for a Sequoia project}
 \usage{
 seq_com(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
@@ -16,36 +16,17 @@ messages.}
 \item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
-A named list of file paths written by \code{\link[=seq_write]{seq_write()}},
-one per commune layer.
+Invisibly returns a named list of written file paths, or \code{NULL}
+if no commune is found.
 }
 \description{
-This function is a convenience wrapper around \code{\link[=get_com_poly]{get_com_poly()}},
-\code{\link[=get_com_line]{get_com_line()}} and \code{\link[=get_com_point]{get_com_point()}}, allowing the user to retrieve
-administrative boundary products and automatically write them to the
-project directory using \code{\link[=seq_write]{seq_write()}}.
+Retrieves commune layers around the project area and writes them to the
+Sequoia project directory.
 }
 \details{
-Both topological (full extent) and graphical (restricted extent)
-representations are generated when relevant.
-
-Commune layers are built from BDTOPO commune boundaries intersecting
-the project area defined by the PARCA polygon.
-
-The following layers are produced:
-\describe{
-\item{Topological layers}{Full commune geometry (polygon, boundary lines, centroids)}
-\item{Graphical layers}{Line and point representations clipped to a reduced
-convex buffer around the project area, intended for cartographic display}
-}
-
-Each layer is always written to disk using \code{\link[=seq_write]{seq_write()}},
-even when it contains no features (\code{nrow == 0}).
-
-Informational messages are displayed to indicate whether a layer
-contains features or is empty.
+The project PARCA layer is used as the search geometry and its identifier
+is added to each generated layer before writing.
 }
 \seealso{
-\code{\link[=get_com_poly]{get_com_poly()}}, \code{\link[=get_com_line]{get_com_line()}}, \code{\link[=get_com_point]{get_com_point()}},
-\code{\link[=seq_write]{seq_write()}}
+\code{\link[=get_com]{get_com()}}
 }

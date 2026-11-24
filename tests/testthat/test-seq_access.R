@@ -2,7 +2,7 @@ test_that("seq_access() returns expected paths when accessibility exists", {
 
   with_seq_cache({
     local_mocked_bindings(
-      get_accessibility = function(...) p #need to return parca becaus there intersection
+      get_accessibility = function(...) p #need to return parca because there intersection
     )
 
     paths <- seq_access(seq_cache, verbose = FALSE, overwrite = TRUE)

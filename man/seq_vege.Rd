@@ -2,13 +2,26 @@
 % Please edit documentation in R/vege.R
 \name{seq_vege}
 \alias{seq_vege}
-\title{Generate vegetation polygon, line and point layers for a Sequoia project}
+\title{Generate vegetation layers for a Sequoia project}
 \usage{
-seq_vege(dirname = ".", verbose = TRUE, overwrite = FALSE)
+seq_vege(
+  dirname = ".",
+  buffer = 1000,
+  clip = TRUE,
+  tol = 500,
+  verbose = TRUE,
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
+
+\item{buffer}{\code{numeric}; Buffer around \code{x}, in meters.}
+
+\item{clip}{\code{logical}; If \code{TRUE}, remove the forest area itself.}
+
+\item{tol}{\code{numeric}; Minimum area threshold in square meters.}
 
 \item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
 messages.}
@@ -16,20 +29,12 @@ messages.}
 \item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
-A named list of file paths written by \code{\link[=seq_write]{seq_write()}},
-one per vegetation layer.
+Invisibly returns a named list of written paths.
 }
 \description{
-This function is a convenience wrapper around \code{\link[=get_vege_poly]{get_vege_poly()}},
-\code{\link[=get_vege_line]{get_vege_line()}} and \code{\link[=get_vege_point]{get_vege_point()}}, allowing the user to download
-all products in one call and automatically write them to the project
-directory using \code{\link[=seq_write]{seq_write()}}.
-}
-\details{
-Each vegetation layer is always written to disk using \code{\link[=seq_write]{seq_write()}},
-even when it contains no features (\code{nrow == 0}).
+Retrieves vegetation polygon, line and point layers around the project area
+and writes them to the Sequoia project directory.
 }
 \seealso{
-\code{\link[=get_vege_poly]{get_vege_poly()}}, \code{\link[=get_vege_line]{get_vege_line()}}, \code{\link[=get_vege_point]{get_vege_point()}},
-\code{\link[=seq_write]{seq_write()}}
+\code{\link[=get_vege_poly]{get_vege_poly()}}, \code{\link[=get_vege_line]{get_vege_line()}}, \code{\link[=get_vege_point]{get_vege_point()}}
 }

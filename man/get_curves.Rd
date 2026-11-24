@@ -2,23 +2,20 @@
 % Please edit documentation in R/curves.R
 \name{get_curves}
 \alias{get_curves}
-\title{Retrieve hypsometric curves around an area}
+\title{Retrieve contour lines around an area}
 \usage{
-get_curves(x, verbose = TRUE)
+get_curves(x, buffer = 5000, verbose = TRUE)
 }
 \arguments{
-\item{x}{An \code{sf} object defining the input area of interest.}
+\item{x}{\code{sf} or \code{sfc}; Input area.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
+\item{buffer}{\code{numeric}; Buffer around \code{x}, in meters.}
+
+\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
 }
 \value{
-An \code{sf} object containing hypsometric curves.
+An \code{sf} line layer, or \code{NULL} if no contour line is found.
 }
 \description{
-Builds a convex buffer around the input geometry, retrieves hypsometric
-curves and returns an \code{sf} line layer.
-}
-\details{
-The function creates a 1000 m convex buffer around the input geometry \code{x}
-and retrieves hypsometric curves before returns as a single \code{sf} point layer.
+Retrieves contour lines within a buffered envelope around an area.
 }

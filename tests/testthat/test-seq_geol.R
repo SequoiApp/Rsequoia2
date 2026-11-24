@@ -1,17 +1,15 @@
 test_that("seq_geol() downloads both geology layers by default", {
-
   with_seq_cache({
 
-    brgm_cache <- file.path(tempdir(), "brgm")
-    dir.create(brgm_cache, showWarnings = FALSE)
+    # Fake BRGM cache + QML archive
+    brgm_cache <- tempfile("brgm_")
+    dir.create(brgm_cache)
     on.exit(unlink(brgm_cache, recursive = TRUE, force = TRUE), add = TRUE)
 
-    # ---- Fake QML inside ZIP ----
-    zip_name <- "GEO050K_HARM_029.zip"
     qml_file <- file.path(brgm_cache, "S_FGEOL_fake.qml")
     writeLines("qml", qml_file)
 
-    zip_path <- file.path(brgm_cache, zip_name)
+    zip_path <- file.path(brgm_cache, "GEO050K_HARM_029.zip")
 
     capture.output(
       utils::zip(
@@ -22,44 +20,55 @@ test_that("seq_geol() downloads both geology layers by default", {
       file = NULL
     )
 
-    # ---- Mock get_geol + download_bdcharm50 ----
+    # Track requested geology datasets
     tracker <- list(key = character())
 
     local_mocked_bindings(
+      # I need to return parca to ensure intersectiuon doesn't return no data
       get_geol = function(x, key, ...) {
         tracker$key <<- c(tracker$key, key)
-        p
+         p
       },
-      download_bdcharm50 = function(dep, cache = NULL, verbose = FALSE, overwrite = FALSE) {
-        stats::setNames(zip_path, dep[1])
+      download_bdcharm50 = function(...) {
+        zip_path
       }
+    )
+
+    local_mocked_bindings(
+      get_wfs = function(...) {
+        data.frame(code_insee = "29")
+      },
+      .package = "happign"
     )
 
     paths <- seq_geol(
       dirname = seq_cache,
-      key = NULL,
       cache = brgm_cache,
       verbose = FALSE,
       overwrite = TRUE
     )
 
-    # ---- Assertions ----
-    expect_named(paths, c("v.sol.carhab.poly", "v.sol.bdcharm50.poly"))
+    expect_named(paths, c("carhab", "bdcharm50"))
 
     expect_equal(
       sort(unique(tracker$key)),
       sort(c("carhab", "bdcharm50"))
     )
 
-    # QML must exist for bdcharm50
-    bd_path <- paths[["v.sol.bdcharm50.poly"]]
-    expect_true(file.exists(sub("\\.gpkg$", ".qml", bd_path)))
+    expect_all_true(file.exists(unlist(paths)))
+
+    # BD Charm QML must also be written
+    qml_path <- paste0(
+      tools::file_path_sans_ext(paths[["bdcharm50"]]),
+      ".qml"
+    )
+
+    expect_true(file.exists(qml_path))
   })
 })
 
 
 test_that("seq_geol() respects key argument", {
-
   with_seq_cache({
 
     tracker <- list(key = character())
@@ -67,7 +76,7 @@ test_that("seq_geol() respects key argument", {
     local_mocked_bindings(
       get_geol = function(x, key, ...) {
         tracker$key <<- c(tracker$key, key)
-        p
+         p
       }
     )
 
@@ -78,9 +87,59 @@ test_that("seq_geol() respects key argument", {
       overwrite = TRUE
     )
 
-    expect_named(paths, "v.sol.carhab.poly")
+    expect_named(paths, "carhab")
     expect_equal(unique(tracker$key), "carhab")
+    expect_true(file.exists(paths[["carhab"]]))
   })
 })
 
 
+test_that("seq_geol() rejects invalid key", {
+  with_seq_cache({
+    expect_error(
+      seq_geol(dirname = seq_cache, key = "invalid", verbose = FALSE),
+      "Invalid"
+    )
+  })
+})
+
+
+test_that("seq_geol() skips empty geology layers", {
+  with_seq_cache({
+
+    local_mocked_bindings(
+      get_geol = function(...) NULL
+    )
+
+    paths <- seq_geol(dirname = seq_cache, verbose = FALSE)
+
+    expect_length(paths, 0)
+  })
+})
+
+
+test_that("seq_geol() adds project identifier", {
+  with_seq_cache({
+
+    local_mocked_bindings(
+      get_geol = function(...) p
+    )
+
+    paths <- seq_geol(
+      dirname = seq_cache,
+      key = "carhab",
+      verbose = FALSE,
+      overwrite = TRUE
+    )
+
+    geol <- sf::read_sf(paths[["carhab"]])
+
+    identifier <- seq_field("identifier")$name
+
+    expect_true(identifier %in% names(geol))
+    expect_identical(
+      unique(geol[[identifier]]),
+      "ECKMUHL"
+    )
+  })
+})

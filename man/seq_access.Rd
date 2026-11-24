@@ -2,13 +2,16 @@
 % Please edit documentation in R/accessibility.R
 \name{seq_access}
 \alias{seq_access}
-\title{Generate access point layer for a Sequoia project}
+\title{Generate accessibility layers for a Sequoia project}
 \usage{
-seq_access(dirname = ".", verbose = TRUE, overwrite = FALSE)
+seq_access(dirname = ".", buffer = 0, verbose = TRUE, overwrite = FALSE)
 }
 \arguments{
 \item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
+
+\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
+the download area.}
 
 \item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
 messages.}
@@ -16,16 +19,12 @@ messages.}
 \item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
-Invisibly returns a named list of file paths written by \code{\link[=seq_write]{seq_write()}}.
+Invisibly returns a named list of written paths.
 }
 \description{
-Create an empty \code{sf} for access point features, and writes the resulting
-layer to disk.
-}
-\details{
-The access point layer is an empty layer : user must point access themselves.
-The layer is written to disk using \code{\link[=seq_write]{seq_write()}} with the key \code{"v.access.entry.point"}.
+Retrieves porter and skidder accessibility polygons for the project area
+and creates an empty access-entry point layer.
 }
 \seealso{
-\code{\link[=seq_write]{seq_write()}}
+\code{\link[=get_accessibility]{get_accessibility()}}, \code{\link[=seq_write]{seq_write()}}
 }

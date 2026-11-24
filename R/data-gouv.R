@@ -30,8 +30,10 @@ dg_dataset <- function(q = "", org_id = "", page_size = 10){
     "Fetching dataset",
     type = "iterator",
     total = total_pages - 1,
-    auto_terminate = FALSE
+    auto_terminate = FALSE,
+    clear = TRUE
   )
+  on.exit(cli::cli_progress_done(id = pb, result = "clear"), add = TRUE)
 
   # --- Fetch remaining pages ---
   if (total_pages > 1) {

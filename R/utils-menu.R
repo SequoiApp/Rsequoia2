@@ -4,8 +4,10 @@
 #'
 #' @param choices Character vector of choices.
 #' @param title Menu title.
-#' @param info Optional information message printed below the title.
+#' @param info Optional character vector of information messages, or a function
+#'   that displays status messages below the title.
 #' @param multi If `TRUE`, multiple selections are allowed.
+#' @param offset Integer used for the first displayed choice.
 #'
 #' @return Integer vector of selected positions, or `0L` to quit.
 #'
@@ -15,7 +17,8 @@ seq_select <- function(
     title = "Menu",
     info = NULL,
     is_sub = FALSE,
-    multi = FALSE
+    multi = FALSE,
+    offset = 1L
 ) {
   if (!length(choices)) {
     cli::cli_abort("{.arg choices} must not be empty.")
@@ -28,12 +31,20 @@ seq_select <- function(
     cli::cli_text("")
 
     if (!is.null(info)) {
-      cli::cli_alert_info(info)
+      if (is.function(info)) {
+        info()
+      } else {
+        for (message in info) {
+          cli::cli_alert_info(message)
+        }
+      }
       cli::cli_text("")
     }
 
+    displayed_idx <- seq_along(choices) - 1L + offset
+
     for (i in seq_along(choices)) {
-      cli::cli_text("{.val {i}}. {choices[[i]]}")
+      cli::cli_text("{.val {displayed_idx[[i]]}}. {choices[[i]]}")
     }
 
     cli::cli_text("")
@@ -69,8 +80,14 @@ seq_select <- function(
     idx <- trimws(idx)
     idx <- suppressWarnings(as.integer(idx))
 
-    if (anyNA(idx) || any(!idx %in% seq_along(choices))) {
-      msg <- "Selection invalide. Utilisez un nombre entre 1 et {length(choices)}."
+    if (anyNA(idx) || any(!idx %in% displayed_idx)) {
+      msg <- paste0(
+        "Selection invalide. Utilisez un nombre entre ",
+        min(displayed_idx),
+        " et ",
+        max(displayed_idx),
+        "."
+      )
       next
     }
 
@@ -79,28 +96,17 @@ seq_select <- function(
       next
     }
 
-    return(unique(idx))
+    return(unique(idx - offset + 1L))
   }
 }
 
 # Internal helpers ----
 
-#' Get the current sequoia2 working directory
-#'
-#' Returns the directory stored in the `seq_dir_path` option.
-#'
-#' @return A character path, or `NULL` if no directory has been selected.
-#'
-#' @keywords internal
-#' @noRd
-seq_get_path <- function() {
-  getOption("seq_dir_path", NULL)
-}
-
 #' Run a menu action safely
 #'
 #' Executes a menu action while catching errors and warnings. Errors are printed
-#' with `cli::cli_alert_danger()`, warnings with `cli::cli_alert_warning()`.
+#' with `cli::cli_alert_danger()`; warning formatting is preserved with
+#' `cli::cli_verbatim()`.
 #'
 #' @param action A function to execute.
 #'
@@ -113,8 +119,8 @@ seq_run_action <- function(action) {
     tryCatch(
       action(),
       error = function(e) {
-        # cli_verbatim preserve the original CLI formatting
-        cli::cli_verbatim(conditionMessage(e))
+        message <- conditionMessage(e)
+        cli::cli_alert_danger("{message}")
         invisible(NULL)
       }
     ),
@@ -139,7 +145,7 @@ seq_run_action <- function(action) {
 #' @param actions A named list of functions. Names are displayed as menu choices.
 #' @param title Menu title.
 #' @param info Optional information displayed above the menu. Can be a character
-#'   value or a function returning a character value.
+#'   vector or a function that displays status messages.
 #' @param is_sub Logical. Whether the menu is a submenu.
 #' @param multi Logical. Whether multiple choices can be selected.
 #'
@@ -156,12 +162,14 @@ seq_run_menu <- function(
     multi = FALSE
 ) {
   repeat {
+
     idx <- seq_select(
       choices = names(actions),
       title = title,
-      info = if (is.function(info)) info() else info,
+      info = info,
       is_sub = is_sub,
-      multi = multi
+      multi = multi,
+      offset = 1L
     )
 
     if (identical(idx, -1L)) {
@@ -181,5 +189,3 @@ seq_run_menu <- function(
     }
   }
 }
-
-

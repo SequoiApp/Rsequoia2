@@ -219,6 +219,122 @@ get_hydro_point <- function(x, buffer = 1000){
   return(invisible(hydro_point))
 }
 
+#' Fetch hydrology  layers
+#'
+#' Internal worker
+#'
+#' @inheritParams get_hydro_poly
+#' @param dirname `character`; Output directory.
+#' @param id Optional Sequoia project identifier.
+#'
+#' @return Invisibly returns a named list of written file paths, or `NULL`
+#'   if no infrastructure layer can be retrieved.
+#'
+#' @keywords internal
+#' @noRd
+.hydro_fetcher <- function(
+    x,
+    dirname,
+    id = NULL,
+    buffer = 1000,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  if (verbose) {
+    cli::cli_h1("HYDRO")
+  }
+
+  layers <- list(
+    "v.hydro.point" = get_hydro_point,
+    "v.hydro.line"  = get_hydro_line,
+    "v.hydro.poly"  = get_hydro_poly
+  )
+
+  pb <- NULL
+  if (verbose) {
+    pb <- cli::cli_progress_bar(
+      format = paste0(
+        "{cli::pb_spin} Searching HYDRO layer: {.val {k}} | ",
+        "[{cli::pb_current}/{cli::pb_total}]"
+      ),
+      total = length(layers),
+      auto_terminate = FALSE,
+      clear = TRUE
+    )
+    on.exit(cli::cli_progress_done(id = pb, result = "clear"), add = TRUE)
+  }
+
+  paths <- lapply(names(layers), function(k) {
+
+    if (verbose) {
+      cli::cli_progress_update(id = pb, force = TRUE)
+    }
+
+    tryCatch({
+
+      f <- layers[[k]](x, buffer = buffer)
+
+      if (!is.null(id)) {
+        identifier <- seq_field("identifier")$name
+        # because there is empty sf, rep is used instead of `<- id `
+        f[[identifier]] <- rep(id, nrow(f))
+      }
+
+      seq_write(
+        f,
+        key = k,
+        dirname = dirname,
+        id = id,
+        verbose = verbose,
+        overwrite = overwrite
+      )
+
+    }, error = function(e) {
+
+      if (verbose) {
+        cli::cli_alert_danger(
+          "Failed HYDRO layer {.val {k}}: {conditionMessage(e)}"
+        )
+      }
+
+      NULL
+    })
+  })
+
+  names(paths) <- names(layers)
+  paths <- Filter(Negate(is.null), paths)
+
+  invisible(paths)
+}
+
+#' Fetch hydrology layers for an area
+#'
+#' Retrieves infrastructure polygon, line and point layers around `x` and
+#' writes them to `dirname`.
+#'
+#' @inheritParams get_hydro_poly
+#' @param dirname `character`; Output directory.
+#'
+#' @return Invisibly returns a named list of written file paths.
+#'
+#' @keywords internal
+#' @noRd
+fetch_hydro <- function(
+    x,
+    dirname,
+    buffer = 1000,
+    verbose = TRUE,
+    overwrite = FALSE) {
+
+  .hydro_fetcher(
+    x = x,
+    dirname = dirname,
+    buffer = buffer,
+    verbose = verbose,
+    overwrite = overwrite
+  )
+}
+
 #' Generate hydrographic polygon, line and point layers for a Sequoia project
 #'
 #' This function is a convenience wrapper around [get_hydro_poly()],
@@ -248,72 +364,17 @@ seq_hydro <- function(
     buffer = 1000,
     verbose = TRUE,
     overwrite = FALSE
-) {
+){
 
-  # read PARCA
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-  id_field <- seq_field("identifier")$name
-  id <- unique(parca[[id_field]])
+  ctx <- .seq_context(dirname)
 
-  if (verbose){
-    cli::cli_h1("HYDROLOGY")
-  }
-
-  layers <- list(
-    point = list(fun = get_hydro_point, key = "v.hydro.point"),
-    line  = list(fun = get_hydro_line,  key = "v.hydro.line"),
-    poly  = list(fun = get_hydro_poly,  key = "v.hydro.poly")
+  .hydro_fetcher(
+    x = ctx$parca,
+    dirname = dirname,
+    id = ctx$id,
+    buffer = buffer,
+    verbose = verbose,
+    overwrite = overwrite
   )
 
-  pb <- NULL
-  if (verbose) {
-    pb <- cli::cli_progress_bar(
-      format = paste0(
-        "{cli::pb_spin} Searching HYDRO layer: {.val {k}} | ",
-        "[{cli::pb_current}/{cli::pb_total}]"
-      ),
-      total = length(layers),
-      auto_terminate = FALSE
-    )
-  }
-
-  path <- list()
-  for (k in names(layers)) {
-
-    if (verbose) {
-      cli::cli_progress_update(id = pb, force = TRUE)
-    }
-
-    f_path <- tryCatch({
-      f <- suppressWarnings(layers[[k]]$fun(parca, buffer))
-
-      if (nrow(f) > 0) {
-        f[[id_field]] <- id
-      }
-
-      seq_write(
-        f,
-        layers[[k]]$key,
-        dirname,
-        id,
-        verbose = verbose,
-        overwrite = overwrite
-      )
-
-    }, error = function(e) NULL)
-
-    if (!is.null(f_path)) {
-      path <- c(path, f_path)
-    }
-
-  }
-
-  if (!length(path)) {
-    if (verbose){
-      cli::cli_alert_info("No HYDRO layer found.")
-      }
-    return(invisible(NULL))
-  }
-
-  invisible(path)
 }

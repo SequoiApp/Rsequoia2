@@ -2,7 +2,7 @@
 % Please edit documentation in R/ortho.R
 \name{seq_ortho}
 \alias{seq_ortho}
-\title{Download RGB and/or IRC orthophotos for a Sequoia project}
+\title{Download orthophotos for a Sequoia project}
 \usage{
 seq_ortho(
   dirname = ".",
@@ -18,37 +18,25 @@ seq_ortho(
 \item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 
-\item{type}{\code{character} One or several orthophoto types to download.
-Must be one or both of:
-\itemize{
-\item \code{"rgb"} - true-color orthophoto
-\item \code{"irc"} - near-infrared orthophoto
-}}
+\item{type}{\code{character}; One of \code{"irc"} or \code{"rgb"}.}
 
-\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
-the download area.}
+\item{buffer}{\code{numeric}; Buffer around \code{x}, in meters.}
 
-\item{zoom}{\code{integer} between 0 and 21. The smaller the zoom level, the less
-precise the resolution(see \code{\link[happign:get_wmts]{happign::get_wmts()}})}
+\item{zoom}{\code{integer}; WMTS zoom level.}
 
-\item{crs}{\code{numeric} or \code{character}; CRS of the returned raster (see
-\code{\link[happign:get_wmts]{happign::get_wmts()}})}
+\item{crs}{CRS of the returned raster.}
 
 \item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
+messages.}
 }
 \value{
-A named list of file paths written by \code{\link[=seq_write]{seq_write()}}, one per \code{type}.
+Invisibly returns a named list of written paths.
 }
 \description{
-Downloads one or several orthophotos (RGB and/or IRC) from the IGN WMTS service
-for the \code{parca} layer of a Sequoia project.
-}
-\details{
-This function is a convenience wrapper looping over \code{\link[=get_ortho]{get_ortho()}}, allowing
-the user to download both products in one call and automatically write them
-to the project directory using \code{\link[=seq_write]{seq_write()}}.
+Downloads RGB and/or IRC orthophotos around the project area and writes
+them to the Sequoia project directory.
 }
 \seealso{
 \code{\link[=get_ortho]{get_ortho()}}, \code{\link[=seq_write]{seq_write()}}

@@ -27,11 +27,10 @@ test_that("get_lidar() aborts when x is not sf or sfc", {
   )
 })
 
-test_that("get_lidar() aborts when cleaned envelope has no valid polygon", {
-
+test_that("get_lidar() aborts when input has no valid geometry", {
   download_called <- FALSE
+
   testthat::local_mocked_bindings(
-    seq_envelope = function(...) Rsequoia2:::seq_empty,
     download_lidar = function(...) {
       download_called <<- TRUE
       tempfile(fileext = ".tif")
@@ -40,8 +39,8 @@ test_that("get_lidar() aborts when cleaned envelope has no valid polygon", {
   )
 
   expect_error(
-    get_lidar(Rsequoia2:::seq_poly, key = "mnt", verbose = FALSE),
-    "has no valid polygon geometry after cleaning"
+    get_lidar(Rsequoia2:::seq_empty, key = "mnt", verbose = FALSE),
+    "has no valid geometry after cleaning"
   )
 
   expect_false(download_called)

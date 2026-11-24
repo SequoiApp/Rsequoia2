@@ -2,11 +2,11 @@
 % Please edit documentation in R/patrimony.R
 \name{seq_patrimony}
 \alias{seq_patrimony}
-\title{Download patrimony vector layers for a Sequoia project}
+\title{Generate patrimony layers for a Sequoia project}
 \usage{
 seq_patrimony(
   dirname = ".",
-  buffer = 500,
+  buffer = 1000,
   key = get_keys("pat"),
   verbose = TRUE,
   overwrite = FALSE
@@ -19,34 +19,19 @@ Defaults to the current working directory.}
 \item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge
 the download area.}
 
-\item{key}{\code{character}; List of layer identifiers to download. If not
-provided, the function uses \code{get_keys("pat")} to automatically select all
-patrimony layers defined in the Sequoia configuration (\code{inst/config/seq_layers.yaml})}
+\item{key}{\code{character}; Patrimony layer identifiers. Defaults to
+\code{get_keys("pat")}.}
 
 \item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
 
 \item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
-A named list of file paths written by \code{\link[=seq_write]{seq_write()}}, one per layer.
+Invisibly returns a named list of written paths.
 }
 \description{
-Downloads one or several vector layers with \code{frheritage}
-for \code{pat} layer(s) of a Sequoia project.
-}
-\details{
-This function is a convenience wrapper looping over \code{\link[=get_patrimony]{get_patrimony()}}, allowing
-the user to download all products in one call and automatically write them
-to the project directory using \code{\link[=seq_write]{seq_write()}}.
-
-For each value in \code{key}, the function attempts to query the corresponding
-MNHN layer using \code{\link[=get_patrimony]{get_patrimony()}}.
-\itemize{
-\item If the layer contains features, it is written to the project directory
-via \code{\link[=seq_write]{seq_write()}} and recorded as a successful download.
-\item If the layer contains no features, it is skipped and marked
-as empty.
-}
+Retrieves patrimony layers around the project area and writes them to the
+Sequoia project directory.
 }
 \seealso{
 \code{\link[=get_patrimony]{get_patrimony()}}, \code{\link[=seq_write]{seq_write()}}

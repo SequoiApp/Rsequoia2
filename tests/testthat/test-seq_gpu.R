@@ -1,104 +1,91 @@
-test_that("seq_gpu() returns existing paths", {
-
+test_that("seq_gpu() writes expected layers", {
   with_seq_cache({
-    local_mocked_bindings(
-      get_gpu   = function(...) Rsequoia2:::seq_poly
-    )
+    local_mocked_bindings(get_gpu = function(...) Rsequoia2:::seq_poly)
 
-    layer <- c("v.gpu.document.poly", "v.gpu.zone.poly")
-    gpu_path <- seq_gpu(dirname = seq_cache, key = layer, verbose = FALSE)
+    key <- c("v.gpu.document.poly", "v.gpu.zone.poly")
+    paths <- seq_gpu(seq_cache, key = key, verbose = FALSE)
 
-    expect_type(gpu_path, "list")
-    expect_true(length(gpu_path) > 0)
-    expect_true(all(vapply(gpu_path, file.exists, logical(1))))
+    expect_named(paths, key)
+    expect_length(paths, 2)
+    expect_all_true(file.exists(unlist(paths)))
   })
 })
 
-test_that("seq_gpu() return expected path", {
-
+test_that("seq_gpu() writes sf with project id", {
   with_seq_cache({
-    local_mocked_bindings(
-      get_gpu = function(...) Rsequoia2:::seq_poly
-    )
+    local_mocked_bindings(get_gpu = function(...) Rsequoia2:::seq_poly)
 
-    layer <- c("v.gpu.document.poly", "v.gpu.zone.poly")
-    gpu_path <- seq_gpu(dirname = seq_cache, key = layer, verbose = FALSE)
+    path <- seq_gpu(
+      seq_cache,
+      key = "v.gpu.document.poly",
+      verbose = FALSE
+    )[[1]]
 
-    expect_length(gpu_path, length(layer))
-    expect_all_true(file.exists(unlist(gpu_path)))
-  })
-})
-
-test_that("seq_gpu() return sf", {
-
-  with_seq_cache({
-    local_mocked_bindings(
-      get_gpu = function(...) Rsequoia2:::seq_poly
-    )
-
-    gpu_path <- seq_gpu(dirname = seq_cache,
-                   key = "v.gpu.document.poly",
-                   verbose = FALSE)
-
-    document <- sf::read_sf(gpu_path)
-
-    expect_s3_class(document, "sf")
-
-  })
-})
-
-test_that("seq_gpu() layers contain id", {
-  with_seq_cache({
-
-    local_mocked_bindings(
-      get_gpu = function(...) Rsequoia2:::seq_poly
-    )
-
-    layer <- c("v.gpu.document.poly", "v.gpu.zone.poly")
-    paths <- seq_gpu(dirname = seq_cache, key = layer, verbose = FALSE)
-    gpu_path <- lapply(paths, read_sf)
-
+    gpu <- sf::read_sf(path)
     identifier <- seq_field("identifier")$name
-    expect_all_true(vapply(gpu_path, \(x) identifier %in% names(x), TRUE))
+
+    expect_s3_class(gpu, "sf")
+    expect_true(identifier %in% names(gpu))
+    expect_equal(unique(gpu[[identifier]]), "ECKMUHL")
   })
 })
 
-test_that("seq_gpu() calls seq_write once per output", {
+test_that("seq_gpu() combines SUPA sources", {
   with_seq_cache({
-
-    called <- 0L
+    seen <- character()
 
     local_mocked_bindings(
-      get_gpu = function(...) Rsequoia2:::seq_poly,
-      seq_write = function(...) {
-        called <<- called + 1L
-        path <- tempfile(fileext = ".gpkg")
-        file.create(path)
-        path
+      get_gpu = function(x, layer, ...) {
+        seen <<- c(seen, layer)
+        Rsequoia2:::seq_poly
       }
     )
 
-    out <- seq_gpu(seq_cache, verbose = FALSE)
+    paths <- seq_gpu(
+      seq_cache,
+      key = "v.gpu.supa.poly",
+      verbose = FALSE
+    )
 
-    expect_equal(called, length(out))
+    expect_setequal(
+      seen,
+      c("assiette-sup-s", "assiette-sup-l", "assiette-sup-p")
+    )
+    expect_named(paths, "v.gpu.supa.poly")
+  })
+})
+
+test_that("seq_gpu() skips empty layers", {
+  with_seq_cache({
+    local_mocked_bindings(
+      get_gpu = function(x, layer, ...) {
+        if (layer == "document") Rsequoia2:::seq_poly else NULL
+      }
+    )
+
+    paths <- seq_gpu(
+      seq_cache,
+      key = c("v.gpu.document.poly", "v.gpu.zone.poly"),
+      verbose = FALSE
+    )
+
+    expect_length(paths, 1)
+    expect_named(paths, "v.gpu.document.poly")
   })
 })
 
 test_that("seq_gpu() writes nothing when no features exist", {
   with_seq_cache({
-
-    called <- 0
+    called <- 0L
 
     local_mocked_bindings(
       get_gpu = function(...) NULL,
-      seq_write = function(...) {
-        called <<- called + 1
-      }
+      seq_write = function(...) called <<- called + 1L
     )
 
     out <- seq_gpu(seq_cache, verbose = FALSE)
 
-    expect_null(out)
+    expect_length(out, 0)
     expect_equal(called, 0)
   })
 })

@@ -2,23 +2,22 @@
 % Please edit documentation in R/gpu.R
 \name{get_gpu}
 \alias{get_gpu}
-\title{Download GPU vector layer}
+\title{Download one GPU vector layer}
 \usage{
-get_gpu(x, key, verbose = TRUE)
+get_gpu(x, layer, verbose = TRUE)
 }
 \arguments{
 \item{x}{\code{sf} or \code{sfc}; Geometry located in France.}
 
-\item{key}{\code{character}; Layer to download.
-Must be one of from \code{get_keys("gpu", reduce = FALSE)}}
+\item{layer}{\code{character}; GPU API layer identifier.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational
-messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
 }
 \value{
-\code{sf} object from \code{sf} package
+An \code{sf} object, or \code{NULL} if no feature is found.
 }
 \description{
-Downloads a vector layer with \code{hhapign} for the area covering \code{x}
-expanded with a buffer.
+Downloads a single Geoportail de l'Urbanisme layer intersecting \code{x}.
+Multiple input geometries are combined with \code{\link[sf:st_union]{sf::st_union()}} before querying
+the API, which accepts one geometry per request.
 }

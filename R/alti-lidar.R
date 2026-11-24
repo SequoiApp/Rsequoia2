@@ -129,145 +129,58 @@ get_lidar <- function(
   }
 
   x_clean <- x |>
+    sf::st_geometry() |>
     sf::st_transform(crs) |>
-    sf::st_make_valid() |>
-    sf::st_collection_extract("POLYGON") |>
-    suppressWarnings()
+    sf::st_make_valid()
 
-  x_env <- seq_envelope(
-    x = x_clean,
-    buffer = buffer,
-    crs = crs
-  )
+  x_clean <- x_clean[!sf::st_is_empty(x_clean)]
+  if (length(x_clean) == 0) {
+    cli::cli_abort("{.arg x} has no valid geometry after cleaning.")
+  }
 
-  x_clean <- x_env[!sf::st_is_empty(x_env), ]
+  point_or_line <- sf::st_dimension(x_clean) < 2
+  has_point_or_line <- any(point_or_line)
+  if (buffer == 0 && has_point_or_line) {
+    cli::cli_abort(c(
+      "x" = "{.arg buffer} must be positive for points and lines.",
+      "i" = "{cli::qty(sum(point_or_line))}Row{?s} {.val {which(point_or_line)}} {cli::qty(sum(point_or_line))}{?is/are} point or line."
+    ))
+  }
 
-  if (nrow(x_clean) == 0) {
-    cli::cli_abort("{.arg x} has no valid polygon geometry after cleaning.")
+  x_env <- x_clean |>
+    sf::st_buffer(buffer) |>
+    sf::st_union() |>
+    suppressWarnings(sf::st_collection_extract("POLYGON")) |>
+    sf::st_cast("POLYGON", warn = FALSE)
+
+  x_env <- x_env[!sf::st_is_empty(x_env)]
+  if (length(x_env) == 0) {
+    cli::cli_abort("{.arg x} has no valid polygon geometry after buffering.")
   }
 
   files <- download_lidar(
-    x = x_clean,
+    x = x_env,
     key = key,
     cache = cache,
     overwrite = overwrite,
     verbose = verbose
   )
 
-  vrt <- terra::vrt(
-    files,
-    options = c("-hidenodata")
-  )
+  if (verbose) cli::cli_progress_message("Optimizing raster...", clear = TRUE)
 
-  if (verbose) {cli::cli_progress_message("Optimizing raster...")}
-
-  x_clean <- sf::st_transform(x_clean, terra::crs(vrt))
-  x_vect <- terra::vect(x_clean)
-
-  r <- terra::crop(vrt, x_vect)
-  r <- terra::mask(r, x_vect)
-
-  target_crs <- sf::st_crs(crs)
-  if (!terra::same.crs(r, target_crs$wkt)) {
-    r <- terra::project(r, target_crs$wkt)
-  }
+  r <- tryCatch({
+    .altimetry_transformer(files, x_clean, crs)
+  }, error = function(e){
+    cli::cli_abort(
+      c(
+        "Failed to process LiDAR raster.",
+        "i" = "A cached tile may be corrupted (see error below). Remove it from {.path {cache}} and retry."
+      ),
+      parent = e
+    )
+  })
 
   names(r) <- paste0(key, "_lidar")
 
   return(invisible(r))
-}
-
-#' Create LiDAR layers for a Sequoia project
-#'
-#' Uses the project's _PARCA_ layer to download, extract, and write LiDAR HD
-#' altimetry rasters.
-#'
-#' @inheritParams get_lidar
-#' @inheritParams seq_write
-#' @param key `character`; LiDAR product(s) to create. One or more of `"mnt"`,
-#' `"mns"` and `"mnh"`.
-#'
-#' @return Invisibly returns a named `list` of created raster file paths.
-#'
-#' @export
-seq_lidar <- function(
-    dirname = ".",
-    key = c("mnt", "mnh"),
-    buffer = 200,
-    crs = 2154,
-    cache = NULL,
-    overwrite = FALSE,
-    verbose = TRUE
-) {
-
-  key <- match.arg(
-    key,
-    choices = c("mnt", "mns", "mnh"),
-    several.ok = TRUE
-  )
-
-  if (verbose) {
-    cli::cli_h1("LIDAR")
-  }
-
-  parca <- seq_read("v.seq.parca.poly", dirname = dirname)
-
-  identifier <- seq_field("identifier")$name
-  id <- unique(parca[[identifier]])
-
-  key_map <- c(
-    mnt = "r.alt.mnt.lidar",
-    mns = "r.alt.mns.lidar",
-    mnh = "r.alt.mnh.lidar"
-  )
-
-  paths <- lapply(key, function(one_key) {
-
-    seq_key <- key_map[[one_key]]
-
-    meta <- seq_layer(seq_key, verbose = FALSE)
-
-    path <- file.path(
-      dirname,
-      meta$path,
-      sprintf("%s_%s.%s", id, meta$name, meta$ext)
-    )
-
-    path <- normalizePath(path, winslash = "/", mustWork = FALSE)
-
-    if (file.exists(path) && !overwrite) {
-      if (verbose) {
-        cli::cli_alert_info("Using existing {.file {basename(path)}}.")
-      }
-
-      return(path)
-    }
-
-    if (verbose) {
-      {cli::cli_progress_message("Downloading {toupper(one_key)} LiDAR product...")}
-    }
-
-    r <- get_lidar(
-      x = parca,
-      key = one_key,
-      buffer = buffer,
-      crs = crs,
-      cache = cache,
-      overwrite = overwrite,
-      verbose = verbose
-    )
-
-    seq_write(
-      r,
-      key = seq_key,
-      id = id,
-      dirname = dirname,
-      overwrite = overwrite,
-      verbose = verbose
-    )
-  })
-
-  names(paths) <- key
-
-  invisible(paths)
 }

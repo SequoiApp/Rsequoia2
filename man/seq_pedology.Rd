@@ -2,7 +2,7 @@
 % Please edit documentation in R/pedology.R
 \name{seq_pedology}
 \alias{seq_pedology}
-\title{Generate pedology polygon layer and associated PDF reports}
+\title{Generate pedology data for a Sequoia project}
 \usage{
 seq_pedology(dirname = ".", verbose = TRUE, overwrite = FALSE)
 }
@@ -16,25 +16,11 @@ messages.}
 \item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
-Invisibly returns a named list of file paths written by \code{\link[=seq_write]{seq_write()}}.
-Returns \code{NULL} invisibly when no pedology features are found.
+Invisibly returns the written pedology layer path, or \code{NULL}.
 }
 \description{
-Retrieves pedology polygon features intersecting the project area,
-writes the resulting layer to disk and downloads associated pedology
-PDF reports into the project directory.
-}
-\details{
-Pedology polygon features are retrieved using \code{\link[=get_pedology]{get_pedology()}}.
-
-If no pedology features intersect the project area, the function
-returns \code{NULL} invisibly and no file is written.
-
-When pedology features are present, the polygon layer is written
-to disk using \code{\link[=seq_write]{seq_write()}} with the key \code{"v.sol.pedo.poly"}.
-Associated UCS PDF reports are then downloaded into \code{dirname}
-using \code{\link[=get_pedology_pdf]{get_pedology_pdf()}}.
+Retrieves pedology features and associated PDF reports for the project area.
 }
 \seealso{
-\code{\link[=get_pedology]{get_pedology()}}, \code{\link[=get_pedology_pdf]{get_pedology_pdf()}}, \code{\link[=seq_write]{seq_write()}}
+\code{\link[=get_pedology]{get_pedology()}}, \code{\link[=get_pedology_pdf]{get_pedology_pdf()}}
 }

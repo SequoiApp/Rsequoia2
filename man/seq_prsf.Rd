@@ -2,7 +2,7 @@
 % Please edit documentation in R/prsf.R
 \name{seq_prsf}
 \alias{seq_prsf}
-\title{Generate PRSF point layer for a Sequoia project}
+\title{Generate PRSF layer for a Sequoia project}
 \usage{
 seq_prsf(dirname = ".", buffer = 5000, verbose = TRUE, overwrite = FALSE)
 }
@@ -10,28 +10,18 @@ seq_prsf(dirname = ".", buffer = 5000, verbose = TRUE, overwrite = FALSE)
 \item{dirname}{\code{character}; Path to the Sequoia project directory.
 Defaults to the current working directory.}
 
-\item{buffer}{\code{numeric}; Buffer around \code{x} (in \strong{meters}) used to enlarge}
+\item{buffer}{\code{numeric}; Buffer around \code{x}, in meters.}
 
-\item{verbose}{\code{logical}; If \code{TRUE}, display progress and informational messages.}
+\item{verbose}{\code{logical}; If \code{TRUE}, display messages.}
 
 \item{overwrite}{\code{logical}; If \code{TRUE}, overwrite existing files.}
 }
 \value{
-Invisibly returns a named list of file paths written by \code{\link[=seq_write]{seq_write()}}.
-Returns \code{NULL} invisibly when no PRSF point features are found.
+Invisibly returns the written layer path, or \code{NULL}.
 }
 \description{
-Retrieves PRSF point features intersecting and surrounding
-the project area, and writes the resulting layer to disk.
-}
-\details{
-PRSF point features are retrieved using \code{\link[=get_prsf]{get_prsf()}}.
-
-If no PRSF point features are found, the function returns \code{NULL}
-invisibly and no file is written.
-
-When features are present, the layer is written to disk using
-\code{\link[=seq_write]{seq_write()}} with the key \code{"v.prsf.point"}.
+Retrieves PRSF point features around the project area and writes the
+resulting layer to the Sequoia project directory.
 }
 \seealso{
 \code{\link[=get_prsf]{get_prsf()}}, \code{\link[=seq_write]{seq_write()}}
