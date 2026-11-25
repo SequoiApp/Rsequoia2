@@ -1,6 +1,8 @@
 # Rsequoia2 (development version)
 
 ## v0.0.12
+- Refactor menu with new "free mode" (any gis file)
+- Generate matrice generation from gis file
 - Better error handling when reading lidar tile #124
 - Add `SEQ_AME_poly` when aggregating UA
 - Add support to download BD Foret V2
