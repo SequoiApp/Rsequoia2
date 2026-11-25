@@ -1,5 +1,12 @@
 # Rsequoia2 (development version)
 
+## v0.0.12
+- Better error handling when reading lidar tile #124
+- Add `SEQ_AME_poly` when aggregating UA
+- Add support to download BD Foret V2
+- Add support to station and associated guide
+- Add support to download climate
+
 ## v0.0.11
 - Harmonized `cli` message across `Rsequoia2`
 - Harmonized documentation across `Rsequoia2`
