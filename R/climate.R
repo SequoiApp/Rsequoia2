@@ -305,9 +305,9 @@ get_climate <- function(
 #' @noRd
 .climate_fetcher <- function(
     x,
+    dirname,
     buffer = 100,
     cache = NULL,
-    dirname,
     id = NULL,
     overwrite = FALSE,
     verbose = TRUE
@@ -368,8 +368,8 @@ get_climate <- function(
 #' @export
 fetch_climate <- function(
     x,
-    buffer = 100,
     dirname,
+    buffer = 100,
     cache = NULL,
     overwrite = FALSE,
     verbose = TRUE
@@ -377,9 +377,9 @@ fetch_climate <- function(
 
   .climate_fetcher(
     x = x,
+    dirname = dirname,
     buffer = buffer,
     cache = cache,
-    dirname = dirname,
     id = NULL,
     overwrite = overwrite,
     verbose = verbose
