@@ -16,7 +16,7 @@ namespace:
   v.forest: "vectoriel"
   v.access: "access"
   v.secu: "securite"
-  v.clim: "vector"
+  v.clim: "vectoriel"
   r.alt: "altimetrie"
   r.ortho: "imagerie"
   r.sol: "sol"

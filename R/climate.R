@@ -193,7 +193,7 @@ get_climate <- function(
   }
 
   vector <- terra::project(vector, metropole)
-  raster <- terra::crop(metropole, vector, mask = TRUE)
+  raster <- terra::crop(metropole, vector, snap="out", mask = TRUE)
 
   # --- Apply categorical labels ---
   raster <- terra::as.factor(raster)
