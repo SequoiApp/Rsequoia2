@@ -6,8 +6,8 @@
 \usage{
 fetch_climate(
   x,
-  buffer = 100,
   dirname,
+  buffer = 100,
   cache = NULL,
   overwrite = FALSE,
   verbose = TRUE
@@ -16,10 +16,10 @@ fetch_climate(
 \arguments{
 \item{x}{\code{sf} or \code{sfc}; Area used to extract climate classification.}
 
+\item{dirname}{\code{character}; Output directory.}
+
 \item{buffer}{\code{numeric}; Buffer distance, in meters, applied around \code{x}
 before raster extraction. Default is \code{100}.}
-
-\item{dirname}{\code{character}; Output directory.}
 
 \item{cache}{\code{character}; Directory where the GeoTIFF is stored.
 Defaults to the climate typology cache directory, see \code{\link[=seq_cache]{seq_cache()}}.}
